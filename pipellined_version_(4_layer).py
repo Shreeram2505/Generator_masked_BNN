@@ -1441,10 +1441,12 @@ def generate_connector(
     input_bitwidth,  
     num_nodes1,      
     num_nodes2,      
-    num_nodes3,      
+    num_nodes3,
+    num_nodes4,
     layer_no1,       
     layer_no2,       
-    layer_no3      
+    layer_no3,
+    layer_no4 
 ):
     m = input_bitwidth
     n = math.ceil(math.log2(num_inputs))
@@ -1457,7 +1459,11 @@ def generate_connector(
 
     k3 = 2 * num_nodes2 
     sum3_w = m + math.ceil(math.log2(k3))
-    bias3_w = sum3_w 
+    bias3_w = sum3_w
+
+    k4 = 2 * num_nodes3 
+    sum4_w = m + math.ceil(math.log2(k4))
+    bias4_w = sum4_w 
 
     lines = []
     lines.append("module connector(")
@@ -1485,11 +1491,18 @@ def generate_connector(
         lines.append(f"    input  wire [{k3-1}:0] w{n3}_0_{layer_no3}, w{n3}_1_{layer_no3},")
     for n3 in range(1, num_nodes3+1):
         lines.append(f"    input  wire [{bias3_w-1}:0] b{n3}_{layer_no3},")
+        
+    # --- Layer-4 (output) ports ---
+    lines.append("\n    // Layer-4 weights & biases (output layer)")
+    for n3 in range(1, num_nodes4+1):
+        lines.append(f"    input  wire [{k4-1}:0] w{n3}_0_{layer_no4}, w{n3}_1_{layer_no4},")
+    for n3 in range(1, num_nodes4+1):
+        lines.append(f"    input  wire [{bias4_w-1}:0] b{n3}_{layer_no4},")
 
     # --- Final outputs ---
     lines.append("\n    // Final outputs")
-    for o in range(num_nodes3):
-        suffix = "," if o < num_nodes3-1 else ""
+    for o in range(num_nodes4):
+        suffix = "," if o < num_nodes4-1 else ""
         lines.append(f"    output wire a{o}, a{o}_bar{suffix}")
 
     lines.append(");\n")
@@ -1679,46 +1692,140 @@ def generate_connector(
     lines[-1] = lines[-1].rstrip(',')
     # close instance
     lines.append(f"  );\n")
-
-
-    # --- Layer-3 (output) randomness taps and instantiation ---
+    
+# --- Layer-3 randomness taps and instantiation (same pattern) ---
     lines.append("  //--------------------------------------------------------------------------")
     lines.append("  // Layer-3 randomness taps")
     lines.append("  //--------------------------------------------------------------------------")
-    taps5 = bias3_w+2
-    for cid in range(num_nodes3 - 1):
-        for r in range(taps5):
+    taps5 = num_nodes3 
+    taps6= bias3_w+1
+    for x in range(taps5):
+        for y in range(taps6):
+            lines.append(f"  reg  r{y}_{x}_{layer_no3};")
+    lines.append("  initial begin")
+    for x in range(taps5):
+        for y in range(taps6):
+            lines.append(f"    r{y}_{x}_{layer_no3} = $random;")
+    lines.append("    #1;")
+    lines.append("  end\n")
+    
+    # Layer-2 arithmetic‐share randomness taps
+    lines.append(f"  // Layer-{layer_no3} arithmetic‐share randomness taps")
+    # declare regs ar0_2, ar1_2, … up to ar{num_nodes2-1}_2
+    lines.append(
+        "  reg [1:0] " +
+        ", ".join(f"ar{n}_{layer_no3}" for n in range(num_nodes3)) +
+        ";"
+    )
+    # declare their “bar” complements
+    lines.append(
+        "  reg [1:0] " +
+        ", ".join(f"ar{n}bar_{layer_no3}" for n in range(num_nodes3)) +
+        ";"
+    )
+    lines.append("")
+    # initialise them all to $random
+    lines.append("  initial begin")
+    for n in range(num_nodes3):
+        lines.append(f"    ar{n}_{layer_no3}    = $random;")
+        lines.append(f"    ar{n}bar_{layer_no3} = $random;")
+    lines.append("    #1;")
+    lines.append("  end\n")
+    
+# maskdeclaration
+    for j in range(num_nodes3):
+        lines.append(f" wire masked_activation{j}_{layer_no3}, masked_activation{j}bar_{layer_no3};")  
+        
+    for j in range(num_nodes3):
+        lines.append(f" wire mask{j}_{layer_no3}, mask{j}bar_{layer_no3};")
+        
+#activation declaration
+
+    for j in range(num_nodes3):
+        lines.append(f"  wire [{input_bitwidth-1}:0] act{j}_0_{layer_no3}, act{j}_1_{layer_no3};")
+    for j in range(num_nodes3):    
+        lines.append(f" wire [{input_bitwidth-1}:0] act{j}_0bar_{layer_no3}, act{j}_1bar_{layer_no3};")
+
+
+    lines.append(f"  activation_and_conversion_{layer_no3} layer{layer_no3}_inst (")
+    # inputs: act outputs from layer1
+    
+    for i in range(num_nodes2):
+        lines.append(f"    .inputs{i}_{layer_no3}(act{i}_0_{layer_no2}),")
+    for i in range(num_nodes2):
+        lines.append(f"    .inputs{i+1*num_nodes2}_{layer_no3}(act{i}_1_{layer_no2}),")
+    # weights & biases
+    for n2 in range(1, num_nodes3+1):
+        lines.append(f"    .w{n2}_0_{layer_no3}(w{n2}_0_{layer_no3}), .w{n2}_1_{layer_no3}(w{n2}_1_{layer_no3}),")
+    lines.append("    " + ", ".join(f".b{n2}_{layer_no3}(b{n2}_{layer_no3})" for n2 in range(1, num_nodes3+1)) + ",")
+    # randomness taps
+    for x in range(taps5):
+        for y in range(taps6):
+            lines.append(f"    .r{y}_{x}(r{y}_{x}_{layer_no3}),")
+        
+    # masked‐boolean outputs & masks
+    for n1 in range(num_nodes3):
+        lines.append(f"    .masked_activation{n1}_{layer_no3}(masked_activation{n1}_{layer_no3}), "
+                 f".masked_activation{n1}bar_{layer_no3}(masked_activation{n1}bar_{layer_no3}),")
+    for n1 in range(num_nodes3):
+        lines.append(f"    .mask{n1}_{layer_no3}(mask{n1}_{layer_no3}), "
+                 f".mask{n1}bar_{layer_no3}(mask{n1}bar_{layer_no3}),")
+                 
+    # arithmetic‐share randomness taps
+    lines.append("    " + ", ".join(
+        f"  .ar{n}(ar{n}_{layer_no3}), .ar{n}bar(ar{n}bar_{layer_no3})"
+        for n in range(num_nodes3)
+    ) + ",")
+    # arithmetic outputs
+    for n1 in range(num_nodes3):
+        lines.append(f"    .act{n1}_0_{layer_no3}(act{n1}_0_{layer_no3}), "
+                 f".act{n1}_1_{layer_no3}(act{n1}_1_{layer_no3}), "
+                 f".act{n1}_0bar_{layer_no3}(act{n1}_0bar_{layer_no3}), "
+                 f".act{n1}_1bar_{layer_no3}(act{n1}_1bar_{layer_no3}),")
+    # strip the trailing comma on the last port
+    lines[-1] = lines[-1].rstrip(',')
+    # close instance
+    lines.append(f"  );\n")
+
+
+    # --- Layer-4 (output) randomness taps and instantiation ---
+    lines.append("  //--------------------------------------------------------------------------")
+    lines.append("  // Layer-4 randomness taps")
+    lines.append("  //--------------------------------------------------------------------------")
+    taps7 = bias4_w+2
+    for cid in range(num_nodes4 - 1):
+        for r in range(taps7):
             lines.append(f"    reg r{r}_{cid};")
             lines.append(f"    reg r{r}_{cid}bar;")    
     lines.append("  initial begin")
-    for cid in range(num_nodes3 - 1):
-        for r in range(taps5):
+    for cid in range(num_nodes4 - 1):
+        for r in range(taps7):
             lines.append(f"    r{r}_{cid} = $random;")
             lines.append(f"    r{r}_{cid}bar = $random;")
     lines.append("    #1;")
     lines.append("  end\n")
 
 
-    lines.append(f"  output_layer_max layer{layer_no3} (")
+    lines.append(f"  output_layer_max layer{layer_no4} (")
     # inputs: act outputs from layer2
-    for i in range(num_nodes2):
-        lines.append(f"    .inputs{i}_{layer_no3}(act{i}_0_{layer_no2}),")
-    for i in range(num_nodes2):
-        lines.append(f"    .inputs{i+1*num_nodes2}_{layer_no3}(act{i}_1_{layer_no2}),")
+    for i in range(num_nodes3):
+        lines.append(f"    .inputs{i}_{layer_no4}(act{i}_0_{layer_no3}),")
+    for i in range(num_nodes3):
+        lines.append(f"    .inputs{i+1*num_nodes3}_{layer_no4}(act{i}_1_{layer_no3}),")
         
     # weights & biases
-    for n2 in range(1, num_nodes3+1):
-        lines.append(f"    .w{n2}_0_{layer_no3}(w{n2}_0_{layer_no3}), .w{n2}_1_{layer_no3}(w{n2}_1_{layer_no3}),")
+    for n2 in range(1, num_nodes4+1):
+        lines.append(f"    .w{n2}_0_{layer_no4}(w{n2}_0_{layer_no4}), .w{n2}_1_{layer_no4}(w{n2}_1_{layer_no4}),")
         
-    lines.append("    " + ", ".join(f".b{n2}_{layer_no3}(b{n2}_{layer_no3})" for n2 in range(1, num_nodes3+1)) + ",")
+    lines.append("    " + ", ".join(f".b{n2}_{layer_no4}(b{n2}_{layer_no4})" for n2 in range(1, num_nodes4+1)) + ",")
     
     # randomness taps
     # randomness for each of (num_nodes−1) comparators
-    for cid in range(num_nodes3 - 1):
-        for r in range(taps5):
+    for cid in range(num_nodes4 - 1):
+        for r in range(taps7):
             lines.append(f"    .r{r}_{cid}(r{r}_{cid}), .r{r}_{cid}bar(r{r}_{cid}bar),")
     # final output
-    for t in range(num_nodes3):
+    for t in range(num_nodes4):
         lines.append(f"    .a{t}(a{t}), .a{t}_bar(a{t}_bar),")
     # strip the trailing comma on the last port
     lines[-1] = lines[-1].rstrip(',')
@@ -1737,10 +1844,14 @@ if __name__ == "__main__":
     # list out exactly the shape of each layer you want to generate
     layer_specs = [
         { "layer_no":      1,
-          "num_inputs":    1024,
+          "num_inputs":    32,
+          "input_bitwidth": 3,
+          "num_nodes":     16 },
+        { "layer_no":      2,
+          "num_inputs":   32,
           "input_bitwidth": 3,
           "num_nodes":     8 },
-        { "layer_no":      2,
+        { "layer_no":      3,
           "num_inputs":   16,
           "input_bitwidth": 3,
           "num_nodes":     4 },
@@ -1765,7 +1876,7 @@ if __name__ == "__main__":
     num_inputs    = 8
     num_nodes     = 2
     input_bitwidth = 3
-    layer_no=3
+    layer_no=4
     
 
     verilog_code = generate_last_module_design(
@@ -1779,18 +1890,20 @@ if __name__ == "__main__":
 
 
 if __name__ == "__main__":
-    num_inputs      = 1024
+    num_inputs      = 32
     input_bitwidth  = 3
-    num_nodes1      = 8
-    num_nodes2      = 4
-    num_nodes3      = 2
+    num_nodes1      = 16
+    num_nodes2      = 8
+    num_nodes3      = 4
+    num_nodes4      = 2
     layer_no1       = 1
     layer_no2       = 2
     layer_no3       = 3
+    layer_no4       = 4
 
     verilog = generate_connector(
         num_inputs, input_bitwidth,
-        num_nodes1, num_nodes2, num_nodes3,
-        layer_no1, layer_no2, layer_no3
+        num_nodes1, num_nodes2, num_nodes3,num_nodes4,
+        layer_no1, layer_no2, layer_no3, layer_no4
     )
     print(verilog)
