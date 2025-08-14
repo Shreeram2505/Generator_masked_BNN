@@ -1355,7 +1355,7 @@ def print_state_block():
     endcase
   end""")
 
-def gen_feedback_block(num_nodes=4, bits_per_node=8, bitwidth=3, shares=2):
+def gen_feedback_block(num_nodes: int , bits_per_node: int, bitwidth: int, shares=2):
 
     def pair_lines(prefix, rhs_fn, indent="      "):
         """Emit two assignments per line for nicer formatting."""
