@@ -853,9 +853,9 @@ def generate_layer_module(num_inputs: int,
 
 if __name__ == "__main__":
     # Parameters — adjust as needed
-    num_inputs    = 16   # number of inputs per node
+    num_inputs    = 8   # number of inputs per node
     input_bitsize = 3   # bit-width of each input/activation
-    num_nodes     = 8   # number of parallel adder-tree nodes
+    num_nodes     = 4   # number of parallel adder-tree nodes
 
     verilog_code = generate_layer_module(num_inputs, input_bitsize, num_nodes)
     print(verilog_code)
@@ -1006,13 +1006,17 @@ def main():
     print("  always @(posedge clk or negedge rst_n) begin")
     print("    if (!rst_n) begin")
     print("      done <= 1'b0;")
-    for reg in regs:
-        print(f"      {reg} <= 3'd0;")
+    for layer in range(L1):
+        for sh in range(SHS):
+            for bit in range(2*L1):
+                print(f"        act{layer}_{sh}_{bit}_r <= 3'd0 ;")
     print("    end else begin")
     print("      if (start) begin")
-    for reg in regs:
-        base = reg[:-2]  # drop _r
-        print(f"        {reg} <= {base};")
+    for layer in range(L1):
+        for sh in range(SHS):
+            for bit in range(2*L1):
+                print(f"        act{layer}_{sh}_{bit}_r <= act{layer}_{sh}_{bit} ;")
+                
     print("        done <= 1'b1;")
     print("      end else begin")
     print("        done <= 1'b0;")
@@ -1241,8 +1245,8 @@ def generate_last_module_design(num_inputs: int,
     return "\n\n".join(parts)
 if __name__ == "__main__":
     # specify your layer parameters here:
-    num_inputs    = 16
-    num_nodes     = 4
+    num_inputs    = 8
+    num_nodes     = 2
     input_bitwidth = 3
     
 
@@ -1355,7 +1359,7 @@ def print_state_block():
     endcase
   end""")
 
-def gen_feedback_block(num_nodes: int , bits_per_node: int, bitwidth: int, shares=2):
+def gen_feedback_block(num_nodes : int, bits_per_node : int, bitwidth :int , shares=2):
 
     def pair_lines(prefix, rhs_fn, indent="      "):
         """Emit two assignments per line for nicer formatting."""
@@ -1563,10 +1567,10 @@ def gen_output_layer_inst(num_outputs: int, inst_name: str = "dut") -> str:
 
 if __name__ == "__main__":
     # set your parameters here
-    NUM_INPUTS = 16
+    NUM_INPUTS = 8
     INPUT_BITS = 3
-    NUM_NODES  = 8
-    OUT_NODES = 4
+    NUM_NODES  = 4
+    OUT_NODES = 2
 
     # 1) Module header / ports (your function prints directly)
     gen_iterative_controller(NUM_INPUTS, INPUT_BITS, NUM_NODES)
@@ -1579,7 +1583,7 @@ if __name__ == "__main__":
     # 3) Feedback always block
     print(gen_feedback_block(
         num_nodes=NUM_NODES,
-        bits_per_node=2*NUM_NODES,  # matches your act<n>_<s>_<b> pattern
+        bits_per_node=2*NUM_NODES,
         bitwidth=INPUT_BITS,
         shares=2
     ))
