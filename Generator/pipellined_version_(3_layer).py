@@ -1516,13 +1516,13 @@ def generate_connector(
     lines.append(f"  // Layer-{layer_no1} arithmetic‐share randomness taps")
 # declare regs ar0_1, ar1_1, … up to ar{num_nodes1-1}_1
     lines.append(
-        "  reg [1:0] " +
+        f"  reg [{num_inputs-2}:0] " +
         ", ".join(f"ar{n}_{layer_no1}" for n in range(num_nodes1)) +
         ";"
     )
 # if you also need the complementary bars:
     lines.append(
-        "  reg [1:0] " +
+        f"  reg [{num_inputs-2}:0] " +
         ", ".join(f"ar{n}bar_{layer_no1}" for n in range(num_nodes1)) +
         ";"
     )
@@ -1606,13 +1606,13 @@ def generate_connector(
     lines.append(f"  // Layer-{layer_no2} arithmetic‐share randomness taps")
     # declare regs ar0_2, ar1_2, … up to ar{num_nodes2-1}_2
     lines.append(
-        "  reg [1:0] " +
+        f"  reg [{num_inputs-2}:0] " +
         ", ".join(f"ar{n}_{layer_no2}" for n in range(num_nodes2)) +
         ";"
     )
     # declare their “bar” complements
     lines.append(
-        "  reg [1:0] " +
+        f"  reg [{num_inputs-2}:0] " +
         ", ".join(f"ar{n}bar_{layer_no2}" for n in range(num_nodes2)) +
         ";"
     )
@@ -1737,7 +1737,7 @@ if __name__ == "__main__":
     # list out exactly the shape of each layer you want to generate
     layer_specs = [
         { "layer_no":      1,
-          "num_inputs":    1024,
+          "num_inputs":    16,
           "input_bitwidth": 3,
           "num_nodes":     8 },
         { "layer_no":      2,
@@ -1779,7 +1779,7 @@ if __name__ == "__main__":
 
 
 if __name__ == "__main__":
-    num_inputs      = 1024
+    num_inputs      = 16
     input_bitwidth  = 3
     num_nodes1      = 8
     num_nodes2      = 4
