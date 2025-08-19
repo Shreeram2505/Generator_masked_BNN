@@ -1,14 +1,14 @@
 import math
 
 # Python script to print the weighted_inputs_1 module
-def main():
-    verilog = """module weighted_inputs_1(
+def main(input_bitsize =3):
+    verilog = f"""module weighted_inputs_1(
 
-    input [2:0] inputs,
+    input [{input_bitsize-1}:0] inputs,
 
     input w,
 
-    output reg [2:0] wi
+    output reg [{input_bitsize-1}:0] wi
 );
 
     always @(*) begin
