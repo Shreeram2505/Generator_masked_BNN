@@ -1,18 +1,18 @@
 import math
 
 # Python script to print the weighted_inputs_1 module
-def main():
-    verilog = """
+def main(input_bitsize =3):
+    verilog = f"""
     `timescale 1ns/1ps
     `default_nettype none
     
 module weighted_inputs_1(
 
-    input [2:0] inputs,
+    input [{input_bitsize-1}:0] inputs,
 
     input w,
 
-    output reg [2:0] wi
+    output reg [{input_bitsize-1}:0] wi
 );
 
     always @(*) begin
@@ -378,7 +378,7 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
     return "\n".join(module_lines)
 import math
 
-def main():
+def main(input_bitsize =3 ):
     verilog = f"""module mux_1 (
 
     input  wire a, b, s,
@@ -392,13 +392,13 @@ endmodule
 
 
 module mux_2(
-    input  [2:0] a,
-    input  [2:0] b,
-    input  [2:0] c,
-    input  [2:0] d,
+    input  [{input_bitsize-1}:0] a,
+    input  [{input_bitsize-1}:0] b,
+    input  [{input_bitsize-1}:0] c,
+    input  [{input_bitsize-1}:0] d,
     input        s0,
     input        s1,
-    output [2:0] y
+    output [{input_bitsize-1}:0] y
 );
     assign y = (s1 == 0 && s0 == 0) ? a :
                (s1 == 0 && s0 == 1) ? b :
@@ -423,12 +423,12 @@ endmodule
 
 
 module mux_4(
-    input  [2:0] a,
-    input  [2:0] b,
-    input  [2:0] c,
+    input  [{input_bitsize-1}:0] a,
+    input  [{input_bitsize-1}:0] b,
+    input  [{input_bitsize-1}:0] c,
     input        s0,
     input        s1,
-    output [2:0] y
+    output [{input_bitsize-1}:0] y
 );
     assign y = (s1 == 0 && s0 == 0) ? a :
                (s1 == 0 && s0 == 1) ? b :
@@ -915,7 +915,7 @@ def main():
     print("  //--------------------------------------------------------------------------")
     print("  // 1) COMBINATIONAL WIRES")
     print("  //--------------------------------------------------------------------------")
-    print("  reg [1:0] " + ", ".join(f"ar{n}" for n in range(L1)) + ";")
+    print(f"  reg [{input_bitsize-2}:0] " + ", ".join(f"ar{n}" for n in range(L1)) + ";")
     print()
     print("  initial begin")
     for n in range(L1):
@@ -1009,7 +1009,7 @@ def main():
     for layer in range(L1):
         for sh in range(SHS):
             for bit in range(2*L1):
-                print(f"        act{layer}_{sh}_{bit}_r <= 3'd0 ;")
+                print(f"        act{layer}_{sh}_{bit}_r <= {input_bitsize}'d0 ;")
     print("    end else begin")
     print("      if (start) begin")
     for layer in range(L1):
