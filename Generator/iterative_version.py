@@ -619,7 +619,7 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
         ports.append((f"input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_0_1, w{layer+1}_1_1"))
     # bias buses
     for i in range(1, num_nodes+1):
-        names = [f"b{i}_{j}" for j in range(1, num_nodes+1)]
+        names = [f"b{i}_{j}" for j in range(1, 5)]
         ports.append(("input wire", f"[{sum_width-1}:0]", ", ".join(names)))
     # selector
     ports.append(("input wire", "[1:0]", "s"))
@@ -663,13 +663,13 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
     lines.append(f"  wire [{biased_sum_width-1}:0] biased_sum1 [{num_nodes-1}:0], biased_sum2 [{num_nodes-1}:0], biased_sum1bar [{num_nodes-1}:0], biased_sum2bar [{num_nodes-1}:0];")
     lines.append("  \n")
     for layer in range(num_nodes):
-        for bit in range(2*num_nodes):
+        for bit in range(num_inputs):
             for part in (1,2,3):
                 lines.append(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_0_{part};")
                 lines.append(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_1_{part};")
     lines.append("  \n")
     for layer in range(num_nodes):
-        for bit in range(2*num_nodes):
+        for bit in range(num_inputs):
             for part in (1,2,3):
                 lines.append(f"  assign act{layer}_{bit}_0_{part}= act{layer}_0_{bit};")
                 lines.append(f"  assign act{layer}_{bit}_1_{part}= act{layer}_1_{bit};")   
@@ -853,9 +853,9 @@ def generate_layer_module(num_inputs: int,
 
 if __name__ == "__main__":
     # Parameters — adjust as needed
-    num_inputs    = 8   # number of inputs per node
+    num_inputs    = 16   # number of inputs per node
     input_bitsize = 3   # bit-width of each input/activation
-    num_nodes     = 4   # number of parallel adder-tree nodes
+    num_nodes     = 8   # number of parallel adder-tree nodes
 
     verilog_code = generate_layer_module(num_inputs, input_bitsize, num_nodes)
     print(verilog_code)
@@ -958,10 +958,10 @@ def main():
     for layer in range(L1):
         MA = f"masked_activation{layer}_1"
         MK = f"mask{layer}_1"
-        print(f"  wire [{biased_sum_width}:0] new_masked_activation{layer}_0 = {{")
+        print(f"  wire [{num_inputs-1}:0] new_masked_activation{layer}_0 = {{")
         print(",\n".join(f"      (~^( {MA} ^ w{layer+1}_0[{2*L1-b-1}] ))" for b in range(2*L1)))
         print("  };")
-        print(f"  wire [{biased_sum_width}:0] new_mask{layer}_0 = {{")
+        print(f"  wire [{num_inputs-1}:0] new_mask{layer}_0 = {{")
         print(",\n".join(f"      ~( {MK} ^ w{layer+1}_1[{2*L1-b-1}] )" for b in range(2*L1)))
         print("  };")
         print()
@@ -1245,8 +1245,8 @@ def generate_last_module_design(num_inputs: int,
     return "\n\n".join(parts)
 if __name__ == "__main__":
     # specify your layer parameters here:
-    num_inputs    = 8
-    num_nodes     = 2
+    num_inputs    = 16
+    num_nodes     = 4
     input_bitwidth = 3
     
 
@@ -1567,10 +1567,10 @@ def gen_output_layer_inst(num_outputs: int, inst_name: str = "dut") -> str:
 
 if __name__ == "__main__":
     # set your parameters here
-    NUM_INPUTS = 8
+    NUM_INPUTS = 16
     INPUT_BITS = 3
-    NUM_NODES  = 4
-    OUT_NODES = 2
+    NUM_NODES  = 8
+    OUT_NODES = 4
 
     # 1) Module header / ports (your function prints directly)
     gen_iterative_controller(NUM_INPUTS, INPUT_BITS, NUM_NODES)
