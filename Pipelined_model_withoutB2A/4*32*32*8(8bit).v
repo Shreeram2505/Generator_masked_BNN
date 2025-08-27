@@ -1,10 +1,10 @@
 module weighted_inputs_1(
 
-    input [2:0] inputs,
+    input [7:0] inputs,
 
     input w,
 
-    output reg [2:0] wi
+    output reg [7:0] wi
 );
 
     always @(*) begin
@@ -118,71 +118,11 @@ module WddlNAND_1(
   assign S1 = ~S;
 endmodule
 
-module add3bit_1(
-    input wire [2:0] a,
-    input wire [2:0] b,
+module add8bit_1(
+    input wire [7:0] a,
+    input wire [7:0] b,
     input wire  cin,
-    output wire [3:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-
-full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-
-WddlNAND_1 wn1(.A(~a[2]), .B(b[2]), .C(~c3), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[2]), .B(~b[2]), .C(~c3), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[2]), .B(b[2]), .C(c3), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[2]), .B(~b[2]), .C(c3), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[3] = cout;
-
-endmodule
-
-module add4bit_1(
-    input wire [3:0] a,
-    input wire [3:0] b,
-    input wire  cin,
-    output wire [4:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-
-full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-
-WddlNAND_1 wn1(.A(~a[3]), .B(b[3]), .C(~c4), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[3]), .B(~b[3]), .C(~c4), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[3]), .B(b[3]), .C(c4), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[3]), .B(~b[3]), .C(c4), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[4] = cout;
-
-endmodule
-
-module add5bit_1(
-    input wire [4:0] a,
-    input wire [4:0] b,
-    input wire  cin,
-    output wire [5:0] y,
+    output wire [8:0] y,
     output wire cout,
     output wire cout_bar
 );
@@ -193,21 +133,111 @@ wire c2;
 wire c3;
 wire c4;
 wire c5;
+wire c6;
+wire c7;
+wire c8;
 
 full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
 full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
 full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
 full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
 full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
 
-WddlNAND_1 wn1(.A(~a[4]), .B(b[4]), .C(~c5), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[4]), .B(~b[4]), .C(~c5), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[4]), .B(b[4]), .C(c5), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[4]), .B(~b[4]), .C(c5), .S(s4), .S1(s4_1));
+WddlNAND_1 wn1(.A(~a[7]), .B(b[7]), .C(~c8), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[7]), .B(~b[7]), .C(~c8), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[7]), .B(b[7]), .C(c8), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[7]), .B(~b[7]), .C(c8), .S(s4), .S1(s4_1));
 
 assign cout = ~(s1 & s2 & s3 & s4);
 assign cout_bar = ~cout;
-assign y[5] = cout;
+assign y[8] = cout;
+
+endmodule
+
+module add9bit_1(
+    input wire [8:0] a,
+    input wire [8:0] b,
+    input wire  cin,
+    output wire [9:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+
+full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+
+WddlNAND_1 wn1(.A(~a[8]), .B(b[8]), .C(~c9), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[8]), .B(~b[8]), .C(~c9), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[8]), .B(b[8]), .C(c9), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[8]), .B(~b[8]), .C(c9), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[9] = cout;
+
+endmodule
+
+module add10bit_1(
+    input wire [9:0] a,
+    input wire [9:0] b,
+    input wire  cin,
+    output wire [10:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+
+full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adder_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+
+WddlNAND_1 wn1(.A(~a[9]), .B(b[9]), .C(~c10), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[9]), .B(~b[9]), .C(~c10), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[9]), .B(b[9]), .C(c10), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[9]), .B(~b[9]), .C(c10), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[10] = cout;
 
 endmodule
 
@@ -246,71 +276,11 @@ module WddlNANDbar_1(
   assign S1 = ~S;
 endmodule
 
-module add3bitbar_1(
-    input wire [2:0] a,
-    input wire [2:0] b,
+module add8bitbar_1(
+    input wire [7:0] a,
+    input wire [7:0] b,
     input wire  cin,
-    output wire [3:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-
-full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-
-WddlNANDbar_1 wn1(.A(~a[2]), .B(b[2]), .C(~c3), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[2]), .B(~b[2]), .C(~c3), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[2]), .B(b[2]), .C(c3), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[2]), .B(~b[2]), .C(c3), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[3] = cout_bar;
-
-endmodule
-
-module add4bitbar_1(
-    input wire [3:0] a,
-    input wire [3:0] b,
-    input wire  cin,
-    output wire [4:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-
-full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-
-WddlNANDbar_1 wn1(.A(~a[3]), .B(b[3]), .C(~c4), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[3]), .B(~b[3]), .C(~c4), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[3]), .B(b[3]), .C(c4), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[3]), .B(~b[3]), .C(c4), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[4] = cout_bar;
-
-endmodule
-
-module add5bitbar_1(
-    input wire [4:0] a,
-    input wire [4:0] b,
-    input wire  cin,
-    output wire [5:0] y,
+    output wire [8:0] y,
     output wire cout,
     output wire cout_bar
 );
@@ -321,44 +291,134 @@ wire c2;
 wire c3;
 wire c4;
 wire c5;
+wire c6;
+wire c7;
+wire c8;
 
 full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
 full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
 full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
 full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
 full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
 
-WddlNANDbar_1 wn1(.A(~a[4]), .B(b[4]), .C(~c5), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[4]), .B(~b[4]), .C(~c5), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[4]), .B(b[4]), .C(c5), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[4]), .B(~b[4]), .C(c5), .S(s4), .S1(s4_1));
+WddlNANDbar_1 wn1(.A(~a[7]), .B(b[7]), .C(~c8), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[7]), .B(~b[7]), .C(~c8), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[7]), .B(b[7]), .C(c8), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[7]), .B(~b[7]), .C(c8), .S(s4), .S1(s4_1));
 
 assign cout = ~(s1 & s2 & s3 & s4);
 assign cout_bar = ~cout;
-assign y[5] = cout_bar;
+assign y[8] = cout_bar;
+
+endmodule
+
+module add9bitbar_1(
+    input wire [8:0] a,
+    input wire [8:0] b,
+    input wire  cin,
+    output wire [9:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+
+full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+
+WddlNANDbar_1 wn1(.A(~a[8]), .B(b[8]), .C(~c9), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[8]), .B(~b[8]), .C(~c9), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[8]), .B(b[8]), .C(c9), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[8]), .B(~b[8]), .C(c9), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[9] = cout_bar;
+
+endmodule
+
+module add10bitbar_1(
+    input wire [9:0] a,
+    input wire [9:0] b,
+    input wire  cin,
+    output wire [10:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+
+full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adderbar_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+
+WddlNANDbar_1 wn1(.A(~a[9]), .B(b[9]), .C(~c10), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[9]), .B(~b[9]), .C(~c10), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[9]), .B(b[9]), .C(c10), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[9]), .B(~b[9]), .C(c10), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[10] = cout_bar;
 
 endmodule
 
 
 
 module adder_tree_1 (
-    input  wire [2:0] in0,
-    input  wire [2:0] in1,
-    input  wire [2:0] in2,
-    input  wire [2:0] in3,
-    output wire [4:0] sum
+    input  wire [7:0] in0,
+    input  wire [7:0] in1,
+    input  wire [7:0] in2,
+    input  wire [7:0] in3,
+    output wire [9:0] sum
 );
 
-    wire [3:0] stage0_0_lo;
-    wire [3:0] stage0_1_lo;
-    wire [4:0] stage1_0_lo;
-    reg  [3:0] stage0_0;
-    reg  [3:0] stage0_1;
-    reg  [4:0] stage1_0;
+    wire [8:0] stage0_0_lo;
+    wire [8:0] stage0_1_lo;
+    wire [9:0] stage1_0_lo;
+    reg  [8:0] stage0_0;
+    reg  [8:0] stage0_1;
+    reg  [9:0] stage1_0;
 
-    add3bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add3bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add4bit_1 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
+    add8bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
+    add8bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
+    add9bit_1 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
 
     assign sum = {1'b0, stage1_0_lo};
 
@@ -371,23 +431,23 @@ endmodule
 
 
 module adder_tree_bar_1 (
-    input  wire [2:0] in0,
-    input  wire [2:0] in1,
-    input  wire [2:0] in2,
-    input  wire [2:0] in3,
-    output wire [4:0] sum
+    input  wire [7:0] in0,
+    input  wire [7:0] in1,
+    input  wire [7:0] in2,
+    input  wire [7:0] in3,
+    output wire [9:0] sum
 );
 
-    wire [3:0] stage0_0_lo_bar;
-    wire [3:0] stage0_1_lo_bar;
-    wire [4:0] stage1_0_lo_bar;
-    reg  [3:0] stage0_0_bar;
-    reg  [3:0] stage0_1_bar;
-    reg  [4:0] stage1_0_bar;
+    wire [8:0] stage0_0_lo_bar;
+    wire [8:0] stage0_1_lo_bar;
+    wire [9:0] stage1_0_lo_bar;
+    reg  [8:0] stage0_0_bar;
+    reg  [8:0] stage0_1_bar;
+    reg  [9:0] stage1_0_bar;
 
-    add3bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar_1 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
+    add9bitbar_1 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
 
     assign sum = {1'b0, stage1_0_lo_bar};
 
@@ -400,148 +460,148 @@ endmodule
 
 
 module layer1(
-    input [2:0] inputs0_1 , inputs1_1 , inputs2_1 , inputs3_1,
+    input [7:0] inputs0_1 , inputs1_1 , inputs2_1 , inputs3_1,
     input [3:0] w1_0_1, w1_1_1, w2_0_1, w2_1_1, w3_0_1, w3_1_1, w4_0_1, w4_1_1, w5_0_1, w5_1_1, w6_0_1, w6_1_1, w7_0_1, w7_1_1, w8_0_1, w8_1_1, w9_0_1, w9_1_1, w10_0_1, w10_1_1, w11_0_1, w11_1_1, w12_0_1, w12_1_1, w13_0_1, w13_1_1, w14_0_1, w14_1_1, w15_0_1, w15_1_1, w16_0_1, w16_1_1, w17_0_1, w17_1_1, w18_0_1, w18_1_1, w19_0_1, w19_1_1, w20_0_1, w20_1_1, w21_0_1, w21_1_1, w22_0_1, w22_1_1, w23_0_1, w23_1_1, w24_0_1, w24_1_1, w25_0_1, w25_1_1, w26_0_1, w26_1_1, w27_0_1, w27_1_1, w28_0_1, w28_1_1, w29_0_1, w29_1_1, w30_0_1, w30_1_1, w31_0_1, w31_1_1, w32_0_1, w32_1_1,
-    input [4:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1,
-    output [5:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar, biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar, biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar, biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar, biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar, biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar, biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar, biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar, biased_sum8_0, biased_sum8_1, biased_sum8_0bar, biased_sum8_1bar, biased_sum9_0, biased_sum9_1, biased_sum9_0bar, biased_sum9_1bar, biased_sum10_0, biased_sum10_1, biased_sum10_0bar, biased_sum10_1bar, biased_sum11_0, biased_sum11_1, biased_sum11_0bar, biased_sum11_1bar, biased_sum12_0, biased_sum12_1, biased_sum12_0bar, biased_sum12_1bar, biased_sum13_0, biased_sum13_1, biased_sum13_0bar, biased_sum13_1bar, biased_sum14_0, biased_sum14_1, biased_sum14_0bar, biased_sum14_1bar, biased_sum15_0, biased_sum15_1, biased_sum15_0bar, biased_sum15_1bar, biased_sum16_0, biased_sum16_1, biased_sum16_0bar, biased_sum16_1bar, biased_sum17_0, biased_sum17_1, biased_sum17_0bar, biased_sum17_1bar, biased_sum18_0, biased_sum18_1, biased_sum18_0bar, biased_sum18_1bar, biased_sum19_0, biased_sum19_1, biased_sum19_0bar, biased_sum19_1bar, biased_sum20_0, biased_sum20_1, biased_sum20_0bar, biased_sum20_1bar, biased_sum21_0, biased_sum21_1, biased_sum21_0bar, biased_sum21_1bar, biased_sum22_0, biased_sum22_1, biased_sum22_0bar, biased_sum22_1bar, biased_sum23_0, biased_sum23_1, biased_sum23_0bar, biased_sum23_1bar, biased_sum24_0, biased_sum24_1, biased_sum24_0bar, biased_sum24_1bar, biased_sum25_0, biased_sum25_1, biased_sum25_0bar, biased_sum25_1bar, biased_sum26_0, biased_sum26_1, biased_sum26_0bar, biased_sum26_1bar, biased_sum27_0, biased_sum27_1, biased_sum27_0bar, biased_sum27_1bar, biased_sum28_0, biased_sum28_1, biased_sum28_0bar, biased_sum28_1bar, biased_sum29_0, biased_sum29_1, biased_sum29_0bar, biased_sum29_1bar, biased_sum30_0, biased_sum30_1, biased_sum30_0bar, biased_sum30_1bar, biased_sum31_0, biased_sum31_1, biased_sum31_0bar, biased_sum31_1bar
+    input [9:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1,
+    output [10:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar, biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar, biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar, biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar, biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar, biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar, biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar, biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar, biased_sum8_0, biased_sum8_1, biased_sum8_0bar, biased_sum8_1bar, biased_sum9_0, biased_sum9_1, biased_sum9_0bar, biased_sum9_1bar, biased_sum10_0, biased_sum10_1, biased_sum10_0bar, biased_sum10_1bar, biased_sum11_0, biased_sum11_1, biased_sum11_0bar, biased_sum11_1bar, biased_sum12_0, biased_sum12_1, biased_sum12_0bar, biased_sum12_1bar, biased_sum13_0, biased_sum13_1, biased_sum13_0bar, biased_sum13_1bar, biased_sum14_0, biased_sum14_1, biased_sum14_0bar, biased_sum14_1bar, biased_sum15_0, biased_sum15_1, biased_sum15_0bar, biased_sum15_1bar, biased_sum16_0, biased_sum16_1, biased_sum16_0bar, biased_sum16_1bar, biased_sum17_0, biased_sum17_1, biased_sum17_0bar, biased_sum17_1bar, biased_sum18_0, biased_sum18_1, biased_sum18_0bar, biased_sum18_1bar, biased_sum19_0, biased_sum19_1, biased_sum19_0bar, biased_sum19_1bar, biased_sum20_0, biased_sum20_1, biased_sum20_0bar, biased_sum20_1bar, biased_sum21_0, biased_sum21_1, biased_sum21_0bar, biased_sum21_1bar, biased_sum22_0, biased_sum22_1, biased_sum22_0bar, biased_sum22_1bar, biased_sum23_0, biased_sum23_1, biased_sum23_0bar, biased_sum23_1bar, biased_sum24_0, biased_sum24_1, biased_sum24_0bar, biased_sum24_1bar, biased_sum25_0, biased_sum25_1, biased_sum25_0bar, biased_sum25_1bar, biased_sum26_0, biased_sum26_1, biased_sum26_0bar, biased_sum26_1bar, biased_sum27_0, biased_sum27_1, biased_sum27_0bar, biased_sum27_1bar, biased_sum28_0, biased_sum28_1, biased_sum28_0bar, biased_sum28_1bar, biased_sum29_0, biased_sum29_1, biased_sum29_0bar, biased_sum29_1bar, biased_sum30_0, biased_sum30_1, biased_sum30_0bar, biased_sum30_1bar, biased_sum31_0, biased_sum31_1, biased_sum31_0bar, biased_sum31_1bar
 );
-    wire [2:0] weighted_inputs1_0_0, weighted_inputs1_0_1;
-    wire [2:0] weighted_inputs1_1_0, weighted_inputs1_1_1;
-    wire [2:0] weighted_inputs1_2_0, weighted_inputs1_2_1;
-    wire [2:0] weighted_inputs1_3_0, weighted_inputs1_3_1;
-    wire [2:0] weighted_inputs2_0_0, weighted_inputs2_0_1;
-    wire [2:0] weighted_inputs2_1_0, weighted_inputs2_1_1;
-    wire [2:0] weighted_inputs2_2_0, weighted_inputs2_2_1;
-    wire [2:0] weighted_inputs2_3_0, weighted_inputs2_3_1;
-    wire [2:0] weighted_inputs3_0_0, weighted_inputs3_0_1;
-    wire [2:0] weighted_inputs3_1_0, weighted_inputs3_1_1;
-    wire [2:0] weighted_inputs3_2_0, weighted_inputs3_2_1;
-    wire [2:0] weighted_inputs3_3_0, weighted_inputs3_3_1;
-    wire [2:0] weighted_inputs4_0_0, weighted_inputs4_0_1;
-    wire [2:0] weighted_inputs4_1_0, weighted_inputs4_1_1;
-    wire [2:0] weighted_inputs4_2_0, weighted_inputs4_2_1;
-    wire [2:0] weighted_inputs4_3_0, weighted_inputs4_3_1;
-    wire [2:0] weighted_inputs5_0_0, weighted_inputs5_0_1;
-    wire [2:0] weighted_inputs5_1_0, weighted_inputs5_1_1;
-    wire [2:0] weighted_inputs5_2_0, weighted_inputs5_2_1;
-    wire [2:0] weighted_inputs5_3_0, weighted_inputs5_3_1;
-    wire [2:0] weighted_inputs6_0_0, weighted_inputs6_0_1;
-    wire [2:0] weighted_inputs6_1_0, weighted_inputs6_1_1;
-    wire [2:0] weighted_inputs6_2_0, weighted_inputs6_2_1;
-    wire [2:0] weighted_inputs6_3_0, weighted_inputs6_3_1;
-    wire [2:0] weighted_inputs7_0_0, weighted_inputs7_0_1;
-    wire [2:0] weighted_inputs7_1_0, weighted_inputs7_1_1;
-    wire [2:0] weighted_inputs7_2_0, weighted_inputs7_2_1;
-    wire [2:0] weighted_inputs7_3_0, weighted_inputs7_3_1;
-    wire [2:0] weighted_inputs8_0_0, weighted_inputs8_0_1;
-    wire [2:0] weighted_inputs8_1_0, weighted_inputs8_1_1;
-    wire [2:0] weighted_inputs8_2_0, weighted_inputs8_2_1;
-    wire [2:0] weighted_inputs8_3_0, weighted_inputs8_3_1;
-    wire [2:0] weighted_inputs9_0_0, weighted_inputs9_0_1;
-    wire [2:0] weighted_inputs9_1_0, weighted_inputs9_1_1;
-    wire [2:0] weighted_inputs9_2_0, weighted_inputs9_2_1;
-    wire [2:0] weighted_inputs9_3_0, weighted_inputs9_3_1;
-    wire [2:0] weighted_inputs10_0_0, weighted_inputs10_0_1;
-    wire [2:0] weighted_inputs10_1_0, weighted_inputs10_1_1;
-    wire [2:0] weighted_inputs10_2_0, weighted_inputs10_2_1;
-    wire [2:0] weighted_inputs10_3_0, weighted_inputs10_3_1;
-    wire [2:0] weighted_inputs11_0_0, weighted_inputs11_0_1;
-    wire [2:0] weighted_inputs11_1_0, weighted_inputs11_1_1;
-    wire [2:0] weighted_inputs11_2_0, weighted_inputs11_2_1;
-    wire [2:0] weighted_inputs11_3_0, weighted_inputs11_3_1;
-    wire [2:0] weighted_inputs12_0_0, weighted_inputs12_0_1;
-    wire [2:0] weighted_inputs12_1_0, weighted_inputs12_1_1;
-    wire [2:0] weighted_inputs12_2_0, weighted_inputs12_2_1;
-    wire [2:0] weighted_inputs12_3_0, weighted_inputs12_3_1;
-    wire [2:0] weighted_inputs13_0_0, weighted_inputs13_0_1;
-    wire [2:0] weighted_inputs13_1_0, weighted_inputs13_1_1;
-    wire [2:0] weighted_inputs13_2_0, weighted_inputs13_2_1;
-    wire [2:0] weighted_inputs13_3_0, weighted_inputs13_3_1;
-    wire [2:0] weighted_inputs14_0_0, weighted_inputs14_0_1;
-    wire [2:0] weighted_inputs14_1_0, weighted_inputs14_1_1;
-    wire [2:0] weighted_inputs14_2_0, weighted_inputs14_2_1;
-    wire [2:0] weighted_inputs14_3_0, weighted_inputs14_3_1;
-    wire [2:0] weighted_inputs15_0_0, weighted_inputs15_0_1;
-    wire [2:0] weighted_inputs15_1_0, weighted_inputs15_1_1;
-    wire [2:0] weighted_inputs15_2_0, weighted_inputs15_2_1;
-    wire [2:0] weighted_inputs15_3_0, weighted_inputs15_3_1;
-    wire [2:0] weighted_inputs16_0_0, weighted_inputs16_0_1;
-    wire [2:0] weighted_inputs16_1_0, weighted_inputs16_1_1;
-    wire [2:0] weighted_inputs16_2_0, weighted_inputs16_2_1;
-    wire [2:0] weighted_inputs16_3_0, weighted_inputs16_3_1;
-    wire [2:0] weighted_inputs17_0_0, weighted_inputs17_0_1;
-    wire [2:0] weighted_inputs17_1_0, weighted_inputs17_1_1;
-    wire [2:0] weighted_inputs17_2_0, weighted_inputs17_2_1;
-    wire [2:0] weighted_inputs17_3_0, weighted_inputs17_3_1;
-    wire [2:0] weighted_inputs18_0_0, weighted_inputs18_0_1;
-    wire [2:0] weighted_inputs18_1_0, weighted_inputs18_1_1;
-    wire [2:0] weighted_inputs18_2_0, weighted_inputs18_2_1;
-    wire [2:0] weighted_inputs18_3_0, weighted_inputs18_3_1;
-    wire [2:0] weighted_inputs19_0_0, weighted_inputs19_0_1;
-    wire [2:0] weighted_inputs19_1_0, weighted_inputs19_1_1;
-    wire [2:0] weighted_inputs19_2_0, weighted_inputs19_2_1;
-    wire [2:0] weighted_inputs19_3_0, weighted_inputs19_3_1;
-    wire [2:0] weighted_inputs20_0_0, weighted_inputs20_0_1;
-    wire [2:0] weighted_inputs20_1_0, weighted_inputs20_1_1;
-    wire [2:0] weighted_inputs20_2_0, weighted_inputs20_2_1;
-    wire [2:0] weighted_inputs20_3_0, weighted_inputs20_3_1;
-    wire [2:0] weighted_inputs21_0_0, weighted_inputs21_0_1;
-    wire [2:0] weighted_inputs21_1_0, weighted_inputs21_1_1;
-    wire [2:0] weighted_inputs21_2_0, weighted_inputs21_2_1;
-    wire [2:0] weighted_inputs21_3_0, weighted_inputs21_3_1;
-    wire [2:0] weighted_inputs22_0_0, weighted_inputs22_0_1;
-    wire [2:0] weighted_inputs22_1_0, weighted_inputs22_1_1;
-    wire [2:0] weighted_inputs22_2_0, weighted_inputs22_2_1;
-    wire [2:0] weighted_inputs22_3_0, weighted_inputs22_3_1;
-    wire [2:0] weighted_inputs23_0_0, weighted_inputs23_0_1;
-    wire [2:0] weighted_inputs23_1_0, weighted_inputs23_1_1;
-    wire [2:0] weighted_inputs23_2_0, weighted_inputs23_2_1;
-    wire [2:0] weighted_inputs23_3_0, weighted_inputs23_3_1;
-    wire [2:0] weighted_inputs24_0_0, weighted_inputs24_0_1;
-    wire [2:0] weighted_inputs24_1_0, weighted_inputs24_1_1;
-    wire [2:0] weighted_inputs24_2_0, weighted_inputs24_2_1;
-    wire [2:0] weighted_inputs24_3_0, weighted_inputs24_3_1;
-    wire [2:0] weighted_inputs25_0_0, weighted_inputs25_0_1;
-    wire [2:0] weighted_inputs25_1_0, weighted_inputs25_1_1;
-    wire [2:0] weighted_inputs25_2_0, weighted_inputs25_2_1;
-    wire [2:0] weighted_inputs25_3_0, weighted_inputs25_3_1;
-    wire [2:0] weighted_inputs26_0_0, weighted_inputs26_0_1;
-    wire [2:0] weighted_inputs26_1_0, weighted_inputs26_1_1;
-    wire [2:0] weighted_inputs26_2_0, weighted_inputs26_2_1;
-    wire [2:0] weighted_inputs26_3_0, weighted_inputs26_3_1;
-    wire [2:0] weighted_inputs27_0_0, weighted_inputs27_0_1;
-    wire [2:0] weighted_inputs27_1_0, weighted_inputs27_1_1;
-    wire [2:0] weighted_inputs27_2_0, weighted_inputs27_2_1;
-    wire [2:0] weighted_inputs27_3_0, weighted_inputs27_3_1;
-    wire [2:0] weighted_inputs28_0_0, weighted_inputs28_0_1;
-    wire [2:0] weighted_inputs28_1_0, weighted_inputs28_1_1;
-    wire [2:0] weighted_inputs28_2_0, weighted_inputs28_2_1;
-    wire [2:0] weighted_inputs28_3_0, weighted_inputs28_3_1;
-    wire [2:0] weighted_inputs29_0_0, weighted_inputs29_0_1;
-    wire [2:0] weighted_inputs29_1_0, weighted_inputs29_1_1;
-    wire [2:0] weighted_inputs29_2_0, weighted_inputs29_2_1;
-    wire [2:0] weighted_inputs29_3_0, weighted_inputs29_3_1;
-    wire [2:0] weighted_inputs30_0_0, weighted_inputs30_0_1;
-    wire [2:0] weighted_inputs30_1_0, weighted_inputs30_1_1;
-    wire [2:0] weighted_inputs30_2_0, weighted_inputs30_2_1;
-    wire [2:0] weighted_inputs30_3_0, weighted_inputs30_3_1;
-    wire [2:0] weighted_inputs31_0_0, weighted_inputs31_0_1;
-    wire [2:0] weighted_inputs31_1_0, weighted_inputs31_1_1;
-    wire [2:0] weighted_inputs31_2_0, weighted_inputs31_2_1;
-    wire [2:0] weighted_inputs31_3_0, weighted_inputs31_3_1;
-    wire [2:0] weighted_inputs32_0_0, weighted_inputs32_0_1;
-    wire [2:0] weighted_inputs32_1_0, weighted_inputs32_1_1;
-    wire [2:0] weighted_inputs32_2_0, weighted_inputs32_2_1;
-    wire [2:0] weighted_inputs32_3_0, weighted_inputs32_3_1;
+    wire [7:0] weighted_inputs1_0_0, weighted_inputs1_0_1;
+    wire [7:0] weighted_inputs1_1_0, weighted_inputs1_1_1;
+    wire [7:0] weighted_inputs1_2_0, weighted_inputs1_2_1;
+    wire [7:0] weighted_inputs1_3_0, weighted_inputs1_3_1;
+    wire [7:0] weighted_inputs2_0_0, weighted_inputs2_0_1;
+    wire [7:0] weighted_inputs2_1_0, weighted_inputs2_1_1;
+    wire [7:0] weighted_inputs2_2_0, weighted_inputs2_2_1;
+    wire [7:0] weighted_inputs2_3_0, weighted_inputs2_3_1;
+    wire [7:0] weighted_inputs3_0_0, weighted_inputs3_0_1;
+    wire [7:0] weighted_inputs3_1_0, weighted_inputs3_1_1;
+    wire [7:0] weighted_inputs3_2_0, weighted_inputs3_2_1;
+    wire [7:0] weighted_inputs3_3_0, weighted_inputs3_3_1;
+    wire [7:0] weighted_inputs4_0_0, weighted_inputs4_0_1;
+    wire [7:0] weighted_inputs4_1_0, weighted_inputs4_1_1;
+    wire [7:0] weighted_inputs4_2_0, weighted_inputs4_2_1;
+    wire [7:0] weighted_inputs4_3_0, weighted_inputs4_3_1;
+    wire [7:0] weighted_inputs5_0_0, weighted_inputs5_0_1;
+    wire [7:0] weighted_inputs5_1_0, weighted_inputs5_1_1;
+    wire [7:0] weighted_inputs5_2_0, weighted_inputs5_2_1;
+    wire [7:0] weighted_inputs5_3_0, weighted_inputs5_3_1;
+    wire [7:0] weighted_inputs6_0_0, weighted_inputs6_0_1;
+    wire [7:0] weighted_inputs6_1_0, weighted_inputs6_1_1;
+    wire [7:0] weighted_inputs6_2_0, weighted_inputs6_2_1;
+    wire [7:0] weighted_inputs6_3_0, weighted_inputs6_3_1;
+    wire [7:0] weighted_inputs7_0_0, weighted_inputs7_0_1;
+    wire [7:0] weighted_inputs7_1_0, weighted_inputs7_1_1;
+    wire [7:0] weighted_inputs7_2_0, weighted_inputs7_2_1;
+    wire [7:0] weighted_inputs7_3_0, weighted_inputs7_3_1;
+    wire [7:0] weighted_inputs8_0_0, weighted_inputs8_0_1;
+    wire [7:0] weighted_inputs8_1_0, weighted_inputs8_1_1;
+    wire [7:0] weighted_inputs8_2_0, weighted_inputs8_2_1;
+    wire [7:0] weighted_inputs8_3_0, weighted_inputs8_3_1;
+    wire [7:0] weighted_inputs9_0_0, weighted_inputs9_0_1;
+    wire [7:0] weighted_inputs9_1_0, weighted_inputs9_1_1;
+    wire [7:0] weighted_inputs9_2_0, weighted_inputs9_2_1;
+    wire [7:0] weighted_inputs9_3_0, weighted_inputs9_3_1;
+    wire [7:0] weighted_inputs10_0_0, weighted_inputs10_0_1;
+    wire [7:0] weighted_inputs10_1_0, weighted_inputs10_1_1;
+    wire [7:0] weighted_inputs10_2_0, weighted_inputs10_2_1;
+    wire [7:0] weighted_inputs10_3_0, weighted_inputs10_3_1;
+    wire [7:0] weighted_inputs11_0_0, weighted_inputs11_0_1;
+    wire [7:0] weighted_inputs11_1_0, weighted_inputs11_1_1;
+    wire [7:0] weighted_inputs11_2_0, weighted_inputs11_2_1;
+    wire [7:0] weighted_inputs11_3_0, weighted_inputs11_3_1;
+    wire [7:0] weighted_inputs12_0_0, weighted_inputs12_0_1;
+    wire [7:0] weighted_inputs12_1_0, weighted_inputs12_1_1;
+    wire [7:0] weighted_inputs12_2_0, weighted_inputs12_2_1;
+    wire [7:0] weighted_inputs12_3_0, weighted_inputs12_3_1;
+    wire [7:0] weighted_inputs13_0_0, weighted_inputs13_0_1;
+    wire [7:0] weighted_inputs13_1_0, weighted_inputs13_1_1;
+    wire [7:0] weighted_inputs13_2_0, weighted_inputs13_2_1;
+    wire [7:0] weighted_inputs13_3_0, weighted_inputs13_3_1;
+    wire [7:0] weighted_inputs14_0_0, weighted_inputs14_0_1;
+    wire [7:0] weighted_inputs14_1_0, weighted_inputs14_1_1;
+    wire [7:0] weighted_inputs14_2_0, weighted_inputs14_2_1;
+    wire [7:0] weighted_inputs14_3_0, weighted_inputs14_3_1;
+    wire [7:0] weighted_inputs15_0_0, weighted_inputs15_0_1;
+    wire [7:0] weighted_inputs15_1_0, weighted_inputs15_1_1;
+    wire [7:0] weighted_inputs15_2_0, weighted_inputs15_2_1;
+    wire [7:0] weighted_inputs15_3_0, weighted_inputs15_3_1;
+    wire [7:0] weighted_inputs16_0_0, weighted_inputs16_0_1;
+    wire [7:0] weighted_inputs16_1_0, weighted_inputs16_1_1;
+    wire [7:0] weighted_inputs16_2_0, weighted_inputs16_2_1;
+    wire [7:0] weighted_inputs16_3_0, weighted_inputs16_3_1;
+    wire [7:0] weighted_inputs17_0_0, weighted_inputs17_0_1;
+    wire [7:0] weighted_inputs17_1_0, weighted_inputs17_1_1;
+    wire [7:0] weighted_inputs17_2_0, weighted_inputs17_2_1;
+    wire [7:0] weighted_inputs17_3_0, weighted_inputs17_3_1;
+    wire [7:0] weighted_inputs18_0_0, weighted_inputs18_0_1;
+    wire [7:0] weighted_inputs18_1_0, weighted_inputs18_1_1;
+    wire [7:0] weighted_inputs18_2_0, weighted_inputs18_2_1;
+    wire [7:0] weighted_inputs18_3_0, weighted_inputs18_3_1;
+    wire [7:0] weighted_inputs19_0_0, weighted_inputs19_0_1;
+    wire [7:0] weighted_inputs19_1_0, weighted_inputs19_1_1;
+    wire [7:0] weighted_inputs19_2_0, weighted_inputs19_2_1;
+    wire [7:0] weighted_inputs19_3_0, weighted_inputs19_3_1;
+    wire [7:0] weighted_inputs20_0_0, weighted_inputs20_0_1;
+    wire [7:0] weighted_inputs20_1_0, weighted_inputs20_1_1;
+    wire [7:0] weighted_inputs20_2_0, weighted_inputs20_2_1;
+    wire [7:0] weighted_inputs20_3_0, weighted_inputs20_3_1;
+    wire [7:0] weighted_inputs21_0_0, weighted_inputs21_0_1;
+    wire [7:0] weighted_inputs21_1_0, weighted_inputs21_1_1;
+    wire [7:0] weighted_inputs21_2_0, weighted_inputs21_2_1;
+    wire [7:0] weighted_inputs21_3_0, weighted_inputs21_3_1;
+    wire [7:0] weighted_inputs22_0_0, weighted_inputs22_0_1;
+    wire [7:0] weighted_inputs22_1_0, weighted_inputs22_1_1;
+    wire [7:0] weighted_inputs22_2_0, weighted_inputs22_2_1;
+    wire [7:0] weighted_inputs22_3_0, weighted_inputs22_3_1;
+    wire [7:0] weighted_inputs23_0_0, weighted_inputs23_0_1;
+    wire [7:0] weighted_inputs23_1_0, weighted_inputs23_1_1;
+    wire [7:0] weighted_inputs23_2_0, weighted_inputs23_2_1;
+    wire [7:0] weighted_inputs23_3_0, weighted_inputs23_3_1;
+    wire [7:0] weighted_inputs24_0_0, weighted_inputs24_0_1;
+    wire [7:0] weighted_inputs24_1_0, weighted_inputs24_1_1;
+    wire [7:0] weighted_inputs24_2_0, weighted_inputs24_2_1;
+    wire [7:0] weighted_inputs24_3_0, weighted_inputs24_3_1;
+    wire [7:0] weighted_inputs25_0_0, weighted_inputs25_0_1;
+    wire [7:0] weighted_inputs25_1_0, weighted_inputs25_1_1;
+    wire [7:0] weighted_inputs25_2_0, weighted_inputs25_2_1;
+    wire [7:0] weighted_inputs25_3_0, weighted_inputs25_3_1;
+    wire [7:0] weighted_inputs26_0_0, weighted_inputs26_0_1;
+    wire [7:0] weighted_inputs26_1_0, weighted_inputs26_1_1;
+    wire [7:0] weighted_inputs26_2_0, weighted_inputs26_2_1;
+    wire [7:0] weighted_inputs26_3_0, weighted_inputs26_3_1;
+    wire [7:0] weighted_inputs27_0_0, weighted_inputs27_0_1;
+    wire [7:0] weighted_inputs27_1_0, weighted_inputs27_1_1;
+    wire [7:0] weighted_inputs27_2_0, weighted_inputs27_2_1;
+    wire [7:0] weighted_inputs27_3_0, weighted_inputs27_3_1;
+    wire [7:0] weighted_inputs28_0_0, weighted_inputs28_0_1;
+    wire [7:0] weighted_inputs28_1_0, weighted_inputs28_1_1;
+    wire [7:0] weighted_inputs28_2_0, weighted_inputs28_2_1;
+    wire [7:0] weighted_inputs28_3_0, weighted_inputs28_3_1;
+    wire [7:0] weighted_inputs29_0_0, weighted_inputs29_0_1;
+    wire [7:0] weighted_inputs29_1_0, weighted_inputs29_1_1;
+    wire [7:0] weighted_inputs29_2_0, weighted_inputs29_2_1;
+    wire [7:0] weighted_inputs29_3_0, weighted_inputs29_3_1;
+    wire [7:0] weighted_inputs30_0_0, weighted_inputs30_0_1;
+    wire [7:0] weighted_inputs30_1_0, weighted_inputs30_1_1;
+    wire [7:0] weighted_inputs30_2_0, weighted_inputs30_2_1;
+    wire [7:0] weighted_inputs30_3_0, weighted_inputs30_3_1;
+    wire [7:0] weighted_inputs31_0_0, weighted_inputs31_0_1;
+    wire [7:0] weighted_inputs31_1_0, weighted_inputs31_1_1;
+    wire [7:0] weighted_inputs31_2_0, weighted_inputs31_2_1;
+    wire [7:0] weighted_inputs31_3_0, weighted_inputs31_3_1;
+    wire [7:0] weighted_inputs32_0_0, weighted_inputs32_0_1;
+    wire [7:0] weighted_inputs32_1_0, weighted_inputs32_1_1;
+    wire [7:0] weighted_inputs32_2_0, weighted_inputs32_2_1;
+    wire [7:0] weighted_inputs32_3_0, weighted_inputs32_3_1;
 
-    wire [4:0] sum1 [31:0];
-    wire [4:0] sum2 [31:0];
-    wire [5:0] biased_sum1 [31:0];
-    wire [5:0] biased_sum2 [31:0];
-    wire [4:0] sum1bar [31:0];
-    wire [4:0] sum2bar [31:0];
-    wire [5:0] biased_sum1bar [31:0];
-    wire [5:0] biased_sum2bar [31:0];
+    wire [9:0] sum1 [31:0];
+    wire [9:0] sum2 [31:0];
+    wire [10:0] biased_sum1 [31:0];
+    wire [10:0] biased_sum2 [31:0];
+    wire [9:0] sum1bar [31:0];
+    wire [9:0] sum2bar [31:0];
+    wire [10:0] biased_sum1bar [31:0];
+    wire [10:0] biased_sum2bar [31:0];
     weighted_inputs_1 w0 (.inputs(inputs0_1), .w(w1_0_1[0]), .wi(weighted_inputs1_0_0));
     weighted_inputs_1 w0_bar (.inputs(inputs0_1), .w(w1_1_1[0]), .wi(weighted_inputs1_0_1));
     weighted_inputs_1 w1 (.inputs(inputs1_1), .w(w1_0_1[1]), .wi(weighted_inputs1_1_0));
@@ -1694,134 +1754,134 @@ module layer1(
         .in3(weighted_inputs32_3_1),
         .sum(sum2bar[31])
     );
-    add5bit_1 u0 (.a(sum1[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1[0]));
-    add5bit_1 u32 (.a(sum2[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2[0]));
-    add5bitbar_1 ub0 (.a(sum1bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1bar[0]));
-    add5bitbar_1 ub32 (.a(sum2bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2bar[0]));
-    add5bit_1 u1 (.a(sum1[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1[1]));
-    add5bit_1 u33 (.a(sum2[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2[1]));
-    add5bitbar_1 ub1 (.a(sum1bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1bar[1]));
-    add5bitbar_1 ub33 (.a(sum2bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2bar[1]));
-    add5bit_1 u2 (.a(sum1[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1[2]));
-    add5bit_1 u34 (.a(sum2[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2[2]));
-    add5bitbar_1 ub2 (.a(sum1bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1bar[2]));
-    add5bitbar_1 ub34 (.a(sum2bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2bar[2]));
-    add5bit_1 u3 (.a(sum1[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1[3]));
-    add5bit_1 u35 (.a(sum2[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2[3]));
-    add5bitbar_1 ub3 (.a(sum1bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1bar[3]));
-    add5bitbar_1 ub35 (.a(sum2bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2bar[3]));
-    add5bit_1 u4 (.a(sum1[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1[4]));
-    add5bit_1 u36 (.a(sum2[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2[4]));
-    add5bitbar_1 ub4 (.a(sum1bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1bar[4]));
-    add5bitbar_1 ub36 (.a(sum2bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2bar[4]));
-    add5bit_1 u5 (.a(sum1[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1[5]));
-    add5bit_1 u37 (.a(sum2[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2[5]));
-    add5bitbar_1 ub5 (.a(sum1bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1bar[5]));
-    add5bitbar_1 ub37 (.a(sum2bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2bar[5]));
-    add5bit_1 u6 (.a(sum1[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1[6]));
-    add5bit_1 u38 (.a(sum2[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2[6]));
-    add5bitbar_1 ub6 (.a(sum1bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1bar[6]));
-    add5bitbar_1 ub38 (.a(sum2bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2bar[6]));
-    add5bit_1 u7 (.a(sum1[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1[7]));
-    add5bit_1 u39 (.a(sum2[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2[7]));
-    add5bitbar_1 ub7 (.a(sum1bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1bar[7]));
-    add5bitbar_1 ub39 (.a(sum2bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2bar[7]));
-    add5bit_1 u8 (.a(sum1[8]), .b(b9_1), .cin(1'b0), .y(biased_sum1[8]));
-    add5bit_1 u40 (.a(sum2[8]), .b(b9_1), .cin(1'b0), .y(biased_sum2[8]));
-    add5bitbar_1 ub8 (.a(sum1bar[8]), .b(b9_1), .cin(1'b0), .y(biased_sum1bar[8]));
-    add5bitbar_1 ub40 (.a(sum2bar[8]), .b(b9_1), .cin(1'b0), .y(biased_sum2bar[8]));
-    add5bit_1 u9 (.a(sum1[9]), .b(b10_1), .cin(1'b0), .y(biased_sum1[9]));
-    add5bit_1 u41 (.a(sum2[9]), .b(b10_1), .cin(1'b0), .y(biased_sum2[9]));
-    add5bitbar_1 ub9 (.a(sum1bar[9]), .b(b10_1), .cin(1'b0), .y(biased_sum1bar[9]));
-    add5bitbar_1 ub41 (.a(sum2bar[9]), .b(b10_1), .cin(1'b0), .y(biased_sum2bar[9]));
-    add5bit_1 u10 (.a(sum1[10]), .b(b11_1), .cin(1'b0), .y(biased_sum1[10]));
-    add5bit_1 u42 (.a(sum2[10]), .b(b11_1), .cin(1'b0), .y(biased_sum2[10]));
-    add5bitbar_1 ub10 (.a(sum1bar[10]), .b(b11_1), .cin(1'b0), .y(biased_sum1bar[10]));
-    add5bitbar_1 ub42 (.a(sum2bar[10]), .b(b11_1), .cin(1'b0), .y(biased_sum2bar[10]));
-    add5bit_1 u11 (.a(sum1[11]), .b(b12_1), .cin(1'b0), .y(biased_sum1[11]));
-    add5bit_1 u43 (.a(sum2[11]), .b(b12_1), .cin(1'b0), .y(biased_sum2[11]));
-    add5bitbar_1 ub11 (.a(sum1bar[11]), .b(b12_1), .cin(1'b0), .y(biased_sum1bar[11]));
-    add5bitbar_1 ub43 (.a(sum2bar[11]), .b(b12_1), .cin(1'b0), .y(biased_sum2bar[11]));
-    add5bit_1 u12 (.a(sum1[12]), .b(b13_1), .cin(1'b0), .y(biased_sum1[12]));
-    add5bit_1 u44 (.a(sum2[12]), .b(b13_1), .cin(1'b0), .y(biased_sum2[12]));
-    add5bitbar_1 ub12 (.a(sum1bar[12]), .b(b13_1), .cin(1'b0), .y(biased_sum1bar[12]));
-    add5bitbar_1 ub44 (.a(sum2bar[12]), .b(b13_1), .cin(1'b0), .y(biased_sum2bar[12]));
-    add5bit_1 u13 (.a(sum1[13]), .b(b14_1), .cin(1'b0), .y(biased_sum1[13]));
-    add5bit_1 u45 (.a(sum2[13]), .b(b14_1), .cin(1'b0), .y(biased_sum2[13]));
-    add5bitbar_1 ub13 (.a(sum1bar[13]), .b(b14_1), .cin(1'b0), .y(biased_sum1bar[13]));
-    add5bitbar_1 ub45 (.a(sum2bar[13]), .b(b14_1), .cin(1'b0), .y(biased_sum2bar[13]));
-    add5bit_1 u14 (.a(sum1[14]), .b(b15_1), .cin(1'b0), .y(biased_sum1[14]));
-    add5bit_1 u46 (.a(sum2[14]), .b(b15_1), .cin(1'b0), .y(biased_sum2[14]));
-    add5bitbar_1 ub14 (.a(sum1bar[14]), .b(b15_1), .cin(1'b0), .y(biased_sum1bar[14]));
-    add5bitbar_1 ub46 (.a(sum2bar[14]), .b(b15_1), .cin(1'b0), .y(biased_sum2bar[14]));
-    add5bit_1 u15 (.a(sum1[15]), .b(b16_1), .cin(1'b0), .y(biased_sum1[15]));
-    add5bit_1 u47 (.a(sum2[15]), .b(b16_1), .cin(1'b0), .y(biased_sum2[15]));
-    add5bitbar_1 ub15 (.a(sum1bar[15]), .b(b16_1), .cin(1'b0), .y(biased_sum1bar[15]));
-    add5bitbar_1 ub47 (.a(sum2bar[15]), .b(b16_1), .cin(1'b0), .y(biased_sum2bar[15]));
-    add5bit_1 u16 (.a(sum1[16]), .b(b17_1), .cin(1'b0), .y(biased_sum1[16]));
-    add5bit_1 u48 (.a(sum2[16]), .b(b17_1), .cin(1'b0), .y(biased_sum2[16]));
-    add5bitbar_1 ub16 (.a(sum1bar[16]), .b(b17_1), .cin(1'b0), .y(biased_sum1bar[16]));
-    add5bitbar_1 ub48 (.a(sum2bar[16]), .b(b17_1), .cin(1'b0), .y(biased_sum2bar[16]));
-    add5bit_1 u17 (.a(sum1[17]), .b(b18_1), .cin(1'b0), .y(biased_sum1[17]));
-    add5bit_1 u49 (.a(sum2[17]), .b(b18_1), .cin(1'b0), .y(biased_sum2[17]));
-    add5bitbar_1 ub17 (.a(sum1bar[17]), .b(b18_1), .cin(1'b0), .y(biased_sum1bar[17]));
-    add5bitbar_1 ub49 (.a(sum2bar[17]), .b(b18_1), .cin(1'b0), .y(biased_sum2bar[17]));
-    add5bit_1 u18 (.a(sum1[18]), .b(b19_1), .cin(1'b0), .y(biased_sum1[18]));
-    add5bit_1 u50 (.a(sum2[18]), .b(b19_1), .cin(1'b0), .y(biased_sum2[18]));
-    add5bitbar_1 ub18 (.a(sum1bar[18]), .b(b19_1), .cin(1'b0), .y(biased_sum1bar[18]));
-    add5bitbar_1 ub50 (.a(sum2bar[18]), .b(b19_1), .cin(1'b0), .y(biased_sum2bar[18]));
-    add5bit_1 u19 (.a(sum1[19]), .b(b20_1), .cin(1'b0), .y(biased_sum1[19]));
-    add5bit_1 u51 (.a(sum2[19]), .b(b20_1), .cin(1'b0), .y(biased_sum2[19]));
-    add5bitbar_1 ub19 (.a(sum1bar[19]), .b(b20_1), .cin(1'b0), .y(biased_sum1bar[19]));
-    add5bitbar_1 ub51 (.a(sum2bar[19]), .b(b20_1), .cin(1'b0), .y(biased_sum2bar[19]));
-    add5bit_1 u20 (.a(sum1[20]), .b(b21_1), .cin(1'b0), .y(biased_sum1[20]));
-    add5bit_1 u52 (.a(sum2[20]), .b(b21_1), .cin(1'b0), .y(biased_sum2[20]));
-    add5bitbar_1 ub20 (.a(sum1bar[20]), .b(b21_1), .cin(1'b0), .y(biased_sum1bar[20]));
-    add5bitbar_1 ub52 (.a(sum2bar[20]), .b(b21_1), .cin(1'b0), .y(biased_sum2bar[20]));
-    add5bit_1 u21 (.a(sum1[21]), .b(b22_1), .cin(1'b0), .y(biased_sum1[21]));
-    add5bit_1 u53 (.a(sum2[21]), .b(b22_1), .cin(1'b0), .y(biased_sum2[21]));
-    add5bitbar_1 ub21 (.a(sum1bar[21]), .b(b22_1), .cin(1'b0), .y(biased_sum1bar[21]));
-    add5bitbar_1 ub53 (.a(sum2bar[21]), .b(b22_1), .cin(1'b0), .y(biased_sum2bar[21]));
-    add5bit_1 u22 (.a(sum1[22]), .b(b23_1), .cin(1'b0), .y(biased_sum1[22]));
-    add5bit_1 u54 (.a(sum2[22]), .b(b23_1), .cin(1'b0), .y(biased_sum2[22]));
-    add5bitbar_1 ub22 (.a(sum1bar[22]), .b(b23_1), .cin(1'b0), .y(biased_sum1bar[22]));
-    add5bitbar_1 ub54 (.a(sum2bar[22]), .b(b23_1), .cin(1'b0), .y(biased_sum2bar[22]));
-    add5bit_1 u23 (.a(sum1[23]), .b(b24_1), .cin(1'b0), .y(biased_sum1[23]));
-    add5bit_1 u55 (.a(sum2[23]), .b(b24_1), .cin(1'b0), .y(biased_sum2[23]));
-    add5bitbar_1 ub23 (.a(sum1bar[23]), .b(b24_1), .cin(1'b0), .y(biased_sum1bar[23]));
-    add5bitbar_1 ub55 (.a(sum2bar[23]), .b(b24_1), .cin(1'b0), .y(biased_sum2bar[23]));
-    add5bit_1 u24 (.a(sum1[24]), .b(b25_1), .cin(1'b0), .y(biased_sum1[24]));
-    add5bit_1 u56 (.a(sum2[24]), .b(b25_1), .cin(1'b0), .y(biased_sum2[24]));
-    add5bitbar_1 ub24 (.a(sum1bar[24]), .b(b25_1), .cin(1'b0), .y(biased_sum1bar[24]));
-    add5bitbar_1 ub56 (.a(sum2bar[24]), .b(b25_1), .cin(1'b0), .y(biased_sum2bar[24]));
-    add5bit_1 u25 (.a(sum1[25]), .b(b26_1), .cin(1'b0), .y(biased_sum1[25]));
-    add5bit_1 u57 (.a(sum2[25]), .b(b26_1), .cin(1'b0), .y(biased_sum2[25]));
-    add5bitbar_1 ub25 (.a(sum1bar[25]), .b(b26_1), .cin(1'b0), .y(biased_sum1bar[25]));
-    add5bitbar_1 ub57 (.a(sum2bar[25]), .b(b26_1), .cin(1'b0), .y(biased_sum2bar[25]));
-    add5bit_1 u26 (.a(sum1[26]), .b(b27_1), .cin(1'b0), .y(biased_sum1[26]));
-    add5bit_1 u58 (.a(sum2[26]), .b(b27_1), .cin(1'b0), .y(biased_sum2[26]));
-    add5bitbar_1 ub26 (.a(sum1bar[26]), .b(b27_1), .cin(1'b0), .y(biased_sum1bar[26]));
-    add5bitbar_1 ub58 (.a(sum2bar[26]), .b(b27_1), .cin(1'b0), .y(biased_sum2bar[26]));
-    add5bit_1 u27 (.a(sum1[27]), .b(b28_1), .cin(1'b0), .y(biased_sum1[27]));
-    add5bit_1 u59 (.a(sum2[27]), .b(b28_1), .cin(1'b0), .y(biased_sum2[27]));
-    add5bitbar_1 ub27 (.a(sum1bar[27]), .b(b28_1), .cin(1'b0), .y(biased_sum1bar[27]));
-    add5bitbar_1 ub59 (.a(sum2bar[27]), .b(b28_1), .cin(1'b0), .y(biased_sum2bar[27]));
-    add5bit_1 u28 (.a(sum1[28]), .b(b29_1), .cin(1'b0), .y(biased_sum1[28]));
-    add5bit_1 u60 (.a(sum2[28]), .b(b29_1), .cin(1'b0), .y(biased_sum2[28]));
-    add5bitbar_1 ub28 (.a(sum1bar[28]), .b(b29_1), .cin(1'b0), .y(biased_sum1bar[28]));
-    add5bitbar_1 ub60 (.a(sum2bar[28]), .b(b29_1), .cin(1'b0), .y(biased_sum2bar[28]));
-    add5bit_1 u29 (.a(sum1[29]), .b(b30_1), .cin(1'b0), .y(biased_sum1[29]));
-    add5bit_1 u61 (.a(sum2[29]), .b(b30_1), .cin(1'b0), .y(biased_sum2[29]));
-    add5bitbar_1 ub29 (.a(sum1bar[29]), .b(b30_1), .cin(1'b0), .y(biased_sum1bar[29]));
-    add5bitbar_1 ub61 (.a(sum2bar[29]), .b(b30_1), .cin(1'b0), .y(biased_sum2bar[29]));
-    add5bit_1 u30 (.a(sum1[30]), .b(b31_1), .cin(1'b0), .y(biased_sum1[30]));
-    add5bit_1 u62 (.a(sum2[30]), .b(b31_1), .cin(1'b0), .y(biased_sum2[30]));
-    add5bitbar_1 ub30 (.a(sum1bar[30]), .b(b31_1), .cin(1'b0), .y(biased_sum1bar[30]));
-    add5bitbar_1 ub62 (.a(sum2bar[30]), .b(b31_1), .cin(1'b0), .y(biased_sum2bar[30]));
-    add5bit_1 u31 (.a(sum1[31]), .b(b32_1), .cin(1'b0), .y(biased_sum1[31]));
-    add5bit_1 u63 (.a(sum2[31]), .b(b32_1), .cin(1'b0), .y(biased_sum2[31]));
-    add5bitbar_1 ub31 (.a(sum1bar[31]), .b(b32_1), .cin(1'b0), .y(biased_sum1bar[31]));
-    add5bitbar_1 ub63 (.a(sum2bar[31]), .b(b32_1), .cin(1'b0), .y(biased_sum2bar[31]));
+    add10bit_1 u0 (.a(sum1[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1[0]));
+    add10bit_1 u32 (.a(sum2[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2[0]));
+    add10bitbar_1 ub0 (.a(sum1bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1bar[0]));
+    add10bitbar_1 ub32 (.a(sum2bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2bar[0]));
+    add10bit_1 u1 (.a(sum1[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1[1]));
+    add10bit_1 u33 (.a(sum2[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2[1]));
+    add10bitbar_1 ub1 (.a(sum1bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1bar[1]));
+    add10bitbar_1 ub33 (.a(sum2bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2bar[1]));
+    add10bit_1 u2 (.a(sum1[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1[2]));
+    add10bit_1 u34 (.a(sum2[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2[2]));
+    add10bitbar_1 ub2 (.a(sum1bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1bar[2]));
+    add10bitbar_1 ub34 (.a(sum2bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2bar[2]));
+    add10bit_1 u3 (.a(sum1[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1[3]));
+    add10bit_1 u35 (.a(sum2[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2[3]));
+    add10bitbar_1 ub3 (.a(sum1bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1bar[3]));
+    add10bitbar_1 ub35 (.a(sum2bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2bar[3]));
+    add10bit_1 u4 (.a(sum1[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1[4]));
+    add10bit_1 u36 (.a(sum2[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2[4]));
+    add10bitbar_1 ub4 (.a(sum1bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1bar[4]));
+    add10bitbar_1 ub36 (.a(sum2bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2bar[4]));
+    add10bit_1 u5 (.a(sum1[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1[5]));
+    add10bit_1 u37 (.a(sum2[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2[5]));
+    add10bitbar_1 ub5 (.a(sum1bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1bar[5]));
+    add10bitbar_1 ub37 (.a(sum2bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2bar[5]));
+    add10bit_1 u6 (.a(sum1[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1[6]));
+    add10bit_1 u38 (.a(sum2[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2[6]));
+    add10bitbar_1 ub6 (.a(sum1bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1bar[6]));
+    add10bitbar_1 ub38 (.a(sum2bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2bar[6]));
+    add10bit_1 u7 (.a(sum1[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1[7]));
+    add10bit_1 u39 (.a(sum2[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2[7]));
+    add10bitbar_1 ub7 (.a(sum1bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1bar[7]));
+    add10bitbar_1 ub39 (.a(sum2bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2bar[7]));
+    add10bit_1 u8 (.a(sum1[8]), .b(b9_1), .cin(1'b0), .y(biased_sum1[8]));
+    add10bit_1 u40 (.a(sum2[8]), .b(b9_1), .cin(1'b0), .y(biased_sum2[8]));
+    add10bitbar_1 ub8 (.a(sum1bar[8]), .b(b9_1), .cin(1'b0), .y(biased_sum1bar[8]));
+    add10bitbar_1 ub40 (.a(sum2bar[8]), .b(b9_1), .cin(1'b0), .y(biased_sum2bar[8]));
+    add10bit_1 u9 (.a(sum1[9]), .b(b10_1), .cin(1'b0), .y(biased_sum1[9]));
+    add10bit_1 u41 (.a(sum2[9]), .b(b10_1), .cin(1'b0), .y(biased_sum2[9]));
+    add10bitbar_1 ub9 (.a(sum1bar[9]), .b(b10_1), .cin(1'b0), .y(biased_sum1bar[9]));
+    add10bitbar_1 ub41 (.a(sum2bar[9]), .b(b10_1), .cin(1'b0), .y(biased_sum2bar[9]));
+    add10bit_1 u10 (.a(sum1[10]), .b(b11_1), .cin(1'b0), .y(biased_sum1[10]));
+    add10bit_1 u42 (.a(sum2[10]), .b(b11_1), .cin(1'b0), .y(biased_sum2[10]));
+    add10bitbar_1 ub10 (.a(sum1bar[10]), .b(b11_1), .cin(1'b0), .y(biased_sum1bar[10]));
+    add10bitbar_1 ub42 (.a(sum2bar[10]), .b(b11_1), .cin(1'b0), .y(biased_sum2bar[10]));
+    add10bit_1 u11 (.a(sum1[11]), .b(b12_1), .cin(1'b0), .y(biased_sum1[11]));
+    add10bit_1 u43 (.a(sum2[11]), .b(b12_1), .cin(1'b0), .y(biased_sum2[11]));
+    add10bitbar_1 ub11 (.a(sum1bar[11]), .b(b12_1), .cin(1'b0), .y(biased_sum1bar[11]));
+    add10bitbar_1 ub43 (.a(sum2bar[11]), .b(b12_1), .cin(1'b0), .y(biased_sum2bar[11]));
+    add10bit_1 u12 (.a(sum1[12]), .b(b13_1), .cin(1'b0), .y(biased_sum1[12]));
+    add10bit_1 u44 (.a(sum2[12]), .b(b13_1), .cin(1'b0), .y(biased_sum2[12]));
+    add10bitbar_1 ub12 (.a(sum1bar[12]), .b(b13_1), .cin(1'b0), .y(biased_sum1bar[12]));
+    add10bitbar_1 ub44 (.a(sum2bar[12]), .b(b13_1), .cin(1'b0), .y(biased_sum2bar[12]));
+    add10bit_1 u13 (.a(sum1[13]), .b(b14_1), .cin(1'b0), .y(biased_sum1[13]));
+    add10bit_1 u45 (.a(sum2[13]), .b(b14_1), .cin(1'b0), .y(biased_sum2[13]));
+    add10bitbar_1 ub13 (.a(sum1bar[13]), .b(b14_1), .cin(1'b0), .y(biased_sum1bar[13]));
+    add10bitbar_1 ub45 (.a(sum2bar[13]), .b(b14_1), .cin(1'b0), .y(biased_sum2bar[13]));
+    add10bit_1 u14 (.a(sum1[14]), .b(b15_1), .cin(1'b0), .y(biased_sum1[14]));
+    add10bit_1 u46 (.a(sum2[14]), .b(b15_1), .cin(1'b0), .y(biased_sum2[14]));
+    add10bitbar_1 ub14 (.a(sum1bar[14]), .b(b15_1), .cin(1'b0), .y(biased_sum1bar[14]));
+    add10bitbar_1 ub46 (.a(sum2bar[14]), .b(b15_1), .cin(1'b0), .y(biased_sum2bar[14]));
+    add10bit_1 u15 (.a(sum1[15]), .b(b16_1), .cin(1'b0), .y(biased_sum1[15]));
+    add10bit_1 u47 (.a(sum2[15]), .b(b16_1), .cin(1'b0), .y(biased_sum2[15]));
+    add10bitbar_1 ub15 (.a(sum1bar[15]), .b(b16_1), .cin(1'b0), .y(biased_sum1bar[15]));
+    add10bitbar_1 ub47 (.a(sum2bar[15]), .b(b16_1), .cin(1'b0), .y(biased_sum2bar[15]));
+    add10bit_1 u16 (.a(sum1[16]), .b(b17_1), .cin(1'b0), .y(biased_sum1[16]));
+    add10bit_1 u48 (.a(sum2[16]), .b(b17_1), .cin(1'b0), .y(biased_sum2[16]));
+    add10bitbar_1 ub16 (.a(sum1bar[16]), .b(b17_1), .cin(1'b0), .y(biased_sum1bar[16]));
+    add10bitbar_1 ub48 (.a(sum2bar[16]), .b(b17_1), .cin(1'b0), .y(biased_sum2bar[16]));
+    add10bit_1 u17 (.a(sum1[17]), .b(b18_1), .cin(1'b0), .y(biased_sum1[17]));
+    add10bit_1 u49 (.a(sum2[17]), .b(b18_1), .cin(1'b0), .y(biased_sum2[17]));
+    add10bitbar_1 ub17 (.a(sum1bar[17]), .b(b18_1), .cin(1'b0), .y(biased_sum1bar[17]));
+    add10bitbar_1 ub49 (.a(sum2bar[17]), .b(b18_1), .cin(1'b0), .y(biased_sum2bar[17]));
+    add10bit_1 u18 (.a(sum1[18]), .b(b19_1), .cin(1'b0), .y(biased_sum1[18]));
+    add10bit_1 u50 (.a(sum2[18]), .b(b19_1), .cin(1'b0), .y(biased_sum2[18]));
+    add10bitbar_1 ub18 (.a(sum1bar[18]), .b(b19_1), .cin(1'b0), .y(biased_sum1bar[18]));
+    add10bitbar_1 ub50 (.a(sum2bar[18]), .b(b19_1), .cin(1'b0), .y(biased_sum2bar[18]));
+    add10bit_1 u19 (.a(sum1[19]), .b(b20_1), .cin(1'b0), .y(biased_sum1[19]));
+    add10bit_1 u51 (.a(sum2[19]), .b(b20_1), .cin(1'b0), .y(biased_sum2[19]));
+    add10bitbar_1 ub19 (.a(sum1bar[19]), .b(b20_1), .cin(1'b0), .y(biased_sum1bar[19]));
+    add10bitbar_1 ub51 (.a(sum2bar[19]), .b(b20_1), .cin(1'b0), .y(biased_sum2bar[19]));
+    add10bit_1 u20 (.a(sum1[20]), .b(b21_1), .cin(1'b0), .y(biased_sum1[20]));
+    add10bit_1 u52 (.a(sum2[20]), .b(b21_1), .cin(1'b0), .y(biased_sum2[20]));
+    add10bitbar_1 ub20 (.a(sum1bar[20]), .b(b21_1), .cin(1'b0), .y(biased_sum1bar[20]));
+    add10bitbar_1 ub52 (.a(sum2bar[20]), .b(b21_1), .cin(1'b0), .y(biased_sum2bar[20]));
+    add10bit_1 u21 (.a(sum1[21]), .b(b22_1), .cin(1'b0), .y(biased_sum1[21]));
+    add10bit_1 u53 (.a(sum2[21]), .b(b22_1), .cin(1'b0), .y(biased_sum2[21]));
+    add10bitbar_1 ub21 (.a(sum1bar[21]), .b(b22_1), .cin(1'b0), .y(biased_sum1bar[21]));
+    add10bitbar_1 ub53 (.a(sum2bar[21]), .b(b22_1), .cin(1'b0), .y(biased_sum2bar[21]));
+    add10bit_1 u22 (.a(sum1[22]), .b(b23_1), .cin(1'b0), .y(biased_sum1[22]));
+    add10bit_1 u54 (.a(sum2[22]), .b(b23_1), .cin(1'b0), .y(biased_sum2[22]));
+    add10bitbar_1 ub22 (.a(sum1bar[22]), .b(b23_1), .cin(1'b0), .y(biased_sum1bar[22]));
+    add10bitbar_1 ub54 (.a(sum2bar[22]), .b(b23_1), .cin(1'b0), .y(biased_sum2bar[22]));
+    add10bit_1 u23 (.a(sum1[23]), .b(b24_1), .cin(1'b0), .y(biased_sum1[23]));
+    add10bit_1 u55 (.a(sum2[23]), .b(b24_1), .cin(1'b0), .y(biased_sum2[23]));
+    add10bitbar_1 ub23 (.a(sum1bar[23]), .b(b24_1), .cin(1'b0), .y(biased_sum1bar[23]));
+    add10bitbar_1 ub55 (.a(sum2bar[23]), .b(b24_1), .cin(1'b0), .y(biased_sum2bar[23]));
+    add10bit_1 u24 (.a(sum1[24]), .b(b25_1), .cin(1'b0), .y(biased_sum1[24]));
+    add10bit_1 u56 (.a(sum2[24]), .b(b25_1), .cin(1'b0), .y(biased_sum2[24]));
+    add10bitbar_1 ub24 (.a(sum1bar[24]), .b(b25_1), .cin(1'b0), .y(biased_sum1bar[24]));
+    add10bitbar_1 ub56 (.a(sum2bar[24]), .b(b25_1), .cin(1'b0), .y(biased_sum2bar[24]));
+    add10bit_1 u25 (.a(sum1[25]), .b(b26_1), .cin(1'b0), .y(biased_sum1[25]));
+    add10bit_1 u57 (.a(sum2[25]), .b(b26_1), .cin(1'b0), .y(biased_sum2[25]));
+    add10bitbar_1 ub25 (.a(sum1bar[25]), .b(b26_1), .cin(1'b0), .y(biased_sum1bar[25]));
+    add10bitbar_1 ub57 (.a(sum2bar[25]), .b(b26_1), .cin(1'b0), .y(biased_sum2bar[25]));
+    add10bit_1 u26 (.a(sum1[26]), .b(b27_1), .cin(1'b0), .y(biased_sum1[26]));
+    add10bit_1 u58 (.a(sum2[26]), .b(b27_1), .cin(1'b0), .y(biased_sum2[26]));
+    add10bitbar_1 ub26 (.a(sum1bar[26]), .b(b27_1), .cin(1'b0), .y(biased_sum1bar[26]));
+    add10bitbar_1 ub58 (.a(sum2bar[26]), .b(b27_1), .cin(1'b0), .y(biased_sum2bar[26]));
+    add10bit_1 u27 (.a(sum1[27]), .b(b28_1), .cin(1'b0), .y(biased_sum1[27]));
+    add10bit_1 u59 (.a(sum2[27]), .b(b28_1), .cin(1'b0), .y(biased_sum2[27]));
+    add10bitbar_1 ub27 (.a(sum1bar[27]), .b(b28_1), .cin(1'b0), .y(biased_sum1bar[27]));
+    add10bitbar_1 ub59 (.a(sum2bar[27]), .b(b28_1), .cin(1'b0), .y(biased_sum2bar[27]));
+    add10bit_1 u28 (.a(sum1[28]), .b(b29_1), .cin(1'b0), .y(biased_sum1[28]));
+    add10bit_1 u60 (.a(sum2[28]), .b(b29_1), .cin(1'b0), .y(biased_sum2[28]));
+    add10bitbar_1 ub28 (.a(sum1bar[28]), .b(b29_1), .cin(1'b0), .y(biased_sum1bar[28]));
+    add10bitbar_1 ub60 (.a(sum2bar[28]), .b(b29_1), .cin(1'b0), .y(biased_sum2bar[28]));
+    add10bit_1 u29 (.a(sum1[29]), .b(b30_1), .cin(1'b0), .y(biased_sum1[29]));
+    add10bit_1 u61 (.a(sum2[29]), .b(b30_1), .cin(1'b0), .y(biased_sum2[29]));
+    add10bitbar_1 ub29 (.a(sum1bar[29]), .b(b30_1), .cin(1'b0), .y(biased_sum1bar[29]));
+    add10bitbar_1 ub61 (.a(sum2bar[29]), .b(b30_1), .cin(1'b0), .y(biased_sum2bar[29]));
+    add10bit_1 u30 (.a(sum1[30]), .b(b31_1), .cin(1'b0), .y(biased_sum1[30]));
+    add10bit_1 u62 (.a(sum2[30]), .b(b31_1), .cin(1'b0), .y(biased_sum2[30]));
+    add10bitbar_1 ub30 (.a(sum1bar[30]), .b(b31_1), .cin(1'b0), .y(biased_sum1bar[30]));
+    add10bitbar_1 ub62 (.a(sum2bar[30]), .b(b31_1), .cin(1'b0), .y(biased_sum2bar[30]));
+    add10bit_1 u31 (.a(sum1[31]), .b(b32_1), .cin(1'b0), .y(biased_sum1[31]));
+    add10bit_1 u63 (.a(sum2[31]), .b(b32_1), .cin(1'b0), .y(biased_sum2[31]));
+    add10bitbar_1 ub31 (.a(sum1bar[31]), .b(b32_1), .cin(1'b0), .y(biased_sum1bar[31]));
+    add10bitbar_1 ub63 (.a(sum2bar[31]), .b(b32_1), .cin(1'b0), .y(biased_sum2bar[31]));
     assign biased_sum0_0 = biased_sum1[0];
     assign biased_sum0_1 = biased_sum2[0];
     assign biased_sum0_0bar = biased_sum1bar[0];
@@ -1969,17 +2029,17 @@ endmodule
 
 module activation_1 (
 
-    input [5:0] inputs0_0,
-    input [5:0] inputs0_1,
+    input [10:0] inputs0_0,
+    input [10:0] inputs0_1,
 
-    input r0_0, r1_0, r2_0, r3_0, r4_0, r5_0,
+    input r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0, r9_0, r10_0,
 
     output masked_activation,
     output mask
 );
 
-    wire r1, r2, r3, r4, r5, r6;
-    wire masked_c0_0, masked_c1_0, masked_c2_0, masked_c3_0, masked_c4_0, masked_c5_0;
+    wire r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11;
+    wire masked_c0_0, masked_c1_0, masked_c2_0, masked_c3_0, masked_c4_0, masked_c5_0, masked_c6_0, masked_c7_0, masked_c8_0, masked_c9_0, masked_c10_0;
 
     lut0 l0 (.a(inputs0_0[0]), .b(inputs0_1[0]), .c_in(1'b0), .r_i(r0_0), .r_out(r1), .c_masked(masked_c0_0));
     lut1 l1 (.a(inputs0_0[1]), .b(inputs0_1[1]), .c_in(masked_c0_0), .r_flow(r1), .r_i(r1_0), .r_out(r2), .c_masked(masked_c1_0));
@@ -1987,80 +2047,85 @@ module activation_1 (
     lut1 l3 (.a(inputs0_0[3]), .b(inputs0_1[3]), .c_in(masked_c2_0), .r_flow(r3), .r_i(r3_0), .r_out(r4), .c_masked(masked_c3_0));
     lut1 l4 (.a(inputs0_0[4]), .b(inputs0_1[4]), .c_in(masked_c3_0), .r_flow(r4), .r_i(r4_0), .r_out(r5), .c_masked(masked_c4_0));
     lut1 l5 (.a(inputs0_0[5]), .b(inputs0_1[5]), .c_in(masked_c4_0), .r_flow(r5), .r_i(r5_0), .r_out(r6), .c_masked(masked_c5_0));
+    lut1 l6 (.a(inputs0_0[6]), .b(inputs0_1[6]), .c_in(masked_c5_0), .r_flow(r6), .r_i(r6_0), .r_out(r7), .c_masked(masked_c6_0));
+    lut1 l7 (.a(inputs0_0[7]), .b(inputs0_1[7]), .c_in(masked_c6_0), .r_flow(r7), .r_i(r7_0), .r_out(r8), .c_masked(masked_c7_0));
+    lut1 l8 (.a(inputs0_0[8]), .b(inputs0_1[8]), .c_in(masked_c7_0), .r_flow(r8), .r_i(r8_0), .r_out(r9), .c_masked(masked_c8_0));
+    lut1 l9 (.a(inputs0_0[9]), .b(inputs0_1[9]), .c_in(masked_c8_0), .r_flow(r9), .r_i(r9_0), .r_out(r10), .c_masked(masked_c9_0));
+    lut1 l10 (.a(inputs0_0[10]), .b(inputs0_1[10]), .c_in(masked_c9_0), .r_flow(r10), .r_i(r10_0), .r_out(r11), .c_masked(masked_c10_0));
 
-    wire carry = r6 ^ masked_c5_0;
-    wire activation = (carry ^ inputs0_0[5] ^ inputs0_1[5]) ? 1'b0 : 1'b1;
+    wire carry = r11 ^ masked_c10_0;
+    wire activation = (carry ^ inputs0_0[10] ^ inputs0_1[10]) ? 1'b0 : 1'b1;
 
-    assign masked_activation = activation ^ r6;
-    assign mask = r6;
+    assign masked_activation = activation ^ r11;
+    assign mask = r11;
 
 endmodule
 
 module activation_array_1 (
-    input  [5:0] inputs0_0, inputs0_1,
-    input  [5:0] inputs1_0, inputs1_1,
-    input  [5:0] inputs2_0, inputs2_1,
-    input  [5:0] inputs3_0, inputs3_1,
-    input  [5:0] inputs4_0, inputs4_1,
-    input  [5:0] inputs5_0, inputs5_1,
-    input  [5:0] inputs6_0, inputs6_1,
-    input  [5:0] inputs7_0, inputs7_1,
-    input  [5:0] inputs8_0, inputs8_1,
-    input  [5:0] inputs9_0, inputs9_1,
-    input  [5:0] inputs10_0, inputs10_1,
-    input  [5:0] inputs11_0, inputs11_1,
-    input  [5:0] inputs12_0, inputs12_1,
-    input  [5:0] inputs13_0, inputs13_1,
-    input  [5:0] inputs14_0, inputs14_1,
-    input  [5:0] inputs15_0, inputs15_1,
-    input  [5:0] inputs16_0, inputs16_1,
-    input  [5:0] inputs17_0, inputs17_1,
-    input  [5:0] inputs18_0, inputs18_1,
-    input  [5:0] inputs19_0, inputs19_1,
-    input  [5:0] inputs20_0, inputs20_1,
-    input  [5:0] inputs21_0, inputs21_1,
-    input  [5:0] inputs22_0, inputs22_1,
-    input  [5:0] inputs23_0, inputs23_1,
-    input  [5:0] inputs24_0, inputs24_1,
-    input  [5:0] inputs25_0, inputs25_1,
-    input  [5:0] inputs26_0, inputs26_1,
-    input  [5:0] inputs27_0, inputs27_1,
-    input  [5:0] inputs28_0, inputs28_1,
-    input  [5:0] inputs29_0, inputs29_1,
-    input  [5:0] inputs30_0, inputs30_1,
-    input  [5:0] inputs31_0, inputs31_1,
-    input  r0_0, r1_0, r2_0, r3_0, r4_0, r5_0,
-    input  r0_1, r1_1, r2_1, r3_1, r4_1, r5_1,
-    input  r0_2, r1_2, r2_2, r3_2, r4_2, r5_2,
-    input  r0_3, r1_3, r2_3, r3_3, r4_3, r5_3,
-    input  r0_4, r1_4, r2_4, r3_4, r4_4, r5_4,
-    input  r0_5, r1_5, r2_5, r3_5, r4_5, r5_5,
-    input  r0_6, r1_6, r2_6, r3_6, r4_6, r5_6,
-    input  r0_7, r1_7, r2_7, r3_7, r4_7, r5_7,
-    input  r0_8, r1_8, r2_8, r3_8, r4_8, r5_8,
-    input  r0_9, r1_9, r2_9, r3_9, r4_9, r5_9,
-    input  r0_10, r1_10, r2_10, r3_10, r4_10, r5_10,
-    input  r0_11, r1_11, r2_11, r3_11, r4_11, r5_11,
-    input  r0_12, r1_12, r2_12, r3_12, r4_12, r5_12,
-    input  r0_13, r1_13, r2_13, r3_13, r4_13, r5_13,
-    input  r0_14, r1_14, r2_14, r3_14, r4_14, r5_14,
-    input  r0_15, r1_15, r2_15, r3_15, r4_15, r5_15,
-    input  r0_16, r1_16, r2_16, r3_16, r4_16, r5_16,
-    input  r0_17, r1_17, r2_17, r3_17, r4_17, r5_17,
-    input  r0_18, r1_18, r2_18, r3_18, r4_18, r5_18,
-    input  r0_19, r1_19, r2_19, r3_19, r4_19, r5_19,
-    input  r0_20, r1_20, r2_20, r3_20, r4_20, r5_20,
-    input  r0_21, r1_21, r2_21, r3_21, r4_21, r5_21,
-    input  r0_22, r1_22, r2_22, r3_22, r4_22, r5_22,
-    input  r0_23, r1_23, r2_23, r3_23, r4_23, r5_23,
-    input  r0_24, r1_24, r2_24, r3_24, r4_24, r5_24,
-    input  r0_25, r1_25, r2_25, r3_25, r4_25, r5_25,
-    input  r0_26, r1_26, r2_26, r3_26, r4_26, r5_26,
-    input  r0_27, r1_27, r2_27, r3_27, r4_27, r5_27,
-    input  r0_28, r1_28, r2_28, r3_28, r4_28, r5_28,
-    input  r0_29, r1_29, r2_29, r3_29, r4_29, r5_29,
-    input  r0_30, r1_30, r2_30, r3_30, r4_30, r5_30,
-    input  r0_31, r1_31, r2_31, r3_31, r4_31, r5_31,
+    input  [10:0] inputs0_0, inputs0_1,
+    input  [10:0] inputs1_0, inputs1_1,
+    input  [10:0] inputs2_0, inputs2_1,
+    input  [10:0] inputs3_0, inputs3_1,
+    input  [10:0] inputs4_0, inputs4_1,
+    input  [10:0] inputs5_0, inputs5_1,
+    input  [10:0] inputs6_0, inputs6_1,
+    input  [10:0] inputs7_0, inputs7_1,
+    input  [10:0] inputs8_0, inputs8_1,
+    input  [10:0] inputs9_0, inputs9_1,
+    input  [10:0] inputs10_0, inputs10_1,
+    input  [10:0] inputs11_0, inputs11_1,
+    input  [10:0] inputs12_0, inputs12_1,
+    input  [10:0] inputs13_0, inputs13_1,
+    input  [10:0] inputs14_0, inputs14_1,
+    input  [10:0] inputs15_0, inputs15_1,
+    input  [10:0] inputs16_0, inputs16_1,
+    input  [10:0] inputs17_0, inputs17_1,
+    input  [10:0] inputs18_0, inputs18_1,
+    input  [10:0] inputs19_0, inputs19_1,
+    input  [10:0] inputs20_0, inputs20_1,
+    input  [10:0] inputs21_0, inputs21_1,
+    input  [10:0] inputs22_0, inputs22_1,
+    input  [10:0] inputs23_0, inputs23_1,
+    input  [10:0] inputs24_0, inputs24_1,
+    input  [10:0] inputs25_0, inputs25_1,
+    input  [10:0] inputs26_0, inputs26_1,
+    input  [10:0] inputs27_0, inputs27_1,
+    input  [10:0] inputs28_0, inputs28_1,
+    input  [10:0] inputs29_0, inputs29_1,
+    input  [10:0] inputs30_0, inputs30_1,
+    input  [10:0] inputs31_0, inputs31_1,
+    input  r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0, r9_0, r10_0,
+    input  r0_1, r1_1, r2_1, r3_1, r4_1, r5_1, r6_1, r7_1, r8_1, r9_1, r10_1,
+    input  r0_2, r1_2, r2_2, r3_2, r4_2, r5_2, r6_2, r7_2, r8_2, r9_2, r10_2,
+    input  r0_3, r1_3, r2_3, r3_3, r4_3, r5_3, r6_3, r7_3, r8_3, r9_3, r10_3,
+    input  r0_4, r1_4, r2_4, r3_4, r4_4, r5_4, r6_4, r7_4, r8_4, r9_4, r10_4,
+    input  r0_5, r1_5, r2_5, r3_5, r4_5, r5_5, r6_5, r7_5, r8_5, r9_5, r10_5,
+    input  r0_6, r1_6, r2_6, r3_6, r4_6, r5_6, r6_6, r7_6, r8_6, r9_6, r10_6,
+    input  r0_7, r1_7, r2_7, r3_7, r4_7, r5_7, r6_7, r7_7, r8_7, r9_7, r10_7,
+    input  r0_8, r1_8, r2_8, r3_8, r4_8, r5_8, r6_8, r7_8, r8_8, r9_8, r10_8,
+    input  r0_9, r1_9, r2_9, r3_9, r4_9, r5_9, r6_9, r7_9, r8_9, r9_9, r10_9,
+    input  r0_10, r1_10, r2_10, r3_10, r4_10, r5_10, r6_10, r7_10, r8_10, r9_10, r10_10,
+    input  r0_11, r1_11, r2_11, r3_11, r4_11, r5_11, r6_11, r7_11, r8_11, r9_11, r10_11,
+    input  r0_12, r1_12, r2_12, r3_12, r4_12, r5_12, r6_12, r7_12, r8_12, r9_12, r10_12,
+    input  r0_13, r1_13, r2_13, r3_13, r4_13, r5_13, r6_13, r7_13, r8_13, r9_13, r10_13,
+    input  r0_14, r1_14, r2_14, r3_14, r4_14, r5_14, r6_14, r7_14, r8_14, r9_14, r10_14,
+    input  r0_15, r1_15, r2_15, r3_15, r4_15, r5_15, r6_15, r7_15, r8_15, r9_15, r10_15,
+    input  r0_16, r1_16, r2_16, r3_16, r4_16, r5_16, r6_16, r7_16, r8_16, r9_16, r10_16,
+    input  r0_17, r1_17, r2_17, r3_17, r4_17, r5_17, r6_17, r7_17, r8_17, r9_17, r10_17,
+    input  r0_18, r1_18, r2_18, r3_18, r4_18, r5_18, r6_18, r7_18, r8_18, r9_18, r10_18,
+    input  r0_19, r1_19, r2_19, r3_19, r4_19, r5_19, r6_19, r7_19, r8_19, r9_19, r10_19,
+    input  r0_20, r1_20, r2_20, r3_20, r4_20, r5_20, r6_20, r7_20, r8_20, r9_20, r10_20,
+    input  r0_21, r1_21, r2_21, r3_21, r4_21, r5_21, r6_21, r7_21, r8_21, r9_21, r10_21,
+    input  r0_22, r1_22, r2_22, r3_22, r4_22, r5_22, r6_22, r7_22, r8_22, r9_22, r10_22,
+    input  r0_23, r1_23, r2_23, r3_23, r4_23, r5_23, r6_23, r7_23, r8_23, r9_23, r10_23,
+    input  r0_24, r1_24, r2_24, r3_24, r4_24, r5_24, r6_24, r7_24, r8_24, r9_24, r10_24,
+    input  r0_25, r1_25, r2_25, r3_25, r4_25, r5_25, r6_25, r7_25, r8_25, r9_25, r10_25,
+    input  r0_26, r1_26, r2_26, r3_26, r4_26, r5_26, r6_26, r7_26, r8_26, r9_26, r10_26,
+    input  r0_27, r1_27, r2_27, r3_27, r4_27, r5_27, r6_27, r7_27, r8_27, r9_27, r10_27,
+    input  r0_28, r1_28, r2_28, r3_28, r4_28, r5_28, r6_28, r7_28, r8_28, r9_28, r10_28,
+    input  r0_29, r1_29, r2_29, r3_29, r4_29, r5_29, r6_29, r7_29, r8_29, r9_29, r10_29,
+    input  r0_30, r1_30, r2_30, r3_30, r4_30, r5_30, r6_30, r7_30, r8_30, r9_30, r10_30,
+    input  r0_31, r1_31, r2_31, r3_31, r4_31, r5_31, r6_31, r7_31, r8_31, r9_31, r10_31,
     output wire masked_activation0,
     output wire masked_activation1,
     output wire masked_activation2,
@@ -2135,6 +2200,11 @@ module activation_array_1 (
         .r3_0(r3_0),
         .r4_0(r4_0),
         .r5_0(r5_0),
+        .r6_0(r6_0),
+        .r7_0(r7_0),
+        .r8_0(r8_0),
+        .r9_0(r9_0),
+        .r10_0(r10_0),
         .masked_activation(masked_activation0),
         .mask(mask0)
     );
@@ -2147,6 +2217,11 @@ module activation_array_1 (
         .r3_0(r3_1),
         .r4_0(r4_1),
         .r5_0(r5_1),
+        .r6_0(r6_1),
+        .r7_0(r7_1),
+        .r8_0(r8_1),
+        .r9_0(r9_1),
+        .r10_0(r10_1),
         .masked_activation(masked_activation1),
         .mask(mask1)
     );
@@ -2159,6 +2234,11 @@ module activation_array_1 (
         .r3_0(r3_2),
         .r4_0(r4_2),
         .r5_0(r5_2),
+        .r6_0(r6_2),
+        .r7_0(r7_2),
+        .r8_0(r8_2),
+        .r9_0(r9_2),
+        .r10_0(r10_2),
         .masked_activation(masked_activation2),
         .mask(mask2)
     );
@@ -2171,6 +2251,11 @@ module activation_array_1 (
         .r3_0(r3_3),
         .r4_0(r4_3),
         .r5_0(r5_3),
+        .r6_0(r6_3),
+        .r7_0(r7_3),
+        .r8_0(r8_3),
+        .r9_0(r9_3),
+        .r10_0(r10_3),
         .masked_activation(masked_activation3),
         .mask(mask3)
     );
@@ -2183,6 +2268,11 @@ module activation_array_1 (
         .r3_0(r3_4),
         .r4_0(r4_4),
         .r5_0(r5_4),
+        .r6_0(r6_4),
+        .r7_0(r7_4),
+        .r8_0(r8_4),
+        .r9_0(r9_4),
+        .r10_0(r10_4),
         .masked_activation(masked_activation4),
         .mask(mask4)
     );
@@ -2195,6 +2285,11 @@ module activation_array_1 (
         .r3_0(r3_5),
         .r4_0(r4_5),
         .r5_0(r5_5),
+        .r6_0(r6_5),
+        .r7_0(r7_5),
+        .r8_0(r8_5),
+        .r9_0(r9_5),
+        .r10_0(r10_5),
         .masked_activation(masked_activation5),
         .mask(mask5)
     );
@@ -2207,6 +2302,11 @@ module activation_array_1 (
         .r3_0(r3_6),
         .r4_0(r4_6),
         .r5_0(r5_6),
+        .r6_0(r6_6),
+        .r7_0(r7_6),
+        .r8_0(r8_6),
+        .r9_0(r9_6),
+        .r10_0(r10_6),
         .masked_activation(masked_activation6),
         .mask(mask6)
     );
@@ -2219,6 +2319,11 @@ module activation_array_1 (
         .r3_0(r3_7),
         .r4_0(r4_7),
         .r5_0(r5_7),
+        .r6_0(r6_7),
+        .r7_0(r7_7),
+        .r8_0(r8_7),
+        .r9_0(r9_7),
+        .r10_0(r10_7),
         .masked_activation(masked_activation7),
         .mask(mask7)
     );
@@ -2231,6 +2336,11 @@ module activation_array_1 (
         .r3_0(r3_8),
         .r4_0(r4_8),
         .r5_0(r5_8),
+        .r6_0(r6_8),
+        .r7_0(r7_8),
+        .r8_0(r8_8),
+        .r9_0(r9_8),
+        .r10_0(r10_8),
         .masked_activation(masked_activation8),
         .mask(mask8)
     );
@@ -2243,6 +2353,11 @@ module activation_array_1 (
         .r3_0(r3_9),
         .r4_0(r4_9),
         .r5_0(r5_9),
+        .r6_0(r6_9),
+        .r7_0(r7_9),
+        .r8_0(r8_9),
+        .r9_0(r9_9),
+        .r10_0(r10_9),
         .masked_activation(masked_activation9),
         .mask(mask9)
     );
@@ -2255,6 +2370,11 @@ module activation_array_1 (
         .r3_0(r3_10),
         .r4_0(r4_10),
         .r5_0(r5_10),
+        .r6_0(r6_10),
+        .r7_0(r7_10),
+        .r8_0(r8_10),
+        .r9_0(r9_10),
+        .r10_0(r10_10),
         .masked_activation(masked_activation10),
         .mask(mask10)
     );
@@ -2267,6 +2387,11 @@ module activation_array_1 (
         .r3_0(r3_11),
         .r4_0(r4_11),
         .r5_0(r5_11),
+        .r6_0(r6_11),
+        .r7_0(r7_11),
+        .r8_0(r8_11),
+        .r9_0(r9_11),
+        .r10_0(r10_11),
         .masked_activation(masked_activation11),
         .mask(mask11)
     );
@@ -2279,6 +2404,11 @@ module activation_array_1 (
         .r3_0(r3_12),
         .r4_0(r4_12),
         .r5_0(r5_12),
+        .r6_0(r6_12),
+        .r7_0(r7_12),
+        .r8_0(r8_12),
+        .r9_0(r9_12),
+        .r10_0(r10_12),
         .masked_activation(masked_activation12),
         .mask(mask12)
     );
@@ -2291,6 +2421,11 @@ module activation_array_1 (
         .r3_0(r3_13),
         .r4_0(r4_13),
         .r5_0(r5_13),
+        .r6_0(r6_13),
+        .r7_0(r7_13),
+        .r8_0(r8_13),
+        .r9_0(r9_13),
+        .r10_0(r10_13),
         .masked_activation(masked_activation13),
         .mask(mask13)
     );
@@ -2303,6 +2438,11 @@ module activation_array_1 (
         .r3_0(r3_14),
         .r4_0(r4_14),
         .r5_0(r5_14),
+        .r6_0(r6_14),
+        .r7_0(r7_14),
+        .r8_0(r8_14),
+        .r9_0(r9_14),
+        .r10_0(r10_14),
         .masked_activation(masked_activation14),
         .mask(mask14)
     );
@@ -2315,6 +2455,11 @@ module activation_array_1 (
         .r3_0(r3_15),
         .r4_0(r4_15),
         .r5_0(r5_15),
+        .r6_0(r6_15),
+        .r7_0(r7_15),
+        .r8_0(r8_15),
+        .r9_0(r9_15),
+        .r10_0(r10_15),
         .masked_activation(masked_activation15),
         .mask(mask15)
     );
@@ -2327,6 +2472,11 @@ module activation_array_1 (
         .r3_0(r3_16),
         .r4_0(r4_16),
         .r5_0(r5_16),
+        .r6_0(r6_16),
+        .r7_0(r7_16),
+        .r8_0(r8_16),
+        .r9_0(r9_16),
+        .r10_0(r10_16),
         .masked_activation(masked_activation16),
         .mask(mask16)
     );
@@ -2339,6 +2489,11 @@ module activation_array_1 (
         .r3_0(r3_17),
         .r4_0(r4_17),
         .r5_0(r5_17),
+        .r6_0(r6_17),
+        .r7_0(r7_17),
+        .r8_0(r8_17),
+        .r9_0(r9_17),
+        .r10_0(r10_17),
         .masked_activation(masked_activation17),
         .mask(mask17)
     );
@@ -2351,6 +2506,11 @@ module activation_array_1 (
         .r3_0(r3_18),
         .r4_0(r4_18),
         .r5_0(r5_18),
+        .r6_0(r6_18),
+        .r7_0(r7_18),
+        .r8_0(r8_18),
+        .r9_0(r9_18),
+        .r10_0(r10_18),
         .masked_activation(masked_activation18),
         .mask(mask18)
     );
@@ -2363,6 +2523,11 @@ module activation_array_1 (
         .r3_0(r3_19),
         .r4_0(r4_19),
         .r5_0(r5_19),
+        .r6_0(r6_19),
+        .r7_0(r7_19),
+        .r8_0(r8_19),
+        .r9_0(r9_19),
+        .r10_0(r10_19),
         .masked_activation(masked_activation19),
         .mask(mask19)
     );
@@ -2375,6 +2540,11 @@ module activation_array_1 (
         .r3_0(r3_20),
         .r4_0(r4_20),
         .r5_0(r5_20),
+        .r6_0(r6_20),
+        .r7_0(r7_20),
+        .r8_0(r8_20),
+        .r9_0(r9_20),
+        .r10_0(r10_20),
         .masked_activation(masked_activation20),
         .mask(mask20)
     );
@@ -2387,6 +2557,11 @@ module activation_array_1 (
         .r3_0(r3_21),
         .r4_0(r4_21),
         .r5_0(r5_21),
+        .r6_0(r6_21),
+        .r7_0(r7_21),
+        .r8_0(r8_21),
+        .r9_0(r9_21),
+        .r10_0(r10_21),
         .masked_activation(masked_activation21),
         .mask(mask21)
     );
@@ -2399,6 +2574,11 @@ module activation_array_1 (
         .r3_0(r3_22),
         .r4_0(r4_22),
         .r5_0(r5_22),
+        .r6_0(r6_22),
+        .r7_0(r7_22),
+        .r8_0(r8_22),
+        .r9_0(r9_22),
+        .r10_0(r10_22),
         .masked_activation(masked_activation22),
         .mask(mask22)
     );
@@ -2411,6 +2591,11 @@ module activation_array_1 (
         .r3_0(r3_23),
         .r4_0(r4_23),
         .r5_0(r5_23),
+        .r6_0(r6_23),
+        .r7_0(r7_23),
+        .r8_0(r8_23),
+        .r9_0(r9_23),
+        .r10_0(r10_23),
         .masked_activation(masked_activation23),
         .mask(mask23)
     );
@@ -2423,6 +2608,11 @@ module activation_array_1 (
         .r3_0(r3_24),
         .r4_0(r4_24),
         .r5_0(r5_24),
+        .r6_0(r6_24),
+        .r7_0(r7_24),
+        .r8_0(r8_24),
+        .r9_0(r9_24),
+        .r10_0(r10_24),
         .masked_activation(masked_activation24),
         .mask(mask24)
     );
@@ -2435,6 +2625,11 @@ module activation_array_1 (
         .r3_0(r3_25),
         .r4_0(r4_25),
         .r5_0(r5_25),
+        .r6_0(r6_25),
+        .r7_0(r7_25),
+        .r8_0(r8_25),
+        .r9_0(r9_25),
+        .r10_0(r10_25),
         .masked_activation(masked_activation25),
         .mask(mask25)
     );
@@ -2447,6 +2642,11 @@ module activation_array_1 (
         .r3_0(r3_26),
         .r4_0(r4_26),
         .r5_0(r5_26),
+        .r6_0(r6_26),
+        .r7_0(r7_26),
+        .r8_0(r8_26),
+        .r9_0(r9_26),
+        .r10_0(r10_26),
         .masked_activation(masked_activation26),
         .mask(mask26)
     );
@@ -2459,6 +2659,11 @@ module activation_array_1 (
         .r3_0(r3_27),
         .r4_0(r4_27),
         .r5_0(r5_27),
+        .r6_0(r6_27),
+        .r7_0(r7_27),
+        .r8_0(r8_27),
+        .r9_0(r9_27),
+        .r10_0(r10_27),
         .masked_activation(masked_activation27),
         .mask(mask27)
     );
@@ -2471,6 +2676,11 @@ module activation_array_1 (
         .r3_0(r3_28),
         .r4_0(r4_28),
         .r5_0(r5_28),
+        .r6_0(r6_28),
+        .r7_0(r7_28),
+        .r8_0(r8_28),
+        .r9_0(r9_28),
+        .r10_0(r10_28),
         .masked_activation(masked_activation28),
         .mask(mask28)
     );
@@ -2483,6 +2693,11 @@ module activation_array_1 (
         .r3_0(r3_29),
         .r4_0(r4_29),
         .r5_0(r5_29),
+        .r6_0(r6_29),
+        .r7_0(r7_29),
+        .r8_0(r8_29),
+        .r9_0(r9_29),
+        .r10_0(r10_29),
         .masked_activation(masked_activation29),
         .mask(mask29)
     );
@@ -2495,6 +2710,11 @@ module activation_array_1 (
         .r3_0(r3_30),
         .r4_0(r4_30),
         .r5_0(r5_30),
+        .r6_0(r6_30),
+        .r7_0(r7_30),
+        .r8_0(r8_30),
+        .r9_0(r9_30),
+        .r10_0(r10_30),
         .masked_activation(masked_activation30),
         .mask(mask30)
     );
@@ -2507,6 +2727,11 @@ module activation_array_1 (
         .r3_0(r3_31),
         .r4_0(r4_31),
         .r5_0(r5_31),
+        .r6_0(r6_31),
+        .r7_0(r7_31),
+        .r8_0(r8_31),
+        .r9_0(r9_31),
+        .r10_0(r10_31),
         .masked_activation(masked_activation31),
         .mask(mask31)
     );
@@ -2516,10 +2741,10 @@ endmodule
 
 
 module activation_and_conversion_1(
-  input  wire [2:0] inputs0_1,
-  input  wire [2:0] inputs1_1,
-  input  wire [2:0] inputs2_1,
-  input  wire [2:0] inputs3_1,
+  input  wire [7:0] inputs0_1,
+  input  wire [7:0] inputs1_1,
+  input  wire [7:0] inputs2_1,
+  input  wire [7:0] inputs3_1,
   input  wire [3:0] w1_0_1, w1_1_1,
   input  wire [3:0] w2_0_1, w2_1_1,
   input  wire [3:0] w3_0_1, w3_1_1,
@@ -2552,199 +2777,359 @@ module activation_and_conversion_1(
   input  wire [3:0] w30_0_1, w30_1_1,
   input  wire [3:0] w31_0_1, w31_1_1,
   input  wire [3:0] w32_0_1, w32_1_1,
-  input  wire [4:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1,
+  input  wire [9:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1,
   input  wire r0_0,
   input  wire r1_0,
   input  wire r2_0,
   input  wire r3_0,
   input  wire r4_0,
   input  wire r5_0,
+  input  wire r6_0,
+  input  wire r7_0,
+  input  wire r8_0,
+  input  wire r9_0,
+  input  wire r10_0,
   input  wire r0_1,
   input  wire r1_1,
   input  wire r2_1,
   input  wire r3_1,
   input  wire r4_1,
   input  wire r5_1,
+  input  wire r6_1,
+  input  wire r7_1,
+  input  wire r8_1,
+  input  wire r9_1,
+  input  wire r10_1,
   input  wire r0_2,
   input  wire r1_2,
   input  wire r2_2,
   input  wire r3_2,
   input  wire r4_2,
   input  wire r5_2,
+  input  wire r6_2,
+  input  wire r7_2,
+  input  wire r8_2,
+  input  wire r9_2,
+  input  wire r10_2,
   input  wire r0_3,
   input  wire r1_3,
   input  wire r2_3,
   input  wire r3_3,
   input  wire r4_3,
   input  wire r5_3,
+  input  wire r6_3,
+  input  wire r7_3,
+  input  wire r8_3,
+  input  wire r9_3,
+  input  wire r10_3,
   input  wire r0_4,
   input  wire r1_4,
   input  wire r2_4,
   input  wire r3_4,
   input  wire r4_4,
   input  wire r5_4,
+  input  wire r6_4,
+  input  wire r7_4,
+  input  wire r8_4,
+  input  wire r9_4,
+  input  wire r10_4,
   input  wire r0_5,
   input  wire r1_5,
   input  wire r2_5,
   input  wire r3_5,
   input  wire r4_5,
   input  wire r5_5,
+  input  wire r6_5,
+  input  wire r7_5,
+  input  wire r8_5,
+  input  wire r9_5,
+  input  wire r10_5,
   input  wire r0_6,
   input  wire r1_6,
   input  wire r2_6,
   input  wire r3_6,
   input  wire r4_6,
   input  wire r5_6,
+  input  wire r6_6,
+  input  wire r7_6,
+  input  wire r8_6,
+  input  wire r9_6,
+  input  wire r10_6,
   input  wire r0_7,
   input  wire r1_7,
   input  wire r2_7,
   input  wire r3_7,
   input  wire r4_7,
   input  wire r5_7,
+  input  wire r6_7,
+  input  wire r7_7,
+  input  wire r8_7,
+  input  wire r9_7,
+  input  wire r10_7,
   input  wire r0_8,
   input  wire r1_8,
   input  wire r2_8,
   input  wire r3_8,
   input  wire r4_8,
   input  wire r5_8,
+  input  wire r6_8,
+  input  wire r7_8,
+  input  wire r8_8,
+  input  wire r9_8,
+  input  wire r10_8,
   input  wire r0_9,
   input  wire r1_9,
   input  wire r2_9,
   input  wire r3_9,
   input  wire r4_9,
   input  wire r5_9,
+  input  wire r6_9,
+  input  wire r7_9,
+  input  wire r8_9,
+  input  wire r9_9,
+  input  wire r10_9,
   input  wire r0_10,
   input  wire r1_10,
   input  wire r2_10,
   input  wire r3_10,
   input  wire r4_10,
   input  wire r5_10,
+  input  wire r6_10,
+  input  wire r7_10,
+  input  wire r8_10,
+  input  wire r9_10,
+  input  wire r10_10,
   input  wire r0_11,
   input  wire r1_11,
   input  wire r2_11,
   input  wire r3_11,
   input  wire r4_11,
   input  wire r5_11,
+  input  wire r6_11,
+  input  wire r7_11,
+  input  wire r8_11,
+  input  wire r9_11,
+  input  wire r10_11,
   input  wire r0_12,
   input  wire r1_12,
   input  wire r2_12,
   input  wire r3_12,
   input  wire r4_12,
   input  wire r5_12,
+  input  wire r6_12,
+  input  wire r7_12,
+  input  wire r8_12,
+  input  wire r9_12,
+  input  wire r10_12,
   input  wire r0_13,
   input  wire r1_13,
   input  wire r2_13,
   input  wire r3_13,
   input  wire r4_13,
   input  wire r5_13,
+  input  wire r6_13,
+  input  wire r7_13,
+  input  wire r8_13,
+  input  wire r9_13,
+  input  wire r10_13,
   input  wire r0_14,
   input  wire r1_14,
   input  wire r2_14,
   input  wire r3_14,
   input  wire r4_14,
   input  wire r5_14,
+  input  wire r6_14,
+  input  wire r7_14,
+  input  wire r8_14,
+  input  wire r9_14,
+  input  wire r10_14,
   input  wire r0_15,
   input  wire r1_15,
   input  wire r2_15,
   input  wire r3_15,
   input  wire r4_15,
   input  wire r5_15,
+  input  wire r6_15,
+  input  wire r7_15,
+  input  wire r8_15,
+  input  wire r9_15,
+  input  wire r10_15,
   input  wire r0_16,
   input  wire r1_16,
   input  wire r2_16,
   input  wire r3_16,
   input  wire r4_16,
   input  wire r5_16,
+  input  wire r6_16,
+  input  wire r7_16,
+  input  wire r8_16,
+  input  wire r9_16,
+  input  wire r10_16,
   input  wire r0_17,
   input  wire r1_17,
   input  wire r2_17,
   input  wire r3_17,
   input  wire r4_17,
   input  wire r5_17,
+  input  wire r6_17,
+  input  wire r7_17,
+  input  wire r8_17,
+  input  wire r9_17,
+  input  wire r10_17,
   input  wire r0_18,
   input  wire r1_18,
   input  wire r2_18,
   input  wire r3_18,
   input  wire r4_18,
   input  wire r5_18,
+  input  wire r6_18,
+  input  wire r7_18,
+  input  wire r8_18,
+  input  wire r9_18,
+  input  wire r10_18,
   input  wire r0_19,
   input  wire r1_19,
   input  wire r2_19,
   input  wire r3_19,
   input  wire r4_19,
   input  wire r5_19,
+  input  wire r6_19,
+  input  wire r7_19,
+  input  wire r8_19,
+  input  wire r9_19,
+  input  wire r10_19,
   input  wire r0_20,
   input  wire r1_20,
   input  wire r2_20,
   input  wire r3_20,
   input  wire r4_20,
   input  wire r5_20,
+  input  wire r6_20,
+  input  wire r7_20,
+  input  wire r8_20,
+  input  wire r9_20,
+  input  wire r10_20,
   input  wire r0_21,
   input  wire r1_21,
   input  wire r2_21,
   input  wire r3_21,
   input  wire r4_21,
   input  wire r5_21,
+  input  wire r6_21,
+  input  wire r7_21,
+  input  wire r8_21,
+  input  wire r9_21,
+  input  wire r10_21,
   input  wire r0_22,
   input  wire r1_22,
   input  wire r2_22,
   input  wire r3_22,
   input  wire r4_22,
   input  wire r5_22,
+  input  wire r6_22,
+  input  wire r7_22,
+  input  wire r8_22,
+  input  wire r9_22,
+  input  wire r10_22,
   input  wire r0_23,
   input  wire r1_23,
   input  wire r2_23,
   input  wire r3_23,
   input  wire r4_23,
   input  wire r5_23,
+  input  wire r6_23,
+  input  wire r7_23,
+  input  wire r8_23,
+  input  wire r9_23,
+  input  wire r10_23,
   input  wire r0_24,
   input  wire r1_24,
   input  wire r2_24,
   input  wire r3_24,
   input  wire r4_24,
   input  wire r5_24,
+  input  wire r6_24,
+  input  wire r7_24,
+  input  wire r8_24,
+  input  wire r9_24,
+  input  wire r10_24,
   input  wire r0_25,
   input  wire r1_25,
   input  wire r2_25,
   input  wire r3_25,
   input  wire r4_25,
   input  wire r5_25,
+  input  wire r6_25,
+  input  wire r7_25,
+  input  wire r8_25,
+  input  wire r9_25,
+  input  wire r10_25,
   input  wire r0_26,
   input  wire r1_26,
   input  wire r2_26,
   input  wire r3_26,
   input  wire r4_26,
   input  wire r5_26,
+  input  wire r6_26,
+  input  wire r7_26,
+  input  wire r8_26,
+  input  wire r9_26,
+  input  wire r10_26,
   input  wire r0_27,
   input  wire r1_27,
   input  wire r2_27,
   input  wire r3_27,
   input  wire r4_27,
   input  wire r5_27,
+  input  wire r6_27,
+  input  wire r7_27,
+  input  wire r8_27,
+  input  wire r9_27,
+  input  wire r10_27,
   input  wire r0_28,
   input  wire r1_28,
   input  wire r2_28,
   input  wire r3_28,
   input  wire r4_28,
   input  wire r5_28,
+  input  wire r6_28,
+  input  wire r7_28,
+  input  wire r8_28,
+  input  wire r9_28,
+  input  wire r10_28,
   input  wire r0_29,
   input  wire r1_29,
   input  wire r2_29,
   input  wire r3_29,
   input  wire r4_29,
   input  wire r5_29,
+  input  wire r6_29,
+  input  wire r7_29,
+  input  wire r8_29,
+  input  wire r9_29,
+  input  wire r10_29,
   input  wire r0_30,
   input  wire r1_30,
   input  wire r2_30,
   input  wire r3_30,
   input  wire r4_30,
   input  wire r5_30,
+  input  wire r6_30,
+  input  wire r7_30,
+  input  wire r8_30,
+  input  wire r9_30,
+  input  wire r10_30,
   input  wire r0_31,
   input  wire r1_31,
   input  wire r2_31,
   input  wire r3_31,
   input  wire r4_31,
   input  wire r5_31,
+  input  wire r6_31,
+  input  wire r7_31,
+  input  wire r8_31,
+  input  wire r9_31,
+  input  wire r10_31,
   output wire masked_activation0_1, masked_activation0bar_1,
   output wire mask0_1, mask0bar_1,
   output wire masked_activation1_1, masked_activation1bar_1,
@@ -2811,70 +3196,70 @@ module activation_and_conversion_1(
   output wire mask31_1, mask31bar_1
 );
 
-  wire [5:0] biased_sum0_0, biased_sum0_0bar;
-  wire [5:0] biased_sum0_1, biased_sum0_1bar;
-  wire [5:0] biased_sum1_0, biased_sum1_0bar;
-  wire [5:0] biased_sum1_1, biased_sum1_1bar;
-  wire [5:0] biased_sum2_0, biased_sum2_0bar;
-  wire [5:0] biased_sum2_1, biased_sum2_1bar;
-  wire [5:0] biased_sum3_0, biased_sum3_0bar;
-  wire [5:0] biased_sum3_1, biased_sum3_1bar;
-  wire [5:0] biased_sum4_0, biased_sum4_0bar;
-  wire [5:0] biased_sum4_1, biased_sum4_1bar;
-  wire [5:0] biased_sum5_0, biased_sum5_0bar;
-  wire [5:0] biased_sum5_1, biased_sum5_1bar;
-  wire [5:0] biased_sum6_0, biased_sum6_0bar;
-  wire [5:0] biased_sum6_1, biased_sum6_1bar;
-  wire [5:0] biased_sum7_0, biased_sum7_0bar;
-  wire [5:0] biased_sum7_1, biased_sum7_1bar;
-  wire [5:0] biased_sum8_0, biased_sum8_0bar;
-  wire [5:0] biased_sum8_1, biased_sum8_1bar;
-  wire [5:0] biased_sum9_0, biased_sum9_0bar;
-  wire [5:0] biased_sum9_1, biased_sum9_1bar;
-  wire [5:0] biased_sum10_0, biased_sum10_0bar;
-  wire [5:0] biased_sum10_1, biased_sum10_1bar;
-  wire [5:0] biased_sum11_0, biased_sum11_0bar;
-  wire [5:0] biased_sum11_1, biased_sum11_1bar;
-  wire [5:0] biased_sum12_0, biased_sum12_0bar;
-  wire [5:0] biased_sum12_1, biased_sum12_1bar;
-  wire [5:0] biased_sum13_0, biased_sum13_0bar;
-  wire [5:0] biased_sum13_1, biased_sum13_1bar;
-  wire [5:0] biased_sum14_0, biased_sum14_0bar;
-  wire [5:0] biased_sum14_1, biased_sum14_1bar;
-  wire [5:0] biased_sum15_0, biased_sum15_0bar;
-  wire [5:0] biased_sum15_1, biased_sum15_1bar;
-  wire [5:0] biased_sum16_0, biased_sum16_0bar;
-  wire [5:0] biased_sum16_1, biased_sum16_1bar;
-  wire [5:0] biased_sum17_0, biased_sum17_0bar;
-  wire [5:0] biased_sum17_1, biased_sum17_1bar;
-  wire [5:0] biased_sum18_0, biased_sum18_0bar;
-  wire [5:0] biased_sum18_1, biased_sum18_1bar;
-  wire [5:0] biased_sum19_0, biased_sum19_0bar;
-  wire [5:0] biased_sum19_1, biased_sum19_1bar;
-  wire [5:0] biased_sum20_0, biased_sum20_0bar;
-  wire [5:0] biased_sum20_1, biased_sum20_1bar;
-  wire [5:0] biased_sum21_0, biased_sum21_0bar;
-  wire [5:0] biased_sum21_1, biased_sum21_1bar;
-  wire [5:0] biased_sum22_0, biased_sum22_0bar;
-  wire [5:0] biased_sum22_1, biased_sum22_1bar;
-  wire [5:0] biased_sum23_0, biased_sum23_0bar;
-  wire [5:0] biased_sum23_1, biased_sum23_1bar;
-  wire [5:0] biased_sum24_0, biased_sum24_0bar;
-  wire [5:0] biased_sum24_1, biased_sum24_1bar;
-  wire [5:0] biased_sum25_0, biased_sum25_0bar;
-  wire [5:0] biased_sum25_1, biased_sum25_1bar;
-  wire [5:0] biased_sum26_0, biased_sum26_0bar;
-  wire [5:0] biased_sum26_1, biased_sum26_1bar;
-  wire [5:0] biased_sum27_0, biased_sum27_0bar;
-  wire [5:0] biased_sum27_1, biased_sum27_1bar;
-  wire [5:0] biased_sum28_0, biased_sum28_0bar;
-  wire [5:0] biased_sum28_1, biased_sum28_1bar;
-  wire [5:0] biased_sum29_0, biased_sum29_0bar;
-  wire [5:0] biased_sum29_1, biased_sum29_1bar;
-  wire [5:0] biased_sum30_0, biased_sum30_0bar;
-  wire [5:0] biased_sum30_1, biased_sum30_1bar;
-  wire [5:0] biased_sum31_0, biased_sum31_0bar;
-  wire [5:0] biased_sum31_1, biased_sum31_1bar;
+  wire [10:0] biased_sum0_0, biased_sum0_0bar;
+  wire [10:0] biased_sum0_1, biased_sum0_1bar;
+  wire [10:0] biased_sum1_0, biased_sum1_0bar;
+  wire [10:0] biased_sum1_1, biased_sum1_1bar;
+  wire [10:0] biased_sum2_0, biased_sum2_0bar;
+  wire [10:0] biased_sum2_1, biased_sum2_1bar;
+  wire [10:0] biased_sum3_0, biased_sum3_0bar;
+  wire [10:0] biased_sum3_1, biased_sum3_1bar;
+  wire [10:0] biased_sum4_0, biased_sum4_0bar;
+  wire [10:0] biased_sum4_1, biased_sum4_1bar;
+  wire [10:0] biased_sum5_0, biased_sum5_0bar;
+  wire [10:0] biased_sum5_1, biased_sum5_1bar;
+  wire [10:0] biased_sum6_0, biased_sum6_0bar;
+  wire [10:0] biased_sum6_1, biased_sum6_1bar;
+  wire [10:0] biased_sum7_0, biased_sum7_0bar;
+  wire [10:0] biased_sum7_1, biased_sum7_1bar;
+  wire [10:0] biased_sum8_0, biased_sum8_0bar;
+  wire [10:0] biased_sum8_1, biased_sum8_1bar;
+  wire [10:0] biased_sum9_0, biased_sum9_0bar;
+  wire [10:0] biased_sum9_1, biased_sum9_1bar;
+  wire [10:0] biased_sum10_0, biased_sum10_0bar;
+  wire [10:0] biased_sum10_1, biased_sum10_1bar;
+  wire [10:0] biased_sum11_0, biased_sum11_0bar;
+  wire [10:0] biased_sum11_1, biased_sum11_1bar;
+  wire [10:0] biased_sum12_0, biased_sum12_0bar;
+  wire [10:0] biased_sum12_1, biased_sum12_1bar;
+  wire [10:0] biased_sum13_0, biased_sum13_0bar;
+  wire [10:0] biased_sum13_1, biased_sum13_1bar;
+  wire [10:0] biased_sum14_0, biased_sum14_0bar;
+  wire [10:0] biased_sum14_1, biased_sum14_1bar;
+  wire [10:0] biased_sum15_0, biased_sum15_0bar;
+  wire [10:0] biased_sum15_1, biased_sum15_1bar;
+  wire [10:0] biased_sum16_0, biased_sum16_0bar;
+  wire [10:0] biased_sum16_1, biased_sum16_1bar;
+  wire [10:0] biased_sum17_0, biased_sum17_0bar;
+  wire [10:0] biased_sum17_1, biased_sum17_1bar;
+  wire [10:0] biased_sum18_0, biased_sum18_0bar;
+  wire [10:0] biased_sum18_1, biased_sum18_1bar;
+  wire [10:0] biased_sum19_0, biased_sum19_0bar;
+  wire [10:0] biased_sum19_1, biased_sum19_1bar;
+  wire [10:0] biased_sum20_0, biased_sum20_0bar;
+  wire [10:0] biased_sum20_1, biased_sum20_1bar;
+  wire [10:0] biased_sum21_0, biased_sum21_0bar;
+  wire [10:0] biased_sum21_1, biased_sum21_1bar;
+  wire [10:0] biased_sum22_0, biased_sum22_0bar;
+  wire [10:0] biased_sum22_1, biased_sum22_1bar;
+  wire [10:0] biased_sum23_0, biased_sum23_0bar;
+  wire [10:0] biased_sum23_1, biased_sum23_1bar;
+  wire [10:0] biased_sum24_0, biased_sum24_0bar;
+  wire [10:0] biased_sum24_1, biased_sum24_1bar;
+  wire [10:0] biased_sum25_0, biased_sum25_0bar;
+  wire [10:0] biased_sum25_1, biased_sum25_1bar;
+  wire [10:0] biased_sum26_0, biased_sum26_0bar;
+  wire [10:0] biased_sum26_1, biased_sum26_1bar;
+  wire [10:0] biased_sum27_0, biased_sum27_0bar;
+  wire [10:0] biased_sum27_1, biased_sum27_1bar;
+  wire [10:0] biased_sum28_0, biased_sum28_0bar;
+  wire [10:0] biased_sum28_1, biased_sum28_1bar;
+  wire [10:0] biased_sum29_0, biased_sum29_0bar;
+  wire [10:0] biased_sum29_1, biased_sum29_1bar;
+  wire [10:0] biased_sum30_0, biased_sum30_0bar;
+  wire [10:0] biased_sum30_1, biased_sum30_1bar;
+  wire [10:0] biased_sum31_0, biased_sum31_0bar;
+  wire [10:0] biased_sum31_1, biased_sum31_1bar;
 
     layer1 l1 (
     .inputs0_1(inputs0_1),
@@ -3146,192 +3531,352 @@ module activation_and_conversion_1(
     .r3_0(r3_0),
     .r4_0(r4_0),
     .r5_0(r5_0),
+    .r6_0(r6_0),
+    .r7_0(r7_0),
+    .r8_0(r8_0),
+    .r9_0(r9_0),
+    .r10_0(r10_0),
     .r0_1(r0_1),
     .r1_1(r1_1),
     .r2_1(r2_1),
     .r3_1(r3_1),
     .r4_1(r4_1),
     .r5_1(r5_1),
+    .r6_1(r6_1),
+    .r7_1(r7_1),
+    .r8_1(r8_1),
+    .r9_1(r9_1),
+    .r10_1(r10_1),
     .r0_2(r0_2),
     .r1_2(r1_2),
     .r2_2(r2_2),
     .r3_2(r3_2),
     .r4_2(r4_2),
     .r5_2(r5_2),
+    .r6_2(r6_2),
+    .r7_2(r7_2),
+    .r8_2(r8_2),
+    .r9_2(r9_2),
+    .r10_2(r10_2),
     .r0_3(r0_3),
     .r1_3(r1_3),
     .r2_3(r2_3),
     .r3_3(r3_3),
     .r4_3(r4_3),
     .r5_3(r5_3),
+    .r6_3(r6_3),
+    .r7_3(r7_3),
+    .r8_3(r8_3),
+    .r9_3(r9_3),
+    .r10_3(r10_3),
     .r0_4(r0_4),
     .r1_4(r1_4),
     .r2_4(r2_4),
     .r3_4(r3_4),
     .r4_4(r4_4),
     .r5_4(r5_4),
+    .r6_4(r6_4),
+    .r7_4(r7_4),
+    .r8_4(r8_4),
+    .r9_4(r9_4),
+    .r10_4(r10_4),
     .r0_5(r0_5),
     .r1_5(r1_5),
     .r2_5(r2_5),
     .r3_5(r3_5),
     .r4_5(r4_5),
     .r5_5(r5_5),
+    .r6_5(r6_5),
+    .r7_5(r7_5),
+    .r8_5(r8_5),
+    .r9_5(r9_5),
+    .r10_5(r10_5),
     .r0_6(r0_6),
     .r1_6(r1_6),
     .r2_6(r2_6),
     .r3_6(r3_6),
     .r4_6(r4_6),
     .r5_6(r5_6),
+    .r6_6(r6_6),
+    .r7_6(r7_6),
+    .r8_6(r8_6),
+    .r9_6(r9_6),
+    .r10_6(r10_6),
     .r0_7(r0_7),
     .r1_7(r1_7),
     .r2_7(r2_7),
     .r3_7(r3_7),
     .r4_7(r4_7),
     .r5_7(r5_7),
+    .r6_7(r6_7),
+    .r7_7(r7_7),
+    .r8_7(r8_7),
+    .r9_7(r9_7),
+    .r10_7(r10_7),
     .r0_8(r0_8),
     .r1_8(r1_8),
     .r2_8(r2_8),
     .r3_8(r3_8),
     .r4_8(r4_8),
     .r5_8(r5_8),
+    .r6_8(r6_8),
+    .r7_8(r7_8),
+    .r8_8(r8_8),
+    .r9_8(r9_8),
+    .r10_8(r10_8),
     .r0_9(r0_9),
     .r1_9(r1_9),
     .r2_9(r2_9),
     .r3_9(r3_9),
     .r4_9(r4_9),
     .r5_9(r5_9),
+    .r6_9(r6_9),
+    .r7_9(r7_9),
+    .r8_9(r8_9),
+    .r9_9(r9_9),
+    .r10_9(r10_9),
     .r0_10(r0_10),
     .r1_10(r1_10),
     .r2_10(r2_10),
     .r3_10(r3_10),
     .r4_10(r4_10),
     .r5_10(r5_10),
+    .r6_10(r6_10),
+    .r7_10(r7_10),
+    .r8_10(r8_10),
+    .r9_10(r9_10),
+    .r10_10(r10_10),
     .r0_11(r0_11),
     .r1_11(r1_11),
     .r2_11(r2_11),
     .r3_11(r3_11),
     .r4_11(r4_11),
     .r5_11(r5_11),
+    .r6_11(r6_11),
+    .r7_11(r7_11),
+    .r8_11(r8_11),
+    .r9_11(r9_11),
+    .r10_11(r10_11),
     .r0_12(r0_12),
     .r1_12(r1_12),
     .r2_12(r2_12),
     .r3_12(r3_12),
     .r4_12(r4_12),
     .r5_12(r5_12),
+    .r6_12(r6_12),
+    .r7_12(r7_12),
+    .r8_12(r8_12),
+    .r9_12(r9_12),
+    .r10_12(r10_12),
     .r0_13(r0_13),
     .r1_13(r1_13),
     .r2_13(r2_13),
     .r3_13(r3_13),
     .r4_13(r4_13),
     .r5_13(r5_13),
+    .r6_13(r6_13),
+    .r7_13(r7_13),
+    .r8_13(r8_13),
+    .r9_13(r9_13),
+    .r10_13(r10_13),
     .r0_14(r0_14),
     .r1_14(r1_14),
     .r2_14(r2_14),
     .r3_14(r3_14),
     .r4_14(r4_14),
     .r5_14(r5_14),
+    .r6_14(r6_14),
+    .r7_14(r7_14),
+    .r8_14(r8_14),
+    .r9_14(r9_14),
+    .r10_14(r10_14),
     .r0_15(r0_15),
     .r1_15(r1_15),
     .r2_15(r2_15),
     .r3_15(r3_15),
     .r4_15(r4_15),
     .r5_15(r5_15),
+    .r6_15(r6_15),
+    .r7_15(r7_15),
+    .r8_15(r8_15),
+    .r9_15(r9_15),
+    .r10_15(r10_15),
     .r0_16(r0_16),
     .r1_16(r1_16),
     .r2_16(r2_16),
     .r3_16(r3_16),
     .r4_16(r4_16),
     .r5_16(r5_16),
+    .r6_16(r6_16),
+    .r7_16(r7_16),
+    .r8_16(r8_16),
+    .r9_16(r9_16),
+    .r10_16(r10_16),
     .r0_17(r0_17),
     .r1_17(r1_17),
     .r2_17(r2_17),
     .r3_17(r3_17),
     .r4_17(r4_17),
     .r5_17(r5_17),
+    .r6_17(r6_17),
+    .r7_17(r7_17),
+    .r8_17(r8_17),
+    .r9_17(r9_17),
+    .r10_17(r10_17),
     .r0_18(r0_18),
     .r1_18(r1_18),
     .r2_18(r2_18),
     .r3_18(r3_18),
     .r4_18(r4_18),
     .r5_18(r5_18),
+    .r6_18(r6_18),
+    .r7_18(r7_18),
+    .r8_18(r8_18),
+    .r9_18(r9_18),
+    .r10_18(r10_18),
     .r0_19(r0_19),
     .r1_19(r1_19),
     .r2_19(r2_19),
     .r3_19(r3_19),
     .r4_19(r4_19),
     .r5_19(r5_19),
+    .r6_19(r6_19),
+    .r7_19(r7_19),
+    .r8_19(r8_19),
+    .r9_19(r9_19),
+    .r10_19(r10_19),
     .r0_20(r0_20),
     .r1_20(r1_20),
     .r2_20(r2_20),
     .r3_20(r3_20),
     .r4_20(r4_20),
     .r5_20(r5_20),
+    .r6_20(r6_20),
+    .r7_20(r7_20),
+    .r8_20(r8_20),
+    .r9_20(r9_20),
+    .r10_20(r10_20),
     .r0_21(r0_21),
     .r1_21(r1_21),
     .r2_21(r2_21),
     .r3_21(r3_21),
     .r4_21(r4_21),
     .r5_21(r5_21),
+    .r6_21(r6_21),
+    .r7_21(r7_21),
+    .r8_21(r8_21),
+    .r9_21(r9_21),
+    .r10_21(r10_21),
     .r0_22(r0_22),
     .r1_22(r1_22),
     .r2_22(r2_22),
     .r3_22(r3_22),
     .r4_22(r4_22),
     .r5_22(r5_22),
+    .r6_22(r6_22),
+    .r7_22(r7_22),
+    .r8_22(r8_22),
+    .r9_22(r9_22),
+    .r10_22(r10_22),
     .r0_23(r0_23),
     .r1_23(r1_23),
     .r2_23(r2_23),
     .r3_23(r3_23),
     .r4_23(r4_23),
     .r5_23(r5_23),
+    .r6_23(r6_23),
+    .r7_23(r7_23),
+    .r8_23(r8_23),
+    .r9_23(r9_23),
+    .r10_23(r10_23),
     .r0_24(r0_24),
     .r1_24(r1_24),
     .r2_24(r2_24),
     .r3_24(r3_24),
     .r4_24(r4_24),
     .r5_24(r5_24),
+    .r6_24(r6_24),
+    .r7_24(r7_24),
+    .r8_24(r8_24),
+    .r9_24(r9_24),
+    .r10_24(r10_24),
     .r0_25(r0_25),
     .r1_25(r1_25),
     .r2_25(r2_25),
     .r3_25(r3_25),
     .r4_25(r4_25),
     .r5_25(r5_25),
+    .r6_25(r6_25),
+    .r7_25(r7_25),
+    .r8_25(r8_25),
+    .r9_25(r9_25),
+    .r10_25(r10_25),
     .r0_26(r0_26),
     .r1_26(r1_26),
     .r2_26(r2_26),
     .r3_26(r3_26),
     .r4_26(r4_26),
     .r5_26(r5_26),
+    .r6_26(r6_26),
+    .r7_26(r7_26),
+    .r8_26(r8_26),
+    .r9_26(r9_26),
+    .r10_26(r10_26),
     .r0_27(r0_27),
     .r1_27(r1_27),
     .r2_27(r2_27),
     .r3_27(r3_27),
     .r4_27(r4_27),
     .r5_27(r5_27),
+    .r6_27(r6_27),
+    .r7_27(r7_27),
+    .r8_27(r8_27),
+    .r9_27(r9_27),
+    .r10_27(r10_27),
     .r0_28(r0_28),
     .r1_28(r1_28),
     .r2_28(r2_28),
     .r3_28(r3_28),
     .r4_28(r4_28),
     .r5_28(r5_28),
+    .r6_28(r6_28),
+    .r7_28(r7_28),
+    .r8_28(r8_28),
+    .r9_28(r9_28),
+    .r10_28(r10_28),
     .r0_29(r0_29),
     .r1_29(r1_29),
     .r2_29(r2_29),
     .r3_29(r3_29),
     .r4_29(r4_29),
     .r5_29(r5_29),
+    .r6_29(r6_29),
+    .r7_29(r7_29),
+    .r8_29(r8_29),
+    .r9_29(r9_29),
+    .r10_29(r10_29),
     .r0_30(r0_30),
     .r1_30(r1_30),
     .r2_30(r2_30),
     .r3_30(r3_30),
     .r4_30(r4_30),
     .r5_30(r5_30),
+    .r6_30(r6_30),
+    .r7_30(r7_30),
+    .r8_30(r8_30),
+    .r9_30(r9_30),
+    .r10_30(r10_30),
     .r0_31(r0_31),
     .r1_31(r1_31),
     .r2_31(r2_31),
     .r3_31(r3_31),
     .r4_31(r4_31),
     .r5_31(r5_31),
+    .r6_31(r6_31),
+    .r7_31(r7_31),
+    .r8_31(r8_31),
+    .r9_31(r9_31),
+    .r10_31(r10_31),
     .masked_activation0(masked_activation0_1),
     .masked_activation1(masked_activation1_1),
     .masked_activation2(masked_activation2_1),
@@ -3469,192 +4014,352 @@ module activation_and_conversion_1(
     .r3_0(r3_0),
     .r4_0(r4_0),
     .r5_0(r5_0),
+    .r6_0(r6_0),
+    .r7_0(r7_0),
+    .r8_0(r8_0),
+    .r9_0(r9_0),
+    .r10_0(r10_0),
     .r0_1(r0_1),
     .r1_1(r1_1),
     .r2_1(r2_1),
     .r3_1(r3_1),
     .r4_1(r4_1),
     .r5_1(r5_1),
+    .r6_1(r6_1),
+    .r7_1(r7_1),
+    .r8_1(r8_1),
+    .r9_1(r9_1),
+    .r10_1(r10_1),
     .r0_2(r0_2),
     .r1_2(r1_2),
     .r2_2(r2_2),
     .r3_2(r3_2),
     .r4_2(r4_2),
     .r5_2(r5_2),
+    .r6_2(r6_2),
+    .r7_2(r7_2),
+    .r8_2(r8_2),
+    .r9_2(r9_2),
+    .r10_2(r10_2),
     .r0_3(r0_3),
     .r1_3(r1_3),
     .r2_3(r2_3),
     .r3_3(r3_3),
     .r4_3(r4_3),
     .r5_3(r5_3),
+    .r6_3(r6_3),
+    .r7_3(r7_3),
+    .r8_3(r8_3),
+    .r9_3(r9_3),
+    .r10_3(r10_3),
     .r0_4(r0_4),
     .r1_4(r1_4),
     .r2_4(r2_4),
     .r3_4(r3_4),
     .r4_4(r4_4),
     .r5_4(r5_4),
+    .r6_4(r6_4),
+    .r7_4(r7_4),
+    .r8_4(r8_4),
+    .r9_4(r9_4),
+    .r10_4(r10_4),
     .r0_5(r0_5),
     .r1_5(r1_5),
     .r2_5(r2_5),
     .r3_5(r3_5),
     .r4_5(r4_5),
     .r5_5(r5_5),
+    .r6_5(r6_5),
+    .r7_5(r7_5),
+    .r8_5(r8_5),
+    .r9_5(r9_5),
+    .r10_5(r10_5),
     .r0_6(r0_6),
     .r1_6(r1_6),
     .r2_6(r2_6),
     .r3_6(r3_6),
     .r4_6(r4_6),
     .r5_6(r5_6),
+    .r6_6(r6_6),
+    .r7_6(r7_6),
+    .r8_6(r8_6),
+    .r9_6(r9_6),
+    .r10_6(r10_6),
     .r0_7(r0_7),
     .r1_7(r1_7),
     .r2_7(r2_7),
     .r3_7(r3_7),
     .r4_7(r4_7),
     .r5_7(r5_7),
+    .r6_7(r6_7),
+    .r7_7(r7_7),
+    .r8_7(r8_7),
+    .r9_7(r9_7),
+    .r10_7(r10_7),
     .r0_8(r0_8),
     .r1_8(r1_8),
     .r2_8(r2_8),
     .r3_8(r3_8),
     .r4_8(r4_8),
     .r5_8(r5_8),
+    .r6_8(r6_8),
+    .r7_8(r7_8),
+    .r8_8(r8_8),
+    .r9_8(r9_8),
+    .r10_8(r10_8),
     .r0_9(r0_9),
     .r1_9(r1_9),
     .r2_9(r2_9),
     .r3_9(r3_9),
     .r4_9(r4_9),
     .r5_9(r5_9),
+    .r6_9(r6_9),
+    .r7_9(r7_9),
+    .r8_9(r8_9),
+    .r9_9(r9_9),
+    .r10_9(r10_9),
     .r0_10(r0_10),
     .r1_10(r1_10),
     .r2_10(r2_10),
     .r3_10(r3_10),
     .r4_10(r4_10),
     .r5_10(r5_10),
+    .r6_10(r6_10),
+    .r7_10(r7_10),
+    .r8_10(r8_10),
+    .r9_10(r9_10),
+    .r10_10(r10_10),
     .r0_11(r0_11),
     .r1_11(r1_11),
     .r2_11(r2_11),
     .r3_11(r3_11),
     .r4_11(r4_11),
     .r5_11(r5_11),
+    .r6_11(r6_11),
+    .r7_11(r7_11),
+    .r8_11(r8_11),
+    .r9_11(r9_11),
+    .r10_11(r10_11),
     .r0_12(r0_12),
     .r1_12(r1_12),
     .r2_12(r2_12),
     .r3_12(r3_12),
     .r4_12(r4_12),
     .r5_12(r5_12),
+    .r6_12(r6_12),
+    .r7_12(r7_12),
+    .r8_12(r8_12),
+    .r9_12(r9_12),
+    .r10_12(r10_12),
     .r0_13(r0_13),
     .r1_13(r1_13),
     .r2_13(r2_13),
     .r3_13(r3_13),
     .r4_13(r4_13),
     .r5_13(r5_13),
+    .r6_13(r6_13),
+    .r7_13(r7_13),
+    .r8_13(r8_13),
+    .r9_13(r9_13),
+    .r10_13(r10_13),
     .r0_14(r0_14),
     .r1_14(r1_14),
     .r2_14(r2_14),
     .r3_14(r3_14),
     .r4_14(r4_14),
     .r5_14(r5_14),
+    .r6_14(r6_14),
+    .r7_14(r7_14),
+    .r8_14(r8_14),
+    .r9_14(r9_14),
+    .r10_14(r10_14),
     .r0_15(r0_15),
     .r1_15(r1_15),
     .r2_15(r2_15),
     .r3_15(r3_15),
     .r4_15(r4_15),
     .r5_15(r5_15),
+    .r6_15(r6_15),
+    .r7_15(r7_15),
+    .r8_15(r8_15),
+    .r9_15(r9_15),
+    .r10_15(r10_15),
     .r0_16(r0_16),
     .r1_16(r1_16),
     .r2_16(r2_16),
     .r3_16(r3_16),
     .r4_16(r4_16),
     .r5_16(r5_16),
+    .r6_16(r6_16),
+    .r7_16(r7_16),
+    .r8_16(r8_16),
+    .r9_16(r9_16),
+    .r10_16(r10_16),
     .r0_17(r0_17),
     .r1_17(r1_17),
     .r2_17(r2_17),
     .r3_17(r3_17),
     .r4_17(r4_17),
     .r5_17(r5_17),
+    .r6_17(r6_17),
+    .r7_17(r7_17),
+    .r8_17(r8_17),
+    .r9_17(r9_17),
+    .r10_17(r10_17),
     .r0_18(r0_18),
     .r1_18(r1_18),
     .r2_18(r2_18),
     .r3_18(r3_18),
     .r4_18(r4_18),
     .r5_18(r5_18),
+    .r6_18(r6_18),
+    .r7_18(r7_18),
+    .r8_18(r8_18),
+    .r9_18(r9_18),
+    .r10_18(r10_18),
     .r0_19(r0_19),
     .r1_19(r1_19),
     .r2_19(r2_19),
     .r3_19(r3_19),
     .r4_19(r4_19),
     .r5_19(r5_19),
+    .r6_19(r6_19),
+    .r7_19(r7_19),
+    .r8_19(r8_19),
+    .r9_19(r9_19),
+    .r10_19(r10_19),
     .r0_20(r0_20),
     .r1_20(r1_20),
     .r2_20(r2_20),
     .r3_20(r3_20),
     .r4_20(r4_20),
     .r5_20(r5_20),
+    .r6_20(r6_20),
+    .r7_20(r7_20),
+    .r8_20(r8_20),
+    .r9_20(r9_20),
+    .r10_20(r10_20),
     .r0_21(r0_21),
     .r1_21(r1_21),
     .r2_21(r2_21),
     .r3_21(r3_21),
     .r4_21(r4_21),
     .r5_21(r5_21),
+    .r6_21(r6_21),
+    .r7_21(r7_21),
+    .r8_21(r8_21),
+    .r9_21(r9_21),
+    .r10_21(r10_21),
     .r0_22(r0_22),
     .r1_22(r1_22),
     .r2_22(r2_22),
     .r3_22(r3_22),
     .r4_22(r4_22),
     .r5_22(r5_22),
+    .r6_22(r6_22),
+    .r7_22(r7_22),
+    .r8_22(r8_22),
+    .r9_22(r9_22),
+    .r10_22(r10_22),
     .r0_23(r0_23),
     .r1_23(r1_23),
     .r2_23(r2_23),
     .r3_23(r3_23),
     .r4_23(r4_23),
     .r5_23(r5_23),
+    .r6_23(r6_23),
+    .r7_23(r7_23),
+    .r8_23(r8_23),
+    .r9_23(r9_23),
+    .r10_23(r10_23),
     .r0_24(r0_24),
     .r1_24(r1_24),
     .r2_24(r2_24),
     .r3_24(r3_24),
     .r4_24(r4_24),
     .r5_24(r5_24),
+    .r6_24(r6_24),
+    .r7_24(r7_24),
+    .r8_24(r8_24),
+    .r9_24(r9_24),
+    .r10_24(r10_24),
     .r0_25(r0_25),
     .r1_25(r1_25),
     .r2_25(r2_25),
     .r3_25(r3_25),
     .r4_25(r4_25),
     .r5_25(r5_25),
+    .r6_25(r6_25),
+    .r7_25(r7_25),
+    .r8_25(r8_25),
+    .r9_25(r9_25),
+    .r10_25(r10_25),
     .r0_26(r0_26),
     .r1_26(r1_26),
     .r2_26(r2_26),
     .r3_26(r3_26),
     .r4_26(r4_26),
     .r5_26(r5_26),
+    .r6_26(r6_26),
+    .r7_26(r7_26),
+    .r8_26(r8_26),
+    .r9_26(r9_26),
+    .r10_26(r10_26),
     .r0_27(r0_27),
     .r1_27(r1_27),
     .r2_27(r2_27),
     .r3_27(r3_27),
     .r4_27(r4_27),
     .r5_27(r5_27),
+    .r6_27(r6_27),
+    .r7_27(r7_27),
+    .r8_27(r8_27),
+    .r9_27(r9_27),
+    .r10_27(r10_27),
     .r0_28(r0_28),
     .r1_28(r1_28),
     .r2_28(r2_28),
     .r3_28(r3_28),
     .r4_28(r4_28),
     .r5_28(r5_28),
+    .r6_28(r6_28),
+    .r7_28(r7_28),
+    .r8_28(r8_28),
+    .r9_28(r9_28),
+    .r10_28(r10_28),
     .r0_29(r0_29),
     .r1_29(r1_29),
     .r2_29(r2_29),
     .r3_29(r3_29),
     .r4_29(r4_29),
     .r5_29(r5_29),
+    .r6_29(r6_29),
+    .r7_29(r7_29),
+    .r8_29(r8_29),
+    .r9_29(r9_29),
+    .r10_29(r10_29),
     .r0_30(r0_30),
     .r1_30(r1_30),
     .r2_30(r2_30),
     .r3_30(r3_30),
     .r4_30(r4_30),
     .r5_30(r5_30),
+    .r6_30(r6_30),
+    .r7_30(r7_30),
+    .r8_30(r8_30),
+    .r9_30(r9_30),
+    .r10_30(r10_30),
     .r0_31(r0_31),
     .r1_31(r1_31),
     .r2_31(r2_31),
     .r3_31(r3_31),
     .r4_31(r4_31),
     .r5_31(r5_31),
+    .r6_31(r6_31),
+    .r7_31(r7_31),
+    .r8_31(r8_31),
+    .r9_31(r9_31),
+    .r10_31(r10_31),
     .masked_activation0(masked_activation0bar_1),
     .masked_activation1(masked_activation1bar_1),
     .masked_activation2(masked_activation2bar_1),
@@ -27575,10 +28280,10 @@ module output_layer_max (
 endmodule
 module connector(
     // Layer-1 inputs
-    input  wire [2:0] inputs0_1,
-    input  wire [2:0] inputs1_1,
-    input  wire [2:0] inputs2_1,
-    input  wire [2:0] inputs3_1,
+    input  wire [7:0] inputs0_1,
+    input  wire [7:0] inputs1_1,
+    input  wire [7:0] inputs2_1,
+    input  wire [7:0] inputs3_1,
     // Layer-1 weights & biases
     input  wire [3:0] w1_0_1, w1_1_1,
     input  wire [3:0] w2_0_1, w2_1_1,
@@ -27612,7 +28317,7 @@ module connector(
     input  wire [3:0] w30_0_1, w30_1_1,
     input  wire [3:0] w31_0_1, w31_1_1,
     input  wire [3:0] w32_0_1, w32_1_1,
-    input  wire [4:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1,
+    input  wire [9:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1,
 
     // Layer-2 weights & biases
     input  wire [63:0] w1_0_2, w1_1_2,
@@ -27687,192 +28392,352 @@ module connector(
   reg  r3_0_1;
   reg  r4_0_1;
   reg  r5_0_1;
+  reg  r6_0_1;
+  reg  r7_0_1;
+  reg  r8_0_1;
+  reg  r9_0_1;
+  reg  r10_0_1;
   reg  r0_1_1;
   reg  r1_1_1;
   reg  r2_1_1;
   reg  r3_1_1;
   reg  r4_1_1;
   reg  r5_1_1;
+  reg  r6_1_1;
+  reg  r7_1_1;
+  reg  r8_1_1;
+  reg  r9_1_1;
+  reg  r10_1_1;
   reg  r0_2_1;
   reg  r1_2_1;
   reg  r2_2_1;
   reg  r3_2_1;
   reg  r4_2_1;
   reg  r5_2_1;
+  reg  r6_2_1;
+  reg  r7_2_1;
+  reg  r8_2_1;
+  reg  r9_2_1;
+  reg  r10_2_1;
   reg  r0_3_1;
   reg  r1_3_1;
   reg  r2_3_1;
   reg  r3_3_1;
   reg  r4_3_1;
   reg  r5_3_1;
+  reg  r6_3_1;
+  reg  r7_3_1;
+  reg  r8_3_1;
+  reg  r9_3_1;
+  reg  r10_3_1;
   reg  r0_4_1;
   reg  r1_4_1;
   reg  r2_4_1;
   reg  r3_4_1;
   reg  r4_4_1;
   reg  r5_4_1;
+  reg  r6_4_1;
+  reg  r7_4_1;
+  reg  r8_4_1;
+  reg  r9_4_1;
+  reg  r10_4_1;
   reg  r0_5_1;
   reg  r1_5_1;
   reg  r2_5_1;
   reg  r3_5_1;
   reg  r4_5_1;
   reg  r5_5_1;
+  reg  r6_5_1;
+  reg  r7_5_1;
+  reg  r8_5_1;
+  reg  r9_5_1;
+  reg  r10_5_1;
   reg  r0_6_1;
   reg  r1_6_1;
   reg  r2_6_1;
   reg  r3_6_1;
   reg  r4_6_1;
   reg  r5_6_1;
+  reg  r6_6_1;
+  reg  r7_6_1;
+  reg  r8_6_1;
+  reg  r9_6_1;
+  reg  r10_6_1;
   reg  r0_7_1;
   reg  r1_7_1;
   reg  r2_7_1;
   reg  r3_7_1;
   reg  r4_7_1;
   reg  r5_7_1;
+  reg  r6_7_1;
+  reg  r7_7_1;
+  reg  r8_7_1;
+  reg  r9_7_1;
+  reg  r10_7_1;
   reg  r0_8_1;
   reg  r1_8_1;
   reg  r2_8_1;
   reg  r3_8_1;
   reg  r4_8_1;
   reg  r5_8_1;
+  reg  r6_8_1;
+  reg  r7_8_1;
+  reg  r8_8_1;
+  reg  r9_8_1;
+  reg  r10_8_1;
   reg  r0_9_1;
   reg  r1_9_1;
   reg  r2_9_1;
   reg  r3_9_1;
   reg  r4_9_1;
   reg  r5_9_1;
+  reg  r6_9_1;
+  reg  r7_9_1;
+  reg  r8_9_1;
+  reg  r9_9_1;
+  reg  r10_9_1;
   reg  r0_10_1;
   reg  r1_10_1;
   reg  r2_10_1;
   reg  r3_10_1;
   reg  r4_10_1;
   reg  r5_10_1;
+  reg  r6_10_1;
+  reg  r7_10_1;
+  reg  r8_10_1;
+  reg  r9_10_1;
+  reg  r10_10_1;
   reg  r0_11_1;
   reg  r1_11_1;
   reg  r2_11_1;
   reg  r3_11_1;
   reg  r4_11_1;
   reg  r5_11_1;
+  reg  r6_11_1;
+  reg  r7_11_1;
+  reg  r8_11_1;
+  reg  r9_11_1;
+  reg  r10_11_1;
   reg  r0_12_1;
   reg  r1_12_1;
   reg  r2_12_1;
   reg  r3_12_1;
   reg  r4_12_1;
   reg  r5_12_1;
+  reg  r6_12_1;
+  reg  r7_12_1;
+  reg  r8_12_1;
+  reg  r9_12_1;
+  reg  r10_12_1;
   reg  r0_13_1;
   reg  r1_13_1;
   reg  r2_13_1;
   reg  r3_13_1;
   reg  r4_13_1;
   reg  r5_13_1;
+  reg  r6_13_1;
+  reg  r7_13_1;
+  reg  r8_13_1;
+  reg  r9_13_1;
+  reg  r10_13_1;
   reg  r0_14_1;
   reg  r1_14_1;
   reg  r2_14_1;
   reg  r3_14_1;
   reg  r4_14_1;
   reg  r5_14_1;
+  reg  r6_14_1;
+  reg  r7_14_1;
+  reg  r8_14_1;
+  reg  r9_14_1;
+  reg  r10_14_1;
   reg  r0_15_1;
   reg  r1_15_1;
   reg  r2_15_1;
   reg  r3_15_1;
   reg  r4_15_1;
   reg  r5_15_1;
+  reg  r6_15_1;
+  reg  r7_15_1;
+  reg  r8_15_1;
+  reg  r9_15_1;
+  reg  r10_15_1;
   reg  r0_16_1;
   reg  r1_16_1;
   reg  r2_16_1;
   reg  r3_16_1;
   reg  r4_16_1;
   reg  r5_16_1;
+  reg  r6_16_1;
+  reg  r7_16_1;
+  reg  r8_16_1;
+  reg  r9_16_1;
+  reg  r10_16_1;
   reg  r0_17_1;
   reg  r1_17_1;
   reg  r2_17_1;
   reg  r3_17_1;
   reg  r4_17_1;
   reg  r5_17_1;
+  reg  r6_17_1;
+  reg  r7_17_1;
+  reg  r8_17_1;
+  reg  r9_17_1;
+  reg  r10_17_1;
   reg  r0_18_1;
   reg  r1_18_1;
   reg  r2_18_1;
   reg  r3_18_1;
   reg  r4_18_1;
   reg  r5_18_1;
+  reg  r6_18_1;
+  reg  r7_18_1;
+  reg  r8_18_1;
+  reg  r9_18_1;
+  reg  r10_18_1;
   reg  r0_19_1;
   reg  r1_19_1;
   reg  r2_19_1;
   reg  r3_19_1;
   reg  r4_19_1;
   reg  r5_19_1;
+  reg  r6_19_1;
+  reg  r7_19_1;
+  reg  r8_19_1;
+  reg  r9_19_1;
+  reg  r10_19_1;
   reg  r0_20_1;
   reg  r1_20_1;
   reg  r2_20_1;
   reg  r3_20_1;
   reg  r4_20_1;
   reg  r5_20_1;
+  reg  r6_20_1;
+  reg  r7_20_1;
+  reg  r8_20_1;
+  reg  r9_20_1;
+  reg  r10_20_1;
   reg  r0_21_1;
   reg  r1_21_1;
   reg  r2_21_1;
   reg  r3_21_1;
   reg  r4_21_1;
   reg  r5_21_1;
+  reg  r6_21_1;
+  reg  r7_21_1;
+  reg  r8_21_1;
+  reg  r9_21_1;
+  reg  r10_21_1;
   reg  r0_22_1;
   reg  r1_22_1;
   reg  r2_22_1;
   reg  r3_22_1;
   reg  r4_22_1;
   reg  r5_22_1;
+  reg  r6_22_1;
+  reg  r7_22_1;
+  reg  r8_22_1;
+  reg  r9_22_1;
+  reg  r10_22_1;
   reg  r0_23_1;
   reg  r1_23_1;
   reg  r2_23_1;
   reg  r3_23_1;
   reg  r4_23_1;
   reg  r5_23_1;
+  reg  r6_23_1;
+  reg  r7_23_1;
+  reg  r8_23_1;
+  reg  r9_23_1;
+  reg  r10_23_1;
   reg  r0_24_1;
   reg  r1_24_1;
   reg  r2_24_1;
   reg  r3_24_1;
   reg  r4_24_1;
   reg  r5_24_1;
+  reg  r6_24_1;
+  reg  r7_24_1;
+  reg  r8_24_1;
+  reg  r9_24_1;
+  reg  r10_24_1;
   reg  r0_25_1;
   reg  r1_25_1;
   reg  r2_25_1;
   reg  r3_25_1;
   reg  r4_25_1;
   reg  r5_25_1;
+  reg  r6_25_1;
+  reg  r7_25_1;
+  reg  r8_25_1;
+  reg  r9_25_1;
+  reg  r10_25_1;
   reg  r0_26_1;
   reg  r1_26_1;
   reg  r2_26_1;
   reg  r3_26_1;
   reg  r4_26_1;
   reg  r5_26_1;
+  reg  r6_26_1;
+  reg  r7_26_1;
+  reg  r8_26_1;
+  reg  r9_26_1;
+  reg  r10_26_1;
   reg  r0_27_1;
   reg  r1_27_1;
   reg  r2_27_1;
   reg  r3_27_1;
   reg  r4_27_1;
   reg  r5_27_1;
+  reg  r6_27_1;
+  reg  r7_27_1;
+  reg  r8_27_1;
+  reg  r9_27_1;
+  reg  r10_27_1;
   reg  r0_28_1;
   reg  r1_28_1;
   reg  r2_28_1;
   reg  r3_28_1;
   reg  r4_28_1;
   reg  r5_28_1;
+  reg  r6_28_1;
+  reg  r7_28_1;
+  reg  r8_28_1;
+  reg  r9_28_1;
+  reg  r10_28_1;
   reg  r0_29_1;
   reg  r1_29_1;
   reg  r2_29_1;
   reg  r3_29_1;
   reg  r4_29_1;
   reg  r5_29_1;
+  reg  r6_29_1;
+  reg  r7_29_1;
+  reg  r8_29_1;
+  reg  r9_29_1;
+  reg  r10_29_1;
   reg  r0_30_1;
   reg  r1_30_1;
   reg  r2_30_1;
   reg  r3_30_1;
   reg  r4_30_1;
   reg  r5_30_1;
+  reg  r6_30_1;
+  reg  r7_30_1;
+  reg  r8_30_1;
+  reg  r9_30_1;
+  reg  r10_30_1;
   reg  r0_31_1;
   reg  r1_31_1;
   reg  r2_31_1;
   reg  r3_31_1;
   reg  r4_31_1;
   reg  r5_31_1;
+  reg  r6_31_1;
+  reg  r7_31_1;
+  reg  r8_31_1;
+  reg  r9_31_1;
+  reg  r10_31_1;
   initial begin
     r0_0_1 = $random;
     r1_0_1 = $random;
@@ -27880,192 +28745,352 @@ module connector(
     r3_0_1 = $random;
     r4_0_1 = $random;
     r5_0_1 = $random;
+    r6_0_1 = $random;
+    r7_0_1 = $random;
+    r8_0_1 = $random;
+    r9_0_1 = $random;
+    r10_0_1 = $random;
     r0_1_1 = $random;
     r1_1_1 = $random;
     r2_1_1 = $random;
     r3_1_1 = $random;
     r4_1_1 = $random;
     r5_1_1 = $random;
+    r6_1_1 = $random;
+    r7_1_1 = $random;
+    r8_1_1 = $random;
+    r9_1_1 = $random;
+    r10_1_1 = $random;
     r0_2_1 = $random;
     r1_2_1 = $random;
     r2_2_1 = $random;
     r3_2_1 = $random;
     r4_2_1 = $random;
     r5_2_1 = $random;
+    r6_2_1 = $random;
+    r7_2_1 = $random;
+    r8_2_1 = $random;
+    r9_2_1 = $random;
+    r10_2_1 = $random;
     r0_3_1 = $random;
     r1_3_1 = $random;
     r2_3_1 = $random;
     r3_3_1 = $random;
     r4_3_1 = $random;
     r5_3_1 = $random;
+    r6_3_1 = $random;
+    r7_3_1 = $random;
+    r8_3_1 = $random;
+    r9_3_1 = $random;
+    r10_3_1 = $random;
     r0_4_1 = $random;
     r1_4_1 = $random;
     r2_4_1 = $random;
     r3_4_1 = $random;
     r4_4_1 = $random;
     r5_4_1 = $random;
+    r6_4_1 = $random;
+    r7_4_1 = $random;
+    r8_4_1 = $random;
+    r9_4_1 = $random;
+    r10_4_1 = $random;
     r0_5_1 = $random;
     r1_5_1 = $random;
     r2_5_1 = $random;
     r3_5_1 = $random;
     r4_5_1 = $random;
     r5_5_1 = $random;
+    r6_5_1 = $random;
+    r7_5_1 = $random;
+    r8_5_1 = $random;
+    r9_5_1 = $random;
+    r10_5_1 = $random;
     r0_6_1 = $random;
     r1_6_1 = $random;
     r2_6_1 = $random;
     r3_6_1 = $random;
     r4_6_1 = $random;
     r5_6_1 = $random;
+    r6_6_1 = $random;
+    r7_6_1 = $random;
+    r8_6_1 = $random;
+    r9_6_1 = $random;
+    r10_6_1 = $random;
     r0_7_1 = $random;
     r1_7_1 = $random;
     r2_7_1 = $random;
     r3_7_1 = $random;
     r4_7_1 = $random;
     r5_7_1 = $random;
+    r6_7_1 = $random;
+    r7_7_1 = $random;
+    r8_7_1 = $random;
+    r9_7_1 = $random;
+    r10_7_1 = $random;
     r0_8_1 = $random;
     r1_8_1 = $random;
     r2_8_1 = $random;
     r3_8_1 = $random;
     r4_8_1 = $random;
     r5_8_1 = $random;
+    r6_8_1 = $random;
+    r7_8_1 = $random;
+    r8_8_1 = $random;
+    r9_8_1 = $random;
+    r10_8_1 = $random;
     r0_9_1 = $random;
     r1_9_1 = $random;
     r2_9_1 = $random;
     r3_9_1 = $random;
     r4_9_1 = $random;
     r5_9_1 = $random;
+    r6_9_1 = $random;
+    r7_9_1 = $random;
+    r8_9_1 = $random;
+    r9_9_1 = $random;
+    r10_9_1 = $random;
     r0_10_1 = $random;
     r1_10_1 = $random;
     r2_10_1 = $random;
     r3_10_1 = $random;
     r4_10_1 = $random;
     r5_10_1 = $random;
+    r6_10_1 = $random;
+    r7_10_1 = $random;
+    r8_10_1 = $random;
+    r9_10_1 = $random;
+    r10_10_1 = $random;
     r0_11_1 = $random;
     r1_11_1 = $random;
     r2_11_1 = $random;
     r3_11_1 = $random;
     r4_11_1 = $random;
     r5_11_1 = $random;
+    r6_11_1 = $random;
+    r7_11_1 = $random;
+    r8_11_1 = $random;
+    r9_11_1 = $random;
+    r10_11_1 = $random;
     r0_12_1 = $random;
     r1_12_1 = $random;
     r2_12_1 = $random;
     r3_12_1 = $random;
     r4_12_1 = $random;
     r5_12_1 = $random;
+    r6_12_1 = $random;
+    r7_12_1 = $random;
+    r8_12_1 = $random;
+    r9_12_1 = $random;
+    r10_12_1 = $random;
     r0_13_1 = $random;
     r1_13_1 = $random;
     r2_13_1 = $random;
     r3_13_1 = $random;
     r4_13_1 = $random;
     r5_13_1 = $random;
+    r6_13_1 = $random;
+    r7_13_1 = $random;
+    r8_13_1 = $random;
+    r9_13_1 = $random;
+    r10_13_1 = $random;
     r0_14_1 = $random;
     r1_14_1 = $random;
     r2_14_1 = $random;
     r3_14_1 = $random;
     r4_14_1 = $random;
     r5_14_1 = $random;
+    r6_14_1 = $random;
+    r7_14_1 = $random;
+    r8_14_1 = $random;
+    r9_14_1 = $random;
+    r10_14_1 = $random;
     r0_15_1 = $random;
     r1_15_1 = $random;
     r2_15_1 = $random;
     r3_15_1 = $random;
     r4_15_1 = $random;
     r5_15_1 = $random;
+    r6_15_1 = $random;
+    r7_15_1 = $random;
+    r8_15_1 = $random;
+    r9_15_1 = $random;
+    r10_15_1 = $random;
     r0_16_1 = $random;
     r1_16_1 = $random;
     r2_16_1 = $random;
     r3_16_1 = $random;
     r4_16_1 = $random;
     r5_16_1 = $random;
+    r6_16_1 = $random;
+    r7_16_1 = $random;
+    r8_16_1 = $random;
+    r9_16_1 = $random;
+    r10_16_1 = $random;
     r0_17_1 = $random;
     r1_17_1 = $random;
     r2_17_1 = $random;
     r3_17_1 = $random;
     r4_17_1 = $random;
     r5_17_1 = $random;
+    r6_17_1 = $random;
+    r7_17_1 = $random;
+    r8_17_1 = $random;
+    r9_17_1 = $random;
+    r10_17_1 = $random;
     r0_18_1 = $random;
     r1_18_1 = $random;
     r2_18_1 = $random;
     r3_18_1 = $random;
     r4_18_1 = $random;
     r5_18_1 = $random;
+    r6_18_1 = $random;
+    r7_18_1 = $random;
+    r8_18_1 = $random;
+    r9_18_1 = $random;
+    r10_18_1 = $random;
     r0_19_1 = $random;
     r1_19_1 = $random;
     r2_19_1 = $random;
     r3_19_1 = $random;
     r4_19_1 = $random;
     r5_19_1 = $random;
+    r6_19_1 = $random;
+    r7_19_1 = $random;
+    r8_19_1 = $random;
+    r9_19_1 = $random;
+    r10_19_1 = $random;
     r0_20_1 = $random;
     r1_20_1 = $random;
     r2_20_1 = $random;
     r3_20_1 = $random;
     r4_20_1 = $random;
     r5_20_1 = $random;
+    r6_20_1 = $random;
+    r7_20_1 = $random;
+    r8_20_1 = $random;
+    r9_20_1 = $random;
+    r10_20_1 = $random;
     r0_21_1 = $random;
     r1_21_1 = $random;
     r2_21_1 = $random;
     r3_21_1 = $random;
     r4_21_1 = $random;
     r5_21_1 = $random;
+    r6_21_1 = $random;
+    r7_21_1 = $random;
+    r8_21_1 = $random;
+    r9_21_1 = $random;
+    r10_21_1 = $random;
     r0_22_1 = $random;
     r1_22_1 = $random;
     r2_22_1 = $random;
     r3_22_1 = $random;
     r4_22_1 = $random;
     r5_22_1 = $random;
+    r6_22_1 = $random;
+    r7_22_1 = $random;
+    r8_22_1 = $random;
+    r9_22_1 = $random;
+    r10_22_1 = $random;
     r0_23_1 = $random;
     r1_23_1 = $random;
     r2_23_1 = $random;
     r3_23_1 = $random;
     r4_23_1 = $random;
     r5_23_1 = $random;
+    r6_23_1 = $random;
+    r7_23_1 = $random;
+    r8_23_1 = $random;
+    r9_23_1 = $random;
+    r10_23_1 = $random;
     r0_24_1 = $random;
     r1_24_1 = $random;
     r2_24_1 = $random;
     r3_24_1 = $random;
     r4_24_1 = $random;
     r5_24_1 = $random;
+    r6_24_1 = $random;
+    r7_24_1 = $random;
+    r8_24_1 = $random;
+    r9_24_1 = $random;
+    r10_24_1 = $random;
     r0_25_1 = $random;
     r1_25_1 = $random;
     r2_25_1 = $random;
     r3_25_1 = $random;
     r4_25_1 = $random;
     r5_25_1 = $random;
+    r6_25_1 = $random;
+    r7_25_1 = $random;
+    r8_25_1 = $random;
+    r9_25_1 = $random;
+    r10_25_1 = $random;
     r0_26_1 = $random;
     r1_26_1 = $random;
     r2_26_1 = $random;
     r3_26_1 = $random;
     r4_26_1 = $random;
     r5_26_1 = $random;
+    r6_26_1 = $random;
+    r7_26_1 = $random;
+    r8_26_1 = $random;
+    r9_26_1 = $random;
+    r10_26_1 = $random;
     r0_27_1 = $random;
     r1_27_1 = $random;
     r2_27_1 = $random;
     r3_27_1 = $random;
     r4_27_1 = $random;
     r5_27_1 = $random;
+    r6_27_1 = $random;
+    r7_27_1 = $random;
+    r8_27_1 = $random;
+    r9_27_1 = $random;
+    r10_27_1 = $random;
     r0_28_1 = $random;
     r1_28_1 = $random;
     r2_28_1 = $random;
     r3_28_1 = $random;
     r4_28_1 = $random;
     r5_28_1 = $random;
+    r6_28_1 = $random;
+    r7_28_1 = $random;
+    r8_28_1 = $random;
+    r9_28_1 = $random;
+    r10_28_1 = $random;
     r0_29_1 = $random;
     r1_29_1 = $random;
     r2_29_1 = $random;
     r3_29_1 = $random;
     r4_29_1 = $random;
     r5_29_1 = $random;
+    r6_29_1 = $random;
+    r7_29_1 = $random;
+    r8_29_1 = $random;
+    r9_29_1 = $random;
+    r10_29_1 = $random;
     r0_30_1 = $random;
     r1_30_1 = $random;
     r2_30_1 = $random;
     r3_30_1 = $random;
     r4_30_1 = $random;
     r5_30_1 = $random;
+    r6_30_1 = $random;
+    r7_30_1 = $random;
+    r8_30_1 = $random;
+    r9_30_1 = $random;
+    r10_30_1 = $random;
     r0_31_1 = $random;
     r1_31_1 = $random;
     r2_31_1 = $random;
     r3_31_1 = $random;
     r4_31_1 = $random;
     r5_31_1 = $random;
+    r6_31_1 = $random;
+    r7_31_1 = $random;
+    r8_31_1 = $random;
+    r9_31_1 = $random;
+    r10_31_1 = $random;
     #1;
   end
 
@@ -28177,192 +29202,352 @@ module connector(
     .r3_0(r3_0_1),
     .r4_0(r4_0_1),
     .r5_0(r5_0_1),
+    .r6_0(r6_0_1),
+    .r7_0(r7_0_1),
+    .r8_0(r8_0_1),
+    .r9_0(r9_0_1),
+    .r10_0(r10_0_1),
     .r0_1(r0_1_1),
     .r1_1(r1_1_1),
     .r2_1(r2_1_1),
     .r3_1(r3_1_1),
     .r4_1(r4_1_1),
     .r5_1(r5_1_1),
+    .r6_1(r6_1_1),
+    .r7_1(r7_1_1),
+    .r8_1(r8_1_1),
+    .r9_1(r9_1_1),
+    .r10_1(r10_1_1),
     .r0_2(r0_2_1),
     .r1_2(r1_2_1),
     .r2_2(r2_2_1),
     .r3_2(r3_2_1),
     .r4_2(r4_2_1),
     .r5_2(r5_2_1),
+    .r6_2(r6_2_1),
+    .r7_2(r7_2_1),
+    .r8_2(r8_2_1),
+    .r9_2(r9_2_1),
+    .r10_2(r10_2_1),
     .r0_3(r0_3_1),
     .r1_3(r1_3_1),
     .r2_3(r2_3_1),
     .r3_3(r3_3_1),
     .r4_3(r4_3_1),
     .r5_3(r5_3_1),
+    .r6_3(r6_3_1),
+    .r7_3(r7_3_1),
+    .r8_3(r8_3_1),
+    .r9_3(r9_3_1),
+    .r10_3(r10_3_1),
     .r0_4(r0_4_1),
     .r1_4(r1_4_1),
     .r2_4(r2_4_1),
     .r3_4(r3_4_1),
     .r4_4(r4_4_1),
     .r5_4(r5_4_1),
+    .r6_4(r6_4_1),
+    .r7_4(r7_4_1),
+    .r8_4(r8_4_1),
+    .r9_4(r9_4_1),
+    .r10_4(r10_4_1),
     .r0_5(r0_5_1),
     .r1_5(r1_5_1),
     .r2_5(r2_5_1),
     .r3_5(r3_5_1),
     .r4_5(r4_5_1),
     .r5_5(r5_5_1),
+    .r6_5(r6_5_1),
+    .r7_5(r7_5_1),
+    .r8_5(r8_5_1),
+    .r9_5(r9_5_1),
+    .r10_5(r10_5_1),
     .r0_6(r0_6_1),
     .r1_6(r1_6_1),
     .r2_6(r2_6_1),
     .r3_6(r3_6_1),
     .r4_6(r4_6_1),
     .r5_6(r5_6_1),
+    .r6_6(r6_6_1),
+    .r7_6(r7_6_1),
+    .r8_6(r8_6_1),
+    .r9_6(r9_6_1),
+    .r10_6(r10_6_1),
     .r0_7(r0_7_1),
     .r1_7(r1_7_1),
     .r2_7(r2_7_1),
     .r3_7(r3_7_1),
     .r4_7(r4_7_1),
     .r5_7(r5_7_1),
+    .r6_7(r6_7_1),
+    .r7_7(r7_7_1),
+    .r8_7(r8_7_1),
+    .r9_7(r9_7_1),
+    .r10_7(r10_7_1),
     .r0_8(r0_8_1),
     .r1_8(r1_8_1),
     .r2_8(r2_8_1),
     .r3_8(r3_8_1),
     .r4_8(r4_8_1),
     .r5_8(r5_8_1),
+    .r6_8(r6_8_1),
+    .r7_8(r7_8_1),
+    .r8_8(r8_8_1),
+    .r9_8(r9_8_1),
+    .r10_8(r10_8_1),
     .r0_9(r0_9_1),
     .r1_9(r1_9_1),
     .r2_9(r2_9_1),
     .r3_9(r3_9_1),
     .r4_9(r4_9_1),
     .r5_9(r5_9_1),
+    .r6_9(r6_9_1),
+    .r7_9(r7_9_1),
+    .r8_9(r8_9_1),
+    .r9_9(r9_9_1),
+    .r10_9(r10_9_1),
     .r0_10(r0_10_1),
     .r1_10(r1_10_1),
     .r2_10(r2_10_1),
     .r3_10(r3_10_1),
     .r4_10(r4_10_1),
     .r5_10(r5_10_1),
+    .r6_10(r6_10_1),
+    .r7_10(r7_10_1),
+    .r8_10(r8_10_1),
+    .r9_10(r9_10_1),
+    .r10_10(r10_10_1),
     .r0_11(r0_11_1),
     .r1_11(r1_11_1),
     .r2_11(r2_11_1),
     .r3_11(r3_11_1),
     .r4_11(r4_11_1),
     .r5_11(r5_11_1),
+    .r6_11(r6_11_1),
+    .r7_11(r7_11_1),
+    .r8_11(r8_11_1),
+    .r9_11(r9_11_1),
+    .r10_11(r10_11_1),
     .r0_12(r0_12_1),
     .r1_12(r1_12_1),
     .r2_12(r2_12_1),
     .r3_12(r3_12_1),
     .r4_12(r4_12_1),
     .r5_12(r5_12_1),
+    .r6_12(r6_12_1),
+    .r7_12(r7_12_1),
+    .r8_12(r8_12_1),
+    .r9_12(r9_12_1),
+    .r10_12(r10_12_1),
     .r0_13(r0_13_1),
     .r1_13(r1_13_1),
     .r2_13(r2_13_1),
     .r3_13(r3_13_1),
     .r4_13(r4_13_1),
     .r5_13(r5_13_1),
+    .r6_13(r6_13_1),
+    .r7_13(r7_13_1),
+    .r8_13(r8_13_1),
+    .r9_13(r9_13_1),
+    .r10_13(r10_13_1),
     .r0_14(r0_14_1),
     .r1_14(r1_14_1),
     .r2_14(r2_14_1),
     .r3_14(r3_14_1),
     .r4_14(r4_14_1),
     .r5_14(r5_14_1),
+    .r6_14(r6_14_1),
+    .r7_14(r7_14_1),
+    .r8_14(r8_14_1),
+    .r9_14(r9_14_1),
+    .r10_14(r10_14_1),
     .r0_15(r0_15_1),
     .r1_15(r1_15_1),
     .r2_15(r2_15_1),
     .r3_15(r3_15_1),
     .r4_15(r4_15_1),
     .r5_15(r5_15_1),
+    .r6_15(r6_15_1),
+    .r7_15(r7_15_1),
+    .r8_15(r8_15_1),
+    .r9_15(r9_15_1),
+    .r10_15(r10_15_1),
     .r0_16(r0_16_1),
     .r1_16(r1_16_1),
     .r2_16(r2_16_1),
     .r3_16(r3_16_1),
     .r4_16(r4_16_1),
     .r5_16(r5_16_1),
+    .r6_16(r6_16_1),
+    .r7_16(r7_16_1),
+    .r8_16(r8_16_1),
+    .r9_16(r9_16_1),
+    .r10_16(r10_16_1),
     .r0_17(r0_17_1),
     .r1_17(r1_17_1),
     .r2_17(r2_17_1),
     .r3_17(r3_17_1),
     .r4_17(r4_17_1),
     .r5_17(r5_17_1),
+    .r6_17(r6_17_1),
+    .r7_17(r7_17_1),
+    .r8_17(r8_17_1),
+    .r9_17(r9_17_1),
+    .r10_17(r10_17_1),
     .r0_18(r0_18_1),
     .r1_18(r1_18_1),
     .r2_18(r2_18_1),
     .r3_18(r3_18_1),
     .r4_18(r4_18_1),
     .r5_18(r5_18_1),
+    .r6_18(r6_18_1),
+    .r7_18(r7_18_1),
+    .r8_18(r8_18_1),
+    .r9_18(r9_18_1),
+    .r10_18(r10_18_1),
     .r0_19(r0_19_1),
     .r1_19(r1_19_1),
     .r2_19(r2_19_1),
     .r3_19(r3_19_1),
     .r4_19(r4_19_1),
     .r5_19(r5_19_1),
+    .r6_19(r6_19_1),
+    .r7_19(r7_19_1),
+    .r8_19(r8_19_1),
+    .r9_19(r9_19_1),
+    .r10_19(r10_19_1),
     .r0_20(r0_20_1),
     .r1_20(r1_20_1),
     .r2_20(r2_20_1),
     .r3_20(r3_20_1),
     .r4_20(r4_20_1),
     .r5_20(r5_20_1),
+    .r6_20(r6_20_1),
+    .r7_20(r7_20_1),
+    .r8_20(r8_20_1),
+    .r9_20(r9_20_1),
+    .r10_20(r10_20_1),
     .r0_21(r0_21_1),
     .r1_21(r1_21_1),
     .r2_21(r2_21_1),
     .r3_21(r3_21_1),
     .r4_21(r4_21_1),
     .r5_21(r5_21_1),
+    .r6_21(r6_21_1),
+    .r7_21(r7_21_1),
+    .r8_21(r8_21_1),
+    .r9_21(r9_21_1),
+    .r10_21(r10_21_1),
     .r0_22(r0_22_1),
     .r1_22(r1_22_1),
     .r2_22(r2_22_1),
     .r3_22(r3_22_1),
     .r4_22(r4_22_1),
     .r5_22(r5_22_1),
+    .r6_22(r6_22_1),
+    .r7_22(r7_22_1),
+    .r8_22(r8_22_1),
+    .r9_22(r9_22_1),
+    .r10_22(r10_22_1),
     .r0_23(r0_23_1),
     .r1_23(r1_23_1),
     .r2_23(r2_23_1),
     .r3_23(r3_23_1),
     .r4_23(r4_23_1),
     .r5_23(r5_23_1),
+    .r6_23(r6_23_1),
+    .r7_23(r7_23_1),
+    .r8_23(r8_23_1),
+    .r9_23(r9_23_1),
+    .r10_23(r10_23_1),
     .r0_24(r0_24_1),
     .r1_24(r1_24_1),
     .r2_24(r2_24_1),
     .r3_24(r3_24_1),
     .r4_24(r4_24_1),
     .r5_24(r5_24_1),
+    .r6_24(r6_24_1),
+    .r7_24(r7_24_1),
+    .r8_24(r8_24_1),
+    .r9_24(r9_24_1),
+    .r10_24(r10_24_1),
     .r0_25(r0_25_1),
     .r1_25(r1_25_1),
     .r2_25(r2_25_1),
     .r3_25(r3_25_1),
     .r4_25(r4_25_1),
     .r5_25(r5_25_1),
+    .r6_25(r6_25_1),
+    .r7_25(r7_25_1),
+    .r8_25(r8_25_1),
+    .r9_25(r9_25_1),
+    .r10_25(r10_25_1),
     .r0_26(r0_26_1),
     .r1_26(r1_26_1),
     .r2_26(r2_26_1),
     .r3_26(r3_26_1),
     .r4_26(r4_26_1),
     .r5_26(r5_26_1),
+    .r6_26(r6_26_1),
+    .r7_26(r7_26_1),
+    .r8_26(r8_26_1),
+    .r9_26(r9_26_1),
+    .r10_26(r10_26_1),
     .r0_27(r0_27_1),
     .r1_27(r1_27_1),
     .r2_27(r2_27_1),
     .r3_27(r3_27_1),
     .r4_27(r4_27_1),
     .r5_27(r5_27_1),
+    .r6_27(r6_27_1),
+    .r7_27(r7_27_1),
+    .r8_27(r8_27_1),
+    .r9_27(r9_27_1),
+    .r10_27(r10_27_1),
     .r0_28(r0_28_1),
     .r1_28(r1_28_1),
     .r2_28(r2_28_1),
     .r3_28(r3_28_1),
     .r4_28(r4_28_1),
     .r5_28(r5_28_1),
+    .r6_28(r6_28_1),
+    .r7_28(r7_28_1),
+    .r8_28(r8_28_1),
+    .r9_28(r9_28_1),
+    .r10_28(r10_28_1),
     .r0_29(r0_29_1),
     .r1_29(r1_29_1),
     .r2_29(r2_29_1),
     .r3_29(r3_29_1),
     .r4_29(r4_29_1),
     .r5_29(r5_29_1),
+    .r6_29(r6_29_1),
+    .r7_29(r7_29_1),
+    .r8_29(r8_29_1),
+    .r9_29(r9_29_1),
+    .r10_29(r10_29_1),
     .r0_30(r0_30_1),
     .r1_30(r1_30_1),
     .r2_30(r2_30_1),
     .r3_30(r3_30_1),
     .r4_30(r4_30_1),
     .r5_30(r5_30_1),
+    .r6_30(r6_30_1),
+    .r7_30(r7_30_1),
+    .r8_30(r8_30_1),
+    .r9_30(r9_30_1),
+    .r10_30(r10_30_1),
     .r0_31(r0_31_1),
     .r1_31(r1_31_1),
     .r2_31(r2_31_1),
     .r3_31(r3_31_1),
     .r4_31(r4_31_1),
     .r5_31(r5_31_1),
+    .r6_31(r6_31_1),
+    .r7_31(r7_31_1),
+    .r8_31(r8_31_1),
+    .r9_31(r9_31_1),
+    .r10_31(r10_31_1),
     .masked_activation0_1(masked_activation0_1), .masked_activation0bar_1(masked_activation0bar_1),
     .masked_activation1_1(masked_activation1_1), .masked_activation1bar_1(masked_activation1bar_1),
     .masked_activation2_1(masked_activation2_1), .masked_activation2bar_1(masked_activation2bar_1),
