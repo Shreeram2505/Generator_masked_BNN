@@ -1,10 +1,10 @@
 module weighted_inputs_1(
 
-    input [2:0] inputs,
+    input [7:0] inputs,
 
     input w,
 
-    output reg [2:0] wi
+    output reg [7:0] wi
 );
 
     always @(*) begin
@@ -118,139 +118,11 @@ module WddlNAND_1(
   assign S1 = ~S;
 endmodule
 
-module add3bit_1(
-    input wire [2:0] a,
-    input wire [2:0] b,
+module add8bit_1(
+    input wire [7:0] a,
+    input wire [7:0] b,
     input wire  cin,
-    output wire [3:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-
-full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-
-WddlNAND_1 wn1(.A(~a[2]), .B(b[2]), .C(~c3), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[2]), .B(~b[2]), .C(~c3), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[2]), .B(b[2]), .C(c3), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[2]), .B(~b[2]), .C(c3), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[3] = cout;
-
-endmodule
-
-module add4bit_1(
-    input wire [3:0] a,
-    input wire [3:0] b,
-    input wire  cin,
-    output wire [4:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-
-full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-
-WddlNAND_1 wn1(.A(~a[3]), .B(b[3]), .C(~c4), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[3]), .B(~b[3]), .C(~c4), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[3]), .B(b[3]), .C(c4), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[3]), .B(~b[3]), .C(c4), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[4] = cout;
-
-endmodule
-
-module add5bit_1(
-    input wire [4:0] a,
-    input wire [4:0] b,
-    input wire  cin,
-    output wire [5:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-
-full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-
-WddlNAND_1 wn1(.A(~a[4]), .B(b[4]), .C(~c5), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[4]), .B(~b[4]), .C(~c5), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[4]), .B(b[4]), .C(c5), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[4]), .B(~b[4]), .C(c5), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[5] = cout;
-
-endmodule
-
-module add6bit_1(
-    input wire [5:0] a,
-    input wire [5:0] b,
-    input wire  cin,
-    output wire [6:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-wire c6;
-
-full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
-
-WddlNAND_1 wn1(.A(~a[5]), .B(b[5]), .C(~c6), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[5]), .B(~b[5]), .C(~c6), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[5]), .B(b[5]), .C(c6), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[5]), .B(~b[5]), .C(c6), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[6] = cout;
-
-endmodule
-
-module add7bit_1(
-    input wire [6:0] a,
-    input wire [6:0] b,
-    input wire  cin,
-    output wire [7:0] y,
+    output wire [8:0] y,
     output wire cout,
     output wire cout_bar
 );
@@ -263,6 +135,7 @@ wire c4;
 wire c5;
 wire c6;
 wire c7;
+wire c8;
 
 full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
 full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
@@ -271,15 +144,192 @@ full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
 full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
 full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
 full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
 
-WddlNAND_1 wn1(.A(~a[6]), .B(b[6]), .C(~c7), .S(s1), .S1(s1_1));
-WddlNAND_1 wn2(.A(a[6]), .B(~b[6]), .C(~c7), .S(s2), .S1(s2_1));
-WddlNAND_1 wn3(.A(a[6]), .B(b[6]), .C(c7), .S(s3), .S1(s3_1));
-WddlNAND_1 wn4(.A(~a[6]), .B(~b[6]), .C(c7), .S(s4), .S1(s4_1));
+WddlNAND_1 wn1(.A(~a[7]), .B(b[7]), .C(~c8), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[7]), .B(~b[7]), .C(~c8), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[7]), .B(b[7]), .C(c8), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[7]), .B(~b[7]), .C(c8), .S(s4), .S1(s4_1));
 
 assign cout = ~(s1 & s2 & s3 & s4);
 assign cout_bar = ~cout;
-assign y[7] = cout;
+assign y[8] = cout;
+
+endmodule
+
+module add9bit_1(
+    input wire [8:0] a,
+    input wire [8:0] b,
+    input wire  cin,
+    output wire [9:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+
+full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+
+WddlNAND_1 wn1(.A(~a[8]), .B(b[8]), .C(~c9), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[8]), .B(~b[8]), .C(~c9), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[8]), .B(b[8]), .C(c9), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[8]), .B(~b[8]), .C(c9), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[9] = cout;
+
+endmodule
+
+module add10bit_1(
+    input wire [9:0] a,
+    input wire [9:0] b,
+    input wire  cin,
+    output wire [10:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+
+full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adder_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+
+WddlNAND_1 wn1(.A(~a[9]), .B(b[9]), .C(~c10), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[9]), .B(~b[9]), .C(~c10), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[9]), .B(b[9]), .C(c10), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[9]), .B(~b[9]), .C(c10), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[10] = cout;
+
+endmodule
+
+module add11bit_1(
+    input wire [10:0] a,
+    input wire [10:0] b,
+    input wire  cin,
+    output wire [11:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+
+full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adder_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adder_1 fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+
+WddlNAND_1 wn1(.A(~a[10]), .B(b[10]), .C(~c11), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[10]), .B(~b[10]), .C(~c11), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[10]), .B(b[10]), .C(c11), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[10]), .B(~b[10]), .C(c11), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[11] = cout;
+
+endmodule
+
+module add12bit_1(
+    input wire [11:0] a,
+    input wire [11:0] b,
+    input wire  cin,
+    output wire [12:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+wire c12;
+
+full_adder_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adder_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adder_1 fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+full_adder_1 fa11(.S(y[11]), .C(c12), .X(a[11]), .Y(b[11]), .Z(c11));
+
+WddlNAND_1 wn1(.A(~a[11]), .B(b[11]), .C(~c12), .S(s1), .S1(s1_1));
+WddlNAND_1 wn2(.A(a[11]), .B(~b[11]), .C(~c12), .S(s2), .S1(s2_1));
+WddlNAND_1 wn3(.A(a[11]), .B(b[11]), .C(c12), .S(s3), .S1(s3_1));
+WddlNAND_1 wn4(.A(~a[11]), .B(~b[11]), .C(c12), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[12] = cout;
 
 endmodule
 
@@ -318,139 +368,11 @@ module WddlNANDbar_1(
   assign S1 = ~S;
 endmodule
 
-module add3bitbar_1(
-    input wire [2:0] a,
-    input wire [2:0] b,
+module add8bitbar_1(
+    input wire [7:0] a,
+    input wire [7:0] b,
     input wire  cin,
-    output wire [3:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-
-full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-
-WddlNANDbar_1 wn1(.A(~a[2]), .B(b[2]), .C(~c3), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[2]), .B(~b[2]), .C(~c3), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[2]), .B(b[2]), .C(c3), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[2]), .B(~b[2]), .C(c3), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[3] = cout_bar;
-
-endmodule
-
-module add4bitbar_1(
-    input wire [3:0] a,
-    input wire [3:0] b,
-    input wire  cin,
-    output wire [4:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-
-full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-
-WddlNANDbar_1 wn1(.A(~a[3]), .B(b[3]), .C(~c4), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[3]), .B(~b[3]), .C(~c4), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[3]), .B(b[3]), .C(c4), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[3]), .B(~b[3]), .C(c4), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[4] = cout_bar;
-
-endmodule
-
-module add5bitbar_1(
-    input wire [4:0] a,
-    input wire [4:0] b,
-    input wire  cin,
-    output wire [5:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-
-full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-
-WddlNANDbar_1 wn1(.A(~a[4]), .B(b[4]), .C(~c5), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[4]), .B(~b[4]), .C(~c5), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[4]), .B(b[4]), .C(c5), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[4]), .B(~b[4]), .C(c5), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[5] = cout_bar;
-
-endmodule
-
-module add6bitbar_1(
-    input wire [5:0] a,
-    input wire [5:0] b,
-    input wire  cin,
-    output wire [6:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-wire c6;
-
-full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
-
-WddlNANDbar_1 wn1(.A(~a[5]), .B(b[5]), .C(~c6), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[5]), .B(~b[5]), .C(~c6), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[5]), .B(b[5]), .C(c6), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[5]), .B(~b[5]), .C(c6), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[6] = cout_bar;
-
-endmodule
-
-module add7bitbar_1(
-    input wire [6:0] a,
-    input wire [6:0] b,
-    input wire  cin,
-    output wire [7:0] y,
+    output wire [8:0] y,
     output wire cout,
     output wire cout_bar
 );
@@ -463,6 +385,7 @@ wire c4;
 wire c5;
 wire c6;
 wire c7;
+wire c8;
 
 full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
 full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
@@ -471,86 +394,263 @@ full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
 full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
 full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
 full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
 
-WddlNANDbar_1 wn1(.A(~a[6]), .B(b[6]), .C(~c7), .S(s1), .S1(s1_1));
-WddlNANDbar_1 wn2(.A(a[6]), .B(~b[6]), .C(~c7), .S(s2), .S1(s2_1));
-WddlNANDbar_1 wn3(.A(a[6]), .B(b[6]), .C(c7), .S(s3), .S1(s3_1));
-WddlNANDbar_1 wn4(.A(~a[6]), .B(~b[6]), .C(c7), .S(s4), .S1(s4_1));
+WddlNANDbar_1 wn1(.A(~a[7]), .B(b[7]), .C(~c8), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[7]), .B(~b[7]), .C(~c8), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[7]), .B(b[7]), .C(c8), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[7]), .B(~b[7]), .C(c8), .S(s4), .S1(s4_1));
 
 assign cout = ~(s1 & s2 & s3 & s4);
 assign cout_bar = ~cout;
-assign y[7] = cout_bar;
+assign y[8] = cout_bar;
+
+endmodule
+
+module add9bitbar_1(
+    input wire [8:0] a,
+    input wire [8:0] b,
+    input wire  cin,
+    output wire [9:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+
+full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+
+WddlNANDbar_1 wn1(.A(~a[8]), .B(b[8]), .C(~c9), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[8]), .B(~b[8]), .C(~c9), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[8]), .B(b[8]), .C(c9), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[8]), .B(~b[8]), .C(c9), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[9] = cout_bar;
+
+endmodule
+
+module add10bitbar_1(
+    input wire [9:0] a,
+    input wire [9:0] b,
+    input wire  cin,
+    output wire [10:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+
+full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adderbar_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+
+WddlNANDbar_1 wn1(.A(~a[9]), .B(b[9]), .C(~c10), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[9]), .B(~b[9]), .C(~c10), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[9]), .B(b[9]), .C(c10), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[9]), .B(~b[9]), .C(c10), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[10] = cout_bar;
+
+endmodule
+
+module add11bitbar_1(
+    input wire [10:0] a,
+    input wire [10:0] b,
+    input wire  cin,
+    output wire [11:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+
+full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adderbar_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adderbar_1 fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+
+WddlNANDbar_1 wn1(.A(~a[10]), .B(b[10]), .C(~c11), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[10]), .B(~b[10]), .C(~c11), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[10]), .B(b[10]), .C(c11), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[10]), .B(~b[10]), .C(c11), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[11] = cout_bar;
+
+endmodule
+
+module add12bitbar_1(
+    input wire [11:0] a,
+    input wire [11:0] b,
+    input wire  cin,
+    output wire [12:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+wire c12;
+
+full_adderbar_1 fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar_1 fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar_1 fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar_1 fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar_1 fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar_1 fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar_1 fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar_1 fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar_1 fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adderbar_1 fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adderbar_1 fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+full_adderbar_1 fa11(.S(y[11]), .C(c12), .X(a[11]), .Y(b[11]), .Z(c11));
+
+WddlNANDbar_1 wn1(.A(~a[11]), .B(b[11]), .C(~c12), .S(s1), .S1(s1_1));
+WddlNANDbar_1 wn2(.A(a[11]), .B(~b[11]), .C(~c12), .S(s2), .S1(s2_1));
+WddlNANDbar_1 wn3(.A(a[11]), .B(b[11]), .C(c12), .S(s3), .S1(s3_1));
+WddlNANDbar_1 wn4(.A(~a[11]), .B(~b[11]), .C(c12), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[12] = cout_bar;
 
 endmodule
 
 
 
 module adder_tree_1 (
-    input  wire [2:0] in0,
-    input  wire [2:0] in1,
-    input  wire [2:0] in2,
-    input  wire [2:0] in3,
-    input  wire [2:0] in4,
-    input  wire [2:0] in5,
-    input  wire [2:0] in6,
-    input  wire [2:0] in7,
-    input  wire [2:0] in8,
-    input  wire [2:0] in9,
-    input  wire [2:0] in10,
-    input  wire [2:0] in11,
-    input  wire [2:0] in12,
-    input  wire [2:0] in13,
-    input  wire [2:0] in14,
-    input  wire [2:0] in15,
-    output wire [6:0] sum
+    input  wire [7:0] in0,
+    input  wire [7:0] in1,
+    input  wire [7:0] in2,
+    input  wire [7:0] in3,
+    input  wire [7:0] in4,
+    input  wire [7:0] in5,
+    input  wire [7:0] in6,
+    input  wire [7:0] in7,
+    input  wire [7:0] in8,
+    input  wire [7:0] in9,
+    input  wire [7:0] in10,
+    input  wire [7:0] in11,
+    input  wire [7:0] in12,
+    input  wire [7:0] in13,
+    input  wire [7:0] in14,
+    input  wire [7:0] in15,
+    output wire [11:0] sum
 );
 
-    wire [3:0] stage0_0_lo;
-    wire [3:0] stage0_1_lo;
-    wire [3:0] stage0_2_lo;
-    wire [3:0] stage0_3_lo;
-    wire [3:0] stage0_4_lo;
-    wire [3:0] stage0_5_lo;
-    wire [3:0] stage0_6_lo;
-    wire [3:0] stage0_7_lo;
-    wire [4:0] stage1_0_lo;
-    wire [4:0] stage1_1_lo;
-    wire [4:0] stage1_2_lo;
-    wire [4:0] stage1_3_lo;
-    wire [5:0] stage2_0_lo;
-    wire [5:0] stage2_1_lo;
-    wire [6:0] stage3_0_lo;
-    reg  [3:0] stage0_0;
-    reg  [3:0] stage0_1;
-    reg  [3:0] stage0_2;
-    reg  [3:0] stage0_3;
-    reg  [3:0] stage0_4;
-    reg  [3:0] stage0_5;
-    reg  [3:0] stage0_6;
-    reg  [3:0] stage0_7;
-    reg  [4:0] stage1_0;
-    reg  [4:0] stage1_1;
-    reg  [4:0] stage1_2;
-    reg  [4:0] stage1_3;
-    reg  [5:0] stage2_0;
-    reg  [5:0] stage2_1;
-    reg  [6:0] stage3_0;
+    wire [8:0] stage0_0_lo;
+    wire [8:0] stage0_1_lo;
+    wire [8:0] stage0_2_lo;
+    wire [8:0] stage0_3_lo;
+    wire [8:0] stage0_4_lo;
+    wire [8:0] stage0_5_lo;
+    wire [8:0] stage0_6_lo;
+    wire [8:0] stage0_7_lo;
+    wire [9:0] stage1_0_lo;
+    wire [9:0] stage1_1_lo;
+    wire [9:0] stage1_2_lo;
+    wire [9:0] stage1_3_lo;
+    wire [10:0] stage2_0_lo;
+    wire [10:0] stage2_1_lo;
+    wire [11:0] stage3_0_lo;
+    reg  [8:0] stage0_0;
+    reg  [8:0] stage0_1;
+    reg  [8:0] stage0_2;
+    reg  [8:0] stage0_3;
+    reg  [8:0] stage0_4;
+    reg  [8:0] stage0_5;
+    reg  [8:0] stage0_6;
+    reg  [8:0] stage0_7;
+    reg  [9:0] stage1_0;
+    reg  [9:0] stage1_1;
+    reg  [9:0] stage1_2;
+    reg  [9:0] stage1_3;
+    reg  [10:0] stage2_0;
+    reg  [10:0] stage2_1;
+    reg  [11:0] stage3_0;
 
-    add3bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add3bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add3bit_1 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add3bit_1 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add3bit_1 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add3bit_1 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add3bit_1 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add3bit_1 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add4bit_1 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add4bit_1 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add4bit_1 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add4bit_1 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add5bit_1 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add5bit_1 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add6bit_1 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
+    add8bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
+    add8bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
+    add8bit_1 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
+    add8bit_1 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
+    add8bit_1 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
+    add8bit_1 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
+    add8bit_1 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
+    add8bit_1 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
+    add9bit_1 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
+    add9bit_1 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
+    add9bit_1 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
+    add9bit_1 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
+    add10bit_1 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
+    add10bit_1 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
+    add11bit_1 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
 
     assign sum = {1'b0, stage3_0_lo};
 
@@ -575,71 +675,71 @@ endmodule
 
 
 module adder_tree_bar_1 (
-    input  wire [2:0] in0,
-    input  wire [2:0] in1,
-    input  wire [2:0] in2,
-    input  wire [2:0] in3,
-    input  wire [2:0] in4,
-    input  wire [2:0] in5,
-    input  wire [2:0] in6,
-    input  wire [2:0] in7,
-    input  wire [2:0] in8,
-    input  wire [2:0] in9,
-    input  wire [2:0] in10,
-    input  wire [2:0] in11,
-    input  wire [2:0] in12,
-    input  wire [2:0] in13,
-    input  wire [2:0] in14,
-    input  wire [2:0] in15,
-    output wire [6:0] sum
+    input  wire [7:0] in0,
+    input  wire [7:0] in1,
+    input  wire [7:0] in2,
+    input  wire [7:0] in3,
+    input  wire [7:0] in4,
+    input  wire [7:0] in5,
+    input  wire [7:0] in6,
+    input  wire [7:0] in7,
+    input  wire [7:0] in8,
+    input  wire [7:0] in9,
+    input  wire [7:0] in10,
+    input  wire [7:0] in11,
+    input  wire [7:0] in12,
+    input  wire [7:0] in13,
+    input  wire [7:0] in14,
+    input  wire [7:0] in15,
+    output wire [11:0] sum
 );
 
-    wire [3:0] stage0_0_lo_bar;
-    wire [3:0] stage0_1_lo_bar;
-    wire [3:0] stage0_2_lo_bar;
-    wire [3:0] stage0_3_lo_bar;
-    wire [3:0] stage0_4_lo_bar;
-    wire [3:0] stage0_5_lo_bar;
-    wire [3:0] stage0_6_lo_bar;
-    wire [3:0] stage0_7_lo_bar;
-    wire [4:0] stage1_0_lo_bar;
-    wire [4:0] stage1_1_lo_bar;
-    wire [4:0] stage1_2_lo_bar;
-    wire [4:0] stage1_3_lo_bar;
-    wire [5:0] stage2_0_lo_bar;
-    wire [5:0] stage2_1_lo_bar;
-    wire [6:0] stage3_0_lo_bar;
-    reg  [3:0] stage0_0_bar;
-    reg  [3:0] stage0_1_bar;
-    reg  [3:0] stage0_2_bar;
-    reg  [3:0] stage0_3_bar;
-    reg  [3:0] stage0_4_bar;
-    reg  [3:0] stage0_5_bar;
-    reg  [3:0] stage0_6_bar;
-    reg  [3:0] stage0_7_bar;
-    reg  [4:0] stage1_0_bar;
-    reg  [4:0] stage1_1_bar;
-    reg  [4:0] stage1_2_bar;
-    reg  [4:0] stage1_3_bar;
-    reg  [5:0] stage2_0_bar;
-    reg  [5:0] stage2_1_bar;
-    reg  [6:0] stage3_0_bar;
+    wire [8:0] stage0_0_lo_bar;
+    wire [8:0] stage0_1_lo_bar;
+    wire [8:0] stage0_2_lo_bar;
+    wire [8:0] stage0_3_lo_bar;
+    wire [8:0] stage0_4_lo_bar;
+    wire [8:0] stage0_5_lo_bar;
+    wire [8:0] stage0_6_lo_bar;
+    wire [8:0] stage0_7_lo_bar;
+    wire [9:0] stage1_0_lo_bar;
+    wire [9:0] stage1_1_lo_bar;
+    wire [9:0] stage1_2_lo_bar;
+    wire [9:0] stage1_3_lo_bar;
+    wire [10:0] stage2_0_lo_bar;
+    wire [10:0] stage2_1_lo_bar;
+    wire [11:0] stage3_0_lo_bar;
+    reg  [8:0] stage0_0_bar;
+    reg  [8:0] stage0_1_bar;
+    reg  [8:0] stage0_2_bar;
+    reg  [8:0] stage0_3_bar;
+    reg  [8:0] stage0_4_bar;
+    reg  [8:0] stage0_5_bar;
+    reg  [8:0] stage0_6_bar;
+    reg  [8:0] stage0_7_bar;
+    reg  [9:0] stage1_0_bar;
+    reg  [9:0] stage1_1_bar;
+    reg  [9:0] stage1_2_bar;
+    reg  [9:0] stage1_3_bar;
+    reg  [10:0] stage2_0_bar;
+    reg  [10:0] stage2_1_bar;
+    reg  [11:0] stage3_0_bar;
 
-    add3bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add3bitbar_1 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add4bitbar_1 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add4bitbar_1 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar_1 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add4bitbar_1 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add5bitbar_1 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add5bitbar_1 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add6bitbar_1 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
+    add9bitbar_1 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
+    add9bitbar_1 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
+    add9bitbar_1 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
+    add9bitbar_1 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
+    add10bitbar_1 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
+    add10bitbar_1 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
+    add11bitbar_1 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
 
     assign sum = {1'b0, stage3_0_lo_bar};
 
@@ -664,148 +764,148 @@ endmodule
 
 
 module layer1(
-    input [2:0] inputs0_1 , inputs1_1 , inputs2_1 , inputs3_1 , inputs4_1 , inputs5_1 , inputs6_1 , inputs7_1 , inputs8_1 , inputs9_1 , inputs10_1 , inputs11_1 , inputs12_1 , inputs13_1 , inputs14_1 , inputs15_1,
+    input [7:0] inputs0_1 , inputs1_1 , inputs2_1 , inputs3_1 , inputs4_1 , inputs5_1 , inputs6_1 , inputs7_1 , inputs8_1 , inputs9_1 , inputs10_1 , inputs11_1 , inputs12_1 , inputs13_1 , inputs14_1 , inputs15_1,
     input [15:0] w1_0_1, w1_1_1, w2_0_1, w2_1_1, w3_0_1, w3_1_1, w4_0_1, w4_1_1, w5_0_1, w5_1_1, w6_0_1, w6_1_1, w7_0_1, w7_1_1, w8_0_1, w8_1_1,
-    input [6:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1,
-    output [7:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar, biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar, biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar, biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar, biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar, biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar, biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar, biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar
+    input [11:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1,
+    output [12:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar, biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar, biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar, biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar, biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar, biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar, biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar, biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar
 );
-    wire [2:0] weighted_inputs1_0_0, weighted_inputs1_0_1;
-    wire [2:0] weighted_inputs1_1_0, weighted_inputs1_1_1;
-    wire [2:0] weighted_inputs1_2_0, weighted_inputs1_2_1;
-    wire [2:0] weighted_inputs1_3_0, weighted_inputs1_3_1;
-    wire [2:0] weighted_inputs1_4_0, weighted_inputs1_4_1;
-    wire [2:0] weighted_inputs1_5_0, weighted_inputs1_5_1;
-    wire [2:0] weighted_inputs1_6_0, weighted_inputs1_6_1;
-    wire [2:0] weighted_inputs1_7_0, weighted_inputs1_7_1;
-    wire [2:0] weighted_inputs1_8_0, weighted_inputs1_8_1;
-    wire [2:0] weighted_inputs1_9_0, weighted_inputs1_9_1;
-    wire [2:0] weighted_inputs1_10_0, weighted_inputs1_10_1;
-    wire [2:0] weighted_inputs1_11_0, weighted_inputs1_11_1;
-    wire [2:0] weighted_inputs1_12_0, weighted_inputs1_12_1;
-    wire [2:0] weighted_inputs1_13_0, weighted_inputs1_13_1;
-    wire [2:0] weighted_inputs1_14_0, weighted_inputs1_14_1;
-    wire [2:0] weighted_inputs1_15_0, weighted_inputs1_15_1;
-    wire [2:0] weighted_inputs2_0_0, weighted_inputs2_0_1;
-    wire [2:0] weighted_inputs2_1_0, weighted_inputs2_1_1;
-    wire [2:0] weighted_inputs2_2_0, weighted_inputs2_2_1;
-    wire [2:0] weighted_inputs2_3_0, weighted_inputs2_3_1;
-    wire [2:0] weighted_inputs2_4_0, weighted_inputs2_4_1;
-    wire [2:0] weighted_inputs2_5_0, weighted_inputs2_5_1;
-    wire [2:0] weighted_inputs2_6_0, weighted_inputs2_6_1;
-    wire [2:0] weighted_inputs2_7_0, weighted_inputs2_7_1;
-    wire [2:0] weighted_inputs2_8_0, weighted_inputs2_8_1;
-    wire [2:0] weighted_inputs2_9_0, weighted_inputs2_9_1;
-    wire [2:0] weighted_inputs2_10_0, weighted_inputs2_10_1;
-    wire [2:0] weighted_inputs2_11_0, weighted_inputs2_11_1;
-    wire [2:0] weighted_inputs2_12_0, weighted_inputs2_12_1;
-    wire [2:0] weighted_inputs2_13_0, weighted_inputs2_13_1;
-    wire [2:0] weighted_inputs2_14_0, weighted_inputs2_14_1;
-    wire [2:0] weighted_inputs2_15_0, weighted_inputs2_15_1;
-    wire [2:0] weighted_inputs3_0_0, weighted_inputs3_0_1;
-    wire [2:0] weighted_inputs3_1_0, weighted_inputs3_1_1;
-    wire [2:0] weighted_inputs3_2_0, weighted_inputs3_2_1;
-    wire [2:0] weighted_inputs3_3_0, weighted_inputs3_3_1;
-    wire [2:0] weighted_inputs3_4_0, weighted_inputs3_4_1;
-    wire [2:0] weighted_inputs3_5_0, weighted_inputs3_5_1;
-    wire [2:0] weighted_inputs3_6_0, weighted_inputs3_6_1;
-    wire [2:0] weighted_inputs3_7_0, weighted_inputs3_7_1;
-    wire [2:0] weighted_inputs3_8_0, weighted_inputs3_8_1;
-    wire [2:0] weighted_inputs3_9_0, weighted_inputs3_9_1;
-    wire [2:0] weighted_inputs3_10_0, weighted_inputs3_10_1;
-    wire [2:0] weighted_inputs3_11_0, weighted_inputs3_11_1;
-    wire [2:0] weighted_inputs3_12_0, weighted_inputs3_12_1;
-    wire [2:0] weighted_inputs3_13_0, weighted_inputs3_13_1;
-    wire [2:0] weighted_inputs3_14_0, weighted_inputs3_14_1;
-    wire [2:0] weighted_inputs3_15_0, weighted_inputs3_15_1;
-    wire [2:0] weighted_inputs4_0_0, weighted_inputs4_0_1;
-    wire [2:0] weighted_inputs4_1_0, weighted_inputs4_1_1;
-    wire [2:0] weighted_inputs4_2_0, weighted_inputs4_2_1;
-    wire [2:0] weighted_inputs4_3_0, weighted_inputs4_3_1;
-    wire [2:0] weighted_inputs4_4_0, weighted_inputs4_4_1;
-    wire [2:0] weighted_inputs4_5_0, weighted_inputs4_5_1;
-    wire [2:0] weighted_inputs4_6_0, weighted_inputs4_6_1;
-    wire [2:0] weighted_inputs4_7_0, weighted_inputs4_7_1;
-    wire [2:0] weighted_inputs4_8_0, weighted_inputs4_8_1;
-    wire [2:0] weighted_inputs4_9_0, weighted_inputs4_9_1;
-    wire [2:0] weighted_inputs4_10_0, weighted_inputs4_10_1;
-    wire [2:0] weighted_inputs4_11_0, weighted_inputs4_11_1;
-    wire [2:0] weighted_inputs4_12_0, weighted_inputs4_12_1;
-    wire [2:0] weighted_inputs4_13_0, weighted_inputs4_13_1;
-    wire [2:0] weighted_inputs4_14_0, weighted_inputs4_14_1;
-    wire [2:0] weighted_inputs4_15_0, weighted_inputs4_15_1;
-    wire [2:0] weighted_inputs5_0_0, weighted_inputs5_0_1;
-    wire [2:0] weighted_inputs5_1_0, weighted_inputs5_1_1;
-    wire [2:0] weighted_inputs5_2_0, weighted_inputs5_2_1;
-    wire [2:0] weighted_inputs5_3_0, weighted_inputs5_3_1;
-    wire [2:0] weighted_inputs5_4_0, weighted_inputs5_4_1;
-    wire [2:0] weighted_inputs5_5_0, weighted_inputs5_5_1;
-    wire [2:0] weighted_inputs5_6_0, weighted_inputs5_6_1;
-    wire [2:0] weighted_inputs5_7_0, weighted_inputs5_7_1;
-    wire [2:0] weighted_inputs5_8_0, weighted_inputs5_8_1;
-    wire [2:0] weighted_inputs5_9_0, weighted_inputs5_9_1;
-    wire [2:0] weighted_inputs5_10_0, weighted_inputs5_10_1;
-    wire [2:0] weighted_inputs5_11_0, weighted_inputs5_11_1;
-    wire [2:0] weighted_inputs5_12_0, weighted_inputs5_12_1;
-    wire [2:0] weighted_inputs5_13_0, weighted_inputs5_13_1;
-    wire [2:0] weighted_inputs5_14_0, weighted_inputs5_14_1;
-    wire [2:0] weighted_inputs5_15_0, weighted_inputs5_15_1;
-    wire [2:0] weighted_inputs6_0_0, weighted_inputs6_0_1;
-    wire [2:0] weighted_inputs6_1_0, weighted_inputs6_1_1;
-    wire [2:0] weighted_inputs6_2_0, weighted_inputs6_2_1;
-    wire [2:0] weighted_inputs6_3_0, weighted_inputs6_3_1;
-    wire [2:0] weighted_inputs6_4_0, weighted_inputs6_4_1;
-    wire [2:0] weighted_inputs6_5_0, weighted_inputs6_5_1;
-    wire [2:0] weighted_inputs6_6_0, weighted_inputs6_6_1;
-    wire [2:0] weighted_inputs6_7_0, weighted_inputs6_7_1;
-    wire [2:0] weighted_inputs6_8_0, weighted_inputs6_8_1;
-    wire [2:0] weighted_inputs6_9_0, weighted_inputs6_9_1;
-    wire [2:0] weighted_inputs6_10_0, weighted_inputs6_10_1;
-    wire [2:0] weighted_inputs6_11_0, weighted_inputs6_11_1;
-    wire [2:0] weighted_inputs6_12_0, weighted_inputs6_12_1;
-    wire [2:0] weighted_inputs6_13_0, weighted_inputs6_13_1;
-    wire [2:0] weighted_inputs6_14_0, weighted_inputs6_14_1;
-    wire [2:0] weighted_inputs6_15_0, weighted_inputs6_15_1;
-    wire [2:0] weighted_inputs7_0_0, weighted_inputs7_0_1;
-    wire [2:0] weighted_inputs7_1_0, weighted_inputs7_1_1;
-    wire [2:0] weighted_inputs7_2_0, weighted_inputs7_2_1;
-    wire [2:0] weighted_inputs7_3_0, weighted_inputs7_3_1;
-    wire [2:0] weighted_inputs7_4_0, weighted_inputs7_4_1;
-    wire [2:0] weighted_inputs7_5_0, weighted_inputs7_5_1;
-    wire [2:0] weighted_inputs7_6_0, weighted_inputs7_6_1;
-    wire [2:0] weighted_inputs7_7_0, weighted_inputs7_7_1;
-    wire [2:0] weighted_inputs7_8_0, weighted_inputs7_8_1;
-    wire [2:0] weighted_inputs7_9_0, weighted_inputs7_9_1;
-    wire [2:0] weighted_inputs7_10_0, weighted_inputs7_10_1;
-    wire [2:0] weighted_inputs7_11_0, weighted_inputs7_11_1;
-    wire [2:0] weighted_inputs7_12_0, weighted_inputs7_12_1;
-    wire [2:0] weighted_inputs7_13_0, weighted_inputs7_13_1;
-    wire [2:0] weighted_inputs7_14_0, weighted_inputs7_14_1;
-    wire [2:0] weighted_inputs7_15_0, weighted_inputs7_15_1;
-    wire [2:0] weighted_inputs8_0_0, weighted_inputs8_0_1;
-    wire [2:0] weighted_inputs8_1_0, weighted_inputs8_1_1;
-    wire [2:0] weighted_inputs8_2_0, weighted_inputs8_2_1;
-    wire [2:0] weighted_inputs8_3_0, weighted_inputs8_3_1;
-    wire [2:0] weighted_inputs8_4_0, weighted_inputs8_4_1;
-    wire [2:0] weighted_inputs8_5_0, weighted_inputs8_5_1;
-    wire [2:0] weighted_inputs8_6_0, weighted_inputs8_6_1;
-    wire [2:0] weighted_inputs8_7_0, weighted_inputs8_7_1;
-    wire [2:0] weighted_inputs8_8_0, weighted_inputs8_8_1;
-    wire [2:0] weighted_inputs8_9_0, weighted_inputs8_9_1;
-    wire [2:0] weighted_inputs8_10_0, weighted_inputs8_10_1;
-    wire [2:0] weighted_inputs8_11_0, weighted_inputs8_11_1;
-    wire [2:0] weighted_inputs8_12_0, weighted_inputs8_12_1;
-    wire [2:0] weighted_inputs8_13_0, weighted_inputs8_13_1;
-    wire [2:0] weighted_inputs8_14_0, weighted_inputs8_14_1;
-    wire [2:0] weighted_inputs8_15_0, weighted_inputs8_15_1;
+    wire [7:0] weighted_inputs1_0_0, weighted_inputs1_0_1;
+    wire [7:0] weighted_inputs1_1_0, weighted_inputs1_1_1;
+    wire [7:0] weighted_inputs1_2_0, weighted_inputs1_2_1;
+    wire [7:0] weighted_inputs1_3_0, weighted_inputs1_3_1;
+    wire [7:0] weighted_inputs1_4_0, weighted_inputs1_4_1;
+    wire [7:0] weighted_inputs1_5_0, weighted_inputs1_5_1;
+    wire [7:0] weighted_inputs1_6_0, weighted_inputs1_6_1;
+    wire [7:0] weighted_inputs1_7_0, weighted_inputs1_7_1;
+    wire [7:0] weighted_inputs1_8_0, weighted_inputs1_8_1;
+    wire [7:0] weighted_inputs1_9_0, weighted_inputs1_9_1;
+    wire [7:0] weighted_inputs1_10_0, weighted_inputs1_10_1;
+    wire [7:0] weighted_inputs1_11_0, weighted_inputs1_11_1;
+    wire [7:0] weighted_inputs1_12_0, weighted_inputs1_12_1;
+    wire [7:0] weighted_inputs1_13_0, weighted_inputs1_13_1;
+    wire [7:0] weighted_inputs1_14_0, weighted_inputs1_14_1;
+    wire [7:0] weighted_inputs1_15_0, weighted_inputs1_15_1;
+    wire [7:0] weighted_inputs2_0_0, weighted_inputs2_0_1;
+    wire [7:0] weighted_inputs2_1_0, weighted_inputs2_1_1;
+    wire [7:0] weighted_inputs2_2_0, weighted_inputs2_2_1;
+    wire [7:0] weighted_inputs2_3_0, weighted_inputs2_3_1;
+    wire [7:0] weighted_inputs2_4_0, weighted_inputs2_4_1;
+    wire [7:0] weighted_inputs2_5_0, weighted_inputs2_5_1;
+    wire [7:0] weighted_inputs2_6_0, weighted_inputs2_6_1;
+    wire [7:0] weighted_inputs2_7_0, weighted_inputs2_7_1;
+    wire [7:0] weighted_inputs2_8_0, weighted_inputs2_8_1;
+    wire [7:0] weighted_inputs2_9_0, weighted_inputs2_9_1;
+    wire [7:0] weighted_inputs2_10_0, weighted_inputs2_10_1;
+    wire [7:0] weighted_inputs2_11_0, weighted_inputs2_11_1;
+    wire [7:0] weighted_inputs2_12_0, weighted_inputs2_12_1;
+    wire [7:0] weighted_inputs2_13_0, weighted_inputs2_13_1;
+    wire [7:0] weighted_inputs2_14_0, weighted_inputs2_14_1;
+    wire [7:0] weighted_inputs2_15_0, weighted_inputs2_15_1;
+    wire [7:0] weighted_inputs3_0_0, weighted_inputs3_0_1;
+    wire [7:0] weighted_inputs3_1_0, weighted_inputs3_1_1;
+    wire [7:0] weighted_inputs3_2_0, weighted_inputs3_2_1;
+    wire [7:0] weighted_inputs3_3_0, weighted_inputs3_3_1;
+    wire [7:0] weighted_inputs3_4_0, weighted_inputs3_4_1;
+    wire [7:0] weighted_inputs3_5_0, weighted_inputs3_5_1;
+    wire [7:0] weighted_inputs3_6_0, weighted_inputs3_6_1;
+    wire [7:0] weighted_inputs3_7_0, weighted_inputs3_7_1;
+    wire [7:0] weighted_inputs3_8_0, weighted_inputs3_8_1;
+    wire [7:0] weighted_inputs3_9_0, weighted_inputs3_9_1;
+    wire [7:0] weighted_inputs3_10_0, weighted_inputs3_10_1;
+    wire [7:0] weighted_inputs3_11_0, weighted_inputs3_11_1;
+    wire [7:0] weighted_inputs3_12_0, weighted_inputs3_12_1;
+    wire [7:0] weighted_inputs3_13_0, weighted_inputs3_13_1;
+    wire [7:0] weighted_inputs3_14_0, weighted_inputs3_14_1;
+    wire [7:0] weighted_inputs3_15_0, weighted_inputs3_15_1;
+    wire [7:0] weighted_inputs4_0_0, weighted_inputs4_0_1;
+    wire [7:0] weighted_inputs4_1_0, weighted_inputs4_1_1;
+    wire [7:0] weighted_inputs4_2_0, weighted_inputs4_2_1;
+    wire [7:0] weighted_inputs4_3_0, weighted_inputs4_3_1;
+    wire [7:0] weighted_inputs4_4_0, weighted_inputs4_4_1;
+    wire [7:0] weighted_inputs4_5_0, weighted_inputs4_5_1;
+    wire [7:0] weighted_inputs4_6_0, weighted_inputs4_6_1;
+    wire [7:0] weighted_inputs4_7_0, weighted_inputs4_7_1;
+    wire [7:0] weighted_inputs4_8_0, weighted_inputs4_8_1;
+    wire [7:0] weighted_inputs4_9_0, weighted_inputs4_9_1;
+    wire [7:0] weighted_inputs4_10_0, weighted_inputs4_10_1;
+    wire [7:0] weighted_inputs4_11_0, weighted_inputs4_11_1;
+    wire [7:0] weighted_inputs4_12_0, weighted_inputs4_12_1;
+    wire [7:0] weighted_inputs4_13_0, weighted_inputs4_13_1;
+    wire [7:0] weighted_inputs4_14_0, weighted_inputs4_14_1;
+    wire [7:0] weighted_inputs4_15_0, weighted_inputs4_15_1;
+    wire [7:0] weighted_inputs5_0_0, weighted_inputs5_0_1;
+    wire [7:0] weighted_inputs5_1_0, weighted_inputs5_1_1;
+    wire [7:0] weighted_inputs5_2_0, weighted_inputs5_2_1;
+    wire [7:0] weighted_inputs5_3_0, weighted_inputs5_3_1;
+    wire [7:0] weighted_inputs5_4_0, weighted_inputs5_4_1;
+    wire [7:0] weighted_inputs5_5_0, weighted_inputs5_5_1;
+    wire [7:0] weighted_inputs5_6_0, weighted_inputs5_6_1;
+    wire [7:0] weighted_inputs5_7_0, weighted_inputs5_7_1;
+    wire [7:0] weighted_inputs5_8_0, weighted_inputs5_8_1;
+    wire [7:0] weighted_inputs5_9_0, weighted_inputs5_9_1;
+    wire [7:0] weighted_inputs5_10_0, weighted_inputs5_10_1;
+    wire [7:0] weighted_inputs5_11_0, weighted_inputs5_11_1;
+    wire [7:0] weighted_inputs5_12_0, weighted_inputs5_12_1;
+    wire [7:0] weighted_inputs5_13_0, weighted_inputs5_13_1;
+    wire [7:0] weighted_inputs5_14_0, weighted_inputs5_14_1;
+    wire [7:0] weighted_inputs5_15_0, weighted_inputs5_15_1;
+    wire [7:0] weighted_inputs6_0_0, weighted_inputs6_0_1;
+    wire [7:0] weighted_inputs6_1_0, weighted_inputs6_1_1;
+    wire [7:0] weighted_inputs6_2_0, weighted_inputs6_2_1;
+    wire [7:0] weighted_inputs6_3_0, weighted_inputs6_3_1;
+    wire [7:0] weighted_inputs6_4_0, weighted_inputs6_4_1;
+    wire [7:0] weighted_inputs6_5_0, weighted_inputs6_5_1;
+    wire [7:0] weighted_inputs6_6_0, weighted_inputs6_6_1;
+    wire [7:0] weighted_inputs6_7_0, weighted_inputs6_7_1;
+    wire [7:0] weighted_inputs6_8_0, weighted_inputs6_8_1;
+    wire [7:0] weighted_inputs6_9_0, weighted_inputs6_9_1;
+    wire [7:0] weighted_inputs6_10_0, weighted_inputs6_10_1;
+    wire [7:0] weighted_inputs6_11_0, weighted_inputs6_11_1;
+    wire [7:0] weighted_inputs6_12_0, weighted_inputs6_12_1;
+    wire [7:0] weighted_inputs6_13_0, weighted_inputs6_13_1;
+    wire [7:0] weighted_inputs6_14_0, weighted_inputs6_14_1;
+    wire [7:0] weighted_inputs6_15_0, weighted_inputs6_15_1;
+    wire [7:0] weighted_inputs7_0_0, weighted_inputs7_0_1;
+    wire [7:0] weighted_inputs7_1_0, weighted_inputs7_1_1;
+    wire [7:0] weighted_inputs7_2_0, weighted_inputs7_2_1;
+    wire [7:0] weighted_inputs7_3_0, weighted_inputs7_3_1;
+    wire [7:0] weighted_inputs7_4_0, weighted_inputs7_4_1;
+    wire [7:0] weighted_inputs7_5_0, weighted_inputs7_5_1;
+    wire [7:0] weighted_inputs7_6_0, weighted_inputs7_6_1;
+    wire [7:0] weighted_inputs7_7_0, weighted_inputs7_7_1;
+    wire [7:0] weighted_inputs7_8_0, weighted_inputs7_8_1;
+    wire [7:0] weighted_inputs7_9_0, weighted_inputs7_9_1;
+    wire [7:0] weighted_inputs7_10_0, weighted_inputs7_10_1;
+    wire [7:0] weighted_inputs7_11_0, weighted_inputs7_11_1;
+    wire [7:0] weighted_inputs7_12_0, weighted_inputs7_12_1;
+    wire [7:0] weighted_inputs7_13_0, weighted_inputs7_13_1;
+    wire [7:0] weighted_inputs7_14_0, weighted_inputs7_14_1;
+    wire [7:0] weighted_inputs7_15_0, weighted_inputs7_15_1;
+    wire [7:0] weighted_inputs8_0_0, weighted_inputs8_0_1;
+    wire [7:0] weighted_inputs8_1_0, weighted_inputs8_1_1;
+    wire [7:0] weighted_inputs8_2_0, weighted_inputs8_2_1;
+    wire [7:0] weighted_inputs8_3_0, weighted_inputs8_3_1;
+    wire [7:0] weighted_inputs8_4_0, weighted_inputs8_4_1;
+    wire [7:0] weighted_inputs8_5_0, weighted_inputs8_5_1;
+    wire [7:0] weighted_inputs8_6_0, weighted_inputs8_6_1;
+    wire [7:0] weighted_inputs8_7_0, weighted_inputs8_7_1;
+    wire [7:0] weighted_inputs8_8_0, weighted_inputs8_8_1;
+    wire [7:0] weighted_inputs8_9_0, weighted_inputs8_9_1;
+    wire [7:0] weighted_inputs8_10_0, weighted_inputs8_10_1;
+    wire [7:0] weighted_inputs8_11_0, weighted_inputs8_11_1;
+    wire [7:0] weighted_inputs8_12_0, weighted_inputs8_12_1;
+    wire [7:0] weighted_inputs8_13_0, weighted_inputs8_13_1;
+    wire [7:0] weighted_inputs8_14_0, weighted_inputs8_14_1;
+    wire [7:0] weighted_inputs8_15_0, weighted_inputs8_15_1;
 
-    wire [6:0] sum1 [7:0];
-    wire [6:0] sum2 [7:0];
-    wire [7:0] biased_sum1 [7:0];
-    wire [7:0] biased_sum2 [7:0];
-    wire [6:0] sum1bar [7:0];
-    wire [6:0] sum2bar [7:0];
-    wire [7:0] biased_sum1bar [7:0];
-    wire [7:0] biased_sum2bar [7:0];
+    wire [11:0] sum1 [7:0];
+    wire [11:0] sum2 [7:0];
+    wire [12:0] biased_sum1 [7:0];
+    wire [12:0] biased_sum2 [7:0];
+    wire [11:0] sum1bar [7:0];
+    wire [11:0] sum2bar [7:0];
+    wire [12:0] biased_sum1bar [7:0];
+    wire [12:0] biased_sum2bar [7:0];
     weighted_inputs_1 w0 (.inputs(inputs0_1), .w(w1_0_1[0]), .wi(weighted_inputs1_0_0));
     weighted_inputs_1 w0_bar (.inputs(inputs0_1), .w(w1_1_1[0]), .wi(weighted_inputs1_0_1));
     weighted_inputs_1 w1 (.inputs(inputs1_1), .w(w1_0_1[1]), .wi(weighted_inputs1_1_0));
@@ -1670,38 +1770,38 @@ module layer1(
         .in15(weighted_inputs8_15_1),
         .sum(sum2bar[7])
     );
-    add7bit_1 u0 (.a(sum1[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1[0]));
-    add7bit_1 u8 (.a(sum2[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2[0]));
-    add7bitbar_1 ub0 (.a(sum1bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1bar[0]));
-    add7bitbar_1 ub8 (.a(sum2bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2bar[0]));
-    add7bit_1 u1 (.a(sum1[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1[1]));
-    add7bit_1 u9 (.a(sum2[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2[1]));
-    add7bitbar_1 ub1 (.a(sum1bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1bar[1]));
-    add7bitbar_1 ub9 (.a(sum2bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2bar[1]));
-    add7bit_1 u2 (.a(sum1[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1[2]));
-    add7bit_1 u10 (.a(sum2[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2[2]));
-    add7bitbar_1 ub2 (.a(sum1bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1bar[2]));
-    add7bitbar_1 ub10 (.a(sum2bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2bar[2]));
-    add7bit_1 u3 (.a(sum1[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1[3]));
-    add7bit_1 u11 (.a(sum2[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2[3]));
-    add7bitbar_1 ub3 (.a(sum1bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1bar[3]));
-    add7bitbar_1 ub11 (.a(sum2bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2bar[3]));
-    add7bit_1 u4 (.a(sum1[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1[4]));
-    add7bit_1 u12 (.a(sum2[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2[4]));
-    add7bitbar_1 ub4 (.a(sum1bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1bar[4]));
-    add7bitbar_1 ub12 (.a(sum2bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2bar[4]));
-    add7bit_1 u5 (.a(sum1[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1[5]));
-    add7bit_1 u13 (.a(sum2[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2[5]));
-    add7bitbar_1 ub5 (.a(sum1bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1bar[5]));
-    add7bitbar_1 ub13 (.a(sum2bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2bar[5]));
-    add7bit_1 u6 (.a(sum1[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1[6]));
-    add7bit_1 u14 (.a(sum2[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2[6]));
-    add7bitbar_1 ub6 (.a(sum1bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1bar[6]));
-    add7bitbar_1 ub14 (.a(sum2bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2bar[6]));
-    add7bit_1 u7 (.a(sum1[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1[7]));
-    add7bit_1 u15 (.a(sum2[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2[7]));
-    add7bitbar_1 ub7 (.a(sum1bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1bar[7]));
-    add7bitbar_1 ub15 (.a(sum2bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2bar[7]));
+    add12bit_1 u0 (.a(sum1[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1[0]));
+    add12bit_1 u8 (.a(sum2[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2[0]));
+    add12bitbar_1 ub0 (.a(sum1bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum1bar[0]));
+    add12bitbar_1 ub8 (.a(sum2bar[0]), .b(b1_1), .cin(1'b0), .y(biased_sum2bar[0]));
+    add12bit_1 u1 (.a(sum1[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1[1]));
+    add12bit_1 u9 (.a(sum2[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2[1]));
+    add12bitbar_1 ub1 (.a(sum1bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum1bar[1]));
+    add12bitbar_1 ub9 (.a(sum2bar[1]), .b(b2_1), .cin(1'b0), .y(biased_sum2bar[1]));
+    add12bit_1 u2 (.a(sum1[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1[2]));
+    add12bit_1 u10 (.a(sum2[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2[2]));
+    add12bitbar_1 ub2 (.a(sum1bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum1bar[2]));
+    add12bitbar_1 ub10 (.a(sum2bar[2]), .b(b3_1), .cin(1'b0), .y(biased_sum2bar[2]));
+    add12bit_1 u3 (.a(sum1[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1[3]));
+    add12bit_1 u11 (.a(sum2[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2[3]));
+    add12bitbar_1 ub3 (.a(sum1bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum1bar[3]));
+    add12bitbar_1 ub11 (.a(sum2bar[3]), .b(b4_1), .cin(1'b0), .y(biased_sum2bar[3]));
+    add12bit_1 u4 (.a(sum1[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1[4]));
+    add12bit_1 u12 (.a(sum2[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2[4]));
+    add12bitbar_1 ub4 (.a(sum1bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum1bar[4]));
+    add12bitbar_1 ub12 (.a(sum2bar[4]), .b(b5_1), .cin(1'b0), .y(biased_sum2bar[4]));
+    add12bit_1 u5 (.a(sum1[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1[5]));
+    add12bit_1 u13 (.a(sum2[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2[5]));
+    add12bitbar_1 ub5 (.a(sum1bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum1bar[5]));
+    add12bitbar_1 ub13 (.a(sum2bar[5]), .b(b6_1), .cin(1'b0), .y(biased_sum2bar[5]));
+    add12bit_1 u6 (.a(sum1[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1[6]));
+    add12bit_1 u14 (.a(sum2[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2[6]));
+    add12bitbar_1 ub6 (.a(sum1bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum1bar[6]));
+    add12bitbar_1 ub14 (.a(sum2bar[6]), .b(b7_1), .cin(1'b0), .y(biased_sum2bar[6]));
+    add12bit_1 u7 (.a(sum1[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1[7]));
+    add12bit_1 u15 (.a(sum2[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2[7]));
+    add12bitbar_1 ub7 (.a(sum1bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum1bar[7]));
+    add12bitbar_1 ub15 (.a(sum2bar[7]), .b(b8_1), .cin(1'b0), .y(biased_sum2bar[7]));
     assign biased_sum0_0 = biased_sum1[0];
     assign biased_sum0_1 = biased_sum2[0];
     assign biased_sum0_0bar = biased_sum1bar[0];
@@ -1753,17 +1853,17 @@ endmodule
 
 module activation_1 (
 
-    input [7:0] inputs0_0,
-    input [7:0] inputs0_1,
+    input [12:0] inputs0_0,
+    input [12:0] inputs0_1,
 
-    input r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0,
+    input r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0, r9_0, r10_0, r11_0, r12_0,
 
     output masked_activation,
     output mask
 );
 
-    wire r1, r2, r3, r4, r5, r6, r7, r8;
-    wire masked_c0_0, masked_c1_0, masked_c2_0, masked_c3_0, masked_c4_0, masked_c5_0, masked_c6_0, masked_c7_0;
+    wire r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13;
+    wire masked_c0_0, masked_c1_0, masked_c2_0, masked_c3_0, masked_c4_0, masked_c5_0, masked_c6_0, masked_c7_0, masked_c8_0, masked_c9_0, masked_c10_0, masked_c11_0, masked_c12_0;
 
     lut0 l0 (.a(inputs0_0[0]), .b(inputs0_1[0]), .c_in(1'b0), .r_i(r0_0), .r_out(r1), .c_masked(masked_c0_0));
     lut1 l1 (.a(inputs0_0[1]), .b(inputs0_1[1]), .c_in(masked_c0_0), .r_flow(r1), .r_i(r1_0), .r_out(r2), .c_masked(masked_c1_0));
@@ -1773,32 +1873,37 @@ module activation_1 (
     lut1 l5 (.a(inputs0_0[5]), .b(inputs0_1[5]), .c_in(masked_c4_0), .r_flow(r5), .r_i(r5_0), .r_out(r6), .c_masked(masked_c5_0));
     lut1 l6 (.a(inputs0_0[6]), .b(inputs0_1[6]), .c_in(masked_c5_0), .r_flow(r6), .r_i(r6_0), .r_out(r7), .c_masked(masked_c6_0));
     lut1 l7 (.a(inputs0_0[7]), .b(inputs0_1[7]), .c_in(masked_c6_0), .r_flow(r7), .r_i(r7_0), .r_out(r8), .c_masked(masked_c7_0));
+    lut1 l8 (.a(inputs0_0[8]), .b(inputs0_1[8]), .c_in(masked_c7_0), .r_flow(r8), .r_i(r8_0), .r_out(r9), .c_masked(masked_c8_0));
+    lut1 l9 (.a(inputs0_0[9]), .b(inputs0_1[9]), .c_in(masked_c8_0), .r_flow(r9), .r_i(r9_0), .r_out(r10), .c_masked(masked_c9_0));
+    lut1 l10 (.a(inputs0_0[10]), .b(inputs0_1[10]), .c_in(masked_c9_0), .r_flow(r10), .r_i(r10_0), .r_out(r11), .c_masked(masked_c10_0));
+    lut1 l11 (.a(inputs0_0[11]), .b(inputs0_1[11]), .c_in(masked_c10_0), .r_flow(r11), .r_i(r11_0), .r_out(r12), .c_masked(masked_c11_0));
+    lut1 l12 (.a(inputs0_0[12]), .b(inputs0_1[12]), .c_in(masked_c11_0), .r_flow(r12), .r_i(r12_0), .r_out(r13), .c_masked(masked_c12_0));
 
-    wire carry = r8 ^ masked_c7_0;
-    wire activation = (carry ^ inputs0_0[7] ^ inputs0_1[7]) ? 1'b0 : 1'b1;
+    wire carry = r13 ^ masked_c12_0;
+    wire activation = (carry ^ inputs0_0[12] ^ inputs0_1[12]) ? 1'b0 : 1'b1;
 
-    assign masked_activation = activation ^ r8;
-    assign mask = r8;
+    assign masked_activation = activation ^ r13;
+    assign mask = r13;
 
 endmodule
 
 module activation_array_1 (
-    input  [7:0] inputs0_0, inputs0_1,
-    input  [7:0] inputs1_0, inputs1_1,
-    input  [7:0] inputs2_0, inputs2_1,
-    input  [7:0] inputs3_0, inputs3_1,
-    input  [7:0] inputs4_0, inputs4_1,
-    input  [7:0] inputs5_0, inputs5_1,
-    input  [7:0] inputs6_0, inputs6_1,
-    input  [7:0] inputs7_0, inputs7_1,
-    input  r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0,
-    input  r0_1, r1_1, r2_1, r3_1, r4_1, r5_1, r6_1, r7_1,
-    input  r0_2, r1_2, r2_2, r3_2, r4_2, r5_2, r6_2, r7_2,
-    input  r0_3, r1_3, r2_3, r3_3, r4_3, r5_3, r6_3, r7_3,
-    input  r0_4, r1_4, r2_4, r3_4, r4_4, r5_4, r6_4, r7_4,
-    input  r0_5, r1_5, r2_5, r3_5, r4_5, r5_5, r6_5, r7_5,
-    input  r0_6, r1_6, r2_6, r3_6, r4_6, r5_6, r6_6, r7_6,
-    input  r0_7, r1_7, r2_7, r3_7, r4_7, r5_7, r6_7, r7_7,
+    input  [12:0] inputs0_0, inputs0_1,
+    input  [12:0] inputs1_0, inputs1_1,
+    input  [12:0] inputs2_0, inputs2_1,
+    input  [12:0] inputs3_0, inputs3_1,
+    input  [12:0] inputs4_0, inputs4_1,
+    input  [12:0] inputs5_0, inputs5_1,
+    input  [12:0] inputs6_0, inputs6_1,
+    input  [12:0] inputs7_0, inputs7_1,
+    input  r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0, r9_0, r10_0, r11_0, r12_0,
+    input  r0_1, r1_1, r2_1, r3_1, r4_1, r5_1, r6_1, r7_1, r8_1, r9_1, r10_1, r11_1, r12_1,
+    input  r0_2, r1_2, r2_2, r3_2, r4_2, r5_2, r6_2, r7_2, r8_2, r9_2, r10_2, r11_2, r12_2,
+    input  r0_3, r1_3, r2_3, r3_3, r4_3, r5_3, r6_3, r7_3, r8_3, r9_3, r10_3, r11_3, r12_3,
+    input  r0_4, r1_4, r2_4, r3_4, r4_4, r5_4, r6_4, r7_4, r8_4, r9_4, r10_4, r11_4, r12_4,
+    input  r0_5, r1_5, r2_5, r3_5, r4_5, r5_5, r6_5, r7_5, r8_5, r9_5, r10_5, r11_5, r12_5,
+    input  r0_6, r1_6, r2_6, r3_6, r4_6, r5_6, r6_6, r7_6, r8_6, r9_6, r10_6, r11_6, r12_6,
+    input  r0_7, r1_7, r2_7, r3_7, r4_7, r5_7, r6_7, r7_7, r8_7, r9_7, r10_7, r11_7, r12_7,
     output wire masked_activation0,
     output wire masked_activation1,
     output wire masked_activation2,
@@ -1827,6 +1932,11 @@ module activation_array_1 (
         .r5_0(r5_0),
         .r6_0(r6_0),
         .r7_0(r7_0),
+        .r8_0(r8_0),
+        .r9_0(r9_0),
+        .r10_0(r10_0),
+        .r11_0(r11_0),
+        .r12_0(r12_0),
         .masked_activation(masked_activation0),
         .mask(mask0)
     );
@@ -1841,6 +1951,11 @@ module activation_array_1 (
         .r5_0(r5_1),
         .r6_0(r6_1),
         .r7_0(r7_1),
+        .r8_0(r8_1),
+        .r9_0(r9_1),
+        .r10_0(r10_1),
+        .r11_0(r11_1),
+        .r12_0(r12_1),
         .masked_activation(masked_activation1),
         .mask(mask1)
     );
@@ -1855,6 +1970,11 @@ module activation_array_1 (
         .r5_0(r5_2),
         .r6_0(r6_2),
         .r7_0(r7_2),
+        .r8_0(r8_2),
+        .r9_0(r9_2),
+        .r10_0(r10_2),
+        .r11_0(r11_2),
+        .r12_0(r12_2),
         .masked_activation(masked_activation2),
         .mask(mask2)
     );
@@ -1869,6 +1989,11 @@ module activation_array_1 (
         .r5_0(r5_3),
         .r6_0(r6_3),
         .r7_0(r7_3),
+        .r8_0(r8_3),
+        .r9_0(r9_3),
+        .r10_0(r10_3),
+        .r11_0(r11_3),
+        .r12_0(r12_3),
         .masked_activation(masked_activation3),
         .mask(mask3)
     );
@@ -1883,6 +2008,11 @@ module activation_array_1 (
         .r5_0(r5_4),
         .r6_0(r6_4),
         .r7_0(r7_4),
+        .r8_0(r8_4),
+        .r9_0(r9_4),
+        .r10_0(r10_4),
+        .r11_0(r11_4),
+        .r12_0(r12_4),
         .masked_activation(masked_activation4),
         .mask(mask4)
     );
@@ -1897,6 +2027,11 @@ module activation_array_1 (
         .r5_0(r5_5),
         .r6_0(r6_5),
         .r7_0(r7_5),
+        .r8_0(r8_5),
+        .r9_0(r9_5),
+        .r10_0(r10_5),
+        .r11_0(r11_5),
+        .r12_0(r12_5),
         .masked_activation(masked_activation5),
         .mask(mask5)
     );
@@ -1911,6 +2046,11 @@ module activation_array_1 (
         .r5_0(r5_6),
         .r6_0(r6_6),
         .r7_0(r7_6),
+        .r8_0(r8_6),
+        .r9_0(r9_6),
+        .r10_0(r10_6),
+        .r11_0(r11_6),
+        .r12_0(r12_6),
         .masked_activation(masked_activation6),
         .mask(mask6)
     );
@@ -1925,6 +2065,11 @@ module activation_array_1 (
         .r5_0(r5_7),
         .r6_0(r6_7),
         .r7_0(r7_7),
+        .r8_0(r8_7),
+        .r9_0(r9_7),
+        .r10_0(r10_7),
+        .r11_0(r11_7),
+        .r12_0(r12_7),
         .masked_activation(masked_activation7),
         .mask(mask7)
     );
@@ -1934,22 +2079,22 @@ endmodule
 
 
 module activation_and_conversion_1(
-  input  wire [2:0] inputs0_1,
-  input  wire [2:0] inputs1_1,
-  input  wire [2:0] inputs2_1,
-  input  wire [2:0] inputs3_1,
-  input  wire [2:0] inputs4_1,
-  input  wire [2:0] inputs5_1,
-  input  wire [2:0] inputs6_1,
-  input  wire [2:0] inputs7_1,
-  input  wire [2:0] inputs8_1,
-  input  wire [2:0] inputs9_1,
-  input  wire [2:0] inputs10_1,
-  input  wire [2:0] inputs11_1,
-  input  wire [2:0] inputs12_1,
-  input  wire [2:0] inputs13_1,
-  input  wire [2:0] inputs14_1,
-  input  wire [2:0] inputs15_1,
+  input  wire [7:0] inputs0_1,
+  input  wire [7:0] inputs1_1,
+  input  wire [7:0] inputs2_1,
+  input  wire [7:0] inputs3_1,
+  input  wire [7:0] inputs4_1,
+  input  wire [7:0] inputs5_1,
+  input  wire [7:0] inputs6_1,
+  input  wire [7:0] inputs7_1,
+  input  wire [7:0] inputs8_1,
+  input  wire [7:0] inputs9_1,
+  input  wire [7:0] inputs10_1,
+  input  wire [7:0] inputs11_1,
+  input  wire [7:0] inputs12_1,
+  input  wire [7:0] inputs13_1,
+  input  wire [7:0] inputs14_1,
+  input  wire [7:0] inputs15_1,
   input  wire [15:0] w1_0_1, w1_1_1,
   input  wire [15:0] w2_0_1, w2_1_1,
   input  wire [15:0] w3_0_1, w3_1_1,
@@ -1958,7 +2103,7 @@ module activation_and_conversion_1(
   input  wire [15:0] w6_0_1, w6_1_1,
   input  wire [15:0] w7_0_1, w7_1_1,
   input  wire [15:0] w8_0_1, w8_1_1,
-  input  wire [6:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1,
+  input  wire [11:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1,
   input  wire r0_0,
   input  wire r1_0,
   input  wire r2_0,
@@ -1967,6 +2112,11 @@ module activation_and_conversion_1(
   input  wire r5_0,
   input  wire r6_0,
   input  wire r7_0,
+  input  wire r8_0,
+  input  wire r9_0,
+  input  wire r10_0,
+  input  wire r11_0,
+  input  wire r12_0,
   input  wire r0_1,
   input  wire r1_1,
   input  wire r2_1,
@@ -1975,6 +2125,11 @@ module activation_and_conversion_1(
   input  wire r5_1,
   input  wire r6_1,
   input  wire r7_1,
+  input  wire r8_1,
+  input  wire r9_1,
+  input  wire r10_1,
+  input  wire r11_1,
+  input  wire r12_1,
   input  wire r0_2,
   input  wire r1_2,
   input  wire r2_2,
@@ -1983,6 +2138,11 @@ module activation_and_conversion_1(
   input  wire r5_2,
   input  wire r6_2,
   input  wire r7_2,
+  input  wire r8_2,
+  input  wire r9_2,
+  input  wire r10_2,
+  input  wire r11_2,
+  input  wire r12_2,
   input  wire r0_3,
   input  wire r1_3,
   input  wire r2_3,
@@ -1991,6 +2151,11 @@ module activation_and_conversion_1(
   input  wire r5_3,
   input  wire r6_3,
   input  wire r7_3,
+  input  wire r8_3,
+  input  wire r9_3,
+  input  wire r10_3,
+  input  wire r11_3,
+  input  wire r12_3,
   input  wire r0_4,
   input  wire r1_4,
   input  wire r2_4,
@@ -1999,6 +2164,11 @@ module activation_and_conversion_1(
   input  wire r5_4,
   input  wire r6_4,
   input  wire r7_4,
+  input  wire r8_4,
+  input  wire r9_4,
+  input  wire r10_4,
+  input  wire r11_4,
+  input  wire r12_4,
   input  wire r0_5,
   input  wire r1_5,
   input  wire r2_5,
@@ -2007,6 +2177,11 @@ module activation_and_conversion_1(
   input  wire r5_5,
   input  wire r6_5,
   input  wire r7_5,
+  input  wire r8_5,
+  input  wire r9_5,
+  input  wire r10_5,
+  input  wire r11_5,
+  input  wire r12_5,
   input  wire r0_6,
   input  wire r1_6,
   input  wire r2_6,
@@ -2015,6 +2190,11 @@ module activation_and_conversion_1(
   input  wire r5_6,
   input  wire r6_6,
   input  wire r7_6,
+  input  wire r8_6,
+  input  wire r9_6,
+  input  wire r10_6,
+  input  wire r11_6,
+  input  wire r12_6,
   input  wire r0_7,
   input  wire r1_7,
   input  wire r2_7,
@@ -2023,6 +2203,11 @@ module activation_and_conversion_1(
   input  wire r5_7,
   input  wire r6_7,
   input  wire r7_7,
+  input  wire r8_7,
+  input  wire r9_7,
+  input  wire r10_7,
+  input  wire r11_7,
+  input  wire r12_7,
   output wire masked_activation0_1, masked_activation0bar_1,
   output wire mask0_1, mask0bar_1,
   output wire masked_activation1_1, masked_activation1bar_1,
@@ -2041,22 +2226,22 @@ module activation_and_conversion_1(
   output wire mask7_1, mask7bar_1
 );
 
-  wire [7:0] biased_sum0_0, biased_sum0_0bar;
-  wire [7:0] biased_sum0_1, biased_sum0_1bar;
-  wire [7:0] biased_sum1_0, biased_sum1_0bar;
-  wire [7:0] biased_sum1_1, biased_sum1_1bar;
-  wire [7:0] biased_sum2_0, biased_sum2_0bar;
-  wire [7:0] biased_sum2_1, biased_sum2_1bar;
-  wire [7:0] biased_sum3_0, biased_sum3_0bar;
-  wire [7:0] biased_sum3_1, biased_sum3_1bar;
-  wire [7:0] biased_sum4_0, biased_sum4_0bar;
-  wire [7:0] biased_sum4_1, biased_sum4_1bar;
-  wire [7:0] biased_sum5_0, biased_sum5_0bar;
-  wire [7:0] biased_sum5_1, biased_sum5_1bar;
-  wire [7:0] biased_sum6_0, biased_sum6_0bar;
-  wire [7:0] biased_sum6_1, biased_sum6_1bar;
-  wire [7:0] biased_sum7_0, biased_sum7_0bar;
-  wire [7:0] biased_sum7_1, biased_sum7_1bar;
+  wire [12:0] biased_sum0_0, biased_sum0_0bar;
+  wire [12:0] biased_sum0_1, biased_sum0_1bar;
+  wire [12:0] biased_sum1_0, biased_sum1_0bar;
+  wire [12:0] biased_sum1_1, biased_sum1_1bar;
+  wire [12:0] biased_sum2_0, biased_sum2_0bar;
+  wire [12:0] biased_sum2_1, biased_sum2_1bar;
+  wire [12:0] biased_sum3_0, biased_sum3_0bar;
+  wire [12:0] biased_sum3_1, biased_sum3_1bar;
+  wire [12:0] biased_sum4_0, biased_sum4_0bar;
+  wire [12:0] biased_sum4_1, biased_sum4_1bar;
+  wire [12:0] biased_sum5_0, biased_sum5_0bar;
+  wire [12:0] biased_sum5_1, biased_sum5_1bar;
+  wire [12:0] biased_sum6_0, biased_sum6_0bar;
+  wire [12:0] biased_sum6_1, biased_sum6_1bar;
+  wire [12:0] biased_sum7_0, biased_sum7_0bar;
+  wire [12:0] biased_sum7_1, biased_sum7_1bar;
 
     layer1 l1 (
     .inputs0_1(inputs0_1),
@@ -2150,6 +2335,11 @@ module activation_and_conversion_1(
     .r5_0(r5_0),
     .r6_0(r6_0),
     .r7_0(r7_0),
+    .r8_0(r8_0),
+    .r9_0(r9_0),
+    .r10_0(r10_0),
+    .r11_0(r11_0),
+    .r12_0(r12_0),
     .r0_1(r0_1),
     .r1_1(r1_1),
     .r2_1(r2_1),
@@ -2158,6 +2348,11 @@ module activation_and_conversion_1(
     .r5_1(r5_1),
     .r6_1(r6_1),
     .r7_1(r7_1),
+    .r8_1(r8_1),
+    .r9_1(r9_1),
+    .r10_1(r10_1),
+    .r11_1(r11_1),
+    .r12_1(r12_1),
     .r0_2(r0_2),
     .r1_2(r1_2),
     .r2_2(r2_2),
@@ -2166,6 +2361,11 @@ module activation_and_conversion_1(
     .r5_2(r5_2),
     .r6_2(r6_2),
     .r7_2(r7_2),
+    .r8_2(r8_2),
+    .r9_2(r9_2),
+    .r10_2(r10_2),
+    .r11_2(r11_2),
+    .r12_2(r12_2),
     .r0_3(r0_3),
     .r1_3(r1_3),
     .r2_3(r2_3),
@@ -2174,6 +2374,11 @@ module activation_and_conversion_1(
     .r5_3(r5_3),
     .r6_3(r6_3),
     .r7_3(r7_3),
+    .r8_3(r8_3),
+    .r9_3(r9_3),
+    .r10_3(r10_3),
+    .r11_3(r11_3),
+    .r12_3(r12_3),
     .r0_4(r0_4),
     .r1_4(r1_4),
     .r2_4(r2_4),
@@ -2182,6 +2387,11 @@ module activation_and_conversion_1(
     .r5_4(r5_4),
     .r6_4(r6_4),
     .r7_4(r7_4),
+    .r8_4(r8_4),
+    .r9_4(r9_4),
+    .r10_4(r10_4),
+    .r11_4(r11_4),
+    .r12_4(r12_4),
     .r0_5(r0_5),
     .r1_5(r1_5),
     .r2_5(r2_5),
@@ -2190,6 +2400,11 @@ module activation_and_conversion_1(
     .r5_5(r5_5),
     .r6_5(r6_5),
     .r7_5(r7_5),
+    .r8_5(r8_5),
+    .r9_5(r9_5),
+    .r10_5(r10_5),
+    .r11_5(r11_5),
+    .r12_5(r12_5),
     .r0_6(r0_6),
     .r1_6(r1_6),
     .r2_6(r2_6),
@@ -2198,6 +2413,11 @@ module activation_and_conversion_1(
     .r5_6(r5_6),
     .r6_6(r6_6),
     .r7_6(r7_6),
+    .r8_6(r8_6),
+    .r9_6(r9_6),
+    .r10_6(r10_6),
+    .r11_6(r11_6),
+    .r12_6(r12_6),
     .r0_7(r0_7),
     .r1_7(r1_7),
     .r2_7(r2_7),
@@ -2206,6 +2426,11 @@ module activation_and_conversion_1(
     .r5_7(r5_7),
     .r6_7(r6_7),
     .r7_7(r7_7),
+    .r8_7(r8_7),
+    .r9_7(r9_7),
+    .r10_7(r10_7),
+    .r11_7(r11_7),
+    .r12_7(r12_7),
     .masked_activation0(masked_activation0_1),
     .masked_activation1(masked_activation1_1),
     .masked_activation2(masked_activation2_1),
@@ -2249,6 +2474,11 @@ module activation_and_conversion_1(
     .r5_0(r5_0),
     .r6_0(r6_0),
     .r7_0(r7_0),
+    .r8_0(r8_0),
+    .r9_0(r9_0),
+    .r10_0(r10_0),
+    .r11_0(r11_0),
+    .r12_0(r12_0),
     .r0_1(r0_1),
     .r1_1(r1_1),
     .r2_1(r2_1),
@@ -2257,6 +2487,11 @@ module activation_and_conversion_1(
     .r5_1(r5_1),
     .r6_1(r6_1),
     .r7_1(r7_1),
+    .r8_1(r8_1),
+    .r9_1(r9_1),
+    .r10_1(r10_1),
+    .r11_1(r11_1),
+    .r12_1(r12_1),
     .r0_2(r0_2),
     .r1_2(r1_2),
     .r2_2(r2_2),
@@ -2265,6 +2500,11 @@ module activation_and_conversion_1(
     .r5_2(r5_2),
     .r6_2(r6_2),
     .r7_2(r7_2),
+    .r8_2(r8_2),
+    .r9_2(r9_2),
+    .r10_2(r10_2),
+    .r11_2(r11_2),
+    .r12_2(r12_2),
     .r0_3(r0_3),
     .r1_3(r1_3),
     .r2_3(r2_3),
@@ -2273,6 +2513,11 @@ module activation_and_conversion_1(
     .r5_3(r5_3),
     .r6_3(r6_3),
     .r7_3(r7_3),
+    .r8_3(r8_3),
+    .r9_3(r9_3),
+    .r10_3(r10_3),
+    .r11_3(r11_3),
+    .r12_3(r12_3),
     .r0_4(r0_4),
     .r1_4(r1_4),
     .r2_4(r2_4),
@@ -2281,6 +2526,11 @@ module activation_and_conversion_1(
     .r5_4(r5_4),
     .r6_4(r6_4),
     .r7_4(r7_4),
+    .r8_4(r8_4),
+    .r9_4(r9_4),
+    .r10_4(r10_4),
+    .r11_4(r11_4),
+    .r12_4(r12_4),
     .r0_5(r0_5),
     .r1_5(r1_5),
     .r2_5(r2_5),
@@ -2289,6 +2539,11 @@ module activation_and_conversion_1(
     .r5_5(r5_5),
     .r6_5(r6_5),
     .r7_5(r7_5),
+    .r8_5(r8_5),
+    .r9_5(r9_5),
+    .r10_5(r10_5),
+    .r11_5(r11_5),
+    .r12_5(r12_5),
     .r0_6(r0_6),
     .r1_6(r1_6),
     .r2_6(r2_6),
@@ -2297,6 +2552,11 @@ module activation_and_conversion_1(
     .r5_6(r5_6),
     .r6_6(r6_6),
     .r7_6(r7_6),
+    .r8_6(r8_6),
+    .r9_6(r9_6),
+    .r10_6(r10_6),
+    .r11_6(r11_6),
+    .r12_6(r12_6),
     .r0_7(r0_7),
     .r1_7(r1_7),
     .r2_7(r2_7),
@@ -2305,6 +2565,11 @@ module activation_and_conversion_1(
     .r5_7(r5_7),
     .r6_7(r6_7),
     .r7_7(r7_7),
+    .r8_7(r8_7),
+    .r9_7(r9_7),
+    .r10_7(r10_7),
+    .r11_7(r11_7),
+    .r12_7(r12_7),
     .masked_activation0(masked_activation0bar_1),
     .masked_activation1(masked_activation1bar_1),
     .masked_activation2(masked_activation2bar_1),
@@ -7983,22 +8248,22 @@ module output_layer_max (
 endmodule
 module connector(
     // Layer-1 inputs
-    input  wire [2:0] inputs0_1,
-    input  wire [2:0] inputs1_1,
-    input  wire [2:0] inputs2_1,
-    input  wire [2:0] inputs3_1,
-    input  wire [2:0] inputs4_1,
-    input  wire [2:0] inputs5_1,
-    input  wire [2:0] inputs6_1,
-    input  wire [2:0] inputs7_1,
-    input  wire [2:0] inputs8_1,
-    input  wire [2:0] inputs9_1,
-    input  wire [2:0] inputs10_1,
-    input  wire [2:0] inputs11_1,
-    input  wire [2:0] inputs12_1,
-    input  wire [2:0] inputs13_1,
-    input  wire [2:0] inputs14_1,
-    input  wire [2:0] inputs15_1,
+    input  wire [7:0] inputs0_1,
+    input  wire [7:0] inputs1_1,
+    input  wire [7:0] inputs2_1,
+    input  wire [7:0] inputs3_1,
+    input  wire [7:0] inputs4_1,
+    input  wire [7:0] inputs5_1,
+    input  wire [7:0] inputs6_1,
+    input  wire [7:0] inputs7_1,
+    input  wire [7:0] inputs8_1,
+    input  wire [7:0] inputs9_1,
+    input  wire [7:0] inputs10_1,
+    input  wire [7:0] inputs11_1,
+    input  wire [7:0] inputs12_1,
+    input  wire [7:0] inputs13_1,
+    input  wire [7:0] inputs14_1,
+    input  wire [7:0] inputs15_1,
     // Layer-1 weights & biases
     input  wire [15:0] w1_0_1, w1_1_1,
     input  wire [15:0] w2_0_1, w2_1_1,
@@ -8008,7 +8273,7 @@ module connector(
     input  wire [15:0] w6_0_1, w6_1_1,
     input  wire [15:0] w7_0_1, w7_1_1,
     input  wire [15:0] w8_0_1, w8_1_1,
-    input  wire [6:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1,
+    input  wire [11:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1,
 
     // Layer-2 weights & biases
     input  wire [15:0] w1_0_2, w1_1_2,
@@ -8067,6 +8332,11 @@ module connector(
   reg  r5_0_1;
   reg  r6_0_1;
   reg  r7_0_1;
+  reg  r8_0_1;
+  reg  r9_0_1;
+  reg  r10_0_1;
+  reg  r11_0_1;
+  reg  r12_0_1;
   reg  r0_1_1;
   reg  r1_1_1;
   reg  r2_1_1;
@@ -8075,6 +8345,11 @@ module connector(
   reg  r5_1_1;
   reg  r6_1_1;
   reg  r7_1_1;
+  reg  r8_1_1;
+  reg  r9_1_1;
+  reg  r10_1_1;
+  reg  r11_1_1;
+  reg  r12_1_1;
   reg  r0_2_1;
   reg  r1_2_1;
   reg  r2_2_1;
@@ -8083,6 +8358,11 @@ module connector(
   reg  r5_2_1;
   reg  r6_2_1;
   reg  r7_2_1;
+  reg  r8_2_1;
+  reg  r9_2_1;
+  reg  r10_2_1;
+  reg  r11_2_1;
+  reg  r12_2_1;
   reg  r0_3_1;
   reg  r1_3_1;
   reg  r2_3_1;
@@ -8091,6 +8371,11 @@ module connector(
   reg  r5_3_1;
   reg  r6_3_1;
   reg  r7_3_1;
+  reg  r8_3_1;
+  reg  r9_3_1;
+  reg  r10_3_1;
+  reg  r11_3_1;
+  reg  r12_3_1;
   reg  r0_4_1;
   reg  r1_4_1;
   reg  r2_4_1;
@@ -8099,6 +8384,11 @@ module connector(
   reg  r5_4_1;
   reg  r6_4_1;
   reg  r7_4_1;
+  reg  r8_4_1;
+  reg  r9_4_1;
+  reg  r10_4_1;
+  reg  r11_4_1;
+  reg  r12_4_1;
   reg  r0_5_1;
   reg  r1_5_1;
   reg  r2_5_1;
@@ -8107,6 +8397,11 @@ module connector(
   reg  r5_5_1;
   reg  r6_5_1;
   reg  r7_5_1;
+  reg  r8_5_1;
+  reg  r9_5_1;
+  reg  r10_5_1;
+  reg  r11_5_1;
+  reg  r12_5_1;
   reg  r0_6_1;
   reg  r1_6_1;
   reg  r2_6_1;
@@ -8115,6 +8410,11 @@ module connector(
   reg  r5_6_1;
   reg  r6_6_1;
   reg  r7_6_1;
+  reg  r8_6_1;
+  reg  r9_6_1;
+  reg  r10_6_1;
+  reg  r11_6_1;
+  reg  r12_6_1;
   reg  r0_7_1;
   reg  r1_7_1;
   reg  r2_7_1;
@@ -8123,6 +8423,11 @@ module connector(
   reg  r5_7_1;
   reg  r6_7_1;
   reg  r7_7_1;
+  reg  r8_7_1;
+  reg  r9_7_1;
+  reg  r10_7_1;
+  reg  r11_7_1;
+  reg  r12_7_1;
   initial begin
     r0_0_1 = $random;
     r1_0_1 = $random;
@@ -8132,6 +8437,11 @@ module connector(
     r5_0_1 = $random;
     r6_0_1 = $random;
     r7_0_1 = $random;
+    r8_0_1 = $random;
+    r9_0_1 = $random;
+    r10_0_1 = $random;
+    r11_0_1 = $random;
+    r12_0_1 = $random;
     r0_1_1 = $random;
     r1_1_1 = $random;
     r2_1_1 = $random;
@@ -8140,6 +8450,11 @@ module connector(
     r5_1_1 = $random;
     r6_1_1 = $random;
     r7_1_1 = $random;
+    r8_1_1 = $random;
+    r9_1_1 = $random;
+    r10_1_1 = $random;
+    r11_1_1 = $random;
+    r12_1_1 = $random;
     r0_2_1 = $random;
     r1_2_1 = $random;
     r2_2_1 = $random;
@@ -8148,6 +8463,11 @@ module connector(
     r5_2_1 = $random;
     r6_2_1 = $random;
     r7_2_1 = $random;
+    r8_2_1 = $random;
+    r9_2_1 = $random;
+    r10_2_1 = $random;
+    r11_2_1 = $random;
+    r12_2_1 = $random;
     r0_3_1 = $random;
     r1_3_1 = $random;
     r2_3_1 = $random;
@@ -8156,6 +8476,11 @@ module connector(
     r5_3_1 = $random;
     r6_3_1 = $random;
     r7_3_1 = $random;
+    r8_3_1 = $random;
+    r9_3_1 = $random;
+    r10_3_1 = $random;
+    r11_3_1 = $random;
+    r12_3_1 = $random;
     r0_4_1 = $random;
     r1_4_1 = $random;
     r2_4_1 = $random;
@@ -8164,6 +8489,11 @@ module connector(
     r5_4_1 = $random;
     r6_4_1 = $random;
     r7_4_1 = $random;
+    r8_4_1 = $random;
+    r9_4_1 = $random;
+    r10_4_1 = $random;
+    r11_4_1 = $random;
+    r12_4_1 = $random;
     r0_5_1 = $random;
     r1_5_1 = $random;
     r2_5_1 = $random;
@@ -8172,6 +8502,11 @@ module connector(
     r5_5_1 = $random;
     r6_5_1 = $random;
     r7_5_1 = $random;
+    r8_5_1 = $random;
+    r9_5_1 = $random;
+    r10_5_1 = $random;
+    r11_5_1 = $random;
+    r12_5_1 = $random;
     r0_6_1 = $random;
     r1_6_1 = $random;
     r2_6_1 = $random;
@@ -8180,6 +8515,11 @@ module connector(
     r5_6_1 = $random;
     r6_6_1 = $random;
     r7_6_1 = $random;
+    r8_6_1 = $random;
+    r9_6_1 = $random;
+    r10_6_1 = $random;
+    r11_6_1 = $random;
+    r12_6_1 = $random;
     r0_7_1 = $random;
     r1_7_1 = $random;
     r2_7_1 = $random;
@@ -8188,6 +8528,11 @@ module connector(
     r5_7_1 = $random;
     r6_7_1 = $random;
     r7_7_1 = $random;
+    r8_7_1 = $random;
+    r9_7_1 = $random;
+    r10_7_1 = $random;
+    r11_7_1 = $random;
+    r12_7_1 = $random;
     #1;
   end
 
@@ -8241,6 +8586,11 @@ module connector(
     .r5_0(r5_0_1),
     .r6_0(r6_0_1),
     .r7_0(r7_0_1),
+    .r8_0(r8_0_1),
+    .r9_0(r9_0_1),
+    .r10_0(r10_0_1),
+    .r11_0(r11_0_1),
+    .r12_0(r12_0_1),
     .r0_1(r0_1_1),
     .r1_1(r1_1_1),
     .r2_1(r2_1_1),
@@ -8249,6 +8599,11 @@ module connector(
     .r5_1(r5_1_1),
     .r6_1(r6_1_1),
     .r7_1(r7_1_1),
+    .r8_1(r8_1_1),
+    .r9_1(r9_1_1),
+    .r10_1(r10_1_1),
+    .r11_1(r11_1_1),
+    .r12_1(r12_1_1),
     .r0_2(r0_2_1),
     .r1_2(r1_2_1),
     .r2_2(r2_2_1),
@@ -8257,6 +8612,11 @@ module connector(
     .r5_2(r5_2_1),
     .r6_2(r6_2_1),
     .r7_2(r7_2_1),
+    .r8_2(r8_2_1),
+    .r9_2(r9_2_1),
+    .r10_2(r10_2_1),
+    .r11_2(r11_2_1),
+    .r12_2(r12_2_1),
     .r0_3(r0_3_1),
     .r1_3(r1_3_1),
     .r2_3(r2_3_1),
@@ -8265,6 +8625,11 @@ module connector(
     .r5_3(r5_3_1),
     .r6_3(r6_3_1),
     .r7_3(r7_3_1),
+    .r8_3(r8_3_1),
+    .r9_3(r9_3_1),
+    .r10_3(r10_3_1),
+    .r11_3(r11_3_1),
+    .r12_3(r12_3_1),
     .r0_4(r0_4_1),
     .r1_4(r1_4_1),
     .r2_4(r2_4_1),
@@ -8273,6 +8638,11 @@ module connector(
     .r5_4(r5_4_1),
     .r6_4(r6_4_1),
     .r7_4(r7_4_1),
+    .r8_4(r8_4_1),
+    .r9_4(r9_4_1),
+    .r10_4(r10_4_1),
+    .r11_4(r11_4_1),
+    .r12_4(r12_4_1),
     .r0_5(r0_5_1),
     .r1_5(r1_5_1),
     .r2_5(r2_5_1),
@@ -8281,6 +8651,11 @@ module connector(
     .r5_5(r5_5_1),
     .r6_5(r6_5_1),
     .r7_5(r7_5_1),
+    .r8_5(r8_5_1),
+    .r9_5(r9_5_1),
+    .r10_5(r10_5_1),
+    .r11_5(r11_5_1),
+    .r12_5(r12_5_1),
     .r0_6(r0_6_1),
     .r1_6(r1_6_1),
     .r2_6(r2_6_1),
@@ -8289,6 +8664,11 @@ module connector(
     .r5_6(r5_6_1),
     .r6_6(r6_6_1),
     .r7_6(r7_6_1),
+    .r8_6(r8_6_1),
+    .r9_6(r9_6_1),
+    .r10_6(r10_6_1),
+    .r11_6(r11_6_1),
+    .r12_6(r12_6_1),
     .r0_7(r0_7_1),
     .r1_7(r1_7_1),
     .r2_7(r2_7_1),
@@ -8297,6 +8677,11 @@ module connector(
     .r5_7(r5_7_1),
     .r6_7(r6_7_1),
     .r7_7(r7_7_1),
+    .r8_7(r8_7_1),
+    .r9_7(r9_7_1),
+    .r10_7(r10_7_1),
+    .r11_7(r11_7_1),
+    .r12_7(r12_7_1),
     .masked_activation0_1(masked_activation0_1), .masked_activation0bar_1(masked_activation0bar_1),
     .masked_activation1_1(masked_activation1_1), .masked_activation1bar_1(masked_activation1bar_1),
     .masked_activation2_1(masked_activation2_1), .masked_activation2bar_1(masked_activation2bar_1),
@@ -8879,4 +9264,3 @@ module connector(
 
 endmodule
 `default_nettype wire
-
