@@ -5,10 +5,10 @@
 
 module connector_tb;
   // Layer‑1 inputs
-  reg  [2:0]  inputs0_1, inputs1_1, inputs2_1, inputs3_1;
-  reg  [2:0]  inputs4_1, inputs5_1, inputs6_1, inputs7_1;
-  reg  [2:0]  inputs8_1, inputs9_1, inputs10_1, inputs11_1;
-  reg  [2:0]  inputs12_1, inputs13_1, inputs14_1, inputs15_1;
+  reg  [7:0]  inputs0_1, inputs1_1, inputs2_1, inputs3_1;
+  reg  [7:0]  inputs4_1, inputs5_1, inputs6_1, inputs7_1;
+  reg  [7:0]  inputs8_1, inputs9_1, inputs10_1, inputs11_1;
+  reg  [7:0]  inputs12_1, inputs13_1, inputs14_1, inputs15_1;
 // Share (m1) inputs
   reg [15:0] w1_0_1, w1_1_1, w2_0_1, w2_1_1, w3_0_1, w3_1_1, w4_0_1, w4_1_1;
   reg [15:0] w5_0_1, w5_1_1, w6_0_1, w6_1_1, w7_0_1, w7_1_1, w8_0_1, w8_1_1;
@@ -72,10 +72,10 @@ reg [15:0] w1_0_4, w1_1_4, w2_0_4, w2_1_4, w3_0_4, w3_1_4, w4_0_4, w4_1_4;
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
 
-inputs0_1 = 3'd2;  inputs1_1 = 3'd2;  inputs2_1 = 3'd3;  inputs3_1 = 3'd3;
-inputs4_1 = 3'd5;  inputs5_1 = 3'd6;  inputs6_1 = 3'd7;  inputs7_1 = 3'd6;
-inputs8_1 = 3'd1;  inputs9_1 = 3'd7;  inputs10_1 = 3'd3; inputs11_1 = 3'd2;
-inputs12_1 = 3'd5; inputs13_1 = 3'd7; inputs14_1 = 3'd0; inputs15_1 = 3'd1;
+inputs0_1 = 7'd2;  inputs1_1 = 7'd2;  inputs2_1 = 7'd3;  inputs3_1 = 7'd3;
+inputs4_1 = 7'd5;  inputs5_1 = 7'd6;  inputs6_1 = 7'd7;  inputs7_1 = 7'd6;
+inputs8_1 = 7'd1;  inputs9_1 = 7'd7;  inputs10_1 = 7'd3; inputs11_1 = 7'd2;
+inputs12_1 = 7'd5; inputs13_1 = 7'd7; inputs14_1 = 7'd0; inputs15_1 = 7'd1;
 
 // Weights example pattern for 8 nodes (0th and 1st sets)
 {w1_0_1,w2_0_1,w3_0_1,w4_0_1,w5_0_1,w6_0_1,w7_0_1,w8_0_1} = {8{16'b0000111111111111}};
