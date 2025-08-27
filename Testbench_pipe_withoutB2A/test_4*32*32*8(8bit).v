@@ -4,10 +4,10 @@
 `include "a3_py.v"
 
 module connector_tb;
-reg [2:0] inputs0_1;
-reg [2:0] inputs1_1;
-reg [2:0] inputs2_1;
-reg [2:0] inputs3_1;
+  reg [7:0] inputs0_1;
+  reg [7:0] inputs1_1;
+  reg [7:0] inputs2_1;
+  reg [7:0] inputs3_1;
 
 // Layer-1 weights & biases
 reg [3:0] w1_0_1, w1_1_1;
@@ -42,7 +42,7 @@ reg [3:0] w29_0_1, w29_1_1;
 reg [3:0] w30_0_1, w30_1_1;
 reg [3:0] w31_0_1, w31_1_1;
 reg [3:0] w32_0_1, w32_1_1;
-reg [4:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1;
+  reg [9:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1;
 
 // Layer-2 weights & biases
 reg [63:0] w1_0_2, w1_1_2;
@@ -205,7 +205,7 @@ wire a7, a7_bar;
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
 
-inputs0_1 = 3'd2;  inputs1_1 = 3'd2;  inputs2_1 = 3'd3;  inputs3_1 = 3'd3;
+inputs0_1 = 7'd2;  inputs1_1 = 7'd2;  inputs2_1 = 7'd3;  inputs3_1 = 7'd3;
 
 // Weights example pattern for 8 nodes (0th and 1st sets)
 {w1_0_1, w2_0_1, w3_0_1, w4_0_1, w5_0_1, w6_0_1, w7_0_1, w8_0_1,
@@ -239,7 +239,7 @@ inputs0_1 = 3'd2;  inputs1_1 = 3'd2;  inputs2_1 = 3'd3;  inputs3_1 = 3'd3;
 {b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, 
  b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, 
  b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, 
- b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1} = {32{4'd0}};
+ b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1} = {32{9'd0}};
 
 {b1_2, b2_2, b3_2, b4_2, b5_2, b6_2, b7_2, b8_2, 
  b9_2, b10_2, b11_2, b12_2, b13_2, b14_2, b15_2, b16_2, 
