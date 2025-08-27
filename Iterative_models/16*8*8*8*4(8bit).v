@@ -4,11 +4,11 @@
     
 module weighted_inputs_1(
 
-    input [2:0] inputs,
+    input [7:0] inputs,
 
     input w,
 
-    output reg [2:0] wi
+    output reg [7:0] wi
 );
 
     always @(*) begin
@@ -81,13 +81,13 @@ endmodule
 
 
 module mux_2(
-    input  [2:0] a,
-    input  [2:0] b,
-    input  [2:0] c,
-    input  [2:0] d,
+    input  [7:0] a,
+    input  [7:0] b,
+    input  [7:0] c,
+    input  [7:0] d,
     input        s0,
     input        s1,
-    output [2:0] y
+    output [7:0] y
 );
     assign y = (s1 == 0 && s0 == 0) ? a :
                (s1 == 0 && s0 == 1) ? b :
@@ -112,12 +112,12 @@ endmodule
 
 
 module mux_4(
-    input  [2:0] a,
-    input  [2:0] b,
-    input  [2:0] c,
+    input  [7:0] a,
+    input  [7:0] b,
+    input  [7:0] c,
     input        s0,
     input        s1,
-    output [2:0] y
+    output [7:0] y
 );
     assign y = (s1 == 0 && s0 == 0) ? a :
                (s1 == 0 && s0 == 1) ? b :
@@ -160,139 +160,11 @@ module WddlNAND(
   assign S1 = ~S;
 endmodule
 
-module add3bit(
-    input wire [2:0] a,
-    input wire [2:0] b,
+module add8bit(
+    input wire [7:0] a,
+    input wire [7:0] b,
     input wire  cin,
-    output wire [3:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-
-full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-
-WddlNAND wn1(.A(~a[2]), .B(b[2]), .C(~c3), .S(s1), .S1(s1_1));
-WddlNAND wn2(.A(a[2]), .B(~b[2]), .C(~c3), .S(s2), .S1(s2_1));
-WddlNAND wn3(.A(a[2]), .B(b[2]), .C(c3), .S(s3), .S1(s3_1));
-WddlNAND wn4(.A(~a[2]), .B(~b[2]), .C(c3), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[3] = cout;
-
-endmodule
-
-module add4bit(
-    input wire [3:0] a,
-    input wire [3:0] b,
-    input wire  cin,
-    output wire [4:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-
-full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-
-WddlNAND wn1(.A(~a[3]), .B(b[3]), .C(~c4), .S(s1), .S1(s1_1));
-WddlNAND wn2(.A(a[3]), .B(~b[3]), .C(~c4), .S(s2), .S1(s2_1));
-WddlNAND wn3(.A(a[3]), .B(b[3]), .C(c4), .S(s3), .S1(s3_1));
-WddlNAND wn4(.A(~a[3]), .B(~b[3]), .C(c4), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[4] = cout;
-
-endmodule
-
-module add5bit(
-    input wire [4:0] a,
-    input wire [4:0] b,
-    input wire  cin,
-    output wire [5:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-
-full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adder fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-
-WddlNAND wn1(.A(~a[4]), .B(b[4]), .C(~c5), .S(s1), .S1(s1_1));
-WddlNAND wn2(.A(a[4]), .B(~b[4]), .C(~c5), .S(s2), .S1(s2_1));
-WddlNAND wn3(.A(a[4]), .B(b[4]), .C(c5), .S(s3), .S1(s3_1));
-WddlNAND wn4(.A(~a[4]), .B(~b[4]), .C(c5), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[5] = cout;
-
-endmodule
-
-module add6bit(
-    input wire [5:0] a,
-    input wire [5:0] b,
-    input wire  cin,
-    output wire [6:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-wire c6;
-
-full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adder fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-full_adder fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
-
-WddlNAND wn1(.A(~a[5]), .B(b[5]), .C(~c6), .S(s1), .S1(s1_1));
-WddlNAND wn2(.A(a[5]), .B(~b[5]), .C(~c6), .S(s2), .S1(s2_1));
-WddlNAND wn3(.A(a[5]), .B(b[5]), .C(c6), .S(s3), .S1(s3_1));
-WddlNAND wn4(.A(~a[5]), .B(~b[5]), .C(c6), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[6] = cout;
-
-endmodule
-
-module add7bit(
-    input wire [6:0] a,
-    input wire [6:0] b,
-    input wire  cin,
-    output wire [7:0] y,
+    output wire [8:0] y,
     output wire cout,
     output wire cout_bar
 );
@@ -305,6 +177,7 @@ wire c4;
 wire c5;
 wire c6;
 wire c7;
+wire c8;
 
 full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
 full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
@@ -313,15 +186,192 @@ full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
 full_adder fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
 full_adder fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
 full_adder fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
 
-WddlNAND wn1(.A(~a[6]), .B(b[6]), .C(~c7), .S(s1), .S1(s1_1));
-WddlNAND wn2(.A(a[6]), .B(~b[6]), .C(~c7), .S(s2), .S1(s2_1));
-WddlNAND wn3(.A(a[6]), .B(b[6]), .C(c7), .S(s3), .S1(s3_1));
-WddlNAND wn4(.A(~a[6]), .B(~b[6]), .C(c7), .S(s4), .S1(s4_1));
+WddlNAND wn1(.A(~a[7]), .B(b[7]), .C(~c8), .S(s1), .S1(s1_1));
+WddlNAND wn2(.A(a[7]), .B(~b[7]), .C(~c8), .S(s2), .S1(s2_1));
+WddlNAND wn3(.A(a[7]), .B(b[7]), .C(c8), .S(s3), .S1(s3_1));
+WddlNAND wn4(.A(~a[7]), .B(~b[7]), .C(c8), .S(s4), .S1(s4_1));
 
 assign cout = ~(s1 & s2 & s3 & s4);
 assign cout_bar = ~cout;
-assign y[7] = cout;
+assign y[8] = cout;
+
+endmodule
+
+module add9bit(
+    input wire [8:0] a,
+    input wire [8:0] b,
+    input wire  cin,
+    output wire [9:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+
+full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+
+WddlNAND wn1(.A(~a[8]), .B(b[8]), .C(~c9), .S(s1), .S1(s1_1));
+WddlNAND wn2(.A(a[8]), .B(~b[8]), .C(~c9), .S(s2), .S1(s2_1));
+WddlNAND wn3(.A(a[8]), .B(b[8]), .C(c9), .S(s3), .S1(s3_1));
+WddlNAND wn4(.A(~a[8]), .B(~b[8]), .C(c9), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[9] = cout;
+
+endmodule
+
+module add10bit(
+    input wire [9:0] a,
+    input wire [9:0] b,
+    input wire  cin,
+    output wire [10:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+
+full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adder fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+
+WddlNAND wn1(.A(~a[9]), .B(b[9]), .C(~c10), .S(s1), .S1(s1_1));
+WddlNAND wn2(.A(a[9]), .B(~b[9]), .C(~c10), .S(s2), .S1(s2_1));
+WddlNAND wn3(.A(a[9]), .B(b[9]), .C(c10), .S(s3), .S1(s3_1));
+WddlNAND wn4(.A(~a[9]), .B(~b[9]), .C(c10), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[10] = cout;
+
+endmodule
+
+module add11bit(
+    input wire [10:0] a,
+    input wire [10:0] b,
+    input wire  cin,
+    output wire [11:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+
+full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adder fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adder fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+
+WddlNAND wn1(.A(~a[10]), .B(b[10]), .C(~c11), .S(s1), .S1(s1_1));
+WddlNAND wn2(.A(a[10]), .B(~b[10]), .C(~c11), .S(s2), .S1(s2_1));
+WddlNAND wn3(.A(a[10]), .B(b[10]), .C(c11), .S(s3), .S1(s3_1));
+WddlNAND wn4(.A(~a[10]), .B(~b[10]), .C(c11), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[11] = cout;
+
+endmodule
+
+module add12bit(
+    input wire [11:0] a,
+    input wire [11:0] b,
+    input wire  cin,
+    output wire [12:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+wire c12;
+
+full_adder fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adder fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adder fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adder fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adder fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adder fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adder fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adder fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adder fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adder fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adder fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+full_adder fa11(.S(y[11]), .C(c12), .X(a[11]), .Y(b[11]), .Z(c11));
+
+WddlNAND wn1(.A(~a[11]), .B(b[11]), .C(~c12), .S(s1), .S1(s1_1));
+WddlNAND wn2(.A(a[11]), .B(~b[11]), .C(~c12), .S(s2), .S1(s2_1));
+WddlNAND wn3(.A(a[11]), .B(b[11]), .C(c12), .S(s3), .S1(s3_1));
+WddlNAND wn4(.A(~a[11]), .B(~b[11]), .C(c12), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[12] = cout;
 
 endmodule
 
@@ -360,139 +410,11 @@ module WddlNANDbar(
   assign S1 = ~S;
 endmodule
 
-module add3bitbar(
-    input wire [2:0] a,
-    input wire [2:0] b,
+module add8bitbar(
+    input wire [7:0] a,
+    input wire [7:0] b,
     input wire  cin,
-    output wire [3:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-
-full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-
-WddlNANDbar wn1(.A(~a[2]), .B(b[2]), .C(~c3), .S(s1), .S1(s1_1));
-WddlNANDbar wn2(.A(a[2]), .B(~b[2]), .C(~c3), .S(s2), .S1(s2_1));
-WddlNANDbar wn3(.A(a[2]), .B(b[2]), .C(c3), .S(s3), .S1(s3_1));
-WddlNANDbar wn4(.A(~a[2]), .B(~b[2]), .C(c3), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[3] = cout_bar;
-
-endmodule
-
-module add4bitbar(
-    input wire [3:0] a,
-    input wire [3:0] b,
-    input wire  cin,
-    output wire [4:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-
-full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-
-WddlNANDbar wn1(.A(~a[3]), .B(b[3]), .C(~c4), .S(s1), .S1(s1_1));
-WddlNANDbar wn2(.A(a[3]), .B(~b[3]), .C(~c4), .S(s2), .S1(s2_1));
-WddlNANDbar wn3(.A(a[3]), .B(b[3]), .C(c4), .S(s3), .S1(s3_1));
-WddlNANDbar wn4(.A(~a[3]), .B(~b[3]), .C(c4), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[4] = cout_bar;
-
-endmodule
-
-module add5bitbar(
-    input wire [4:0] a,
-    input wire [4:0] b,
-    input wire  cin,
-    output wire [5:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-
-full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adderbar fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-
-WddlNANDbar wn1(.A(~a[4]), .B(b[4]), .C(~c5), .S(s1), .S1(s1_1));
-WddlNANDbar wn2(.A(a[4]), .B(~b[4]), .C(~c5), .S(s2), .S1(s2_1));
-WddlNANDbar wn3(.A(a[4]), .B(b[4]), .C(c5), .S(s3), .S1(s3_1));
-WddlNANDbar wn4(.A(~a[4]), .B(~b[4]), .C(c5), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[5] = cout_bar;
-
-endmodule
-
-module add6bitbar(
-    input wire [5:0] a,
-    input wire [5:0] b,
-    input wire  cin,
-    output wire [6:0] y,
-    output wire cout,
-    output wire cout_bar
-);
-
-    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
-wire c1;
-wire c2;
-wire c3;
-wire c4;
-wire c5;
-wire c6;
-
-full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
-full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
-full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
-full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
-full_adderbar fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
-full_adderbar fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
-
-WddlNANDbar wn1(.A(~a[5]), .B(b[5]), .C(~c6), .S(s1), .S1(s1_1));
-WddlNANDbar wn2(.A(a[5]), .B(~b[5]), .C(~c6), .S(s2), .S1(s2_1));
-WddlNANDbar wn3(.A(a[5]), .B(b[5]), .C(c6), .S(s3), .S1(s3_1));
-WddlNANDbar wn4(.A(~a[5]), .B(~b[5]), .C(c6), .S(s4), .S1(s4_1));
-
-assign cout = ~(s1 & s2 & s3 & s4);
-assign cout_bar = ~cout;
-assign y[6] = cout_bar;
-
-endmodule
-
-module add7bitbar(
-    input wire [6:0] a,
-    input wire [6:0] b,
-    input wire  cin,
-    output wire [7:0] y,
+    output wire [8:0] y,
     output wire cout,
     output wire cout_bar
 );
@@ -505,6 +427,7 @@ wire c4;
 wire c5;
 wire c6;
 wire c7;
+wire c8;
 
 full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
 full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
@@ -513,86 +436,263 @@ full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
 full_adderbar fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
 full_adderbar fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
 full_adderbar fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
 
-WddlNANDbar wn1(.A(~a[6]), .B(b[6]), .C(~c7), .S(s1), .S1(s1_1));
-WddlNANDbar wn2(.A(a[6]), .B(~b[6]), .C(~c7), .S(s2), .S1(s2_1));
-WddlNANDbar wn3(.A(a[6]), .B(b[6]), .C(c7), .S(s3), .S1(s3_1));
-WddlNANDbar wn4(.A(~a[6]), .B(~b[6]), .C(c7), .S(s4), .S1(s4_1));
+WddlNANDbar wn1(.A(~a[7]), .B(b[7]), .C(~c8), .S(s1), .S1(s1_1));
+WddlNANDbar wn2(.A(a[7]), .B(~b[7]), .C(~c8), .S(s2), .S1(s2_1));
+WddlNANDbar wn3(.A(a[7]), .B(b[7]), .C(c8), .S(s3), .S1(s3_1));
+WddlNANDbar wn4(.A(~a[7]), .B(~b[7]), .C(c8), .S(s4), .S1(s4_1));
 
 assign cout = ~(s1 & s2 & s3 & s4);
 assign cout_bar = ~cout;
-assign y[7] = cout_bar;
+assign y[8] = cout_bar;
+
+endmodule
+
+module add9bitbar(
+    input wire [8:0] a,
+    input wire [8:0] b,
+    input wire  cin,
+    output wire [9:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+
+full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+
+WddlNANDbar wn1(.A(~a[8]), .B(b[8]), .C(~c9), .S(s1), .S1(s1_1));
+WddlNANDbar wn2(.A(a[8]), .B(~b[8]), .C(~c9), .S(s2), .S1(s2_1));
+WddlNANDbar wn3(.A(a[8]), .B(b[8]), .C(c9), .S(s3), .S1(s3_1));
+WddlNANDbar wn4(.A(~a[8]), .B(~b[8]), .C(c9), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[9] = cout_bar;
+
+endmodule
+
+module add10bitbar(
+    input wire [9:0] a,
+    input wire [9:0] b,
+    input wire  cin,
+    output wire [10:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+
+full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adderbar fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+
+WddlNANDbar wn1(.A(~a[9]), .B(b[9]), .C(~c10), .S(s1), .S1(s1_1));
+WddlNANDbar wn2(.A(a[9]), .B(~b[9]), .C(~c10), .S(s2), .S1(s2_1));
+WddlNANDbar wn3(.A(a[9]), .B(b[9]), .C(c10), .S(s3), .S1(s3_1));
+WddlNANDbar wn4(.A(~a[9]), .B(~b[9]), .C(c10), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[10] = cout_bar;
+
+endmodule
+
+module add11bitbar(
+    input wire [10:0] a,
+    input wire [10:0] b,
+    input wire  cin,
+    output wire [11:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+
+full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adderbar fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adderbar fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+
+WddlNANDbar wn1(.A(~a[10]), .B(b[10]), .C(~c11), .S(s1), .S1(s1_1));
+WddlNANDbar wn2(.A(a[10]), .B(~b[10]), .C(~c11), .S(s2), .S1(s2_1));
+WddlNANDbar wn3(.A(a[10]), .B(b[10]), .C(c11), .S(s3), .S1(s3_1));
+WddlNANDbar wn4(.A(~a[10]), .B(~b[10]), .C(c11), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[11] = cout_bar;
+
+endmodule
+
+module add12bitbar(
+    input wire [11:0] a,
+    input wire [11:0] b,
+    input wire  cin,
+    output wire [12:0] y,
+    output wire cout,
+    output wire cout_bar
+);
+
+    wire s1, s1_1, s2, s2_1, s3, s3_1, s4, s4_1;
+wire c1;
+wire c2;
+wire c3;
+wire c4;
+wire c5;
+wire c6;
+wire c7;
+wire c8;
+wire c9;
+wire c10;
+wire c11;
+wire c12;
+
+full_adderbar fa0(.S(y[0]), .C(c1), .X(a[0]), .Y(b[0]), .Z(cin));
+full_adderbar fa1(.S(y[1]), .C(c2), .X(a[1]), .Y(b[1]), .Z(c1));
+full_adderbar fa2(.S(y[2]), .C(c3), .X(a[2]), .Y(b[2]), .Z(c2));
+full_adderbar fa3(.S(y[3]), .C(c4), .X(a[3]), .Y(b[3]), .Z(c3));
+full_adderbar fa4(.S(y[4]), .C(c5), .X(a[4]), .Y(b[4]), .Z(c4));
+full_adderbar fa5(.S(y[5]), .C(c6), .X(a[5]), .Y(b[5]), .Z(c5));
+full_adderbar fa6(.S(y[6]), .C(c7), .X(a[6]), .Y(b[6]), .Z(c6));
+full_adderbar fa7(.S(y[7]), .C(c8), .X(a[7]), .Y(b[7]), .Z(c7));
+full_adderbar fa8(.S(y[8]), .C(c9), .X(a[8]), .Y(b[8]), .Z(c8));
+full_adderbar fa9(.S(y[9]), .C(c10), .X(a[9]), .Y(b[9]), .Z(c9));
+full_adderbar fa10(.S(y[10]), .C(c11), .X(a[10]), .Y(b[10]), .Z(c10));
+full_adderbar fa11(.S(y[11]), .C(c12), .X(a[11]), .Y(b[11]), .Z(c11));
+
+WddlNANDbar wn1(.A(~a[11]), .B(b[11]), .C(~c12), .S(s1), .S1(s1_1));
+WddlNANDbar wn2(.A(a[11]), .B(~b[11]), .C(~c12), .S(s2), .S1(s2_1));
+WddlNANDbar wn3(.A(a[11]), .B(b[11]), .C(c12), .S(s3), .S1(s3_1));
+WddlNANDbar wn4(.A(~a[11]), .B(~b[11]), .C(c12), .S(s4), .S1(s4_1));
+
+assign cout = ~(s1 & s2 & s3 & s4);
+assign cout_bar = ~cout;
+assign y[12] = cout_bar;
 
 endmodule
 
 
 
 module adder_tree (
-    input  wire [2:0] in0,
-    input  wire [2:0] in1,
-    input  wire [2:0] in2,
-    input  wire [2:0] in3,
-    input  wire [2:0] in4,
-    input  wire [2:0] in5,
-    input  wire [2:0] in6,
-    input  wire [2:0] in7,
-    input  wire [2:0] in8,
-    input  wire [2:0] in9,
-    input  wire [2:0] in10,
-    input  wire [2:0] in11,
-    input  wire [2:0] in12,
-    input  wire [2:0] in13,
-    input  wire [2:0] in14,
-    input  wire [2:0] in15,
-    output wire [6:0] sum
+    input  wire [7:0] in0,
+    input  wire [7:0] in1,
+    input  wire [7:0] in2,
+    input  wire [7:0] in3,
+    input  wire [7:0] in4,
+    input  wire [7:0] in5,
+    input  wire [7:0] in6,
+    input  wire [7:0] in7,
+    input  wire [7:0] in8,
+    input  wire [7:0] in9,
+    input  wire [7:0] in10,
+    input  wire [7:0] in11,
+    input  wire [7:0] in12,
+    input  wire [7:0] in13,
+    input  wire [7:0] in14,
+    input  wire [7:0] in15,
+    output wire [11:0] sum
 );
 
-    wire [3:0] stage0_0_lo;
-    wire [3:0] stage0_1_lo;
-    wire [3:0] stage0_2_lo;
-    wire [3:0] stage0_3_lo;
-    wire [3:0] stage0_4_lo;
-    wire [3:0] stage0_5_lo;
-    wire [3:0] stage0_6_lo;
-    wire [3:0] stage0_7_lo;
-    wire [4:0] stage1_0_lo;
-    wire [4:0] stage1_1_lo;
-    wire [4:0] stage1_2_lo;
-    wire [4:0] stage1_3_lo;
-    wire [5:0] stage2_0_lo;
-    wire [5:0] stage2_1_lo;
-    wire [6:0] stage3_0_lo;
-    reg  [3:0] stage0_0;
-    reg  [3:0] stage0_1;
-    reg  [3:0] stage0_2;
-    reg  [3:0] stage0_3;
-    reg  [3:0] stage0_4;
-    reg  [3:0] stage0_5;
-    reg  [3:0] stage0_6;
-    reg  [3:0] stage0_7;
-    reg  [4:0] stage1_0;
-    reg  [4:0] stage1_1;
-    reg  [4:0] stage1_2;
-    reg  [4:0] stage1_3;
-    reg  [5:0] stage2_0;
-    reg  [5:0] stage2_1;
-    reg  [6:0] stage3_0;
+    wire [8:0] stage0_0_lo;
+    wire [8:0] stage0_1_lo;
+    wire [8:0] stage0_2_lo;
+    wire [8:0] stage0_3_lo;
+    wire [8:0] stage0_4_lo;
+    wire [8:0] stage0_5_lo;
+    wire [8:0] stage0_6_lo;
+    wire [8:0] stage0_7_lo;
+    wire [9:0] stage1_0_lo;
+    wire [9:0] stage1_1_lo;
+    wire [9:0] stage1_2_lo;
+    wire [9:0] stage1_3_lo;
+    wire [10:0] stage2_0_lo;
+    wire [10:0] stage2_1_lo;
+    wire [11:0] stage3_0_lo;
+    reg  [8:0] stage0_0;
+    reg  [8:0] stage0_1;
+    reg  [8:0] stage0_2;
+    reg  [8:0] stage0_3;
+    reg  [8:0] stage0_4;
+    reg  [8:0] stage0_5;
+    reg  [8:0] stage0_6;
+    reg  [8:0] stage0_7;
+    reg  [9:0] stage1_0;
+    reg  [9:0] stage1_1;
+    reg  [9:0] stage1_2;
+    reg  [9:0] stage1_3;
+    reg  [10:0] stage2_0;
+    reg  [10:0] stage2_1;
+    reg  [11:0] stage3_0;
 
-    add3bit u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add3bit u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add3bit u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add3bit u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add3bit u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add3bit u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add3bit u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add3bit u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add4bit u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add4bit u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add4bit u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add4bit u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add5bit u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add5bit u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add6bit u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
+    add8bit u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
+    add8bit u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
+    add8bit u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
+    add8bit u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
+    add8bit u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
+    add8bit u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
+    add8bit u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
+    add8bit u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
+    add9bit u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
+    add9bit u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
+    add9bit u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
+    add9bit u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
+    add10bit u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
+    add10bit u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
+    add11bit u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
 
     assign sum = {1'b0, stage3_0_lo};
 
@@ -617,71 +717,71 @@ endmodule
 
 
 module adder_tree_bar (
-    input  wire [2:0] in0,
-    input  wire [2:0] in1,
-    input  wire [2:0] in2,
-    input  wire [2:0] in3,
-    input  wire [2:0] in4,
-    input  wire [2:0] in5,
-    input  wire [2:0] in6,
-    input  wire [2:0] in7,
-    input  wire [2:0] in8,
-    input  wire [2:0] in9,
-    input  wire [2:0] in10,
-    input  wire [2:0] in11,
-    input  wire [2:0] in12,
-    input  wire [2:0] in13,
-    input  wire [2:0] in14,
-    input  wire [2:0] in15,
-    output wire [6:0] sum
+    input  wire [7:0] in0,
+    input  wire [7:0] in1,
+    input  wire [7:0] in2,
+    input  wire [7:0] in3,
+    input  wire [7:0] in4,
+    input  wire [7:0] in5,
+    input  wire [7:0] in6,
+    input  wire [7:0] in7,
+    input  wire [7:0] in8,
+    input  wire [7:0] in9,
+    input  wire [7:0] in10,
+    input  wire [7:0] in11,
+    input  wire [7:0] in12,
+    input  wire [7:0] in13,
+    input  wire [7:0] in14,
+    input  wire [7:0] in15,
+    output wire [11:0] sum
 );
 
-    wire [3:0] stage0_0_lo_bar;
-    wire [3:0] stage0_1_lo_bar;
-    wire [3:0] stage0_2_lo_bar;
-    wire [3:0] stage0_3_lo_bar;
-    wire [3:0] stage0_4_lo_bar;
-    wire [3:0] stage0_5_lo_bar;
-    wire [3:0] stage0_6_lo_bar;
-    wire [3:0] stage0_7_lo_bar;
-    wire [4:0] stage1_0_lo_bar;
-    wire [4:0] stage1_1_lo_bar;
-    wire [4:0] stage1_2_lo_bar;
-    wire [4:0] stage1_3_lo_bar;
-    wire [5:0] stage2_0_lo_bar;
-    wire [5:0] stage2_1_lo_bar;
-    wire [6:0] stage3_0_lo_bar;
-    reg  [3:0] stage0_0_bar;
-    reg  [3:0] stage0_1_bar;
-    reg  [3:0] stage0_2_bar;
-    reg  [3:0] stage0_3_bar;
-    reg  [3:0] stage0_4_bar;
-    reg  [3:0] stage0_5_bar;
-    reg  [3:0] stage0_6_bar;
-    reg  [3:0] stage0_7_bar;
-    reg  [4:0] stage1_0_bar;
-    reg  [4:0] stage1_1_bar;
-    reg  [4:0] stage1_2_bar;
-    reg  [4:0] stage1_3_bar;
-    reg  [5:0] stage2_0_bar;
-    reg  [5:0] stage2_1_bar;
-    reg  [6:0] stage3_0_bar;
+    wire [8:0] stage0_0_lo_bar;
+    wire [8:0] stage0_1_lo_bar;
+    wire [8:0] stage0_2_lo_bar;
+    wire [8:0] stage0_3_lo_bar;
+    wire [8:0] stage0_4_lo_bar;
+    wire [8:0] stage0_5_lo_bar;
+    wire [8:0] stage0_6_lo_bar;
+    wire [8:0] stage0_7_lo_bar;
+    wire [9:0] stage1_0_lo_bar;
+    wire [9:0] stage1_1_lo_bar;
+    wire [9:0] stage1_2_lo_bar;
+    wire [9:0] stage1_3_lo_bar;
+    wire [10:0] stage2_0_lo_bar;
+    wire [10:0] stage2_1_lo_bar;
+    wire [11:0] stage3_0_lo_bar;
+    reg  [8:0] stage0_0_bar;
+    reg  [8:0] stage0_1_bar;
+    reg  [8:0] stage0_2_bar;
+    reg  [8:0] stage0_3_bar;
+    reg  [8:0] stage0_4_bar;
+    reg  [8:0] stage0_5_bar;
+    reg  [8:0] stage0_6_bar;
+    reg  [8:0] stage0_7_bar;
+    reg  [9:0] stage1_0_bar;
+    reg  [9:0] stage1_1_bar;
+    reg  [9:0] stage1_2_bar;
+    reg  [9:0] stage1_3_bar;
+    reg  [10:0] stage2_0_bar;
+    reg  [10:0] stage2_1_bar;
+    reg  [11:0] stage3_0_bar;
 
-    add3bitbar u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add3bitbar u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add3bitbar u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add3bitbar u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add3bitbar u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add3bitbar u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add3bitbar u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add4bitbar u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add4bitbar u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add4bitbar u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add5bitbar u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add5bitbar u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add6bitbar u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
+    add8bitbar u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
+    add9bitbar u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
+    add9bitbar u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
+    add9bitbar u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
+    add9bitbar u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
+    add10bitbar u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
+    add10bitbar u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
+    add11bitbar u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
 
     assign sum = {1'b0, stage3_0_lo_bar};
 
@@ -705,13 +805,13 @@ module adder_tree_bar (
 endmodule
 
 module mux_5(
-    input  [6:0] a,
-    input  [6:0] b,
-    input  [6:0] c,
-    input  [6:0] d,
+    input  [11:0] a,
+    input  [11:0] b,
+    input  [11:0] c,
+    input  [11:0] d,
     input        s0,
     input        s1,
-    output [6:0] y
+    output [11:0] y
 );
     assign y = (!s1 && !s0) ? a :
                (!s1 &&  s0) ? b :
@@ -721,17 +821,17 @@ endmodule
 
 module activation (
 
-    input [7:0] inputs0_0,
-    input [7:0] inputs0_1,
+    input [12:0] inputs0_0,
+    input [12:0] inputs0_1,
 
-    input r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0,
+    input r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0, r9_0, r10_0, r11_0, r12_0,
 
     output masked_activation,
     output mask
 );
 
-    wire r1, r2, r3, r4, r5, r6, r7, r8;
-    wire masked_c0_0, masked_c1_0, masked_c2_0, masked_c3_0, masked_c4_0, masked_c5_0, masked_c6_0, masked_c7_0;
+    wire r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13;
+    wire masked_c0_0, masked_c1_0, masked_c2_0, masked_c3_0, masked_c4_0, masked_c5_0, masked_c6_0, masked_c7_0, masked_c8_0, masked_c9_0, masked_c10_0, masked_c11_0, masked_c12_0;
 
     lut0 l0 (.a(inputs0_0[0]), .b(inputs0_1[0]), .c_in(1'b0), .r_i(r0_0), .r_out(r1), .c_masked(masked_c0_0));
     lut1 l1 (.a(inputs0_0[1]), .b(inputs0_1[1]), .c_in(masked_c0_0), .r_flow(r1), .r_i(r1_0), .r_out(r2), .c_masked(masked_c1_0));
@@ -741,32 +841,37 @@ module activation (
     lut1 l5 (.a(inputs0_0[5]), .b(inputs0_1[5]), .c_in(masked_c4_0), .r_flow(r5), .r_i(r5_0), .r_out(r6), .c_masked(masked_c5_0));
     lut1 l6 (.a(inputs0_0[6]), .b(inputs0_1[6]), .c_in(masked_c5_0), .r_flow(r6), .r_i(r6_0), .r_out(r7), .c_masked(masked_c6_0));
     lut1 l7 (.a(inputs0_0[7]), .b(inputs0_1[7]), .c_in(masked_c6_0), .r_flow(r7), .r_i(r7_0), .r_out(r8), .c_masked(masked_c7_0));
+    lut1 l8 (.a(inputs0_0[8]), .b(inputs0_1[8]), .c_in(masked_c7_0), .r_flow(r8), .r_i(r8_0), .r_out(r9), .c_masked(masked_c8_0));
+    lut1 l9 (.a(inputs0_0[9]), .b(inputs0_1[9]), .c_in(masked_c8_0), .r_flow(r9), .r_i(r9_0), .r_out(r10), .c_masked(masked_c9_0));
+    lut1 l10 (.a(inputs0_0[10]), .b(inputs0_1[10]), .c_in(masked_c9_0), .r_flow(r10), .r_i(r10_0), .r_out(r11), .c_masked(masked_c10_0));
+    lut1 l11 (.a(inputs0_0[11]), .b(inputs0_1[11]), .c_in(masked_c10_0), .r_flow(r11), .r_i(r11_0), .r_out(r12), .c_masked(masked_c11_0));
+    lut1 l12 (.a(inputs0_0[12]), .b(inputs0_1[12]), .c_in(masked_c11_0), .r_flow(r12), .r_i(r12_0), .r_out(r13), .c_masked(masked_c12_0));
 
-    wire carry = r8 ^ masked_c7_0;
-    wire activation = (carry ^ inputs0_0[7] ^ inputs0_1[7]) ? 1'b0 : 1'b1;
+    wire carry = r13 ^ masked_c12_0;
+    wire activation = (carry ^ inputs0_0[12] ^ inputs0_1[12]) ? 1'b0 : 1'b1;
 
-    assign masked_activation = activation ^ r8;
-    assign mask = r8;
+    assign masked_activation = activation ^ r13;
+    assign mask = r13;
 
 endmodule
 
 module activation_array_1 (
-    input  [7:0] inputs0_0, inputs0_1,
-    input  [7:0] inputs1_0, inputs1_1,
-    input  [7:0] inputs2_0, inputs2_1,
-    input  [7:0] inputs3_0, inputs3_1,
-    input  [7:0] inputs4_0, inputs4_1,
-    input  [7:0] inputs5_0, inputs5_1,
-    input  [7:0] inputs6_0, inputs6_1,
-    input  [7:0] inputs7_0, inputs7_1,
-    input  r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0,
-    input  r0_1, r1_1, r2_1, r3_1, r4_1, r5_1, r6_1, r7_1,
-    input  r0_2, r1_2, r2_2, r3_2, r4_2, r5_2, r6_2, r7_2,
-    input  r0_3, r1_3, r2_3, r3_3, r4_3, r5_3, r6_3, r7_3,
-    input  r0_4, r1_4, r2_4, r3_4, r4_4, r5_4, r6_4, r7_4,
-    input  r0_5, r1_5, r2_5, r3_5, r4_5, r5_5, r6_5, r7_5,
-    input  r0_6, r1_6, r2_6, r3_6, r4_6, r5_6, r6_6, r7_6,
-    input  r0_7, r1_7, r2_7, r3_7, r4_7, r5_7, r6_7, r7_7,
+    input  [12:0] inputs0_0, inputs0_1,
+    input  [12:0] inputs1_0, inputs1_1,
+    input  [12:0] inputs2_0, inputs2_1,
+    input  [12:0] inputs3_0, inputs3_1,
+    input  [12:0] inputs4_0, inputs4_1,
+    input  [12:0] inputs5_0, inputs5_1,
+    input  [12:0] inputs6_0, inputs6_1,
+    input  [12:0] inputs7_0, inputs7_1,
+    input  r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0, r9_0, r10_0, r11_0, r12_0,
+    input  r0_1, r1_1, r2_1, r3_1, r4_1, r5_1, r6_1, r7_1, r8_1, r9_1, r10_1, r11_1, r12_1,
+    input  r0_2, r1_2, r2_2, r3_2, r4_2, r5_2, r6_2, r7_2, r8_2, r9_2, r10_2, r11_2, r12_2,
+    input  r0_3, r1_3, r2_3, r3_3, r4_3, r5_3, r6_3, r7_3, r8_3, r9_3, r10_3, r11_3, r12_3,
+    input  r0_4, r1_4, r2_4, r3_4, r4_4, r5_4, r6_4, r7_4, r8_4, r9_4, r10_4, r11_4, r12_4,
+    input  r0_5, r1_5, r2_5, r3_5, r4_5, r5_5, r6_5, r7_5, r8_5, r9_5, r10_5, r11_5, r12_5,
+    input  r0_6, r1_6, r2_6, r3_6, r4_6, r5_6, r6_6, r7_6, r8_6, r9_6, r10_6, r11_6, r12_6,
+    input  r0_7, r1_7, r2_7, r3_7, r4_7, r5_7, r6_7, r7_7, r8_7, r9_7, r10_7, r11_7, r12_7,
     output wire masked_activation0,
     output wire masked_activation1,
     output wire masked_activation2,
@@ -795,6 +900,11 @@ module activation_array_1 (
         .r5_0(r5_0),
         .r6_0(r6_0),
         .r7_0(r7_0),
+        .r8_0(r8_0),
+        .r9_0(r9_0),
+        .r10_0(r10_0),
+        .r11_0(r11_0),
+        .r12_0(r12_0),
         .masked_activation(masked_activation0),
         .mask(mask0)
     );
@@ -809,6 +919,11 @@ module activation_array_1 (
         .r5_0(r5_1),
         .r6_0(r6_1),
         .r7_0(r7_1),
+        .r8_0(r8_1),
+        .r9_0(r9_1),
+        .r10_0(r10_1),
+        .r11_0(r11_1),
+        .r12_0(r12_1),
         .masked_activation(masked_activation1),
         .mask(mask1)
     );
@@ -823,6 +938,11 @@ module activation_array_1 (
         .r5_0(r5_2),
         .r6_0(r6_2),
         .r7_0(r7_2),
+        .r8_0(r8_2),
+        .r9_0(r9_2),
+        .r10_0(r10_2),
+        .r11_0(r11_2),
+        .r12_0(r12_2),
         .masked_activation(masked_activation2),
         .mask(mask2)
     );
@@ -837,6 +957,11 @@ module activation_array_1 (
         .r5_0(r5_3),
         .r6_0(r6_3),
         .r7_0(r7_3),
+        .r8_0(r8_3),
+        .r9_0(r9_3),
+        .r10_0(r10_3),
+        .r11_0(r11_3),
+        .r12_0(r12_3),
         .masked_activation(masked_activation3),
         .mask(mask3)
     );
@@ -851,6 +976,11 @@ module activation_array_1 (
         .r5_0(r5_4),
         .r6_0(r6_4),
         .r7_0(r7_4),
+        .r8_0(r8_4),
+        .r9_0(r9_4),
+        .r10_0(r10_4),
+        .r11_0(r11_4),
+        .r12_0(r12_4),
         .masked_activation(masked_activation4),
         .mask(mask4)
     );
@@ -865,6 +995,11 @@ module activation_array_1 (
         .r5_0(r5_5),
         .r6_0(r6_5),
         .r7_0(r7_5),
+        .r8_0(r8_5),
+        .r9_0(r9_5),
+        .r10_0(r10_5),
+        .r11_0(r11_5),
+        .r12_0(r12_5),
         .masked_activation(masked_activation5),
         .mask(mask5)
     );
@@ -879,6 +1014,11 @@ module activation_array_1 (
         .r5_0(r5_6),
         .r6_0(r6_6),
         .r7_0(r7_6),
+        .r8_0(r8_6),
+        .r9_0(r9_6),
+        .r10_0(r10_6),
+        .r11_0(r11_6),
+        .r12_0(r12_6),
         .masked_activation(masked_activation6),
         .mask(mask6)
     );
@@ -893,6 +1033,11 @@ module activation_array_1 (
         .r5_0(r5_7),
         .r6_0(r6_7),
         .r7_0(r7_7),
+        .r8_0(r8_7),
+        .r9_0(r9_7),
+        .r10_0(r10_7),
+        .r11_0(r11_7),
+        .r12_0(r12_7),
         .masked_activation(masked_activation7),
         .mask(mask7)
     );
@@ -903,23 +1048,23 @@ module layer (
   input wire  clk,
   input wire  rst_n,
   input wire  start,
-  input wire [2:0] inputs0_1, inputs1_1, inputs2_1, inputs3_1, inputs4_1, inputs5_1, inputs6_1, inputs7_1, inputs8_1, inputs9_1, inputs10_1, inputs11_1, inputs12_1, inputs13_1, inputs14_1, inputs15_1,
-  input wire [2:0] act0_0_0, act0_0_1, act0_0_2, act0_0_3, act0_0_4, act0_0_5, act0_0_6, act0_0_7, act0_0_8, act0_0_9, act0_0_10, act0_0_11, act0_0_12, act0_0_13, act0_0_14, act0_0_15,
-  input wire [2:0] act0_1_0, act0_1_1, act0_1_2, act0_1_3, act0_1_4, act0_1_5, act0_1_6, act0_1_7, act0_1_8, act0_1_9, act0_1_10, act0_1_11, act0_1_12, act0_1_13, act0_1_14, act0_1_15,
-  input wire [2:0] act1_0_0, act1_0_1, act1_0_2, act1_0_3, act1_0_4, act1_0_5, act1_0_6, act1_0_7, act1_0_8, act1_0_9, act1_0_10, act1_0_11, act1_0_12, act1_0_13, act1_0_14, act1_0_15,
-  input wire [2:0] act1_1_0, act1_1_1, act1_1_2, act1_1_3, act1_1_4, act1_1_5, act1_1_6, act1_1_7, act1_1_8, act1_1_9, act1_1_10, act1_1_11, act1_1_12, act1_1_13, act1_1_14, act1_1_15,
-  input wire [2:0] act2_0_0, act2_0_1, act2_0_2, act2_0_3, act2_0_4, act2_0_5, act2_0_6, act2_0_7, act2_0_8, act2_0_9, act2_0_10, act2_0_11, act2_0_12, act2_0_13, act2_0_14, act2_0_15,
-  input wire [2:0] act2_1_0, act2_1_1, act2_1_2, act2_1_3, act2_1_4, act2_1_5, act2_1_6, act2_1_7, act2_1_8, act2_1_9, act2_1_10, act2_1_11, act2_1_12, act2_1_13, act2_1_14, act2_1_15,
-  input wire [2:0] act3_0_0, act3_0_1, act3_0_2, act3_0_3, act3_0_4, act3_0_5, act3_0_6, act3_0_7, act3_0_8, act3_0_9, act3_0_10, act3_0_11, act3_0_12, act3_0_13, act3_0_14, act3_0_15,
-  input wire [2:0] act3_1_0, act3_1_1, act3_1_2, act3_1_3, act3_1_4, act3_1_5, act3_1_6, act3_1_7, act3_1_8, act3_1_9, act3_1_10, act3_1_11, act3_1_12, act3_1_13, act3_1_14, act3_1_15,
-  input wire [2:0] act4_0_0, act4_0_1, act4_0_2, act4_0_3, act4_0_4, act4_0_5, act4_0_6, act4_0_7, act4_0_8, act4_0_9, act4_0_10, act4_0_11, act4_0_12, act4_0_13, act4_0_14, act4_0_15,
-  input wire [2:0] act4_1_0, act4_1_1, act4_1_2, act4_1_3, act4_1_4, act4_1_5, act4_1_6, act4_1_7, act4_1_8, act4_1_9, act4_1_10, act4_1_11, act4_1_12, act4_1_13, act4_1_14, act4_1_15,
-  input wire [2:0] act5_0_0, act5_0_1, act5_0_2, act5_0_3, act5_0_4, act5_0_5, act5_0_6, act5_0_7, act5_0_8, act5_0_9, act5_0_10, act5_0_11, act5_0_12, act5_0_13, act5_0_14, act5_0_15,
-  input wire [2:0] act5_1_0, act5_1_1, act5_1_2, act5_1_3, act5_1_4, act5_1_5, act5_1_6, act5_1_7, act5_1_8, act5_1_9, act5_1_10, act5_1_11, act5_1_12, act5_1_13, act5_1_14, act5_1_15,
-  input wire [2:0] act6_0_0, act6_0_1, act6_0_2, act6_0_3, act6_0_4, act6_0_5, act6_0_6, act6_0_7, act6_0_8, act6_0_9, act6_0_10, act6_0_11, act6_0_12, act6_0_13, act6_0_14, act6_0_15,
-  input wire [2:0] act6_1_0, act6_1_1, act6_1_2, act6_1_3, act6_1_4, act6_1_5, act6_1_6, act6_1_7, act6_1_8, act6_1_9, act6_1_10, act6_1_11, act6_1_12, act6_1_13, act6_1_14, act6_1_15,
-  input wire [2:0] act7_0_0, act7_0_1, act7_0_2, act7_0_3, act7_0_4, act7_0_5, act7_0_6, act7_0_7, act7_0_8, act7_0_9, act7_0_10, act7_0_11, act7_0_12, act7_0_13, act7_0_14, act7_0_15,
-  input wire [2:0] act7_1_0, act7_1_1, act7_1_2, act7_1_3, act7_1_4, act7_1_5, act7_1_6, act7_1_7, act7_1_8, act7_1_9, act7_1_10, act7_1_11, act7_1_12, act7_1_13, act7_1_14, act7_1_15,
+  input wire [7:0] inputs0_1, inputs1_1, inputs2_1, inputs3_1, inputs4_1, inputs5_1, inputs6_1, inputs7_1, inputs8_1, inputs9_1, inputs10_1, inputs11_1, inputs12_1, inputs13_1, inputs14_1, inputs15_1,
+  input wire [7:0] act0_0_0, act0_0_1, act0_0_2, act0_0_3, act0_0_4, act0_0_5, act0_0_6, act0_0_7, act0_0_8, act0_0_9, act0_0_10, act0_0_11, act0_0_12, act0_0_13, act0_0_14, act0_0_15,
+  input wire [7:0] act0_1_0, act0_1_1, act0_1_2, act0_1_3, act0_1_4, act0_1_5, act0_1_6, act0_1_7, act0_1_8, act0_1_9, act0_1_10, act0_1_11, act0_1_12, act0_1_13, act0_1_14, act0_1_15,
+  input wire [7:0] act1_0_0, act1_0_1, act1_0_2, act1_0_3, act1_0_4, act1_0_5, act1_0_6, act1_0_7, act1_0_8, act1_0_9, act1_0_10, act1_0_11, act1_0_12, act1_0_13, act1_0_14, act1_0_15,
+  input wire [7:0] act1_1_0, act1_1_1, act1_1_2, act1_1_3, act1_1_4, act1_1_5, act1_1_6, act1_1_7, act1_1_8, act1_1_9, act1_1_10, act1_1_11, act1_1_12, act1_1_13, act1_1_14, act1_1_15,
+  input wire [7:0] act2_0_0, act2_0_1, act2_0_2, act2_0_3, act2_0_4, act2_0_5, act2_0_6, act2_0_7, act2_0_8, act2_0_9, act2_0_10, act2_0_11, act2_0_12, act2_0_13, act2_0_14, act2_0_15,
+  input wire [7:0] act2_1_0, act2_1_1, act2_1_2, act2_1_3, act2_1_4, act2_1_5, act2_1_6, act2_1_7, act2_1_8, act2_1_9, act2_1_10, act2_1_11, act2_1_12, act2_1_13, act2_1_14, act2_1_15,
+  input wire [7:0] act3_0_0, act3_0_1, act3_0_2, act3_0_3, act3_0_4, act3_0_5, act3_0_6, act3_0_7, act3_0_8, act3_0_9, act3_0_10, act3_0_11, act3_0_12, act3_0_13, act3_0_14, act3_0_15,
+  input wire [7:0] act3_1_0, act3_1_1, act3_1_2, act3_1_3, act3_1_4, act3_1_5, act3_1_6, act3_1_7, act3_1_8, act3_1_9, act3_1_10, act3_1_11, act3_1_12, act3_1_13, act3_1_14, act3_1_15,
+  input wire [7:0] act4_0_0, act4_0_1, act4_0_2, act4_0_3, act4_0_4, act4_0_5, act4_0_6, act4_0_7, act4_0_8, act4_0_9, act4_0_10, act4_0_11, act4_0_12, act4_0_13, act4_0_14, act4_0_15,
+  input wire [7:0] act4_1_0, act4_1_1, act4_1_2, act4_1_3, act4_1_4, act4_1_5, act4_1_6, act4_1_7, act4_1_8, act4_1_9, act4_1_10, act4_1_11, act4_1_12, act4_1_13, act4_1_14, act4_1_15,
+  input wire [7:0] act5_0_0, act5_0_1, act5_0_2, act5_0_3, act5_0_4, act5_0_5, act5_0_6, act5_0_7, act5_0_8, act5_0_9, act5_0_10, act5_0_11, act5_0_12, act5_0_13, act5_0_14, act5_0_15,
+  input wire [7:0] act5_1_0, act5_1_1, act5_1_2, act5_1_3, act5_1_4, act5_1_5, act5_1_6, act5_1_7, act5_1_8, act5_1_9, act5_1_10, act5_1_11, act5_1_12, act5_1_13, act5_1_14, act5_1_15,
+  input wire [7:0] act6_0_0, act6_0_1, act6_0_2, act6_0_3, act6_0_4, act6_0_5, act6_0_6, act6_0_7, act6_0_8, act6_0_9, act6_0_10, act6_0_11, act6_0_12, act6_0_13, act6_0_14, act6_0_15,
+  input wire [7:0] act6_1_0, act6_1_1, act6_1_2, act6_1_3, act6_1_4, act6_1_5, act6_1_6, act6_1_7, act6_1_8, act6_1_9, act6_1_10, act6_1_11, act6_1_12, act6_1_13, act6_1_14, act6_1_15,
+  input wire [7:0] act7_0_0, act7_0_1, act7_0_2, act7_0_3, act7_0_4, act7_0_5, act7_0_6, act7_0_7, act7_0_8, act7_0_9, act7_0_10, act7_0_11, act7_0_12, act7_0_13, act7_0_14, act7_0_15,
+  input wire [7:0] act7_1_0, act7_1_1, act7_1_2, act7_1_3, act7_1_4, act7_1_5, act7_1_6, act7_1_7, act7_1_8, act7_1_9, act7_1_10, act7_1_11, act7_1_12, act7_1_13, act7_1_14, act7_1_15,
   input wire [15:0] w1_0_1, w1_1_1,
   input wire [15:0] w2_0_1, w2_1_1,
   input wire [15:0] w3_0_1, w3_1_1,
@@ -928,24 +1073,24 @@ module layer (
   input wire [15:0] w6_0_1, w6_1_1,
   input wire [15:0] w7_0_1, w7_1_1,
   input wire [15:0] w8_0_1, w8_1_1,
-  input wire [6:0] b1_1, b1_2, b1_3, b1_4,
-  input wire [6:0] b2_1, b2_2, b2_3, b2_4,
-  input wire [6:0] b3_1, b3_2, b3_3, b3_4,
-  input wire [6:0] b4_1, b4_2, b4_3, b4_4,
-  input wire [6:0] b5_1, b5_2, b5_3, b5_4,
-  input wire [6:0] b6_1, b6_2, b6_3, b6_4,
-  input wire [6:0] b7_1, b7_2, b7_3, b7_4,
-  input wire [6:0] b8_1, b8_2, b8_3, b8_4,
+  input wire [11:0] b1_1, b1_2, b1_3, b1_4,
+  input wire [11:0] b2_1, b2_2, b2_3, b2_4,
+  input wire [11:0] b3_1, b3_2, b3_3, b3_4,
+  input wire [11:0] b4_1, b4_2, b4_3, b4_4,
+  input wire [11:0] b5_1, b5_2, b5_3, b5_4,
+  input wire [11:0] b6_1, b6_2, b6_3, b6_4,
+  input wire [11:0] b7_1, b7_2, b7_3, b7_4,
+  input wire [11:0] b8_1, b8_2, b8_3, b8_4,
   input wire [1:0] s,
   output reg  done,
-  output reg [7:0] biased_sum0_0_r, biased_sum0_1_r, biased_sum0_0bar_r, biased_sum0_1bar_r,
-  output reg [7:0] biased_sum1_0_r, biased_sum1_1_r, biased_sum1_0bar_r, biased_sum1_1bar_r,
-  output reg [7:0] biased_sum2_0_r, biased_sum2_1_r, biased_sum2_0bar_r, biased_sum2_1bar_r,
-  output reg [7:0] biased_sum3_0_r, biased_sum3_1_r, biased_sum3_0bar_r, biased_sum3_1bar_r,
-  output reg [7:0] biased_sum4_0_r, biased_sum4_1_r, biased_sum4_0bar_r, biased_sum4_1bar_r,
-  output reg [7:0] biased_sum5_0_r, biased_sum5_1_r, biased_sum5_0bar_r, biased_sum5_1bar_r,
-  output reg [7:0] biased_sum6_0_r, biased_sum6_1_r, biased_sum6_0bar_r, biased_sum6_1bar_r,
-  output reg [7:0] biased_sum7_0_r, biased_sum7_1_r, biased_sum7_0bar_r, biased_sum7_1bar_r,
+  output reg [12:0] biased_sum0_0_r, biased_sum0_1_r, biased_sum0_0bar_r, biased_sum0_1bar_r,
+  output reg [12:0] biased_sum1_0_r, biased_sum1_1_r, biased_sum1_0bar_r, biased_sum1_1bar_r,
+  output reg [12:0] biased_sum2_0_r, biased_sum2_1_r, biased_sum2_0bar_r, biased_sum2_1bar_r,
+  output reg [12:0] biased_sum3_0_r, biased_sum3_1_r, biased_sum3_0bar_r, biased_sum3_1bar_r,
+  output reg [12:0] biased_sum4_0_r, biased_sum4_1_r, biased_sum4_0bar_r, biased_sum4_1bar_r,
+  output reg [12:0] biased_sum5_0_r, biased_sum5_1_r, biased_sum5_0bar_r, biased_sum5_1bar_r,
+  output reg [12:0] biased_sum6_0_r, biased_sum6_1_r, biased_sum6_0bar_r, biased_sum6_1bar_r,
+  output reg [12:0] biased_sum7_0_r, biased_sum7_1_r, biased_sum7_0bar_r, biased_sum7_1bar_r,
   output reg  masked_activation0_1_r, masked_activation0bar_1_r,
   output reg  masked_activation1_1_r, masked_activation1bar_1_r,
   output reg  masked_activation2_1_r, masked_activation2bar_1_r,
@@ -965,1062 +1110,1062 @@ module layer (
 );
 
   // internal wires
-  wire [7:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar;
+  wire [12:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar;
   wire masked_activation0_1, masked_activation0bar_1;
   wire mask0_1, mask0bar_1;
-  wire [7:0] biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar;
+  wire [12:0] biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar;
   wire masked_activation1_1, masked_activation1bar_1;
   wire mask1_1, mask1bar_1;
-  wire [7:0] biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar;
+  wire [12:0] biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar;
   wire masked_activation2_1, masked_activation2bar_1;
   wire mask2_1, mask2bar_1;
-  wire [7:0] biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar;
+  wire [12:0] biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar;
   wire masked_activation3_1, masked_activation3bar_1;
   wire mask3_1, mask3bar_1;
-  wire [7:0] biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar;
+  wire [12:0] biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar;
   wire masked_activation4_1, masked_activation4bar_1;
   wire mask4_1, mask4bar_1;
-  wire [7:0] biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar;
+  wire [12:0] biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar;
   wire masked_activation5_1, masked_activation5bar_1;
   wire mask5_1, mask5bar_1;
-  wire [7:0] biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar;
+  wire [12:0] biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar;
   wire masked_activation6_1, masked_activation6bar_1;
   wire mask6_1, mask6bar_1;
-  wire [7:0] biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar;
+  wire [12:0] biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar;
   wire masked_activation7_1, masked_activation7bar_1;
   wire mask7_1, mask7bar_1;
   
 
-  wire [2:0] weighted_inputs1_0_0, weighted_inputs1_0_1;
-  wire [2:0] new_weighted_inputs1_0_0, new_weighted_inputs1_0_1;
-  wire [2:0] weighted_inputs1_1_0, weighted_inputs1_1_1;
-  wire [2:0] new_weighted_inputs1_1_0, new_weighted_inputs1_1_1;
-  wire [2:0] weighted_inputs1_2_0, weighted_inputs1_2_1;
-  wire [2:0] new_weighted_inputs1_2_0, new_weighted_inputs1_2_1;
-  wire [2:0] weighted_inputs1_3_0, weighted_inputs1_3_1;
-  wire [2:0] new_weighted_inputs1_3_0, new_weighted_inputs1_3_1;
-  wire [2:0] weighted_inputs1_4_0, weighted_inputs1_4_1;
-  wire [2:0] new_weighted_inputs1_4_0, new_weighted_inputs1_4_1;
-  wire [2:0] weighted_inputs1_5_0, weighted_inputs1_5_1;
-  wire [2:0] new_weighted_inputs1_5_0, new_weighted_inputs1_5_1;
-  wire [2:0] weighted_inputs1_6_0, weighted_inputs1_6_1;
-  wire [2:0] new_weighted_inputs1_6_0, new_weighted_inputs1_6_1;
-  wire [2:0] weighted_inputs1_7_0, weighted_inputs1_7_1;
-  wire [2:0] new_weighted_inputs1_7_0, new_weighted_inputs1_7_1;
-  wire [2:0] weighted_inputs1_8_0, weighted_inputs1_8_1;
-  wire [2:0] new_weighted_inputs1_8_0, new_weighted_inputs1_8_1;
-  wire [2:0] weighted_inputs1_9_0, weighted_inputs1_9_1;
-  wire [2:0] new_weighted_inputs1_9_0, new_weighted_inputs1_9_1;
-  wire [2:0] weighted_inputs1_10_0, weighted_inputs1_10_1;
-  wire [2:0] new_weighted_inputs1_10_0, new_weighted_inputs1_10_1;
-  wire [2:0] weighted_inputs1_11_0, weighted_inputs1_11_1;
-  wire [2:0] new_weighted_inputs1_11_0, new_weighted_inputs1_11_1;
-  wire [2:0] weighted_inputs1_12_0, weighted_inputs1_12_1;
-  wire [2:0] new_weighted_inputs1_12_0, new_weighted_inputs1_12_1;
-  wire [2:0] weighted_inputs1_13_0, weighted_inputs1_13_1;
-  wire [2:0] new_weighted_inputs1_13_0, new_weighted_inputs1_13_1;
-  wire [2:0] weighted_inputs1_14_0, weighted_inputs1_14_1;
-  wire [2:0] new_weighted_inputs1_14_0, new_weighted_inputs1_14_1;
-  wire [2:0] weighted_inputs1_15_0, weighted_inputs1_15_1;
-  wire [2:0] new_weighted_inputs1_15_0, new_weighted_inputs1_15_1;
-  wire [2:0] weighted_inputs2_0_0, weighted_inputs2_0_1;
-  wire [2:0] new_weighted_inputs2_0_0, new_weighted_inputs2_0_1;
-  wire [2:0] weighted_inputs2_1_0, weighted_inputs2_1_1;
-  wire [2:0] new_weighted_inputs2_1_0, new_weighted_inputs2_1_1;
-  wire [2:0] weighted_inputs2_2_0, weighted_inputs2_2_1;
-  wire [2:0] new_weighted_inputs2_2_0, new_weighted_inputs2_2_1;
-  wire [2:0] weighted_inputs2_3_0, weighted_inputs2_3_1;
-  wire [2:0] new_weighted_inputs2_3_0, new_weighted_inputs2_3_1;
-  wire [2:0] weighted_inputs2_4_0, weighted_inputs2_4_1;
-  wire [2:0] new_weighted_inputs2_4_0, new_weighted_inputs2_4_1;
-  wire [2:0] weighted_inputs2_5_0, weighted_inputs2_5_1;
-  wire [2:0] new_weighted_inputs2_5_0, new_weighted_inputs2_5_1;
-  wire [2:0] weighted_inputs2_6_0, weighted_inputs2_6_1;
-  wire [2:0] new_weighted_inputs2_6_0, new_weighted_inputs2_6_1;
-  wire [2:0] weighted_inputs2_7_0, weighted_inputs2_7_1;
-  wire [2:0] new_weighted_inputs2_7_0, new_weighted_inputs2_7_1;
-  wire [2:0] weighted_inputs2_8_0, weighted_inputs2_8_1;
-  wire [2:0] new_weighted_inputs2_8_0, new_weighted_inputs2_8_1;
-  wire [2:0] weighted_inputs2_9_0, weighted_inputs2_9_1;
-  wire [2:0] new_weighted_inputs2_9_0, new_weighted_inputs2_9_1;
-  wire [2:0] weighted_inputs2_10_0, weighted_inputs2_10_1;
-  wire [2:0] new_weighted_inputs2_10_0, new_weighted_inputs2_10_1;
-  wire [2:0] weighted_inputs2_11_0, weighted_inputs2_11_1;
-  wire [2:0] new_weighted_inputs2_11_0, new_weighted_inputs2_11_1;
-  wire [2:0] weighted_inputs2_12_0, weighted_inputs2_12_1;
-  wire [2:0] new_weighted_inputs2_12_0, new_weighted_inputs2_12_1;
-  wire [2:0] weighted_inputs2_13_0, weighted_inputs2_13_1;
-  wire [2:0] new_weighted_inputs2_13_0, new_weighted_inputs2_13_1;
-  wire [2:0] weighted_inputs2_14_0, weighted_inputs2_14_1;
-  wire [2:0] new_weighted_inputs2_14_0, new_weighted_inputs2_14_1;
-  wire [2:0] weighted_inputs2_15_0, weighted_inputs2_15_1;
-  wire [2:0] new_weighted_inputs2_15_0, new_weighted_inputs2_15_1;
-  wire [2:0] weighted_inputs3_0_0, weighted_inputs3_0_1;
-  wire [2:0] new_weighted_inputs3_0_0, new_weighted_inputs3_0_1;
-  wire [2:0] weighted_inputs3_1_0, weighted_inputs3_1_1;
-  wire [2:0] new_weighted_inputs3_1_0, new_weighted_inputs3_1_1;
-  wire [2:0] weighted_inputs3_2_0, weighted_inputs3_2_1;
-  wire [2:0] new_weighted_inputs3_2_0, new_weighted_inputs3_2_1;
-  wire [2:0] weighted_inputs3_3_0, weighted_inputs3_3_1;
-  wire [2:0] new_weighted_inputs3_3_0, new_weighted_inputs3_3_1;
-  wire [2:0] weighted_inputs3_4_0, weighted_inputs3_4_1;
-  wire [2:0] new_weighted_inputs3_4_0, new_weighted_inputs3_4_1;
-  wire [2:0] weighted_inputs3_5_0, weighted_inputs3_5_1;
-  wire [2:0] new_weighted_inputs3_5_0, new_weighted_inputs3_5_1;
-  wire [2:0] weighted_inputs3_6_0, weighted_inputs3_6_1;
-  wire [2:0] new_weighted_inputs3_6_0, new_weighted_inputs3_6_1;
-  wire [2:0] weighted_inputs3_7_0, weighted_inputs3_7_1;
-  wire [2:0] new_weighted_inputs3_7_0, new_weighted_inputs3_7_1;
-  wire [2:0] weighted_inputs3_8_0, weighted_inputs3_8_1;
-  wire [2:0] new_weighted_inputs3_8_0, new_weighted_inputs3_8_1;
-  wire [2:0] weighted_inputs3_9_0, weighted_inputs3_9_1;
-  wire [2:0] new_weighted_inputs3_9_0, new_weighted_inputs3_9_1;
-  wire [2:0] weighted_inputs3_10_0, weighted_inputs3_10_1;
-  wire [2:0] new_weighted_inputs3_10_0, new_weighted_inputs3_10_1;
-  wire [2:0] weighted_inputs3_11_0, weighted_inputs3_11_1;
-  wire [2:0] new_weighted_inputs3_11_0, new_weighted_inputs3_11_1;
-  wire [2:0] weighted_inputs3_12_0, weighted_inputs3_12_1;
-  wire [2:0] new_weighted_inputs3_12_0, new_weighted_inputs3_12_1;
-  wire [2:0] weighted_inputs3_13_0, weighted_inputs3_13_1;
-  wire [2:0] new_weighted_inputs3_13_0, new_weighted_inputs3_13_1;
-  wire [2:0] weighted_inputs3_14_0, weighted_inputs3_14_1;
-  wire [2:0] new_weighted_inputs3_14_0, new_weighted_inputs3_14_1;
-  wire [2:0] weighted_inputs3_15_0, weighted_inputs3_15_1;
-  wire [2:0] new_weighted_inputs3_15_0, new_weighted_inputs3_15_1;
-  wire [2:0] weighted_inputs4_0_0, weighted_inputs4_0_1;
-  wire [2:0] new_weighted_inputs4_0_0, new_weighted_inputs4_0_1;
-  wire [2:0] weighted_inputs4_1_0, weighted_inputs4_1_1;
-  wire [2:0] new_weighted_inputs4_1_0, new_weighted_inputs4_1_1;
-  wire [2:0] weighted_inputs4_2_0, weighted_inputs4_2_1;
-  wire [2:0] new_weighted_inputs4_2_0, new_weighted_inputs4_2_1;
-  wire [2:0] weighted_inputs4_3_0, weighted_inputs4_3_1;
-  wire [2:0] new_weighted_inputs4_3_0, new_weighted_inputs4_3_1;
-  wire [2:0] weighted_inputs4_4_0, weighted_inputs4_4_1;
-  wire [2:0] new_weighted_inputs4_4_0, new_weighted_inputs4_4_1;
-  wire [2:0] weighted_inputs4_5_0, weighted_inputs4_5_1;
-  wire [2:0] new_weighted_inputs4_5_0, new_weighted_inputs4_5_1;
-  wire [2:0] weighted_inputs4_6_0, weighted_inputs4_6_1;
-  wire [2:0] new_weighted_inputs4_6_0, new_weighted_inputs4_6_1;
-  wire [2:0] weighted_inputs4_7_0, weighted_inputs4_7_1;
-  wire [2:0] new_weighted_inputs4_7_0, new_weighted_inputs4_7_1;
-  wire [2:0] weighted_inputs4_8_0, weighted_inputs4_8_1;
-  wire [2:0] new_weighted_inputs4_8_0, new_weighted_inputs4_8_1;
-  wire [2:0] weighted_inputs4_9_0, weighted_inputs4_9_1;
-  wire [2:0] new_weighted_inputs4_9_0, new_weighted_inputs4_9_1;
-  wire [2:0] weighted_inputs4_10_0, weighted_inputs4_10_1;
-  wire [2:0] new_weighted_inputs4_10_0, new_weighted_inputs4_10_1;
-  wire [2:0] weighted_inputs4_11_0, weighted_inputs4_11_1;
-  wire [2:0] new_weighted_inputs4_11_0, new_weighted_inputs4_11_1;
-  wire [2:0] weighted_inputs4_12_0, weighted_inputs4_12_1;
-  wire [2:0] new_weighted_inputs4_12_0, new_weighted_inputs4_12_1;
-  wire [2:0] weighted_inputs4_13_0, weighted_inputs4_13_1;
-  wire [2:0] new_weighted_inputs4_13_0, new_weighted_inputs4_13_1;
-  wire [2:0] weighted_inputs4_14_0, weighted_inputs4_14_1;
-  wire [2:0] new_weighted_inputs4_14_0, new_weighted_inputs4_14_1;
-  wire [2:0] weighted_inputs4_15_0, weighted_inputs4_15_1;
-  wire [2:0] new_weighted_inputs4_15_0, new_weighted_inputs4_15_1;
-  wire [2:0] weighted_inputs5_0_0, weighted_inputs5_0_1;
-  wire [2:0] new_weighted_inputs5_0_0, new_weighted_inputs5_0_1;
-  wire [2:0] weighted_inputs5_1_0, weighted_inputs5_1_1;
-  wire [2:0] new_weighted_inputs5_1_0, new_weighted_inputs5_1_1;
-  wire [2:0] weighted_inputs5_2_0, weighted_inputs5_2_1;
-  wire [2:0] new_weighted_inputs5_2_0, new_weighted_inputs5_2_1;
-  wire [2:0] weighted_inputs5_3_0, weighted_inputs5_3_1;
-  wire [2:0] new_weighted_inputs5_3_0, new_weighted_inputs5_3_1;
-  wire [2:0] weighted_inputs5_4_0, weighted_inputs5_4_1;
-  wire [2:0] new_weighted_inputs5_4_0, new_weighted_inputs5_4_1;
-  wire [2:0] weighted_inputs5_5_0, weighted_inputs5_5_1;
-  wire [2:0] new_weighted_inputs5_5_0, new_weighted_inputs5_5_1;
-  wire [2:0] weighted_inputs5_6_0, weighted_inputs5_6_1;
-  wire [2:0] new_weighted_inputs5_6_0, new_weighted_inputs5_6_1;
-  wire [2:0] weighted_inputs5_7_0, weighted_inputs5_7_1;
-  wire [2:0] new_weighted_inputs5_7_0, new_weighted_inputs5_7_1;
-  wire [2:0] weighted_inputs5_8_0, weighted_inputs5_8_1;
-  wire [2:0] new_weighted_inputs5_8_0, new_weighted_inputs5_8_1;
-  wire [2:0] weighted_inputs5_9_0, weighted_inputs5_9_1;
-  wire [2:0] new_weighted_inputs5_9_0, new_weighted_inputs5_9_1;
-  wire [2:0] weighted_inputs5_10_0, weighted_inputs5_10_1;
-  wire [2:0] new_weighted_inputs5_10_0, new_weighted_inputs5_10_1;
-  wire [2:0] weighted_inputs5_11_0, weighted_inputs5_11_1;
-  wire [2:0] new_weighted_inputs5_11_0, new_weighted_inputs5_11_1;
-  wire [2:0] weighted_inputs5_12_0, weighted_inputs5_12_1;
-  wire [2:0] new_weighted_inputs5_12_0, new_weighted_inputs5_12_1;
-  wire [2:0] weighted_inputs5_13_0, weighted_inputs5_13_1;
-  wire [2:0] new_weighted_inputs5_13_0, new_weighted_inputs5_13_1;
-  wire [2:0] weighted_inputs5_14_0, weighted_inputs5_14_1;
-  wire [2:0] new_weighted_inputs5_14_0, new_weighted_inputs5_14_1;
-  wire [2:0] weighted_inputs5_15_0, weighted_inputs5_15_1;
-  wire [2:0] new_weighted_inputs5_15_0, new_weighted_inputs5_15_1;
-  wire [2:0] weighted_inputs6_0_0, weighted_inputs6_0_1;
-  wire [2:0] new_weighted_inputs6_0_0, new_weighted_inputs6_0_1;
-  wire [2:0] weighted_inputs6_1_0, weighted_inputs6_1_1;
-  wire [2:0] new_weighted_inputs6_1_0, new_weighted_inputs6_1_1;
-  wire [2:0] weighted_inputs6_2_0, weighted_inputs6_2_1;
-  wire [2:0] new_weighted_inputs6_2_0, new_weighted_inputs6_2_1;
-  wire [2:0] weighted_inputs6_3_0, weighted_inputs6_3_1;
-  wire [2:0] new_weighted_inputs6_3_0, new_weighted_inputs6_3_1;
-  wire [2:0] weighted_inputs6_4_0, weighted_inputs6_4_1;
-  wire [2:0] new_weighted_inputs6_4_0, new_weighted_inputs6_4_1;
-  wire [2:0] weighted_inputs6_5_0, weighted_inputs6_5_1;
-  wire [2:0] new_weighted_inputs6_5_0, new_weighted_inputs6_5_1;
-  wire [2:0] weighted_inputs6_6_0, weighted_inputs6_6_1;
-  wire [2:0] new_weighted_inputs6_6_0, new_weighted_inputs6_6_1;
-  wire [2:0] weighted_inputs6_7_0, weighted_inputs6_7_1;
-  wire [2:0] new_weighted_inputs6_7_0, new_weighted_inputs6_7_1;
-  wire [2:0] weighted_inputs6_8_0, weighted_inputs6_8_1;
-  wire [2:0] new_weighted_inputs6_8_0, new_weighted_inputs6_8_1;
-  wire [2:0] weighted_inputs6_9_0, weighted_inputs6_9_1;
-  wire [2:0] new_weighted_inputs6_9_0, new_weighted_inputs6_9_1;
-  wire [2:0] weighted_inputs6_10_0, weighted_inputs6_10_1;
-  wire [2:0] new_weighted_inputs6_10_0, new_weighted_inputs6_10_1;
-  wire [2:0] weighted_inputs6_11_0, weighted_inputs6_11_1;
-  wire [2:0] new_weighted_inputs6_11_0, new_weighted_inputs6_11_1;
-  wire [2:0] weighted_inputs6_12_0, weighted_inputs6_12_1;
-  wire [2:0] new_weighted_inputs6_12_0, new_weighted_inputs6_12_1;
-  wire [2:0] weighted_inputs6_13_0, weighted_inputs6_13_1;
-  wire [2:0] new_weighted_inputs6_13_0, new_weighted_inputs6_13_1;
-  wire [2:0] weighted_inputs6_14_0, weighted_inputs6_14_1;
-  wire [2:0] new_weighted_inputs6_14_0, new_weighted_inputs6_14_1;
-  wire [2:0] weighted_inputs6_15_0, weighted_inputs6_15_1;
-  wire [2:0] new_weighted_inputs6_15_0, new_weighted_inputs6_15_1;
-  wire [2:0] weighted_inputs7_0_0, weighted_inputs7_0_1;
-  wire [2:0] new_weighted_inputs7_0_0, new_weighted_inputs7_0_1;
-  wire [2:0] weighted_inputs7_1_0, weighted_inputs7_1_1;
-  wire [2:0] new_weighted_inputs7_1_0, new_weighted_inputs7_1_1;
-  wire [2:0] weighted_inputs7_2_0, weighted_inputs7_2_1;
-  wire [2:0] new_weighted_inputs7_2_0, new_weighted_inputs7_2_1;
-  wire [2:0] weighted_inputs7_3_0, weighted_inputs7_3_1;
-  wire [2:0] new_weighted_inputs7_3_0, new_weighted_inputs7_3_1;
-  wire [2:0] weighted_inputs7_4_0, weighted_inputs7_4_1;
-  wire [2:0] new_weighted_inputs7_4_0, new_weighted_inputs7_4_1;
-  wire [2:0] weighted_inputs7_5_0, weighted_inputs7_5_1;
-  wire [2:0] new_weighted_inputs7_5_0, new_weighted_inputs7_5_1;
-  wire [2:0] weighted_inputs7_6_0, weighted_inputs7_6_1;
-  wire [2:0] new_weighted_inputs7_6_0, new_weighted_inputs7_6_1;
-  wire [2:0] weighted_inputs7_7_0, weighted_inputs7_7_1;
-  wire [2:0] new_weighted_inputs7_7_0, new_weighted_inputs7_7_1;
-  wire [2:0] weighted_inputs7_8_0, weighted_inputs7_8_1;
-  wire [2:0] new_weighted_inputs7_8_0, new_weighted_inputs7_8_1;
-  wire [2:0] weighted_inputs7_9_0, weighted_inputs7_9_1;
-  wire [2:0] new_weighted_inputs7_9_0, new_weighted_inputs7_9_1;
-  wire [2:0] weighted_inputs7_10_0, weighted_inputs7_10_1;
-  wire [2:0] new_weighted_inputs7_10_0, new_weighted_inputs7_10_1;
-  wire [2:0] weighted_inputs7_11_0, weighted_inputs7_11_1;
-  wire [2:0] new_weighted_inputs7_11_0, new_weighted_inputs7_11_1;
-  wire [2:0] weighted_inputs7_12_0, weighted_inputs7_12_1;
-  wire [2:0] new_weighted_inputs7_12_0, new_weighted_inputs7_12_1;
-  wire [2:0] weighted_inputs7_13_0, weighted_inputs7_13_1;
-  wire [2:0] new_weighted_inputs7_13_0, new_weighted_inputs7_13_1;
-  wire [2:0] weighted_inputs7_14_0, weighted_inputs7_14_1;
-  wire [2:0] new_weighted_inputs7_14_0, new_weighted_inputs7_14_1;
-  wire [2:0] weighted_inputs7_15_0, weighted_inputs7_15_1;
-  wire [2:0] new_weighted_inputs7_15_0, new_weighted_inputs7_15_1;
-  wire [2:0] weighted_inputs8_0_0, weighted_inputs8_0_1;
-  wire [2:0] new_weighted_inputs8_0_0, new_weighted_inputs8_0_1;
-  wire [2:0] weighted_inputs8_1_0, weighted_inputs8_1_1;
-  wire [2:0] new_weighted_inputs8_1_0, new_weighted_inputs8_1_1;
-  wire [2:0] weighted_inputs8_2_0, weighted_inputs8_2_1;
-  wire [2:0] new_weighted_inputs8_2_0, new_weighted_inputs8_2_1;
-  wire [2:0] weighted_inputs8_3_0, weighted_inputs8_3_1;
-  wire [2:0] new_weighted_inputs8_3_0, new_weighted_inputs8_3_1;
-  wire [2:0] weighted_inputs8_4_0, weighted_inputs8_4_1;
-  wire [2:0] new_weighted_inputs8_4_0, new_weighted_inputs8_4_1;
-  wire [2:0] weighted_inputs8_5_0, weighted_inputs8_5_1;
-  wire [2:0] new_weighted_inputs8_5_0, new_weighted_inputs8_5_1;
-  wire [2:0] weighted_inputs8_6_0, weighted_inputs8_6_1;
-  wire [2:0] new_weighted_inputs8_6_0, new_weighted_inputs8_6_1;
-  wire [2:0] weighted_inputs8_7_0, weighted_inputs8_7_1;
-  wire [2:0] new_weighted_inputs8_7_0, new_weighted_inputs8_7_1;
-  wire [2:0] weighted_inputs8_8_0, weighted_inputs8_8_1;
-  wire [2:0] new_weighted_inputs8_8_0, new_weighted_inputs8_8_1;
-  wire [2:0] weighted_inputs8_9_0, weighted_inputs8_9_1;
-  wire [2:0] new_weighted_inputs8_9_0, new_weighted_inputs8_9_1;
-  wire [2:0] weighted_inputs8_10_0, weighted_inputs8_10_1;
-  wire [2:0] new_weighted_inputs8_10_0, new_weighted_inputs8_10_1;
-  wire [2:0] weighted_inputs8_11_0, weighted_inputs8_11_1;
-  wire [2:0] new_weighted_inputs8_11_0, new_weighted_inputs8_11_1;
-  wire [2:0] weighted_inputs8_12_0, weighted_inputs8_12_1;
-  wire [2:0] new_weighted_inputs8_12_0, new_weighted_inputs8_12_1;
-  wire [2:0] weighted_inputs8_13_0, weighted_inputs8_13_1;
-  wire [2:0] new_weighted_inputs8_13_0, new_weighted_inputs8_13_1;
-  wire [2:0] weighted_inputs8_14_0, weighted_inputs8_14_1;
-  wire [2:0] new_weighted_inputs8_14_0, new_weighted_inputs8_14_1;
-  wire [2:0] weighted_inputs8_15_0, weighted_inputs8_15_1;
-  wire [2:0] new_weighted_inputs8_15_0, new_weighted_inputs8_15_1;
+  wire [7:0] weighted_inputs1_0_0, weighted_inputs1_0_1;
+  wire [7:0] new_weighted_inputs1_0_0, new_weighted_inputs1_0_1;
+  wire [7:0] weighted_inputs1_1_0, weighted_inputs1_1_1;
+  wire [7:0] new_weighted_inputs1_1_0, new_weighted_inputs1_1_1;
+  wire [7:0] weighted_inputs1_2_0, weighted_inputs1_2_1;
+  wire [7:0] new_weighted_inputs1_2_0, new_weighted_inputs1_2_1;
+  wire [7:0] weighted_inputs1_3_0, weighted_inputs1_3_1;
+  wire [7:0] new_weighted_inputs1_3_0, new_weighted_inputs1_3_1;
+  wire [7:0] weighted_inputs1_4_0, weighted_inputs1_4_1;
+  wire [7:0] new_weighted_inputs1_4_0, new_weighted_inputs1_4_1;
+  wire [7:0] weighted_inputs1_5_0, weighted_inputs1_5_1;
+  wire [7:0] new_weighted_inputs1_5_0, new_weighted_inputs1_5_1;
+  wire [7:0] weighted_inputs1_6_0, weighted_inputs1_6_1;
+  wire [7:0] new_weighted_inputs1_6_0, new_weighted_inputs1_6_1;
+  wire [7:0] weighted_inputs1_7_0, weighted_inputs1_7_1;
+  wire [7:0] new_weighted_inputs1_7_0, new_weighted_inputs1_7_1;
+  wire [7:0] weighted_inputs1_8_0, weighted_inputs1_8_1;
+  wire [7:0] new_weighted_inputs1_8_0, new_weighted_inputs1_8_1;
+  wire [7:0] weighted_inputs1_9_0, weighted_inputs1_9_1;
+  wire [7:0] new_weighted_inputs1_9_0, new_weighted_inputs1_9_1;
+  wire [7:0] weighted_inputs1_10_0, weighted_inputs1_10_1;
+  wire [7:0] new_weighted_inputs1_10_0, new_weighted_inputs1_10_1;
+  wire [7:0] weighted_inputs1_11_0, weighted_inputs1_11_1;
+  wire [7:0] new_weighted_inputs1_11_0, new_weighted_inputs1_11_1;
+  wire [7:0] weighted_inputs1_12_0, weighted_inputs1_12_1;
+  wire [7:0] new_weighted_inputs1_12_0, new_weighted_inputs1_12_1;
+  wire [7:0] weighted_inputs1_13_0, weighted_inputs1_13_1;
+  wire [7:0] new_weighted_inputs1_13_0, new_weighted_inputs1_13_1;
+  wire [7:0] weighted_inputs1_14_0, weighted_inputs1_14_1;
+  wire [7:0] new_weighted_inputs1_14_0, new_weighted_inputs1_14_1;
+  wire [7:0] weighted_inputs1_15_0, weighted_inputs1_15_1;
+  wire [7:0] new_weighted_inputs1_15_0, new_weighted_inputs1_15_1;
+  wire [7:0] weighted_inputs2_0_0, weighted_inputs2_0_1;
+  wire [7:0] new_weighted_inputs2_0_0, new_weighted_inputs2_0_1;
+  wire [7:0] weighted_inputs2_1_0, weighted_inputs2_1_1;
+  wire [7:0] new_weighted_inputs2_1_0, new_weighted_inputs2_1_1;
+  wire [7:0] weighted_inputs2_2_0, weighted_inputs2_2_1;
+  wire [7:0] new_weighted_inputs2_2_0, new_weighted_inputs2_2_1;
+  wire [7:0] weighted_inputs2_3_0, weighted_inputs2_3_1;
+  wire [7:0] new_weighted_inputs2_3_0, new_weighted_inputs2_3_1;
+  wire [7:0] weighted_inputs2_4_0, weighted_inputs2_4_1;
+  wire [7:0] new_weighted_inputs2_4_0, new_weighted_inputs2_4_1;
+  wire [7:0] weighted_inputs2_5_0, weighted_inputs2_5_1;
+  wire [7:0] new_weighted_inputs2_5_0, new_weighted_inputs2_5_1;
+  wire [7:0] weighted_inputs2_6_0, weighted_inputs2_6_1;
+  wire [7:0] new_weighted_inputs2_6_0, new_weighted_inputs2_6_1;
+  wire [7:0] weighted_inputs2_7_0, weighted_inputs2_7_1;
+  wire [7:0] new_weighted_inputs2_7_0, new_weighted_inputs2_7_1;
+  wire [7:0] weighted_inputs2_8_0, weighted_inputs2_8_1;
+  wire [7:0] new_weighted_inputs2_8_0, new_weighted_inputs2_8_1;
+  wire [7:0] weighted_inputs2_9_0, weighted_inputs2_9_1;
+  wire [7:0] new_weighted_inputs2_9_0, new_weighted_inputs2_9_1;
+  wire [7:0] weighted_inputs2_10_0, weighted_inputs2_10_1;
+  wire [7:0] new_weighted_inputs2_10_0, new_weighted_inputs2_10_1;
+  wire [7:0] weighted_inputs2_11_0, weighted_inputs2_11_1;
+  wire [7:0] new_weighted_inputs2_11_0, new_weighted_inputs2_11_1;
+  wire [7:0] weighted_inputs2_12_0, weighted_inputs2_12_1;
+  wire [7:0] new_weighted_inputs2_12_0, new_weighted_inputs2_12_1;
+  wire [7:0] weighted_inputs2_13_0, weighted_inputs2_13_1;
+  wire [7:0] new_weighted_inputs2_13_0, new_weighted_inputs2_13_1;
+  wire [7:0] weighted_inputs2_14_0, weighted_inputs2_14_1;
+  wire [7:0] new_weighted_inputs2_14_0, new_weighted_inputs2_14_1;
+  wire [7:0] weighted_inputs2_15_0, weighted_inputs2_15_1;
+  wire [7:0] new_weighted_inputs2_15_0, new_weighted_inputs2_15_1;
+  wire [7:0] weighted_inputs3_0_0, weighted_inputs3_0_1;
+  wire [7:0] new_weighted_inputs3_0_0, new_weighted_inputs3_0_1;
+  wire [7:0] weighted_inputs3_1_0, weighted_inputs3_1_1;
+  wire [7:0] new_weighted_inputs3_1_0, new_weighted_inputs3_1_1;
+  wire [7:0] weighted_inputs3_2_0, weighted_inputs3_2_1;
+  wire [7:0] new_weighted_inputs3_2_0, new_weighted_inputs3_2_1;
+  wire [7:0] weighted_inputs3_3_0, weighted_inputs3_3_1;
+  wire [7:0] new_weighted_inputs3_3_0, new_weighted_inputs3_3_1;
+  wire [7:0] weighted_inputs3_4_0, weighted_inputs3_4_1;
+  wire [7:0] new_weighted_inputs3_4_0, new_weighted_inputs3_4_1;
+  wire [7:0] weighted_inputs3_5_0, weighted_inputs3_5_1;
+  wire [7:0] new_weighted_inputs3_5_0, new_weighted_inputs3_5_1;
+  wire [7:0] weighted_inputs3_6_0, weighted_inputs3_6_1;
+  wire [7:0] new_weighted_inputs3_6_0, new_weighted_inputs3_6_1;
+  wire [7:0] weighted_inputs3_7_0, weighted_inputs3_7_1;
+  wire [7:0] new_weighted_inputs3_7_0, new_weighted_inputs3_7_1;
+  wire [7:0] weighted_inputs3_8_0, weighted_inputs3_8_1;
+  wire [7:0] new_weighted_inputs3_8_0, new_weighted_inputs3_8_1;
+  wire [7:0] weighted_inputs3_9_0, weighted_inputs3_9_1;
+  wire [7:0] new_weighted_inputs3_9_0, new_weighted_inputs3_9_1;
+  wire [7:0] weighted_inputs3_10_0, weighted_inputs3_10_1;
+  wire [7:0] new_weighted_inputs3_10_0, new_weighted_inputs3_10_1;
+  wire [7:0] weighted_inputs3_11_0, weighted_inputs3_11_1;
+  wire [7:0] new_weighted_inputs3_11_0, new_weighted_inputs3_11_1;
+  wire [7:0] weighted_inputs3_12_0, weighted_inputs3_12_1;
+  wire [7:0] new_weighted_inputs3_12_0, new_weighted_inputs3_12_1;
+  wire [7:0] weighted_inputs3_13_0, weighted_inputs3_13_1;
+  wire [7:0] new_weighted_inputs3_13_0, new_weighted_inputs3_13_1;
+  wire [7:0] weighted_inputs3_14_0, weighted_inputs3_14_1;
+  wire [7:0] new_weighted_inputs3_14_0, new_weighted_inputs3_14_1;
+  wire [7:0] weighted_inputs3_15_0, weighted_inputs3_15_1;
+  wire [7:0] new_weighted_inputs3_15_0, new_weighted_inputs3_15_1;
+  wire [7:0] weighted_inputs4_0_0, weighted_inputs4_0_1;
+  wire [7:0] new_weighted_inputs4_0_0, new_weighted_inputs4_0_1;
+  wire [7:0] weighted_inputs4_1_0, weighted_inputs4_1_1;
+  wire [7:0] new_weighted_inputs4_1_0, new_weighted_inputs4_1_1;
+  wire [7:0] weighted_inputs4_2_0, weighted_inputs4_2_1;
+  wire [7:0] new_weighted_inputs4_2_0, new_weighted_inputs4_2_1;
+  wire [7:0] weighted_inputs4_3_0, weighted_inputs4_3_1;
+  wire [7:0] new_weighted_inputs4_3_0, new_weighted_inputs4_3_1;
+  wire [7:0] weighted_inputs4_4_0, weighted_inputs4_4_1;
+  wire [7:0] new_weighted_inputs4_4_0, new_weighted_inputs4_4_1;
+  wire [7:0] weighted_inputs4_5_0, weighted_inputs4_5_1;
+  wire [7:0] new_weighted_inputs4_5_0, new_weighted_inputs4_5_1;
+  wire [7:0] weighted_inputs4_6_0, weighted_inputs4_6_1;
+  wire [7:0] new_weighted_inputs4_6_0, new_weighted_inputs4_6_1;
+  wire [7:0] weighted_inputs4_7_0, weighted_inputs4_7_1;
+  wire [7:0] new_weighted_inputs4_7_0, new_weighted_inputs4_7_1;
+  wire [7:0] weighted_inputs4_8_0, weighted_inputs4_8_1;
+  wire [7:0] new_weighted_inputs4_8_0, new_weighted_inputs4_8_1;
+  wire [7:0] weighted_inputs4_9_0, weighted_inputs4_9_1;
+  wire [7:0] new_weighted_inputs4_9_0, new_weighted_inputs4_9_1;
+  wire [7:0] weighted_inputs4_10_0, weighted_inputs4_10_1;
+  wire [7:0] new_weighted_inputs4_10_0, new_weighted_inputs4_10_1;
+  wire [7:0] weighted_inputs4_11_0, weighted_inputs4_11_1;
+  wire [7:0] new_weighted_inputs4_11_0, new_weighted_inputs4_11_1;
+  wire [7:0] weighted_inputs4_12_0, weighted_inputs4_12_1;
+  wire [7:0] new_weighted_inputs4_12_0, new_weighted_inputs4_12_1;
+  wire [7:0] weighted_inputs4_13_0, weighted_inputs4_13_1;
+  wire [7:0] new_weighted_inputs4_13_0, new_weighted_inputs4_13_1;
+  wire [7:0] weighted_inputs4_14_0, weighted_inputs4_14_1;
+  wire [7:0] new_weighted_inputs4_14_0, new_weighted_inputs4_14_1;
+  wire [7:0] weighted_inputs4_15_0, weighted_inputs4_15_1;
+  wire [7:0] new_weighted_inputs4_15_0, new_weighted_inputs4_15_1;
+  wire [7:0] weighted_inputs5_0_0, weighted_inputs5_0_1;
+  wire [7:0] new_weighted_inputs5_0_0, new_weighted_inputs5_0_1;
+  wire [7:0] weighted_inputs5_1_0, weighted_inputs5_1_1;
+  wire [7:0] new_weighted_inputs5_1_0, new_weighted_inputs5_1_1;
+  wire [7:0] weighted_inputs5_2_0, weighted_inputs5_2_1;
+  wire [7:0] new_weighted_inputs5_2_0, new_weighted_inputs5_2_1;
+  wire [7:0] weighted_inputs5_3_0, weighted_inputs5_3_1;
+  wire [7:0] new_weighted_inputs5_3_0, new_weighted_inputs5_3_1;
+  wire [7:0] weighted_inputs5_4_0, weighted_inputs5_4_1;
+  wire [7:0] new_weighted_inputs5_4_0, new_weighted_inputs5_4_1;
+  wire [7:0] weighted_inputs5_5_0, weighted_inputs5_5_1;
+  wire [7:0] new_weighted_inputs5_5_0, new_weighted_inputs5_5_1;
+  wire [7:0] weighted_inputs5_6_0, weighted_inputs5_6_1;
+  wire [7:0] new_weighted_inputs5_6_0, new_weighted_inputs5_6_1;
+  wire [7:0] weighted_inputs5_7_0, weighted_inputs5_7_1;
+  wire [7:0] new_weighted_inputs5_7_0, new_weighted_inputs5_7_1;
+  wire [7:0] weighted_inputs5_8_0, weighted_inputs5_8_1;
+  wire [7:0] new_weighted_inputs5_8_0, new_weighted_inputs5_8_1;
+  wire [7:0] weighted_inputs5_9_0, weighted_inputs5_9_1;
+  wire [7:0] new_weighted_inputs5_9_0, new_weighted_inputs5_9_1;
+  wire [7:0] weighted_inputs5_10_0, weighted_inputs5_10_1;
+  wire [7:0] new_weighted_inputs5_10_0, new_weighted_inputs5_10_1;
+  wire [7:0] weighted_inputs5_11_0, weighted_inputs5_11_1;
+  wire [7:0] new_weighted_inputs5_11_0, new_weighted_inputs5_11_1;
+  wire [7:0] weighted_inputs5_12_0, weighted_inputs5_12_1;
+  wire [7:0] new_weighted_inputs5_12_0, new_weighted_inputs5_12_1;
+  wire [7:0] weighted_inputs5_13_0, weighted_inputs5_13_1;
+  wire [7:0] new_weighted_inputs5_13_0, new_weighted_inputs5_13_1;
+  wire [7:0] weighted_inputs5_14_0, weighted_inputs5_14_1;
+  wire [7:0] new_weighted_inputs5_14_0, new_weighted_inputs5_14_1;
+  wire [7:0] weighted_inputs5_15_0, weighted_inputs5_15_1;
+  wire [7:0] new_weighted_inputs5_15_0, new_weighted_inputs5_15_1;
+  wire [7:0] weighted_inputs6_0_0, weighted_inputs6_0_1;
+  wire [7:0] new_weighted_inputs6_0_0, new_weighted_inputs6_0_1;
+  wire [7:0] weighted_inputs6_1_0, weighted_inputs6_1_1;
+  wire [7:0] new_weighted_inputs6_1_0, new_weighted_inputs6_1_1;
+  wire [7:0] weighted_inputs6_2_0, weighted_inputs6_2_1;
+  wire [7:0] new_weighted_inputs6_2_0, new_weighted_inputs6_2_1;
+  wire [7:0] weighted_inputs6_3_0, weighted_inputs6_3_1;
+  wire [7:0] new_weighted_inputs6_3_0, new_weighted_inputs6_3_1;
+  wire [7:0] weighted_inputs6_4_0, weighted_inputs6_4_1;
+  wire [7:0] new_weighted_inputs6_4_0, new_weighted_inputs6_4_1;
+  wire [7:0] weighted_inputs6_5_0, weighted_inputs6_5_1;
+  wire [7:0] new_weighted_inputs6_5_0, new_weighted_inputs6_5_1;
+  wire [7:0] weighted_inputs6_6_0, weighted_inputs6_6_1;
+  wire [7:0] new_weighted_inputs6_6_0, new_weighted_inputs6_6_1;
+  wire [7:0] weighted_inputs6_7_0, weighted_inputs6_7_1;
+  wire [7:0] new_weighted_inputs6_7_0, new_weighted_inputs6_7_1;
+  wire [7:0] weighted_inputs6_8_0, weighted_inputs6_8_1;
+  wire [7:0] new_weighted_inputs6_8_0, new_weighted_inputs6_8_1;
+  wire [7:0] weighted_inputs6_9_0, weighted_inputs6_9_1;
+  wire [7:0] new_weighted_inputs6_9_0, new_weighted_inputs6_9_1;
+  wire [7:0] weighted_inputs6_10_0, weighted_inputs6_10_1;
+  wire [7:0] new_weighted_inputs6_10_0, new_weighted_inputs6_10_1;
+  wire [7:0] weighted_inputs6_11_0, weighted_inputs6_11_1;
+  wire [7:0] new_weighted_inputs6_11_0, new_weighted_inputs6_11_1;
+  wire [7:0] weighted_inputs6_12_0, weighted_inputs6_12_1;
+  wire [7:0] new_weighted_inputs6_12_0, new_weighted_inputs6_12_1;
+  wire [7:0] weighted_inputs6_13_0, weighted_inputs6_13_1;
+  wire [7:0] new_weighted_inputs6_13_0, new_weighted_inputs6_13_1;
+  wire [7:0] weighted_inputs6_14_0, weighted_inputs6_14_1;
+  wire [7:0] new_weighted_inputs6_14_0, new_weighted_inputs6_14_1;
+  wire [7:0] weighted_inputs6_15_0, weighted_inputs6_15_1;
+  wire [7:0] new_weighted_inputs6_15_0, new_weighted_inputs6_15_1;
+  wire [7:0] weighted_inputs7_0_0, weighted_inputs7_0_1;
+  wire [7:0] new_weighted_inputs7_0_0, new_weighted_inputs7_0_1;
+  wire [7:0] weighted_inputs7_1_0, weighted_inputs7_1_1;
+  wire [7:0] new_weighted_inputs7_1_0, new_weighted_inputs7_1_1;
+  wire [7:0] weighted_inputs7_2_0, weighted_inputs7_2_1;
+  wire [7:0] new_weighted_inputs7_2_0, new_weighted_inputs7_2_1;
+  wire [7:0] weighted_inputs7_3_0, weighted_inputs7_3_1;
+  wire [7:0] new_weighted_inputs7_3_0, new_weighted_inputs7_3_1;
+  wire [7:0] weighted_inputs7_4_0, weighted_inputs7_4_1;
+  wire [7:0] new_weighted_inputs7_4_0, new_weighted_inputs7_4_1;
+  wire [7:0] weighted_inputs7_5_0, weighted_inputs7_5_1;
+  wire [7:0] new_weighted_inputs7_5_0, new_weighted_inputs7_5_1;
+  wire [7:0] weighted_inputs7_6_0, weighted_inputs7_6_1;
+  wire [7:0] new_weighted_inputs7_6_0, new_weighted_inputs7_6_1;
+  wire [7:0] weighted_inputs7_7_0, weighted_inputs7_7_1;
+  wire [7:0] new_weighted_inputs7_7_0, new_weighted_inputs7_7_1;
+  wire [7:0] weighted_inputs7_8_0, weighted_inputs7_8_1;
+  wire [7:0] new_weighted_inputs7_8_0, new_weighted_inputs7_8_1;
+  wire [7:0] weighted_inputs7_9_0, weighted_inputs7_9_1;
+  wire [7:0] new_weighted_inputs7_9_0, new_weighted_inputs7_9_1;
+  wire [7:0] weighted_inputs7_10_0, weighted_inputs7_10_1;
+  wire [7:0] new_weighted_inputs7_10_0, new_weighted_inputs7_10_1;
+  wire [7:0] weighted_inputs7_11_0, weighted_inputs7_11_1;
+  wire [7:0] new_weighted_inputs7_11_0, new_weighted_inputs7_11_1;
+  wire [7:0] weighted_inputs7_12_0, weighted_inputs7_12_1;
+  wire [7:0] new_weighted_inputs7_12_0, new_weighted_inputs7_12_1;
+  wire [7:0] weighted_inputs7_13_0, weighted_inputs7_13_1;
+  wire [7:0] new_weighted_inputs7_13_0, new_weighted_inputs7_13_1;
+  wire [7:0] weighted_inputs7_14_0, weighted_inputs7_14_1;
+  wire [7:0] new_weighted_inputs7_14_0, new_weighted_inputs7_14_1;
+  wire [7:0] weighted_inputs7_15_0, weighted_inputs7_15_1;
+  wire [7:0] new_weighted_inputs7_15_0, new_weighted_inputs7_15_1;
+  wire [7:0] weighted_inputs8_0_0, weighted_inputs8_0_1;
+  wire [7:0] new_weighted_inputs8_0_0, new_weighted_inputs8_0_1;
+  wire [7:0] weighted_inputs8_1_0, weighted_inputs8_1_1;
+  wire [7:0] new_weighted_inputs8_1_0, new_weighted_inputs8_1_1;
+  wire [7:0] weighted_inputs8_2_0, weighted_inputs8_2_1;
+  wire [7:0] new_weighted_inputs8_2_0, new_weighted_inputs8_2_1;
+  wire [7:0] weighted_inputs8_3_0, weighted_inputs8_3_1;
+  wire [7:0] new_weighted_inputs8_3_0, new_weighted_inputs8_3_1;
+  wire [7:0] weighted_inputs8_4_0, weighted_inputs8_4_1;
+  wire [7:0] new_weighted_inputs8_4_0, new_weighted_inputs8_4_1;
+  wire [7:0] weighted_inputs8_5_0, weighted_inputs8_5_1;
+  wire [7:0] new_weighted_inputs8_5_0, new_weighted_inputs8_5_1;
+  wire [7:0] weighted_inputs8_6_0, weighted_inputs8_6_1;
+  wire [7:0] new_weighted_inputs8_6_0, new_weighted_inputs8_6_1;
+  wire [7:0] weighted_inputs8_7_0, weighted_inputs8_7_1;
+  wire [7:0] new_weighted_inputs8_7_0, new_weighted_inputs8_7_1;
+  wire [7:0] weighted_inputs8_8_0, weighted_inputs8_8_1;
+  wire [7:0] new_weighted_inputs8_8_0, new_weighted_inputs8_8_1;
+  wire [7:0] weighted_inputs8_9_0, weighted_inputs8_9_1;
+  wire [7:0] new_weighted_inputs8_9_0, new_weighted_inputs8_9_1;
+  wire [7:0] weighted_inputs8_10_0, weighted_inputs8_10_1;
+  wire [7:0] new_weighted_inputs8_10_0, new_weighted_inputs8_10_1;
+  wire [7:0] weighted_inputs8_11_0, weighted_inputs8_11_1;
+  wire [7:0] new_weighted_inputs8_11_0, new_weighted_inputs8_11_1;
+  wire [7:0] weighted_inputs8_12_0, weighted_inputs8_12_1;
+  wire [7:0] new_weighted_inputs8_12_0, new_weighted_inputs8_12_1;
+  wire [7:0] weighted_inputs8_13_0, weighted_inputs8_13_1;
+  wire [7:0] new_weighted_inputs8_13_0, new_weighted_inputs8_13_1;
+  wire [7:0] weighted_inputs8_14_0, weighted_inputs8_14_1;
+  wire [7:0] new_weighted_inputs8_14_0, new_weighted_inputs8_14_1;
+  wire [7:0] weighted_inputs8_15_0, weighted_inputs8_15_1;
+  wire [7:0] new_weighted_inputs8_15_0, new_weighted_inputs8_15_1;
   
 
-  wire [6:0] sum1 [7:0], sum2 [7:0], sum1bar [7:0], sum2bar [7 :0];
-  wire [7:0] biased_sum1 [7:0], biased_sum2 [7:0], biased_sum1bar [7:0], biased_sum2bar [7:0];
+  wire [11:0] sum1 [7:0], sum2 [7:0], sum1bar [7:0], sum2bar [7 :0];
+  wire [12:0] biased_sum1 [7:0], biased_sum2 [7:0], biased_sum1bar [7:0], biased_sum2bar [7:0];
   
 
-  wire [2:0] act0_0_0_1;
-  wire [2:0] act0_0_1_1;
-  wire [2:0] act0_0_0_2;
-  wire [2:0] act0_0_1_2;
-  wire [2:0] act0_0_0_3;
-  wire [2:0] act0_0_1_3;
-  wire [2:0] act0_1_0_1;
-  wire [2:0] act0_1_1_1;
-  wire [2:0] act0_1_0_2;
-  wire [2:0] act0_1_1_2;
-  wire [2:0] act0_1_0_3;
-  wire [2:0] act0_1_1_3;
-  wire [2:0] act0_2_0_1;
-  wire [2:0] act0_2_1_1;
-  wire [2:0] act0_2_0_2;
-  wire [2:0] act0_2_1_2;
-  wire [2:0] act0_2_0_3;
-  wire [2:0] act0_2_1_3;
-  wire [2:0] act0_3_0_1;
-  wire [2:0] act0_3_1_1;
-  wire [2:0] act0_3_0_2;
-  wire [2:0] act0_3_1_2;
-  wire [2:0] act0_3_0_3;
-  wire [2:0] act0_3_1_3;
-  wire [2:0] act0_4_0_1;
-  wire [2:0] act0_4_1_1;
-  wire [2:0] act0_4_0_2;
-  wire [2:0] act0_4_1_2;
-  wire [2:0] act0_4_0_3;
-  wire [2:0] act0_4_1_3;
-  wire [2:0] act0_5_0_1;
-  wire [2:0] act0_5_1_1;
-  wire [2:0] act0_5_0_2;
-  wire [2:0] act0_5_1_2;
-  wire [2:0] act0_5_0_3;
-  wire [2:0] act0_5_1_3;
-  wire [2:0] act0_6_0_1;
-  wire [2:0] act0_6_1_1;
-  wire [2:0] act0_6_0_2;
-  wire [2:0] act0_6_1_2;
-  wire [2:0] act0_6_0_3;
-  wire [2:0] act0_6_1_3;
-  wire [2:0] act0_7_0_1;
-  wire [2:0] act0_7_1_1;
-  wire [2:0] act0_7_0_2;
-  wire [2:0] act0_7_1_2;
-  wire [2:0] act0_7_0_3;
-  wire [2:0] act0_7_1_3;
-  wire [2:0] act0_8_0_1;
-  wire [2:0] act0_8_1_1;
-  wire [2:0] act0_8_0_2;
-  wire [2:0] act0_8_1_2;
-  wire [2:0] act0_8_0_3;
-  wire [2:0] act0_8_1_3;
-  wire [2:0] act0_9_0_1;
-  wire [2:0] act0_9_1_1;
-  wire [2:0] act0_9_0_2;
-  wire [2:0] act0_9_1_2;
-  wire [2:0] act0_9_0_3;
-  wire [2:0] act0_9_1_3;
-  wire [2:0] act0_10_0_1;
-  wire [2:0] act0_10_1_1;
-  wire [2:0] act0_10_0_2;
-  wire [2:0] act0_10_1_2;
-  wire [2:0] act0_10_0_3;
-  wire [2:0] act0_10_1_3;
-  wire [2:0] act0_11_0_1;
-  wire [2:0] act0_11_1_1;
-  wire [2:0] act0_11_0_2;
-  wire [2:0] act0_11_1_2;
-  wire [2:0] act0_11_0_3;
-  wire [2:0] act0_11_1_3;
-  wire [2:0] act0_12_0_1;
-  wire [2:0] act0_12_1_1;
-  wire [2:0] act0_12_0_2;
-  wire [2:0] act0_12_1_2;
-  wire [2:0] act0_12_0_3;
-  wire [2:0] act0_12_1_3;
-  wire [2:0] act0_13_0_1;
-  wire [2:0] act0_13_1_1;
-  wire [2:0] act0_13_0_2;
-  wire [2:0] act0_13_1_2;
-  wire [2:0] act0_13_0_3;
-  wire [2:0] act0_13_1_3;
-  wire [2:0] act0_14_0_1;
-  wire [2:0] act0_14_1_1;
-  wire [2:0] act0_14_0_2;
-  wire [2:0] act0_14_1_2;
-  wire [2:0] act0_14_0_3;
-  wire [2:0] act0_14_1_3;
-  wire [2:0] act0_15_0_1;
-  wire [2:0] act0_15_1_1;
-  wire [2:0] act0_15_0_2;
-  wire [2:0] act0_15_1_2;
-  wire [2:0] act0_15_0_3;
-  wire [2:0] act0_15_1_3;
-  wire [2:0] act1_0_0_1;
-  wire [2:0] act1_0_1_1;
-  wire [2:0] act1_0_0_2;
-  wire [2:0] act1_0_1_2;
-  wire [2:0] act1_0_0_3;
-  wire [2:0] act1_0_1_3;
-  wire [2:0] act1_1_0_1;
-  wire [2:0] act1_1_1_1;
-  wire [2:0] act1_1_0_2;
-  wire [2:0] act1_1_1_2;
-  wire [2:0] act1_1_0_3;
-  wire [2:0] act1_1_1_3;
-  wire [2:0] act1_2_0_1;
-  wire [2:0] act1_2_1_1;
-  wire [2:0] act1_2_0_2;
-  wire [2:0] act1_2_1_2;
-  wire [2:0] act1_2_0_3;
-  wire [2:0] act1_2_1_3;
-  wire [2:0] act1_3_0_1;
-  wire [2:0] act1_3_1_1;
-  wire [2:0] act1_3_0_2;
-  wire [2:0] act1_3_1_2;
-  wire [2:0] act1_3_0_3;
-  wire [2:0] act1_3_1_3;
-  wire [2:0] act1_4_0_1;
-  wire [2:0] act1_4_1_1;
-  wire [2:0] act1_4_0_2;
-  wire [2:0] act1_4_1_2;
-  wire [2:0] act1_4_0_3;
-  wire [2:0] act1_4_1_3;
-  wire [2:0] act1_5_0_1;
-  wire [2:0] act1_5_1_1;
-  wire [2:0] act1_5_0_2;
-  wire [2:0] act1_5_1_2;
-  wire [2:0] act1_5_0_3;
-  wire [2:0] act1_5_1_3;
-  wire [2:0] act1_6_0_1;
-  wire [2:0] act1_6_1_1;
-  wire [2:0] act1_6_0_2;
-  wire [2:0] act1_6_1_2;
-  wire [2:0] act1_6_0_3;
-  wire [2:0] act1_6_1_3;
-  wire [2:0] act1_7_0_1;
-  wire [2:0] act1_7_1_1;
-  wire [2:0] act1_7_0_2;
-  wire [2:0] act1_7_1_2;
-  wire [2:0] act1_7_0_3;
-  wire [2:0] act1_7_1_3;
-  wire [2:0] act1_8_0_1;
-  wire [2:0] act1_8_1_1;
-  wire [2:0] act1_8_0_2;
-  wire [2:0] act1_8_1_2;
-  wire [2:0] act1_8_0_3;
-  wire [2:0] act1_8_1_3;
-  wire [2:0] act1_9_0_1;
-  wire [2:0] act1_9_1_1;
-  wire [2:0] act1_9_0_2;
-  wire [2:0] act1_9_1_2;
-  wire [2:0] act1_9_0_3;
-  wire [2:0] act1_9_1_3;
-  wire [2:0] act1_10_0_1;
-  wire [2:0] act1_10_1_1;
-  wire [2:0] act1_10_0_2;
-  wire [2:0] act1_10_1_2;
-  wire [2:0] act1_10_0_3;
-  wire [2:0] act1_10_1_3;
-  wire [2:0] act1_11_0_1;
-  wire [2:0] act1_11_1_1;
-  wire [2:0] act1_11_0_2;
-  wire [2:0] act1_11_1_2;
-  wire [2:0] act1_11_0_3;
-  wire [2:0] act1_11_1_3;
-  wire [2:0] act1_12_0_1;
-  wire [2:0] act1_12_1_1;
-  wire [2:0] act1_12_0_2;
-  wire [2:0] act1_12_1_2;
-  wire [2:0] act1_12_0_3;
-  wire [2:0] act1_12_1_3;
-  wire [2:0] act1_13_0_1;
-  wire [2:0] act1_13_1_1;
-  wire [2:0] act1_13_0_2;
-  wire [2:0] act1_13_1_2;
-  wire [2:0] act1_13_0_3;
-  wire [2:0] act1_13_1_3;
-  wire [2:0] act1_14_0_1;
-  wire [2:0] act1_14_1_1;
-  wire [2:0] act1_14_0_2;
-  wire [2:0] act1_14_1_2;
-  wire [2:0] act1_14_0_3;
-  wire [2:0] act1_14_1_3;
-  wire [2:0] act1_15_0_1;
-  wire [2:0] act1_15_1_1;
-  wire [2:0] act1_15_0_2;
-  wire [2:0] act1_15_1_2;
-  wire [2:0] act1_15_0_3;
-  wire [2:0] act1_15_1_3;
-  wire [2:0] act2_0_0_1;
-  wire [2:0] act2_0_1_1;
-  wire [2:0] act2_0_0_2;
-  wire [2:0] act2_0_1_2;
-  wire [2:0] act2_0_0_3;
-  wire [2:0] act2_0_1_3;
-  wire [2:0] act2_1_0_1;
-  wire [2:0] act2_1_1_1;
-  wire [2:0] act2_1_0_2;
-  wire [2:0] act2_1_1_2;
-  wire [2:0] act2_1_0_3;
-  wire [2:0] act2_1_1_3;
-  wire [2:0] act2_2_0_1;
-  wire [2:0] act2_2_1_1;
-  wire [2:0] act2_2_0_2;
-  wire [2:0] act2_2_1_2;
-  wire [2:0] act2_2_0_3;
-  wire [2:0] act2_2_1_3;
-  wire [2:0] act2_3_0_1;
-  wire [2:0] act2_3_1_1;
-  wire [2:0] act2_3_0_2;
-  wire [2:0] act2_3_1_2;
-  wire [2:0] act2_3_0_3;
-  wire [2:0] act2_3_1_3;
-  wire [2:0] act2_4_0_1;
-  wire [2:0] act2_4_1_1;
-  wire [2:0] act2_4_0_2;
-  wire [2:0] act2_4_1_2;
-  wire [2:0] act2_4_0_3;
-  wire [2:0] act2_4_1_3;
-  wire [2:0] act2_5_0_1;
-  wire [2:0] act2_5_1_1;
-  wire [2:0] act2_5_0_2;
-  wire [2:0] act2_5_1_2;
-  wire [2:0] act2_5_0_3;
-  wire [2:0] act2_5_1_3;
-  wire [2:0] act2_6_0_1;
-  wire [2:0] act2_6_1_1;
-  wire [2:0] act2_6_0_2;
-  wire [2:0] act2_6_1_2;
-  wire [2:0] act2_6_0_3;
-  wire [2:0] act2_6_1_3;
-  wire [2:0] act2_7_0_1;
-  wire [2:0] act2_7_1_1;
-  wire [2:0] act2_7_0_2;
-  wire [2:0] act2_7_1_2;
-  wire [2:0] act2_7_0_3;
-  wire [2:0] act2_7_1_3;
-  wire [2:0] act2_8_0_1;
-  wire [2:0] act2_8_1_1;
-  wire [2:0] act2_8_0_2;
-  wire [2:0] act2_8_1_2;
-  wire [2:0] act2_8_0_3;
-  wire [2:0] act2_8_1_3;
-  wire [2:0] act2_9_0_1;
-  wire [2:0] act2_9_1_1;
-  wire [2:0] act2_9_0_2;
-  wire [2:0] act2_9_1_2;
-  wire [2:0] act2_9_0_3;
-  wire [2:0] act2_9_1_3;
-  wire [2:0] act2_10_0_1;
-  wire [2:0] act2_10_1_1;
-  wire [2:0] act2_10_0_2;
-  wire [2:0] act2_10_1_2;
-  wire [2:0] act2_10_0_3;
-  wire [2:0] act2_10_1_3;
-  wire [2:0] act2_11_0_1;
-  wire [2:0] act2_11_1_1;
-  wire [2:0] act2_11_0_2;
-  wire [2:0] act2_11_1_2;
-  wire [2:0] act2_11_0_3;
-  wire [2:0] act2_11_1_3;
-  wire [2:0] act2_12_0_1;
-  wire [2:0] act2_12_1_1;
-  wire [2:0] act2_12_0_2;
-  wire [2:0] act2_12_1_2;
-  wire [2:0] act2_12_0_3;
-  wire [2:0] act2_12_1_3;
-  wire [2:0] act2_13_0_1;
-  wire [2:0] act2_13_1_1;
-  wire [2:0] act2_13_0_2;
-  wire [2:0] act2_13_1_2;
-  wire [2:0] act2_13_0_3;
-  wire [2:0] act2_13_1_3;
-  wire [2:0] act2_14_0_1;
-  wire [2:0] act2_14_1_1;
-  wire [2:0] act2_14_0_2;
-  wire [2:0] act2_14_1_2;
-  wire [2:0] act2_14_0_3;
-  wire [2:0] act2_14_1_3;
-  wire [2:0] act2_15_0_1;
-  wire [2:0] act2_15_1_1;
-  wire [2:0] act2_15_0_2;
-  wire [2:0] act2_15_1_2;
-  wire [2:0] act2_15_0_3;
-  wire [2:0] act2_15_1_3;
-  wire [2:0] act3_0_0_1;
-  wire [2:0] act3_0_1_1;
-  wire [2:0] act3_0_0_2;
-  wire [2:0] act3_0_1_2;
-  wire [2:0] act3_0_0_3;
-  wire [2:0] act3_0_1_3;
-  wire [2:0] act3_1_0_1;
-  wire [2:0] act3_1_1_1;
-  wire [2:0] act3_1_0_2;
-  wire [2:0] act3_1_1_2;
-  wire [2:0] act3_1_0_3;
-  wire [2:0] act3_1_1_3;
-  wire [2:0] act3_2_0_1;
-  wire [2:0] act3_2_1_1;
-  wire [2:0] act3_2_0_2;
-  wire [2:0] act3_2_1_2;
-  wire [2:0] act3_2_0_3;
-  wire [2:0] act3_2_1_3;
-  wire [2:0] act3_3_0_1;
-  wire [2:0] act3_3_1_1;
-  wire [2:0] act3_3_0_2;
-  wire [2:0] act3_3_1_2;
-  wire [2:0] act3_3_0_3;
-  wire [2:0] act3_3_1_3;
-  wire [2:0] act3_4_0_1;
-  wire [2:0] act3_4_1_1;
-  wire [2:0] act3_4_0_2;
-  wire [2:0] act3_4_1_2;
-  wire [2:0] act3_4_0_3;
-  wire [2:0] act3_4_1_3;
-  wire [2:0] act3_5_0_1;
-  wire [2:0] act3_5_1_1;
-  wire [2:0] act3_5_0_2;
-  wire [2:0] act3_5_1_2;
-  wire [2:0] act3_5_0_3;
-  wire [2:0] act3_5_1_3;
-  wire [2:0] act3_6_0_1;
-  wire [2:0] act3_6_1_1;
-  wire [2:0] act3_6_0_2;
-  wire [2:0] act3_6_1_2;
-  wire [2:0] act3_6_0_3;
-  wire [2:0] act3_6_1_3;
-  wire [2:0] act3_7_0_1;
-  wire [2:0] act3_7_1_1;
-  wire [2:0] act3_7_0_2;
-  wire [2:0] act3_7_1_2;
-  wire [2:0] act3_7_0_3;
-  wire [2:0] act3_7_1_3;
-  wire [2:0] act3_8_0_1;
-  wire [2:0] act3_8_1_1;
-  wire [2:0] act3_8_0_2;
-  wire [2:0] act3_8_1_2;
-  wire [2:0] act3_8_0_3;
-  wire [2:0] act3_8_1_3;
-  wire [2:0] act3_9_0_1;
-  wire [2:0] act3_9_1_1;
-  wire [2:0] act3_9_0_2;
-  wire [2:0] act3_9_1_2;
-  wire [2:0] act3_9_0_3;
-  wire [2:0] act3_9_1_3;
-  wire [2:0] act3_10_0_1;
-  wire [2:0] act3_10_1_1;
-  wire [2:0] act3_10_0_2;
-  wire [2:0] act3_10_1_2;
-  wire [2:0] act3_10_0_3;
-  wire [2:0] act3_10_1_3;
-  wire [2:0] act3_11_0_1;
-  wire [2:0] act3_11_1_1;
-  wire [2:0] act3_11_0_2;
-  wire [2:0] act3_11_1_2;
-  wire [2:0] act3_11_0_3;
-  wire [2:0] act3_11_1_3;
-  wire [2:0] act3_12_0_1;
-  wire [2:0] act3_12_1_1;
-  wire [2:0] act3_12_0_2;
-  wire [2:0] act3_12_1_2;
-  wire [2:0] act3_12_0_3;
-  wire [2:0] act3_12_1_3;
-  wire [2:0] act3_13_0_1;
-  wire [2:0] act3_13_1_1;
-  wire [2:0] act3_13_0_2;
-  wire [2:0] act3_13_1_2;
-  wire [2:0] act3_13_0_3;
-  wire [2:0] act3_13_1_3;
-  wire [2:0] act3_14_0_1;
-  wire [2:0] act3_14_1_1;
-  wire [2:0] act3_14_0_2;
-  wire [2:0] act3_14_1_2;
-  wire [2:0] act3_14_0_3;
-  wire [2:0] act3_14_1_3;
-  wire [2:0] act3_15_0_1;
-  wire [2:0] act3_15_1_1;
-  wire [2:0] act3_15_0_2;
-  wire [2:0] act3_15_1_2;
-  wire [2:0] act3_15_0_3;
-  wire [2:0] act3_15_1_3;
-  wire [2:0] act4_0_0_1;
-  wire [2:0] act4_0_1_1;
-  wire [2:0] act4_0_0_2;
-  wire [2:0] act4_0_1_2;
-  wire [2:0] act4_0_0_3;
-  wire [2:0] act4_0_1_3;
-  wire [2:0] act4_1_0_1;
-  wire [2:0] act4_1_1_1;
-  wire [2:0] act4_1_0_2;
-  wire [2:0] act4_1_1_2;
-  wire [2:0] act4_1_0_3;
-  wire [2:0] act4_1_1_3;
-  wire [2:0] act4_2_0_1;
-  wire [2:0] act4_2_1_1;
-  wire [2:0] act4_2_0_2;
-  wire [2:0] act4_2_1_2;
-  wire [2:0] act4_2_0_3;
-  wire [2:0] act4_2_1_3;
-  wire [2:0] act4_3_0_1;
-  wire [2:0] act4_3_1_1;
-  wire [2:0] act4_3_0_2;
-  wire [2:0] act4_3_1_2;
-  wire [2:0] act4_3_0_3;
-  wire [2:0] act4_3_1_3;
-  wire [2:0] act4_4_0_1;
-  wire [2:0] act4_4_1_1;
-  wire [2:0] act4_4_0_2;
-  wire [2:0] act4_4_1_2;
-  wire [2:0] act4_4_0_3;
-  wire [2:0] act4_4_1_3;
-  wire [2:0] act4_5_0_1;
-  wire [2:0] act4_5_1_1;
-  wire [2:0] act4_5_0_2;
-  wire [2:0] act4_5_1_2;
-  wire [2:0] act4_5_0_3;
-  wire [2:0] act4_5_1_3;
-  wire [2:0] act4_6_0_1;
-  wire [2:0] act4_6_1_1;
-  wire [2:0] act4_6_0_2;
-  wire [2:0] act4_6_1_2;
-  wire [2:0] act4_6_0_3;
-  wire [2:0] act4_6_1_3;
-  wire [2:0] act4_7_0_1;
-  wire [2:0] act4_7_1_1;
-  wire [2:0] act4_7_0_2;
-  wire [2:0] act4_7_1_2;
-  wire [2:0] act4_7_0_3;
-  wire [2:0] act4_7_1_3;
-  wire [2:0] act4_8_0_1;
-  wire [2:0] act4_8_1_1;
-  wire [2:0] act4_8_0_2;
-  wire [2:0] act4_8_1_2;
-  wire [2:0] act4_8_0_3;
-  wire [2:0] act4_8_1_3;
-  wire [2:0] act4_9_0_1;
-  wire [2:0] act4_9_1_1;
-  wire [2:0] act4_9_0_2;
-  wire [2:0] act4_9_1_2;
-  wire [2:0] act4_9_0_3;
-  wire [2:0] act4_9_1_3;
-  wire [2:0] act4_10_0_1;
-  wire [2:0] act4_10_1_1;
-  wire [2:0] act4_10_0_2;
-  wire [2:0] act4_10_1_2;
-  wire [2:0] act4_10_0_3;
-  wire [2:0] act4_10_1_3;
-  wire [2:0] act4_11_0_1;
-  wire [2:0] act4_11_1_1;
-  wire [2:0] act4_11_0_2;
-  wire [2:0] act4_11_1_2;
-  wire [2:0] act4_11_0_3;
-  wire [2:0] act4_11_1_3;
-  wire [2:0] act4_12_0_1;
-  wire [2:0] act4_12_1_1;
-  wire [2:0] act4_12_0_2;
-  wire [2:0] act4_12_1_2;
-  wire [2:0] act4_12_0_3;
-  wire [2:0] act4_12_1_3;
-  wire [2:0] act4_13_0_1;
-  wire [2:0] act4_13_1_1;
-  wire [2:0] act4_13_0_2;
-  wire [2:0] act4_13_1_2;
-  wire [2:0] act4_13_0_3;
-  wire [2:0] act4_13_1_3;
-  wire [2:0] act4_14_0_1;
-  wire [2:0] act4_14_1_1;
-  wire [2:0] act4_14_0_2;
-  wire [2:0] act4_14_1_2;
-  wire [2:0] act4_14_0_3;
-  wire [2:0] act4_14_1_3;
-  wire [2:0] act4_15_0_1;
-  wire [2:0] act4_15_1_1;
-  wire [2:0] act4_15_0_2;
-  wire [2:0] act4_15_1_2;
-  wire [2:0] act4_15_0_3;
-  wire [2:0] act4_15_1_3;
-  wire [2:0] act5_0_0_1;
-  wire [2:0] act5_0_1_1;
-  wire [2:0] act5_0_0_2;
-  wire [2:0] act5_0_1_2;
-  wire [2:0] act5_0_0_3;
-  wire [2:0] act5_0_1_3;
-  wire [2:0] act5_1_0_1;
-  wire [2:0] act5_1_1_1;
-  wire [2:0] act5_1_0_2;
-  wire [2:0] act5_1_1_2;
-  wire [2:0] act5_1_0_3;
-  wire [2:0] act5_1_1_3;
-  wire [2:0] act5_2_0_1;
-  wire [2:0] act5_2_1_1;
-  wire [2:0] act5_2_0_2;
-  wire [2:0] act5_2_1_2;
-  wire [2:0] act5_2_0_3;
-  wire [2:0] act5_2_1_3;
-  wire [2:0] act5_3_0_1;
-  wire [2:0] act5_3_1_1;
-  wire [2:0] act5_3_0_2;
-  wire [2:0] act5_3_1_2;
-  wire [2:0] act5_3_0_3;
-  wire [2:0] act5_3_1_3;
-  wire [2:0] act5_4_0_1;
-  wire [2:0] act5_4_1_1;
-  wire [2:0] act5_4_0_2;
-  wire [2:0] act5_4_1_2;
-  wire [2:0] act5_4_0_3;
-  wire [2:0] act5_4_1_3;
-  wire [2:0] act5_5_0_1;
-  wire [2:0] act5_5_1_1;
-  wire [2:0] act5_5_0_2;
-  wire [2:0] act5_5_1_2;
-  wire [2:0] act5_5_0_3;
-  wire [2:0] act5_5_1_3;
-  wire [2:0] act5_6_0_1;
-  wire [2:0] act5_6_1_1;
-  wire [2:0] act5_6_0_2;
-  wire [2:0] act5_6_1_2;
-  wire [2:0] act5_6_0_3;
-  wire [2:0] act5_6_1_3;
-  wire [2:0] act5_7_0_1;
-  wire [2:0] act5_7_1_1;
-  wire [2:0] act5_7_0_2;
-  wire [2:0] act5_7_1_2;
-  wire [2:0] act5_7_0_3;
-  wire [2:0] act5_7_1_3;
-  wire [2:0] act5_8_0_1;
-  wire [2:0] act5_8_1_1;
-  wire [2:0] act5_8_0_2;
-  wire [2:0] act5_8_1_2;
-  wire [2:0] act5_8_0_3;
-  wire [2:0] act5_8_1_3;
-  wire [2:0] act5_9_0_1;
-  wire [2:0] act5_9_1_1;
-  wire [2:0] act5_9_0_2;
-  wire [2:0] act5_9_1_2;
-  wire [2:0] act5_9_0_3;
-  wire [2:0] act5_9_1_3;
-  wire [2:0] act5_10_0_1;
-  wire [2:0] act5_10_1_1;
-  wire [2:0] act5_10_0_2;
-  wire [2:0] act5_10_1_2;
-  wire [2:0] act5_10_0_3;
-  wire [2:0] act5_10_1_3;
-  wire [2:0] act5_11_0_1;
-  wire [2:0] act5_11_1_1;
-  wire [2:0] act5_11_0_2;
-  wire [2:0] act5_11_1_2;
-  wire [2:0] act5_11_0_3;
-  wire [2:0] act5_11_1_3;
-  wire [2:0] act5_12_0_1;
-  wire [2:0] act5_12_1_1;
-  wire [2:0] act5_12_0_2;
-  wire [2:0] act5_12_1_2;
-  wire [2:0] act5_12_0_3;
-  wire [2:0] act5_12_1_3;
-  wire [2:0] act5_13_0_1;
-  wire [2:0] act5_13_1_1;
-  wire [2:0] act5_13_0_2;
-  wire [2:0] act5_13_1_2;
-  wire [2:0] act5_13_0_3;
-  wire [2:0] act5_13_1_3;
-  wire [2:0] act5_14_0_1;
-  wire [2:0] act5_14_1_1;
-  wire [2:0] act5_14_0_2;
-  wire [2:0] act5_14_1_2;
-  wire [2:0] act5_14_0_3;
-  wire [2:0] act5_14_1_3;
-  wire [2:0] act5_15_0_1;
-  wire [2:0] act5_15_1_1;
-  wire [2:0] act5_15_0_2;
-  wire [2:0] act5_15_1_2;
-  wire [2:0] act5_15_0_3;
-  wire [2:0] act5_15_1_3;
-  wire [2:0] act6_0_0_1;
-  wire [2:0] act6_0_1_1;
-  wire [2:0] act6_0_0_2;
-  wire [2:0] act6_0_1_2;
-  wire [2:0] act6_0_0_3;
-  wire [2:0] act6_0_1_3;
-  wire [2:0] act6_1_0_1;
-  wire [2:0] act6_1_1_1;
-  wire [2:0] act6_1_0_2;
-  wire [2:0] act6_1_1_2;
-  wire [2:0] act6_1_0_3;
-  wire [2:0] act6_1_1_3;
-  wire [2:0] act6_2_0_1;
-  wire [2:0] act6_2_1_1;
-  wire [2:0] act6_2_0_2;
-  wire [2:0] act6_2_1_2;
-  wire [2:0] act6_2_0_3;
-  wire [2:0] act6_2_1_3;
-  wire [2:0] act6_3_0_1;
-  wire [2:0] act6_3_1_1;
-  wire [2:0] act6_3_0_2;
-  wire [2:0] act6_3_1_2;
-  wire [2:0] act6_3_0_3;
-  wire [2:0] act6_3_1_3;
-  wire [2:0] act6_4_0_1;
-  wire [2:0] act6_4_1_1;
-  wire [2:0] act6_4_0_2;
-  wire [2:0] act6_4_1_2;
-  wire [2:0] act6_4_0_3;
-  wire [2:0] act6_4_1_3;
-  wire [2:0] act6_5_0_1;
-  wire [2:0] act6_5_1_1;
-  wire [2:0] act6_5_0_2;
-  wire [2:0] act6_5_1_2;
-  wire [2:0] act6_5_0_3;
-  wire [2:0] act6_5_1_3;
-  wire [2:0] act6_6_0_1;
-  wire [2:0] act6_6_1_1;
-  wire [2:0] act6_6_0_2;
-  wire [2:0] act6_6_1_2;
-  wire [2:0] act6_6_0_3;
-  wire [2:0] act6_6_1_3;
-  wire [2:0] act6_7_0_1;
-  wire [2:0] act6_7_1_1;
-  wire [2:0] act6_7_0_2;
-  wire [2:0] act6_7_1_2;
-  wire [2:0] act6_7_0_3;
-  wire [2:0] act6_7_1_3;
-  wire [2:0] act6_8_0_1;
-  wire [2:0] act6_8_1_1;
-  wire [2:0] act6_8_0_2;
-  wire [2:0] act6_8_1_2;
-  wire [2:0] act6_8_0_3;
-  wire [2:0] act6_8_1_3;
-  wire [2:0] act6_9_0_1;
-  wire [2:0] act6_9_1_1;
-  wire [2:0] act6_9_0_2;
-  wire [2:0] act6_9_1_2;
-  wire [2:0] act6_9_0_3;
-  wire [2:0] act6_9_1_3;
-  wire [2:0] act6_10_0_1;
-  wire [2:0] act6_10_1_1;
-  wire [2:0] act6_10_0_2;
-  wire [2:0] act6_10_1_2;
-  wire [2:0] act6_10_0_3;
-  wire [2:0] act6_10_1_3;
-  wire [2:0] act6_11_0_1;
-  wire [2:0] act6_11_1_1;
-  wire [2:0] act6_11_0_2;
-  wire [2:0] act6_11_1_2;
-  wire [2:0] act6_11_0_3;
-  wire [2:0] act6_11_1_3;
-  wire [2:0] act6_12_0_1;
-  wire [2:0] act6_12_1_1;
-  wire [2:0] act6_12_0_2;
-  wire [2:0] act6_12_1_2;
-  wire [2:0] act6_12_0_3;
-  wire [2:0] act6_12_1_3;
-  wire [2:0] act6_13_0_1;
-  wire [2:0] act6_13_1_1;
-  wire [2:0] act6_13_0_2;
-  wire [2:0] act6_13_1_2;
-  wire [2:0] act6_13_0_3;
-  wire [2:0] act6_13_1_3;
-  wire [2:0] act6_14_0_1;
-  wire [2:0] act6_14_1_1;
-  wire [2:0] act6_14_0_2;
-  wire [2:0] act6_14_1_2;
-  wire [2:0] act6_14_0_3;
-  wire [2:0] act6_14_1_3;
-  wire [2:0] act6_15_0_1;
-  wire [2:0] act6_15_1_1;
-  wire [2:0] act6_15_0_2;
-  wire [2:0] act6_15_1_2;
-  wire [2:0] act6_15_0_3;
-  wire [2:0] act6_15_1_3;
-  wire [2:0] act7_0_0_1;
-  wire [2:0] act7_0_1_1;
-  wire [2:0] act7_0_0_2;
-  wire [2:0] act7_0_1_2;
-  wire [2:0] act7_0_0_3;
-  wire [2:0] act7_0_1_3;
-  wire [2:0] act7_1_0_1;
-  wire [2:0] act7_1_1_1;
-  wire [2:0] act7_1_0_2;
-  wire [2:0] act7_1_1_2;
-  wire [2:0] act7_1_0_3;
-  wire [2:0] act7_1_1_3;
-  wire [2:0] act7_2_0_1;
-  wire [2:0] act7_2_1_1;
-  wire [2:0] act7_2_0_2;
-  wire [2:0] act7_2_1_2;
-  wire [2:0] act7_2_0_3;
-  wire [2:0] act7_2_1_3;
-  wire [2:0] act7_3_0_1;
-  wire [2:0] act7_3_1_1;
-  wire [2:0] act7_3_0_2;
-  wire [2:0] act7_3_1_2;
-  wire [2:0] act7_3_0_3;
-  wire [2:0] act7_3_1_3;
-  wire [2:0] act7_4_0_1;
-  wire [2:0] act7_4_1_1;
-  wire [2:0] act7_4_0_2;
-  wire [2:0] act7_4_1_2;
-  wire [2:0] act7_4_0_3;
-  wire [2:0] act7_4_1_3;
-  wire [2:0] act7_5_0_1;
-  wire [2:0] act7_5_1_1;
-  wire [2:0] act7_5_0_2;
-  wire [2:0] act7_5_1_2;
-  wire [2:0] act7_5_0_3;
-  wire [2:0] act7_5_1_3;
-  wire [2:0] act7_6_0_1;
-  wire [2:0] act7_6_1_1;
-  wire [2:0] act7_6_0_2;
-  wire [2:0] act7_6_1_2;
-  wire [2:0] act7_6_0_3;
-  wire [2:0] act7_6_1_3;
-  wire [2:0] act7_7_0_1;
-  wire [2:0] act7_7_1_1;
-  wire [2:0] act7_7_0_2;
-  wire [2:0] act7_7_1_2;
-  wire [2:0] act7_7_0_3;
-  wire [2:0] act7_7_1_3;
-  wire [2:0] act7_8_0_1;
-  wire [2:0] act7_8_1_1;
-  wire [2:0] act7_8_0_2;
-  wire [2:0] act7_8_1_2;
-  wire [2:0] act7_8_0_3;
-  wire [2:0] act7_8_1_3;
-  wire [2:0] act7_9_0_1;
-  wire [2:0] act7_9_1_1;
-  wire [2:0] act7_9_0_2;
-  wire [2:0] act7_9_1_2;
-  wire [2:0] act7_9_0_3;
-  wire [2:0] act7_9_1_3;
-  wire [2:0] act7_10_0_1;
-  wire [2:0] act7_10_1_1;
-  wire [2:0] act7_10_0_2;
-  wire [2:0] act7_10_1_2;
-  wire [2:0] act7_10_0_3;
-  wire [2:0] act7_10_1_3;
-  wire [2:0] act7_11_0_1;
-  wire [2:0] act7_11_1_1;
-  wire [2:0] act7_11_0_2;
-  wire [2:0] act7_11_1_2;
-  wire [2:0] act7_11_0_3;
-  wire [2:0] act7_11_1_3;
-  wire [2:0] act7_12_0_1;
-  wire [2:0] act7_12_1_1;
-  wire [2:0] act7_12_0_2;
-  wire [2:0] act7_12_1_2;
-  wire [2:0] act7_12_0_3;
-  wire [2:0] act7_12_1_3;
-  wire [2:0] act7_13_0_1;
-  wire [2:0] act7_13_1_1;
-  wire [2:0] act7_13_0_2;
-  wire [2:0] act7_13_1_2;
-  wire [2:0] act7_13_0_3;
-  wire [2:0] act7_13_1_3;
-  wire [2:0] act7_14_0_1;
-  wire [2:0] act7_14_1_1;
-  wire [2:0] act7_14_0_2;
-  wire [2:0] act7_14_1_2;
-  wire [2:0] act7_14_0_3;
-  wire [2:0] act7_14_1_3;
-  wire [2:0] act7_15_0_1;
-  wire [2:0] act7_15_1_1;
-  wire [2:0] act7_15_0_2;
-  wire [2:0] act7_15_1_2;
-  wire [2:0] act7_15_0_3;
-  wire [2:0] act7_15_1_3;
+  wire [7:0] act0_0_0_1;
+  wire [7:0] act0_0_1_1;
+  wire [7:0] act0_0_0_2;
+  wire [7:0] act0_0_1_2;
+  wire [7:0] act0_0_0_3;
+  wire [7:0] act0_0_1_3;
+  wire [7:0] act0_1_0_1;
+  wire [7:0] act0_1_1_1;
+  wire [7:0] act0_1_0_2;
+  wire [7:0] act0_1_1_2;
+  wire [7:0] act0_1_0_3;
+  wire [7:0] act0_1_1_3;
+  wire [7:0] act0_2_0_1;
+  wire [7:0] act0_2_1_1;
+  wire [7:0] act0_2_0_2;
+  wire [7:0] act0_2_1_2;
+  wire [7:0] act0_2_0_3;
+  wire [7:0] act0_2_1_3;
+  wire [7:0] act0_3_0_1;
+  wire [7:0] act0_3_1_1;
+  wire [7:0] act0_3_0_2;
+  wire [7:0] act0_3_1_2;
+  wire [7:0] act0_3_0_3;
+  wire [7:0] act0_3_1_3;
+  wire [7:0] act0_4_0_1;
+  wire [7:0] act0_4_1_1;
+  wire [7:0] act0_4_0_2;
+  wire [7:0] act0_4_1_2;
+  wire [7:0] act0_4_0_3;
+  wire [7:0] act0_4_1_3;
+  wire [7:0] act0_5_0_1;
+  wire [7:0] act0_5_1_1;
+  wire [7:0] act0_5_0_2;
+  wire [7:0] act0_5_1_2;
+  wire [7:0] act0_5_0_3;
+  wire [7:0] act0_5_1_3;
+  wire [7:0] act0_6_0_1;
+  wire [7:0] act0_6_1_1;
+  wire [7:0] act0_6_0_2;
+  wire [7:0] act0_6_1_2;
+  wire [7:0] act0_6_0_3;
+  wire [7:0] act0_6_1_3;
+  wire [7:0] act0_7_0_1;
+  wire [7:0] act0_7_1_1;
+  wire [7:0] act0_7_0_2;
+  wire [7:0] act0_7_1_2;
+  wire [7:0] act0_7_0_3;
+  wire [7:0] act0_7_1_3;
+  wire [7:0] act0_8_0_1;
+  wire [7:0] act0_8_1_1;
+  wire [7:0] act0_8_0_2;
+  wire [7:0] act0_8_1_2;
+  wire [7:0] act0_8_0_3;
+  wire [7:0] act0_8_1_3;
+  wire [7:0] act0_9_0_1;
+  wire [7:0] act0_9_1_1;
+  wire [7:0] act0_9_0_2;
+  wire [7:0] act0_9_1_2;
+  wire [7:0] act0_9_0_3;
+  wire [7:0] act0_9_1_3;
+  wire [7:0] act0_10_0_1;
+  wire [7:0] act0_10_1_1;
+  wire [7:0] act0_10_0_2;
+  wire [7:0] act0_10_1_2;
+  wire [7:0] act0_10_0_3;
+  wire [7:0] act0_10_1_3;
+  wire [7:0] act0_11_0_1;
+  wire [7:0] act0_11_1_1;
+  wire [7:0] act0_11_0_2;
+  wire [7:0] act0_11_1_2;
+  wire [7:0] act0_11_0_3;
+  wire [7:0] act0_11_1_3;
+  wire [7:0] act0_12_0_1;
+  wire [7:0] act0_12_1_1;
+  wire [7:0] act0_12_0_2;
+  wire [7:0] act0_12_1_2;
+  wire [7:0] act0_12_0_3;
+  wire [7:0] act0_12_1_3;
+  wire [7:0] act0_13_0_1;
+  wire [7:0] act0_13_1_1;
+  wire [7:0] act0_13_0_2;
+  wire [7:0] act0_13_1_2;
+  wire [7:0] act0_13_0_3;
+  wire [7:0] act0_13_1_3;
+  wire [7:0] act0_14_0_1;
+  wire [7:0] act0_14_1_1;
+  wire [7:0] act0_14_0_2;
+  wire [7:0] act0_14_1_2;
+  wire [7:0] act0_14_0_3;
+  wire [7:0] act0_14_1_3;
+  wire [7:0] act0_15_0_1;
+  wire [7:0] act0_15_1_1;
+  wire [7:0] act0_15_0_2;
+  wire [7:0] act0_15_1_2;
+  wire [7:0] act0_15_0_3;
+  wire [7:0] act0_15_1_3;
+  wire [7:0] act1_0_0_1;
+  wire [7:0] act1_0_1_1;
+  wire [7:0] act1_0_0_2;
+  wire [7:0] act1_0_1_2;
+  wire [7:0] act1_0_0_3;
+  wire [7:0] act1_0_1_3;
+  wire [7:0] act1_1_0_1;
+  wire [7:0] act1_1_1_1;
+  wire [7:0] act1_1_0_2;
+  wire [7:0] act1_1_1_2;
+  wire [7:0] act1_1_0_3;
+  wire [7:0] act1_1_1_3;
+  wire [7:0] act1_2_0_1;
+  wire [7:0] act1_2_1_1;
+  wire [7:0] act1_2_0_2;
+  wire [7:0] act1_2_1_2;
+  wire [7:0] act1_2_0_3;
+  wire [7:0] act1_2_1_3;
+  wire [7:0] act1_3_0_1;
+  wire [7:0] act1_3_1_1;
+  wire [7:0] act1_3_0_2;
+  wire [7:0] act1_3_1_2;
+  wire [7:0] act1_3_0_3;
+  wire [7:0] act1_3_1_3;
+  wire [7:0] act1_4_0_1;
+  wire [7:0] act1_4_1_1;
+  wire [7:0] act1_4_0_2;
+  wire [7:0] act1_4_1_2;
+  wire [7:0] act1_4_0_3;
+  wire [7:0] act1_4_1_3;
+  wire [7:0] act1_5_0_1;
+  wire [7:0] act1_5_1_1;
+  wire [7:0] act1_5_0_2;
+  wire [7:0] act1_5_1_2;
+  wire [7:0] act1_5_0_3;
+  wire [7:0] act1_5_1_3;
+  wire [7:0] act1_6_0_1;
+  wire [7:0] act1_6_1_1;
+  wire [7:0] act1_6_0_2;
+  wire [7:0] act1_6_1_2;
+  wire [7:0] act1_6_0_3;
+  wire [7:0] act1_6_1_3;
+  wire [7:0] act1_7_0_1;
+  wire [7:0] act1_7_1_1;
+  wire [7:0] act1_7_0_2;
+  wire [7:0] act1_7_1_2;
+  wire [7:0] act1_7_0_3;
+  wire [7:0] act1_7_1_3;
+  wire [7:0] act1_8_0_1;
+  wire [7:0] act1_8_1_1;
+  wire [7:0] act1_8_0_2;
+  wire [7:0] act1_8_1_2;
+  wire [7:0] act1_8_0_3;
+  wire [7:0] act1_8_1_3;
+  wire [7:0] act1_9_0_1;
+  wire [7:0] act1_9_1_1;
+  wire [7:0] act1_9_0_2;
+  wire [7:0] act1_9_1_2;
+  wire [7:0] act1_9_0_3;
+  wire [7:0] act1_9_1_3;
+  wire [7:0] act1_10_0_1;
+  wire [7:0] act1_10_1_1;
+  wire [7:0] act1_10_0_2;
+  wire [7:0] act1_10_1_2;
+  wire [7:0] act1_10_0_3;
+  wire [7:0] act1_10_1_3;
+  wire [7:0] act1_11_0_1;
+  wire [7:0] act1_11_1_1;
+  wire [7:0] act1_11_0_2;
+  wire [7:0] act1_11_1_2;
+  wire [7:0] act1_11_0_3;
+  wire [7:0] act1_11_1_3;
+  wire [7:0] act1_12_0_1;
+  wire [7:0] act1_12_1_1;
+  wire [7:0] act1_12_0_2;
+  wire [7:0] act1_12_1_2;
+  wire [7:0] act1_12_0_3;
+  wire [7:0] act1_12_1_3;
+  wire [7:0] act1_13_0_1;
+  wire [7:0] act1_13_1_1;
+  wire [7:0] act1_13_0_2;
+  wire [7:0] act1_13_1_2;
+  wire [7:0] act1_13_0_3;
+  wire [7:0] act1_13_1_3;
+  wire [7:0] act1_14_0_1;
+  wire [7:0] act1_14_1_1;
+  wire [7:0] act1_14_0_2;
+  wire [7:0] act1_14_1_2;
+  wire [7:0] act1_14_0_3;
+  wire [7:0] act1_14_1_3;
+  wire [7:0] act1_15_0_1;
+  wire [7:0] act1_15_1_1;
+  wire [7:0] act1_15_0_2;
+  wire [7:0] act1_15_1_2;
+  wire [7:0] act1_15_0_3;
+  wire [7:0] act1_15_1_3;
+  wire [7:0] act2_0_0_1;
+  wire [7:0] act2_0_1_1;
+  wire [7:0] act2_0_0_2;
+  wire [7:0] act2_0_1_2;
+  wire [7:0] act2_0_0_3;
+  wire [7:0] act2_0_1_3;
+  wire [7:0] act2_1_0_1;
+  wire [7:0] act2_1_1_1;
+  wire [7:0] act2_1_0_2;
+  wire [7:0] act2_1_1_2;
+  wire [7:0] act2_1_0_3;
+  wire [7:0] act2_1_1_3;
+  wire [7:0] act2_2_0_1;
+  wire [7:0] act2_2_1_1;
+  wire [7:0] act2_2_0_2;
+  wire [7:0] act2_2_1_2;
+  wire [7:0] act2_2_0_3;
+  wire [7:0] act2_2_1_3;
+  wire [7:0] act2_3_0_1;
+  wire [7:0] act2_3_1_1;
+  wire [7:0] act2_3_0_2;
+  wire [7:0] act2_3_1_2;
+  wire [7:0] act2_3_0_3;
+  wire [7:0] act2_3_1_3;
+  wire [7:0] act2_4_0_1;
+  wire [7:0] act2_4_1_1;
+  wire [7:0] act2_4_0_2;
+  wire [7:0] act2_4_1_2;
+  wire [7:0] act2_4_0_3;
+  wire [7:0] act2_4_1_3;
+  wire [7:0] act2_5_0_1;
+  wire [7:0] act2_5_1_1;
+  wire [7:0] act2_5_0_2;
+  wire [7:0] act2_5_1_2;
+  wire [7:0] act2_5_0_3;
+  wire [7:0] act2_5_1_3;
+  wire [7:0] act2_6_0_1;
+  wire [7:0] act2_6_1_1;
+  wire [7:0] act2_6_0_2;
+  wire [7:0] act2_6_1_2;
+  wire [7:0] act2_6_0_3;
+  wire [7:0] act2_6_1_3;
+  wire [7:0] act2_7_0_1;
+  wire [7:0] act2_7_1_1;
+  wire [7:0] act2_7_0_2;
+  wire [7:0] act2_7_1_2;
+  wire [7:0] act2_7_0_3;
+  wire [7:0] act2_7_1_3;
+  wire [7:0] act2_8_0_1;
+  wire [7:0] act2_8_1_1;
+  wire [7:0] act2_8_0_2;
+  wire [7:0] act2_8_1_2;
+  wire [7:0] act2_8_0_3;
+  wire [7:0] act2_8_1_3;
+  wire [7:0] act2_9_0_1;
+  wire [7:0] act2_9_1_1;
+  wire [7:0] act2_9_0_2;
+  wire [7:0] act2_9_1_2;
+  wire [7:0] act2_9_0_3;
+  wire [7:0] act2_9_1_3;
+  wire [7:0] act2_10_0_1;
+  wire [7:0] act2_10_1_1;
+  wire [7:0] act2_10_0_2;
+  wire [7:0] act2_10_1_2;
+  wire [7:0] act2_10_0_3;
+  wire [7:0] act2_10_1_3;
+  wire [7:0] act2_11_0_1;
+  wire [7:0] act2_11_1_1;
+  wire [7:0] act2_11_0_2;
+  wire [7:0] act2_11_1_2;
+  wire [7:0] act2_11_0_3;
+  wire [7:0] act2_11_1_3;
+  wire [7:0] act2_12_0_1;
+  wire [7:0] act2_12_1_1;
+  wire [7:0] act2_12_0_2;
+  wire [7:0] act2_12_1_2;
+  wire [7:0] act2_12_0_3;
+  wire [7:0] act2_12_1_3;
+  wire [7:0] act2_13_0_1;
+  wire [7:0] act2_13_1_1;
+  wire [7:0] act2_13_0_2;
+  wire [7:0] act2_13_1_2;
+  wire [7:0] act2_13_0_3;
+  wire [7:0] act2_13_1_3;
+  wire [7:0] act2_14_0_1;
+  wire [7:0] act2_14_1_1;
+  wire [7:0] act2_14_0_2;
+  wire [7:0] act2_14_1_2;
+  wire [7:0] act2_14_0_3;
+  wire [7:0] act2_14_1_3;
+  wire [7:0] act2_15_0_1;
+  wire [7:0] act2_15_1_1;
+  wire [7:0] act2_15_0_2;
+  wire [7:0] act2_15_1_2;
+  wire [7:0] act2_15_0_3;
+  wire [7:0] act2_15_1_3;
+  wire [7:0] act3_0_0_1;
+  wire [7:0] act3_0_1_1;
+  wire [7:0] act3_0_0_2;
+  wire [7:0] act3_0_1_2;
+  wire [7:0] act3_0_0_3;
+  wire [7:0] act3_0_1_3;
+  wire [7:0] act3_1_0_1;
+  wire [7:0] act3_1_1_1;
+  wire [7:0] act3_1_0_2;
+  wire [7:0] act3_1_1_2;
+  wire [7:0] act3_1_0_3;
+  wire [7:0] act3_1_1_3;
+  wire [7:0] act3_2_0_1;
+  wire [7:0] act3_2_1_1;
+  wire [7:0] act3_2_0_2;
+  wire [7:0] act3_2_1_2;
+  wire [7:0] act3_2_0_3;
+  wire [7:0] act3_2_1_3;
+  wire [7:0] act3_3_0_1;
+  wire [7:0] act3_3_1_1;
+  wire [7:0] act3_3_0_2;
+  wire [7:0] act3_3_1_2;
+  wire [7:0] act3_3_0_3;
+  wire [7:0] act3_3_1_3;
+  wire [7:0] act3_4_0_1;
+  wire [7:0] act3_4_1_1;
+  wire [7:0] act3_4_0_2;
+  wire [7:0] act3_4_1_2;
+  wire [7:0] act3_4_0_3;
+  wire [7:0] act3_4_1_3;
+  wire [7:0] act3_5_0_1;
+  wire [7:0] act3_5_1_1;
+  wire [7:0] act3_5_0_2;
+  wire [7:0] act3_5_1_2;
+  wire [7:0] act3_5_0_3;
+  wire [7:0] act3_5_1_3;
+  wire [7:0] act3_6_0_1;
+  wire [7:0] act3_6_1_1;
+  wire [7:0] act3_6_0_2;
+  wire [7:0] act3_6_1_2;
+  wire [7:0] act3_6_0_3;
+  wire [7:0] act3_6_1_3;
+  wire [7:0] act3_7_0_1;
+  wire [7:0] act3_7_1_1;
+  wire [7:0] act3_7_0_2;
+  wire [7:0] act3_7_1_2;
+  wire [7:0] act3_7_0_3;
+  wire [7:0] act3_7_1_3;
+  wire [7:0] act3_8_0_1;
+  wire [7:0] act3_8_1_1;
+  wire [7:0] act3_8_0_2;
+  wire [7:0] act3_8_1_2;
+  wire [7:0] act3_8_0_3;
+  wire [7:0] act3_8_1_3;
+  wire [7:0] act3_9_0_1;
+  wire [7:0] act3_9_1_1;
+  wire [7:0] act3_9_0_2;
+  wire [7:0] act3_9_1_2;
+  wire [7:0] act3_9_0_3;
+  wire [7:0] act3_9_1_3;
+  wire [7:0] act3_10_0_1;
+  wire [7:0] act3_10_1_1;
+  wire [7:0] act3_10_0_2;
+  wire [7:0] act3_10_1_2;
+  wire [7:0] act3_10_0_3;
+  wire [7:0] act3_10_1_3;
+  wire [7:0] act3_11_0_1;
+  wire [7:0] act3_11_1_1;
+  wire [7:0] act3_11_0_2;
+  wire [7:0] act3_11_1_2;
+  wire [7:0] act3_11_0_3;
+  wire [7:0] act3_11_1_3;
+  wire [7:0] act3_12_0_1;
+  wire [7:0] act3_12_1_1;
+  wire [7:0] act3_12_0_2;
+  wire [7:0] act3_12_1_2;
+  wire [7:0] act3_12_0_3;
+  wire [7:0] act3_12_1_3;
+  wire [7:0] act3_13_0_1;
+  wire [7:0] act3_13_1_1;
+  wire [7:0] act3_13_0_2;
+  wire [7:0] act3_13_1_2;
+  wire [7:0] act3_13_0_3;
+  wire [7:0] act3_13_1_3;
+  wire [7:0] act3_14_0_1;
+  wire [7:0] act3_14_1_1;
+  wire [7:0] act3_14_0_2;
+  wire [7:0] act3_14_1_2;
+  wire [7:0] act3_14_0_3;
+  wire [7:0] act3_14_1_3;
+  wire [7:0] act3_15_0_1;
+  wire [7:0] act3_15_1_1;
+  wire [7:0] act3_15_0_2;
+  wire [7:0] act3_15_1_2;
+  wire [7:0] act3_15_0_3;
+  wire [7:0] act3_15_1_3;
+  wire [7:0] act4_0_0_1;
+  wire [7:0] act4_0_1_1;
+  wire [7:0] act4_0_0_2;
+  wire [7:0] act4_0_1_2;
+  wire [7:0] act4_0_0_3;
+  wire [7:0] act4_0_1_3;
+  wire [7:0] act4_1_0_1;
+  wire [7:0] act4_1_1_1;
+  wire [7:0] act4_1_0_2;
+  wire [7:0] act4_1_1_2;
+  wire [7:0] act4_1_0_3;
+  wire [7:0] act4_1_1_3;
+  wire [7:0] act4_2_0_1;
+  wire [7:0] act4_2_1_1;
+  wire [7:0] act4_2_0_2;
+  wire [7:0] act4_2_1_2;
+  wire [7:0] act4_2_0_3;
+  wire [7:0] act4_2_1_3;
+  wire [7:0] act4_3_0_1;
+  wire [7:0] act4_3_1_1;
+  wire [7:0] act4_3_0_2;
+  wire [7:0] act4_3_1_2;
+  wire [7:0] act4_3_0_3;
+  wire [7:0] act4_3_1_3;
+  wire [7:0] act4_4_0_1;
+  wire [7:0] act4_4_1_1;
+  wire [7:0] act4_4_0_2;
+  wire [7:0] act4_4_1_2;
+  wire [7:0] act4_4_0_3;
+  wire [7:0] act4_4_1_3;
+  wire [7:0] act4_5_0_1;
+  wire [7:0] act4_5_1_1;
+  wire [7:0] act4_5_0_2;
+  wire [7:0] act4_5_1_2;
+  wire [7:0] act4_5_0_3;
+  wire [7:0] act4_5_1_3;
+  wire [7:0] act4_6_0_1;
+  wire [7:0] act4_6_1_1;
+  wire [7:0] act4_6_0_2;
+  wire [7:0] act4_6_1_2;
+  wire [7:0] act4_6_0_3;
+  wire [7:0] act4_6_1_3;
+  wire [7:0] act4_7_0_1;
+  wire [7:0] act4_7_1_1;
+  wire [7:0] act4_7_0_2;
+  wire [7:0] act4_7_1_2;
+  wire [7:0] act4_7_0_3;
+  wire [7:0] act4_7_1_3;
+  wire [7:0] act4_8_0_1;
+  wire [7:0] act4_8_1_1;
+  wire [7:0] act4_8_0_2;
+  wire [7:0] act4_8_1_2;
+  wire [7:0] act4_8_0_3;
+  wire [7:0] act4_8_1_3;
+  wire [7:0] act4_9_0_1;
+  wire [7:0] act4_9_1_1;
+  wire [7:0] act4_9_0_2;
+  wire [7:0] act4_9_1_2;
+  wire [7:0] act4_9_0_3;
+  wire [7:0] act4_9_1_3;
+  wire [7:0] act4_10_0_1;
+  wire [7:0] act4_10_1_1;
+  wire [7:0] act4_10_0_2;
+  wire [7:0] act4_10_1_2;
+  wire [7:0] act4_10_0_3;
+  wire [7:0] act4_10_1_3;
+  wire [7:0] act4_11_0_1;
+  wire [7:0] act4_11_1_1;
+  wire [7:0] act4_11_0_2;
+  wire [7:0] act4_11_1_2;
+  wire [7:0] act4_11_0_3;
+  wire [7:0] act4_11_1_3;
+  wire [7:0] act4_12_0_1;
+  wire [7:0] act4_12_1_1;
+  wire [7:0] act4_12_0_2;
+  wire [7:0] act4_12_1_2;
+  wire [7:0] act4_12_0_3;
+  wire [7:0] act4_12_1_3;
+  wire [7:0] act4_13_0_1;
+  wire [7:0] act4_13_1_1;
+  wire [7:0] act4_13_0_2;
+  wire [7:0] act4_13_1_2;
+  wire [7:0] act4_13_0_3;
+  wire [7:0] act4_13_1_3;
+  wire [7:0] act4_14_0_1;
+  wire [7:0] act4_14_1_1;
+  wire [7:0] act4_14_0_2;
+  wire [7:0] act4_14_1_2;
+  wire [7:0] act4_14_0_3;
+  wire [7:0] act4_14_1_3;
+  wire [7:0] act4_15_0_1;
+  wire [7:0] act4_15_1_1;
+  wire [7:0] act4_15_0_2;
+  wire [7:0] act4_15_1_2;
+  wire [7:0] act4_15_0_3;
+  wire [7:0] act4_15_1_3;
+  wire [7:0] act5_0_0_1;
+  wire [7:0] act5_0_1_1;
+  wire [7:0] act5_0_0_2;
+  wire [7:0] act5_0_1_2;
+  wire [7:0] act5_0_0_3;
+  wire [7:0] act5_0_1_3;
+  wire [7:0] act5_1_0_1;
+  wire [7:0] act5_1_1_1;
+  wire [7:0] act5_1_0_2;
+  wire [7:0] act5_1_1_2;
+  wire [7:0] act5_1_0_3;
+  wire [7:0] act5_1_1_3;
+  wire [7:0] act5_2_0_1;
+  wire [7:0] act5_2_1_1;
+  wire [7:0] act5_2_0_2;
+  wire [7:0] act5_2_1_2;
+  wire [7:0] act5_2_0_3;
+  wire [7:0] act5_2_1_3;
+  wire [7:0] act5_3_0_1;
+  wire [7:0] act5_3_1_1;
+  wire [7:0] act5_3_0_2;
+  wire [7:0] act5_3_1_2;
+  wire [7:0] act5_3_0_3;
+  wire [7:0] act5_3_1_3;
+  wire [7:0] act5_4_0_1;
+  wire [7:0] act5_4_1_1;
+  wire [7:0] act5_4_0_2;
+  wire [7:0] act5_4_1_2;
+  wire [7:0] act5_4_0_3;
+  wire [7:0] act5_4_1_3;
+  wire [7:0] act5_5_0_1;
+  wire [7:0] act5_5_1_1;
+  wire [7:0] act5_5_0_2;
+  wire [7:0] act5_5_1_2;
+  wire [7:0] act5_5_0_3;
+  wire [7:0] act5_5_1_3;
+  wire [7:0] act5_6_0_1;
+  wire [7:0] act5_6_1_1;
+  wire [7:0] act5_6_0_2;
+  wire [7:0] act5_6_1_2;
+  wire [7:0] act5_6_0_3;
+  wire [7:0] act5_6_1_3;
+  wire [7:0] act5_7_0_1;
+  wire [7:0] act5_7_1_1;
+  wire [7:0] act5_7_0_2;
+  wire [7:0] act5_7_1_2;
+  wire [7:0] act5_7_0_3;
+  wire [7:0] act5_7_1_3;
+  wire [7:0] act5_8_0_1;
+  wire [7:0] act5_8_1_1;
+  wire [7:0] act5_8_0_2;
+  wire [7:0] act5_8_1_2;
+  wire [7:0] act5_8_0_3;
+  wire [7:0] act5_8_1_3;
+  wire [7:0] act5_9_0_1;
+  wire [7:0] act5_9_1_1;
+  wire [7:0] act5_9_0_2;
+  wire [7:0] act5_9_1_2;
+  wire [7:0] act5_9_0_3;
+  wire [7:0] act5_9_1_3;
+  wire [7:0] act5_10_0_1;
+  wire [7:0] act5_10_1_1;
+  wire [7:0] act5_10_0_2;
+  wire [7:0] act5_10_1_2;
+  wire [7:0] act5_10_0_3;
+  wire [7:0] act5_10_1_3;
+  wire [7:0] act5_11_0_1;
+  wire [7:0] act5_11_1_1;
+  wire [7:0] act5_11_0_2;
+  wire [7:0] act5_11_1_2;
+  wire [7:0] act5_11_0_3;
+  wire [7:0] act5_11_1_3;
+  wire [7:0] act5_12_0_1;
+  wire [7:0] act5_12_1_1;
+  wire [7:0] act5_12_0_2;
+  wire [7:0] act5_12_1_2;
+  wire [7:0] act5_12_0_3;
+  wire [7:0] act5_12_1_3;
+  wire [7:0] act5_13_0_1;
+  wire [7:0] act5_13_1_1;
+  wire [7:0] act5_13_0_2;
+  wire [7:0] act5_13_1_2;
+  wire [7:0] act5_13_0_3;
+  wire [7:0] act5_13_1_3;
+  wire [7:0] act5_14_0_1;
+  wire [7:0] act5_14_1_1;
+  wire [7:0] act5_14_0_2;
+  wire [7:0] act5_14_1_2;
+  wire [7:0] act5_14_0_3;
+  wire [7:0] act5_14_1_3;
+  wire [7:0] act5_15_0_1;
+  wire [7:0] act5_15_1_1;
+  wire [7:0] act5_15_0_2;
+  wire [7:0] act5_15_1_2;
+  wire [7:0] act5_15_0_3;
+  wire [7:0] act5_15_1_3;
+  wire [7:0] act6_0_0_1;
+  wire [7:0] act6_0_1_1;
+  wire [7:0] act6_0_0_2;
+  wire [7:0] act6_0_1_2;
+  wire [7:0] act6_0_0_3;
+  wire [7:0] act6_0_1_3;
+  wire [7:0] act6_1_0_1;
+  wire [7:0] act6_1_1_1;
+  wire [7:0] act6_1_0_2;
+  wire [7:0] act6_1_1_2;
+  wire [7:0] act6_1_0_3;
+  wire [7:0] act6_1_1_3;
+  wire [7:0] act6_2_0_1;
+  wire [7:0] act6_2_1_1;
+  wire [7:0] act6_2_0_2;
+  wire [7:0] act6_2_1_2;
+  wire [7:0] act6_2_0_3;
+  wire [7:0] act6_2_1_3;
+  wire [7:0] act6_3_0_1;
+  wire [7:0] act6_3_1_1;
+  wire [7:0] act6_3_0_2;
+  wire [7:0] act6_3_1_2;
+  wire [7:0] act6_3_0_3;
+  wire [7:0] act6_3_1_3;
+  wire [7:0] act6_4_0_1;
+  wire [7:0] act6_4_1_1;
+  wire [7:0] act6_4_0_2;
+  wire [7:0] act6_4_1_2;
+  wire [7:0] act6_4_0_3;
+  wire [7:0] act6_4_1_3;
+  wire [7:0] act6_5_0_1;
+  wire [7:0] act6_5_1_1;
+  wire [7:0] act6_5_0_2;
+  wire [7:0] act6_5_1_2;
+  wire [7:0] act6_5_0_3;
+  wire [7:0] act6_5_1_3;
+  wire [7:0] act6_6_0_1;
+  wire [7:0] act6_6_1_1;
+  wire [7:0] act6_6_0_2;
+  wire [7:0] act6_6_1_2;
+  wire [7:0] act6_6_0_3;
+  wire [7:0] act6_6_1_3;
+  wire [7:0] act6_7_0_1;
+  wire [7:0] act6_7_1_1;
+  wire [7:0] act6_7_0_2;
+  wire [7:0] act6_7_1_2;
+  wire [7:0] act6_7_0_3;
+  wire [7:0] act6_7_1_3;
+  wire [7:0] act6_8_0_1;
+  wire [7:0] act6_8_1_1;
+  wire [7:0] act6_8_0_2;
+  wire [7:0] act6_8_1_2;
+  wire [7:0] act6_8_0_3;
+  wire [7:0] act6_8_1_3;
+  wire [7:0] act6_9_0_1;
+  wire [7:0] act6_9_1_1;
+  wire [7:0] act6_9_0_2;
+  wire [7:0] act6_9_1_2;
+  wire [7:0] act6_9_0_3;
+  wire [7:0] act6_9_1_3;
+  wire [7:0] act6_10_0_1;
+  wire [7:0] act6_10_1_1;
+  wire [7:0] act6_10_0_2;
+  wire [7:0] act6_10_1_2;
+  wire [7:0] act6_10_0_3;
+  wire [7:0] act6_10_1_3;
+  wire [7:0] act6_11_0_1;
+  wire [7:0] act6_11_1_1;
+  wire [7:0] act6_11_0_2;
+  wire [7:0] act6_11_1_2;
+  wire [7:0] act6_11_0_3;
+  wire [7:0] act6_11_1_3;
+  wire [7:0] act6_12_0_1;
+  wire [7:0] act6_12_1_1;
+  wire [7:0] act6_12_0_2;
+  wire [7:0] act6_12_1_2;
+  wire [7:0] act6_12_0_3;
+  wire [7:0] act6_12_1_3;
+  wire [7:0] act6_13_0_1;
+  wire [7:0] act6_13_1_1;
+  wire [7:0] act6_13_0_2;
+  wire [7:0] act6_13_1_2;
+  wire [7:0] act6_13_0_3;
+  wire [7:0] act6_13_1_3;
+  wire [7:0] act6_14_0_1;
+  wire [7:0] act6_14_1_1;
+  wire [7:0] act6_14_0_2;
+  wire [7:0] act6_14_1_2;
+  wire [7:0] act6_14_0_3;
+  wire [7:0] act6_14_1_3;
+  wire [7:0] act6_15_0_1;
+  wire [7:0] act6_15_1_1;
+  wire [7:0] act6_15_0_2;
+  wire [7:0] act6_15_1_2;
+  wire [7:0] act6_15_0_3;
+  wire [7:0] act6_15_1_3;
+  wire [7:0] act7_0_0_1;
+  wire [7:0] act7_0_1_1;
+  wire [7:0] act7_0_0_2;
+  wire [7:0] act7_0_1_2;
+  wire [7:0] act7_0_0_3;
+  wire [7:0] act7_0_1_3;
+  wire [7:0] act7_1_0_1;
+  wire [7:0] act7_1_1_1;
+  wire [7:0] act7_1_0_2;
+  wire [7:0] act7_1_1_2;
+  wire [7:0] act7_1_0_3;
+  wire [7:0] act7_1_1_3;
+  wire [7:0] act7_2_0_1;
+  wire [7:0] act7_2_1_1;
+  wire [7:0] act7_2_0_2;
+  wire [7:0] act7_2_1_2;
+  wire [7:0] act7_2_0_3;
+  wire [7:0] act7_2_1_3;
+  wire [7:0] act7_3_0_1;
+  wire [7:0] act7_3_1_1;
+  wire [7:0] act7_3_0_2;
+  wire [7:0] act7_3_1_2;
+  wire [7:0] act7_3_0_3;
+  wire [7:0] act7_3_1_3;
+  wire [7:0] act7_4_0_1;
+  wire [7:0] act7_4_1_1;
+  wire [7:0] act7_4_0_2;
+  wire [7:0] act7_4_1_2;
+  wire [7:0] act7_4_0_3;
+  wire [7:0] act7_4_1_3;
+  wire [7:0] act7_5_0_1;
+  wire [7:0] act7_5_1_1;
+  wire [7:0] act7_5_0_2;
+  wire [7:0] act7_5_1_2;
+  wire [7:0] act7_5_0_3;
+  wire [7:0] act7_5_1_3;
+  wire [7:0] act7_6_0_1;
+  wire [7:0] act7_6_1_1;
+  wire [7:0] act7_6_0_2;
+  wire [7:0] act7_6_1_2;
+  wire [7:0] act7_6_0_3;
+  wire [7:0] act7_6_1_3;
+  wire [7:0] act7_7_0_1;
+  wire [7:0] act7_7_1_1;
+  wire [7:0] act7_7_0_2;
+  wire [7:0] act7_7_1_2;
+  wire [7:0] act7_7_0_3;
+  wire [7:0] act7_7_1_3;
+  wire [7:0] act7_8_0_1;
+  wire [7:0] act7_8_1_1;
+  wire [7:0] act7_8_0_2;
+  wire [7:0] act7_8_1_2;
+  wire [7:0] act7_8_0_3;
+  wire [7:0] act7_8_1_3;
+  wire [7:0] act7_9_0_1;
+  wire [7:0] act7_9_1_1;
+  wire [7:0] act7_9_0_2;
+  wire [7:0] act7_9_1_2;
+  wire [7:0] act7_9_0_3;
+  wire [7:0] act7_9_1_3;
+  wire [7:0] act7_10_0_1;
+  wire [7:0] act7_10_1_1;
+  wire [7:0] act7_10_0_2;
+  wire [7:0] act7_10_1_2;
+  wire [7:0] act7_10_0_3;
+  wire [7:0] act7_10_1_3;
+  wire [7:0] act7_11_0_1;
+  wire [7:0] act7_11_1_1;
+  wire [7:0] act7_11_0_2;
+  wire [7:0] act7_11_1_2;
+  wire [7:0] act7_11_0_3;
+  wire [7:0] act7_11_1_3;
+  wire [7:0] act7_12_0_1;
+  wire [7:0] act7_12_1_1;
+  wire [7:0] act7_12_0_2;
+  wire [7:0] act7_12_1_2;
+  wire [7:0] act7_12_0_3;
+  wire [7:0] act7_12_1_3;
+  wire [7:0] act7_13_0_1;
+  wire [7:0] act7_13_1_1;
+  wire [7:0] act7_13_0_2;
+  wire [7:0] act7_13_1_2;
+  wire [7:0] act7_13_0_3;
+  wire [7:0] act7_13_1_3;
+  wire [7:0] act7_14_0_1;
+  wire [7:0] act7_14_1_1;
+  wire [7:0] act7_14_0_2;
+  wire [7:0] act7_14_1_2;
+  wire [7:0] act7_14_0_3;
+  wire [7:0] act7_14_1_3;
+  wire [7:0] act7_15_0_1;
+  wire [7:0] act7_15_1_1;
+  wire [7:0] act7_15_0_2;
+  wire [7:0] act7_15_1_2;
+  wire [7:0] act7_15_0_3;
+  wire [7:0] act7_15_1_3;
   
 
   assign act0_0_0_1= act0_0_0;
@@ -3932,14 +4077,14 @@ module layer (
     .sum(sum2bar[7])
   );
 
-  wire [6:0] b1;
-  wire [6:0] b2;
-  wire [6:0] b3;
-  wire [6:0] b4;
-  wire [6:0] b5;
-  wire [6:0] b6;
-  wire [6:0] b7;
-  wire [6:0] b8;
+  wire [11:0] b1;
+  wire [11:0] b2;
+  wire [11:0] b3;
+  wire [11:0] b4;
+  wire [11:0] b5;
+  wire [11:0] b6;
+  wire [11:0] b7;
+  wire [11:0] b8;
 
   mux_5 mux0  (.a(b1_1), .b(b1_2), .c(b1_3), .d(b1_4), .s0(s[0]), .s1(s[1]), .y(b1));
   mux_5 mux1  (.a(b2_1), .b(b2_2), .c(b2_3), .d(b2_4), .s0(s[0]), .s1(s[1]), .y(b2));
@@ -3951,38 +4096,38 @@ module layer (
   mux_5 mux7  (.a(b8_1), .b(b8_2), .c(b8_3), .d(b8_4), .s0(s[0]), .s1(s[1]), .y(b8));
 
   // bias addition
-  add7bit     u0  (.a(sum1[0]),     .b(b1), .cin(1'b0), .y(biased_sum1[0]));
-  add7bitbar ub0 (.a(sum1bar[0]), .b(b1), .cin(1'b0), .y(biased_sum1bar[0]));
-  add7bit     u8  (.a(sum2[0]),     .b(b1), .cin(1'b0), .y(biased_sum2[0]));
-  add7bitbar ub8 (.a(sum2bar[0]), .b(b1), .cin(1'b0), .y(biased_sum2bar[0]));
-  add7bit     u1  (.a(sum1[1]),     .b(b2), .cin(1'b0), .y(biased_sum1[1]));
-  add7bitbar ub1 (.a(sum1bar[1]), .b(b2), .cin(1'b0), .y(biased_sum1bar[1]));
-  add7bit     u9  (.a(sum2[1]),     .b(b2), .cin(1'b0), .y(biased_sum2[1]));
-  add7bitbar ub9 (.a(sum2bar[1]), .b(b2), .cin(1'b0), .y(biased_sum2bar[1]));
-  add7bit     u2  (.a(sum1[2]),     .b(b3), .cin(1'b0), .y(biased_sum1[2]));
-  add7bitbar ub2 (.a(sum1bar[2]), .b(b3), .cin(1'b0), .y(biased_sum1bar[2]));
-  add7bit     u10  (.a(sum2[2]),     .b(b3), .cin(1'b0), .y(biased_sum2[2]));
-  add7bitbar ub10 (.a(sum2bar[2]), .b(b3), .cin(1'b0), .y(biased_sum2bar[2]));
-  add7bit     u3  (.a(sum1[3]),     .b(b4), .cin(1'b0), .y(biased_sum1[3]));
-  add7bitbar ub3 (.a(sum1bar[3]), .b(b4), .cin(1'b0), .y(biased_sum1bar[3]));
-  add7bit     u11  (.a(sum2[3]),     .b(b4), .cin(1'b0), .y(biased_sum2[3]));
-  add7bitbar ub11 (.a(sum2bar[3]), .b(b4), .cin(1'b0), .y(biased_sum2bar[3]));
-  add7bit     u4  (.a(sum1[4]),     .b(b5), .cin(1'b0), .y(biased_sum1[4]));
-  add7bitbar ub4 (.a(sum1bar[4]), .b(b5), .cin(1'b0), .y(biased_sum1bar[4]));
-  add7bit     u12  (.a(sum2[4]),     .b(b5), .cin(1'b0), .y(biased_sum2[4]));
-  add7bitbar ub12 (.a(sum2bar[4]), .b(b5), .cin(1'b0), .y(biased_sum2bar[4]));
-  add7bit     u5  (.a(sum1[5]),     .b(b6), .cin(1'b0), .y(biased_sum1[5]));
-  add7bitbar ub5 (.a(sum1bar[5]), .b(b6), .cin(1'b0), .y(biased_sum1bar[5]));
-  add7bit     u13  (.a(sum2[5]),     .b(b6), .cin(1'b0), .y(biased_sum2[5]));
-  add7bitbar ub13 (.a(sum2bar[5]), .b(b6), .cin(1'b0), .y(biased_sum2bar[5]));
-  add7bit     u6  (.a(sum1[6]),     .b(b7), .cin(1'b0), .y(biased_sum1[6]));
-  add7bitbar ub6 (.a(sum1bar[6]), .b(b7), .cin(1'b0), .y(biased_sum1bar[6]));
-  add7bit     u14  (.a(sum2[6]),     .b(b7), .cin(1'b0), .y(biased_sum2[6]));
-  add7bitbar ub14 (.a(sum2bar[6]), .b(b7), .cin(1'b0), .y(biased_sum2bar[6]));
-  add7bit     u7  (.a(sum1[7]),     .b(b8), .cin(1'b0), .y(biased_sum1[7]));
-  add7bitbar ub7 (.a(sum1bar[7]), .b(b8), .cin(1'b0), .y(biased_sum1bar[7]));
-  add7bit     u15  (.a(sum2[7]),     .b(b8), .cin(1'b0), .y(biased_sum2[7]));
-  add7bitbar ub15 (.a(sum2bar[7]), .b(b8), .cin(1'b0), .y(biased_sum2bar[7]));
+  add12bit     u0  (.a(sum1[0]),     .b(b1), .cin(1'b0), .y(biased_sum1[0]));
+  add12bitbar ub0 (.a(sum1bar[0]), .b(b1), .cin(1'b0), .y(biased_sum1bar[0]));
+  add12bit     u8  (.a(sum2[0]),     .b(b1), .cin(1'b0), .y(biased_sum2[0]));
+  add12bitbar ub8 (.a(sum2bar[0]), .b(b1), .cin(1'b0), .y(biased_sum2bar[0]));
+  add12bit     u1  (.a(sum1[1]),     .b(b2), .cin(1'b0), .y(biased_sum1[1]));
+  add12bitbar ub1 (.a(sum1bar[1]), .b(b2), .cin(1'b0), .y(biased_sum1bar[1]));
+  add12bit     u9  (.a(sum2[1]),     .b(b2), .cin(1'b0), .y(biased_sum2[1]));
+  add12bitbar ub9 (.a(sum2bar[1]), .b(b2), .cin(1'b0), .y(biased_sum2bar[1]));
+  add12bit     u2  (.a(sum1[2]),     .b(b3), .cin(1'b0), .y(biased_sum1[2]));
+  add12bitbar ub2 (.a(sum1bar[2]), .b(b3), .cin(1'b0), .y(biased_sum1bar[2]));
+  add12bit     u10  (.a(sum2[2]),     .b(b3), .cin(1'b0), .y(biased_sum2[2]));
+  add12bitbar ub10 (.a(sum2bar[2]), .b(b3), .cin(1'b0), .y(biased_sum2bar[2]));
+  add12bit     u3  (.a(sum1[3]),     .b(b4), .cin(1'b0), .y(biased_sum1[3]));
+  add12bitbar ub3 (.a(sum1bar[3]), .b(b4), .cin(1'b0), .y(biased_sum1bar[3]));
+  add12bit     u11  (.a(sum2[3]),     .b(b4), .cin(1'b0), .y(biased_sum2[3]));
+  add12bitbar ub11 (.a(sum2bar[3]), .b(b4), .cin(1'b0), .y(biased_sum2bar[3]));
+  add12bit     u4  (.a(sum1[4]),     .b(b5), .cin(1'b0), .y(biased_sum1[4]));
+  add12bitbar ub4 (.a(sum1bar[4]), .b(b5), .cin(1'b0), .y(biased_sum1bar[4]));
+  add12bit     u12  (.a(sum2[4]),     .b(b5), .cin(1'b0), .y(biased_sum2[4]));
+  add12bitbar ub12 (.a(sum2bar[4]), .b(b5), .cin(1'b0), .y(biased_sum2bar[4]));
+  add12bit     u5  (.a(sum1[5]),     .b(b6), .cin(1'b0), .y(biased_sum1[5]));
+  add12bitbar ub5 (.a(sum1bar[5]), .b(b6), .cin(1'b0), .y(biased_sum1bar[5]));
+  add12bit     u13  (.a(sum2[5]),     .b(b6), .cin(1'b0), .y(biased_sum2[5]));
+  add12bitbar ub13 (.a(sum2bar[5]), .b(b6), .cin(1'b0), .y(biased_sum2bar[5]));
+  add12bit     u6  (.a(sum1[6]),     .b(b7), .cin(1'b0), .y(biased_sum1[6]));
+  add12bitbar ub6 (.a(sum1bar[6]), .b(b7), .cin(1'b0), .y(biased_sum1bar[6]));
+  add12bit     u14  (.a(sum2[6]),     .b(b7), .cin(1'b0), .y(biased_sum2[6]));
+  add12bitbar ub14 (.a(sum2bar[6]), .b(b7), .cin(1'b0), .y(biased_sum2bar[6]));
+  add12bit     u7  (.a(sum1[7]),     .b(b8), .cin(1'b0), .y(biased_sum1[7]));
+  add12bitbar ub7 (.a(sum1bar[7]), .b(b8), .cin(1'b0), .y(biased_sum1bar[7]));
+  add12bit     u15  (.a(sum2[7]),     .b(b8), .cin(1'b0), .y(biased_sum2[7]));
+  add12bitbar ub15 (.a(sum2bar[7]), .b(b8), .cin(1'b0), .y(biased_sum2bar[7]));
 
     assign biased_sum0_0 = biased_sum1[0];
     assign biased_sum0_1 = biased_sum2[0];
@@ -4046,6 +4191,11 @@ module layer (
   reg r5_0;
   reg r6_0;
   reg r7_0;
+  reg r8_0;
+  reg r9_0;
+  reg r10_0;
+  reg r11_0;
+  reg r12_0;
   reg r0_1;
   reg r1_1;
   reg r2_1;
@@ -4054,6 +4204,11 @@ module layer (
   reg r5_1;
   reg r6_1;
   reg r7_1;
+  reg r8_1;
+  reg r9_1;
+  reg r10_1;
+  reg r11_1;
+  reg r12_1;
   reg r0_2;
   reg r1_2;
   reg r2_2;
@@ -4062,6 +4217,11 @@ module layer (
   reg r5_2;
   reg r6_2;
   reg r7_2;
+  reg r8_2;
+  reg r9_2;
+  reg r10_2;
+  reg r11_2;
+  reg r12_2;
   reg r0_3;
   reg r1_3;
   reg r2_3;
@@ -4070,6 +4230,11 @@ module layer (
   reg r5_3;
   reg r6_3;
   reg r7_3;
+  reg r8_3;
+  reg r9_3;
+  reg r10_3;
+  reg r11_3;
+  reg r12_3;
   reg r0_4;
   reg r1_4;
   reg r2_4;
@@ -4078,6 +4243,11 @@ module layer (
   reg r5_4;
   reg r6_4;
   reg r7_4;
+  reg r8_4;
+  reg r9_4;
+  reg r10_4;
+  reg r11_4;
+  reg r12_4;
   reg r0_5;
   reg r1_5;
   reg r2_5;
@@ -4086,6 +4256,11 @@ module layer (
   reg r5_5;
   reg r6_5;
   reg r7_5;
+  reg r8_5;
+  reg r9_5;
+  reg r10_5;
+  reg r11_5;
+  reg r12_5;
   reg r0_6;
   reg r1_6;
   reg r2_6;
@@ -4094,6 +4269,11 @@ module layer (
   reg r5_6;
   reg r6_6;
   reg r7_6;
+  reg r8_6;
+  reg r9_6;
+  reg r10_6;
+  reg r11_6;
+  reg r12_6;
   reg r0_7;
   reg r1_7;
   reg r2_7;
@@ -4102,6 +4282,11 @@ module layer (
   reg r5_7;
   reg r6_7;
   reg r7_7;
+  reg r8_7;
+  reg r9_7;
+  reg r10_7;
+  reg r11_7;
+  reg r12_7;
 
   initial begin
     r0_0 = $random;
@@ -4112,6 +4297,11 @@ module layer (
     r5_0 = $random;
     r6_0 = $random;
     r7_0 = $random;
+    r8_0 = $random;
+    r9_0 = $random;
+    r10_0 = $random;
+    r11_0 = $random;
+    r12_0 = $random;
     r0_1 = $random;
     r1_1 = $random;
     r2_1 = $random;
@@ -4120,6 +4310,11 @@ module layer (
     r5_1 = $random;
     r6_1 = $random;
     r7_1 = $random;
+    r8_1 = $random;
+    r9_1 = $random;
+    r10_1 = $random;
+    r11_1 = $random;
+    r12_1 = $random;
     r0_2 = $random;
     r1_2 = $random;
     r2_2 = $random;
@@ -4128,6 +4323,11 @@ module layer (
     r5_2 = $random;
     r6_2 = $random;
     r7_2 = $random;
+    r8_2 = $random;
+    r9_2 = $random;
+    r10_2 = $random;
+    r11_2 = $random;
+    r12_2 = $random;
     r0_3 = $random;
     r1_3 = $random;
     r2_3 = $random;
@@ -4136,6 +4336,11 @@ module layer (
     r5_3 = $random;
     r6_3 = $random;
     r7_3 = $random;
+    r8_3 = $random;
+    r9_3 = $random;
+    r10_3 = $random;
+    r11_3 = $random;
+    r12_3 = $random;
     r0_4 = $random;
     r1_4 = $random;
     r2_4 = $random;
@@ -4144,6 +4349,11 @@ module layer (
     r5_4 = $random;
     r6_4 = $random;
     r7_4 = $random;
+    r8_4 = $random;
+    r9_4 = $random;
+    r10_4 = $random;
+    r11_4 = $random;
+    r12_4 = $random;
     r0_5 = $random;
     r1_5 = $random;
     r2_5 = $random;
@@ -4152,6 +4362,11 @@ module layer (
     r5_5 = $random;
     r6_5 = $random;
     r7_5 = $random;
+    r8_5 = $random;
+    r9_5 = $random;
+    r10_5 = $random;
+    r11_5 = $random;
+    r12_5 = $random;
     r0_6 = $random;
     r1_6 = $random;
     r2_6 = $random;
@@ -4160,6 +4375,11 @@ module layer (
     r5_6 = $random;
     r6_6 = $random;
     r7_6 = $random;
+    r8_6 = $random;
+    r9_6 = $random;
+    r10_6 = $random;
+    r11_6 = $random;
+    r12_6 = $random;
     r0_7 = $random;
     r1_7 = $random;
     r2_7 = $random;
@@ -4168,6 +4388,11 @@ module layer (
     r5_7 = $random;
     r6_7 = $random;
     r7_7 = $random;
+    r8_7 = $random;
+    r9_7 = $random;
+    r10_7 = $random;
+    r11_7 = $random;
+    r12_7 = $random;
     #1;
   end
 
@@ -4196,6 +4421,11 @@ module layer (
     .r5_0(r5_0),
     .r6_0(r6_0),
     .r7_0(r7_0),
+    .r8_0(r8_0),
+    .r9_0(r9_0),
+    .r10_0(r10_0),
+    .r11_0(r11_0),
+    .r12_0(r12_0),
     .r0_1(r0_1),
     .r1_1(r1_1),
     .r2_1(r2_1),
@@ -4204,6 +4434,11 @@ module layer (
     .r5_1(r5_1),
     .r6_1(r6_1),
     .r7_1(r7_1),
+    .r8_1(r8_1),
+    .r9_1(r9_1),
+    .r10_1(r10_1),
+    .r11_1(r11_1),
+    .r12_1(r12_1),
     .r0_2(r0_2),
     .r1_2(r1_2),
     .r2_2(r2_2),
@@ -4212,6 +4447,11 @@ module layer (
     .r5_2(r5_2),
     .r6_2(r6_2),
     .r7_2(r7_2),
+    .r8_2(r8_2),
+    .r9_2(r9_2),
+    .r10_2(r10_2),
+    .r11_2(r11_2),
+    .r12_2(r12_2),
     .r0_3(r0_3),
     .r1_3(r1_3),
     .r2_3(r2_3),
@@ -4220,6 +4460,11 @@ module layer (
     .r5_3(r5_3),
     .r6_3(r6_3),
     .r7_3(r7_3),
+    .r8_3(r8_3),
+    .r9_3(r9_3),
+    .r10_3(r10_3),
+    .r11_3(r11_3),
+    .r12_3(r12_3),
     .r0_4(r0_4),
     .r1_4(r1_4),
     .r2_4(r2_4),
@@ -4228,6 +4473,11 @@ module layer (
     .r5_4(r5_4),
     .r6_4(r6_4),
     .r7_4(r7_4),
+    .r8_4(r8_4),
+    .r9_4(r9_4),
+    .r10_4(r10_4),
+    .r11_4(r11_4),
+    .r12_4(r12_4),
     .r0_5(r0_5),
     .r1_5(r1_5),
     .r2_5(r2_5),
@@ -4236,6 +4486,11 @@ module layer (
     .r5_5(r5_5),
     .r6_5(r6_5),
     .r7_5(r7_5),
+    .r8_5(r8_5),
+    .r9_5(r9_5),
+    .r10_5(r10_5),
+    .r11_5(r11_5),
+    .r12_5(r12_5),
     .r0_6(r0_6),
     .r1_6(r1_6),
     .r2_6(r2_6),
@@ -4244,6 +4499,11 @@ module layer (
     .r5_6(r5_6),
     .r6_6(r6_6),
     .r7_6(r7_6),
+    .r8_6(r8_6),
+    .r9_6(r9_6),
+    .r10_6(r10_6),
+    .r11_6(r11_6),
+    .r12_6(r12_6),
     .r0_7(r0_7),
     .r1_7(r1_7),
     .r2_7(r2_7),
@@ -4252,6 +4512,11 @@ module layer (
     .r5_7(r5_7),
     .r6_7(r6_7),
     .r7_7(r7_7),
+    .r8_7(r8_7),
+    .r9_7(r9_7),
+    .r10_7(r10_7),
+    .r11_7(r11_7),
+    .r12_7(r12_7),
     .masked_activation0(masked_activation0_1),
     .masked_activation1(masked_activation1_1),
     .masked_activation2(masked_activation2_1),
@@ -4295,6 +4560,11 @@ module layer (
     .r5_0(r5_0),
     .r6_0(r6_0),
     .r7_0(r7_0),
+    .r8_0(r8_0),
+    .r9_0(r9_0),
+    .r10_0(r10_0),
+    .r11_0(r11_0),
+    .r12_0(r12_0),
     .r0_1(r0_1),
     .r1_1(r1_1),
     .r2_1(r2_1),
@@ -4303,6 +4573,11 @@ module layer (
     .r5_1(r5_1),
     .r6_1(r6_1),
     .r7_1(r7_1),
+    .r8_1(r8_1),
+    .r9_1(r9_1),
+    .r10_1(r10_1),
+    .r11_1(r11_1),
+    .r12_1(r12_1),
     .r0_2(r0_2),
     .r1_2(r1_2),
     .r2_2(r2_2),
@@ -4311,6 +4586,11 @@ module layer (
     .r5_2(r5_2),
     .r6_2(r6_2),
     .r7_2(r7_2),
+    .r8_2(r8_2),
+    .r9_2(r9_2),
+    .r10_2(r10_2),
+    .r11_2(r11_2),
+    .r12_2(r12_2),
     .r0_3(r0_3),
     .r1_3(r1_3),
     .r2_3(r2_3),
@@ -4319,6 +4599,11 @@ module layer (
     .r5_3(r5_3),
     .r6_3(r6_3),
     .r7_3(r7_3),
+    .r8_3(r8_3),
+    .r9_3(r9_3),
+    .r10_3(r10_3),
+    .r11_3(r11_3),
+    .r12_3(r12_3),
     .r0_4(r0_4),
     .r1_4(r1_4),
     .r2_4(r2_4),
@@ -4327,6 +4612,11 @@ module layer (
     .r5_4(r5_4),
     .r6_4(r6_4),
     .r7_4(r7_4),
+    .r8_4(r8_4),
+    .r9_4(r9_4),
+    .r10_4(r10_4),
+    .r11_4(r11_4),
+    .r12_4(r12_4),
     .r0_5(r0_5),
     .r1_5(r1_5),
     .r2_5(r2_5),
@@ -4335,6 +4625,11 @@ module layer (
     .r5_5(r5_5),
     .r6_5(r6_5),
     .r7_5(r7_5),
+    .r8_5(r8_5),
+    .r9_5(r9_5),
+    .r10_5(r10_5),
+    .r11_5(r11_5),
+    .r12_5(r12_5),
     .r0_6(r0_6),
     .r1_6(r1_6),
     .r2_6(r2_6),
@@ -4343,6 +4638,11 @@ module layer (
     .r5_6(r5_6),
     .r6_6(r6_6),
     .r7_6(r7_6),
+    .r8_6(r8_6),
+    .r9_6(r9_6),
+    .r10_6(r10_6),
+    .r11_6(r11_6),
+    .r12_6(r12_6),
     .r0_7(r0_7),
     .r1_7(r1_7),
     .r2_7(r2_7),
@@ -4351,6 +4651,11 @@ module layer (
     .r5_7(r5_7),
     .r6_7(r6_7),
     .r7_7(r7_7),
+    .r8_7(r8_7),
+    .r9_7(r9_7),
+    .r10_7(r10_7),
+    .r11_7(r11_7),
+    .r12_7(r12_7),
     .masked_activation0(masked_activation0bar_1),
     .masked_activation1(masked_activation1bar_1),
     .masked_activation2(masked_activation2bar_1),
@@ -4372,36 +4677,36 @@ module layer (
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       done <= 1'b0;
-      biased_sum0_0_r    <= 8'd0;  biased_sum0_1_r    <= 8'd0;
-      biased_sum0_0bar_r <= 8'd0;  biased_sum0_1bar_r <= 8'd0;
+      biased_sum0_0_r    <= 13'd0;  biased_sum0_1_r    <= 13'd0;
+      biased_sum0_0bar_r <= 13'd0;  biased_sum0_1bar_r <= 13'd0;
       masked_activation0_1_r <= 1'b0; masked_activation0bar_1_r <= 1'b0;
       mask0_1_r             <= 1'b0;             mask0bar_1_r             <= 1'b0;
-      biased_sum1_0_r    <= 8'd0;  biased_sum1_1_r    <= 8'd0;
-      biased_sum1_0bar_r <= 8'd0;  biased_sum1_1bar_r <= 8'd0;
+      biased_sum1_0_r    <= 13'd0;  biased_sum1_1_r    <= 13'd0;
+      biased_sum1_0bar_r <= 13'd0;  biased_sum1_1bar_r <= 13'd0;
       masked_activation1_1_r <= 1'b0; masked_activation1bar_1_r <= 1'b0;
       mask1_1_r             <= 1'b0;             mask1bar_1_r             <= 1'b0;
-      biased_sum2_0_r    <= 8'd0;  biased_sum2_1_r    <= 8'd0;
-      biased_sum2_0bar_r <= 8'd0;  biased_sum2_1bar_r <= 8'd0;
+      biased_sum2_0_r    <= 13'd0;  biased_sum2_1_r    <= 13'd0;
+      biased_sum2_0bar_r <= 13'd0;  biased_sum2_1bar_r <= 13'd0;
       masked_activation2_1_r <= 1'b0; masked_activation2bar_1_r <= 1'b0;
       mask2_1_r             <= 1'b0;             mask2bar_1_r             <= 1'b0;
-      biased_sum3_0_r    <= 8'd0;  biased_sum3_1_r    <= 8'd0;
-      biased_sum3_0bar_r <= 8'd0;  biased_sum3_1bar_r <= 8'd0;
+      biased_sum3_0_r    <= 13'd0;  biased_sum3_1_r    <= 13'd0;
+      biased_sum3_0bar_r <= 13'd0;  biased_sum3_1bar_r <= 13'd0;
       masked_activation3_1_r <= 1'b0; masked_activation3bar_1_r <= 1'b0;
       mask3_1_r             <= 1'b0;             mask3bar_1_r             <= 1'b0;
-      biased_sum4_0_r    <= 8'd0;  biased_sum4_1_r    <= 8'd0;
-      biased_sum4_0bar_r <= 8'd0;  biased_sum4_1bar_r <= 8'd0;
+      biased_sum4_0_r    <= 13'd0;  biased_sum4_1_r    <= 13'd0;
+      biased_sum4_0bar_r <= 13'd0;  biased_sum4_1bar_r <= 13'd0;
       masked_activation4_1_r <= 1'b0; masked_activation4bar_1_r <= 1'b0;
       mask4_1_r             <= 1'b0;             mask4bar_1_r             <= 1'b0;
-      biased_sum5_0_r    <= 8'd0;  biased_sum5_1_r    <= 8'd0;
-      biased_sum5_0bar_r <= 8'd0;  biased_sum5_1bar_r <= 8'd0;
+      biased_sum5_0_r    <= 13'd0;  biased_sum5_1_r    <= 13'd0;
+      biased_sum5_0bar_r <= 13'd0;  biased_sum5_1bar_r <= 13'd0;
       masked_activation5_1_r <= 1'b0; masked_activation5bar_1_r <= 1'b0;
       mask5_1_r             <= 1'b0;             mask5bar_1_r             <= 1'b0;
-      biased_sum6_0_r    <= 8'd0;  biased_sum6_1_r    <= 8'd0;
-      biased_sum6_0bar_r <= 8'd0;  biased_sum6_1bar_r <= 8'd0;
+      biased_sum6_0_r    <= 13'd0;  biased_sum6_1_r    <= 13'd0;
+      biased_sum6_0bar_r <= 13'd0;  biased_sum6_1bar_r <= 13'd0;
       masked_activation6_1_r <= 1'b0; masked_activation6bar_1_r <= 1'b0;
       mask6_1_r             <= 1'b0;             mask6bar_1_r             <= 1'b0;
-      biased_sum7_0_r    <= 8'd0;  biased_sum7_1_r    <= 8'd0;
-      biased_sum7_0bar_r <= 8'd0;  biased_sum7_1bar_r <= 8'd0;
+      biased_sum7_0_r    <= 13'd0;  biased_sum7_1_r    <= 13'd0;
+      biased_sum7_0bar_r <= 13'd0;  biased_sum7_1bar_r <= 13'd0;
       masked_activation7_1_r <= 1'b0; masked_activation7bar_1_r <= 1'b0;
       mask7_1_r             <= 1'b0;             mask7bar_1_r             <= 1'b0;
     end else if (start) begin
@@ -4464,16 +4769,16 @@ module boolean_arithmetic_coversion_1 (
 
     input  wire x1,
 
-    input  wire [1:0] r_mask,
+    input  wire [6:0] r_mask,
 
-    output wire [2:0] arith_share0,
+    output wire [7:0] arith_share0,
 
-    output wire [2:0] arith_share1
+    output wire [7:0] arith_share1
 );
 
-    wire [2:0] y0;
+    wire [7:0] y0;
 
-    wire [2:0] y1;
+    wire [7:0] y1;
 
 
     assign y0 = { r_mask, x0 };
@@ -4489,6 +4794,16 @@ module boolean_arithmetic_coversion_1 (
     mux m1(.a(y0[1]), .b(y1[0] ^ y0[1]), .s(arith_share0[0]), .y(arith_share0[1]));
 
     mux m2(.a(y0[1] ^ y0[2]), .b(y0[2] ^ y1[1]), .s(arith_share0[1]), .y(arith_share0[2]));
+
+    mux m3(.a(y0[2] ^ y0[3]), .b(y0[3] ^ y1[2]), .s(arith_share0[2]), .y(arith_share0[3]));
+
+    mux m4(.a(y0[3] ^ y0[4]), .b(y0[4] ^ y1[3]), .s(arith_share0[3]), .y(arith_share0[4]));
+
+    mux m5(.a(y0[4] ^ y0[5]), .b(y0[5] ^ y1[4]), .s(arith_share0[4]), .y(arith_share0[5]));
+
+    mux m6(.a(y0[5] ^ y0[6]), .b(y0[6] ^ y1[5]), .s(arith_share0[5]), .y(arith_share0[6]));
+
+    mux m7(.a(y0[6] ^ y0[7]), .b(y0[7] ^ y1[6]), .s(arith_share0[6]), .y(arith_share0[7]));
 
 
     assign arith_share1 = y1;
@@ -4529,268 +4844,268 @@ module share_boolean_arithmetic (
     input  wire [1:0]  s,
 
     // Registered arithmetic-shares outputs (_r suffix)
-    output reg  [2:0]act0_0_0_r,
-    output reg  [2:0]act0_0_1_r,
-    output reg  [2:0]act0_0_2_r,
-    output reg  [2:0]act0_0_3_r,
-    output reg  [2:0]act0_0_4_r,
-    output reg  [2:0]act0_0_5_r,
-    output reg  [2:0]act0_0_6_r,
-    output reg  [2:0]act0_0_7_r,
-    output reg  [2:0]act0_0_8_r,
-    output reg  [2:0]act0_0_9_r,
-    output reg  [2:0]act0_0_10_r,
-    output reg  [2:0]act0_0_11_r,
-    output reg  [2:0]act0_0_12_r,
-    output reg  [2:0]act0_0_13_r,
-    output reg  [2:0]act0_0_14_r,
-    output reg  [2:0]act0_0_15_r,
-    output reg  [2:0]act0_1_0_r,
-    output reg  [2:0]act0_1_1_r,
-    output reg  [2:0]act0_1_2_r,
-    output reg  [2:0]act0_1_3_r,
-    output reg  [2:0]act0_1_4_r,
-    output reg  [2:0]act0_1_5_r,
-    output reg  [2:0]act0_1_6_r,
-    output reg  [2:0]act0_1_7_r,
-    output reg  [2:0]act0_1_8_r,
-    output reg  [2:0]act0_1_9_r,
-    output reg  [2:0]act0_1_10_r,
-    output reg  [2:0]act0_1_11_r,
-    output reg  [2:0]act0_1_12_r,
-    output reg  [2:0]act0_1_13_r,
-    output reg  [2:0]act0_1_14_r,
-    output reg  [2:0]act0_1_15_r,
-    output reg  [2:0]act1_0_0_r,
-    output reg  [2:0]act1_0_1_r,
-    output reg  [2:0]act1_0_2_r,
-    output reg  [2:0]act1_0_3_r,
-    output reg  [2:0]act1_0_4_r,
-    output reg  [2:0]act1_0_5_r,
-    output reg  [2:0]act1_0_6_r,
-    output reg  [2:0]act1_0_7_r,
-    output reg  [2:0]act1_0_8_r,
-    output reg  [2:0]act1_0_9_r,
-    output reg  [2:0]act1_0_10_r,
-    output reg  [2:0]act1_0_11_r,
-    output reg  [2:0]act1_0_12_r,
-    output reg  [2:0]act1_0_13_r,
-    output reg  [2:0]act1_0_14_r,
-    output reg  [2:0]act1_0_15_r,
-    output reg  [2:0]act1_1_0_r,
-    output reg  [2:0]act1_1_1_r,
-    output reg  [2:0]act1_1_2_r,
-    output reg  [2:0]act1_1_3_r,
-    output reg  [2:0]act1_1_4_r,
-    output reg  [2:0]act1_1_5_r,
-    output reg  [2:0]act1_1_6_r,
-    output reg  [2:0]act1_1_7_r,
-    output reg  [2:0]act1_1_8_r,
-    output reg  [2:0]act1_1_9_r,
-    output reg  [2:0]act1_1_10_r,
-    output reg  [2:0]act1_1_11_r,
-    output reg  [2:0]act1_1_12_r,
-    output reg  [2:0]act1_1_13_r,
-    output reg  [2:0]act1_1_14_r,
-    output reg  [2:0]act1_1_15_r,
-    output reg  [2:0]act2_0_0_r,
-    output reg  [2:0]act2_0_1_r,
-    output reg  [2:0]act2_0_2_r,
-    output reg  [2:0]act2_0_3_r,
-    output reg  [2:0]act2_0_4_r,
-    output reg  [2:0]act2_0_5_r,
-    output reg  [2:0]act2_0_6_r,
-    output reg  [2:0]act2_0_7_r,
-    output reg  [2:0]act2_0_8_r,
-    output reg  [2:0]act2_0_9_r,
-    output reg  [2:0]act2_0_10_r,
-    output reg  [2:0]act2_0_11_r,
-    output reg  [2:0]act2_0_12_r,
-    output reg  [2:0]act2_0_13_r,
-    output reg  [2:0]act2_0_14_r,
-    output reg  [2:0]act2_0_15_r,
-    output reg  [2:0]act2_1_0_r,
-    output reg  [2:0]act2_1_1_r,
-    output reg  [2:0]act2_1_2_r,
-    output reg  [2:0]act2_1_3_r,
-    output reg  [2:0]act2_1_4_r,
-    output reg  [2:0]act2_1_5_r,
-    output reg  [2:0]act2_1_6_r,
-    output reg  [2:0]act2_1_7_r,
-    output reg  [2:0]act2_1_8_r,
-    output reg  [2:0]act2_1_9_r,
-    output reg  [2:0]act2_1_10_r,
-    output reg  [2:0]act2_1_11_r,
-    output reg  [2:0]act2_1_12_r,
-    output reg  [2:0]act2_1_13_r,
-    output reg  [2:0]act2_1_14_r,
-    output reg  [2:0]act2_1_15_r,
-    output reg  [2:0]act3_0_0_r,
-    output reg  [2:0]act3_0_1_r,
-    output reg  [2:0]act3_0_2_r,
-    output reg  [2:0]act3_0_3_r,
-    output reg  [2:0]act3_0_4_r,
-    output reg  [2:0]act3_0_5_r,
-    output reg  [2:0]act3_0_6_r,
-    output reg  [2:0]act3_0_7_r,
-    output reg  [2:0]act3_0_8_r,
-    output reg  [2:0]act3_0_9_r,
-    output reg  [2:0]act3_0_10_r,
-    output reg  [2:0]act3_0_11_r,
-    output reg  [2:0]act3_0_12_r,
-    output reg  [2:0]act3_0_13_r,
-    output reg  [2:0]act3_0_14_r,
-    output reg  [2:0]act3_0_15_r,
-    output reg  [2:0]act3_1_0_r,
-    output reg  [2:0]act3_1_1_r,
-    output reg  [2:0]act3_1_2_r,
-    output reg  [2:0]act3_1_3_r,
-    output reg  [2:0]act3_1_4_r,
-    output reg  [2:0]act3_1_5_r,
-    output reg  [2:0]act3_1_6_r,
-    output reg  [2:0]act3_1_7_r,
-    output reg  [2:0]act3_1_8_r,
-    output reg  [2:0]act3_1_9_r,
-    output reg  [2:0]act3_1_10_r,
-    output reg  [2:0]act3_1_11_r,
-    output reg  [2:0]act3_1_12_r,
-    output reg  [2:0]act3_1_13_r,
-    output reg  [2:0]act3_1_14_r,
-    output reg  [2:0]act3_1_15_r,
-    output reg  [2:0]act4_0_0_r,
-    output reg  [2:0]act4_0_1_r,
-    output reg  [2:0]act4_0_2_r,
-    output reg  [2:0]act4_0_3_r,
-    output reg  [2:0]act4_0_4_r,
-    output reg  [2:0]act4_0_5_r,
-    output reg  [2:0]act4_0_6_r,
-    output reg  [2:0]act4_0_7_r,
-    output reg  [2:0]act4_0_8_r,
-    output reg  [2:0]act4_0_9_r,
-    output reg  [2:0]act4_0_10_r,
-    output reg  [2:0]act4_0_11_r,
-    output reg  [2:0]act4_0_12_r,
-    output reg  [2:0]act4_0_13_r,
-    output reg  [2:0]act4_0_14_r,
-    output reg  [2:0]act4_0_15_r,
-    output reg  [2:0]act4_1_0_r,
-    output reg  [2:0]act4_1_1_r,
-    output reg  [2:0]act4_1_2_r,
-    output reg  [2:0]act4_1_3_r,
-    output reg  [2:0]act4_1_4_r,
-    output reg  [2:0]act4_1_5_r,
-    output reg  [2:0]act4_1_6_r,
-    output reg  [2:0]act4_1_7_r,
-    output reg  [2:0]act4_1_8_r,
-    output reg  [2:0]act4_1_9_r,
-    output reg  [2:0]act4_1_10_r,
-    output reg  [2:0]act4_1_11_r,
-    output reg  [2:0]act4_1_12_r,
-    output reg  [2:0]act4_1_13_r,
-    output reg  [2:0]act4_1_14_r,
-    output reg  [2:0]act4_1_15_r,
-    output reg  [2:0]act5_0_0_r,
-    output reg  [2:0]act5_0_1_r,
-    output reg  [2:0]act5_0_2_r,
-    output reg  [2:0]act5_0_3_r,
-    output reg  [2:0]act5_0_4_r,
-    output reg  [2:0]act5_0_5_r,
-    output reg  [2:0]act5_0_6_r,
-    output reg  [2:0]act5_0_7_r,
-    output reg  [2:0]act5_0_8_r,
-    output reg  [2:0]act5_0_9_r,
-    output reg  [2:0]act5_0_10_r,
-    output reg  [2:0]act5_0_11_r,
-    output reg  [2:0]act5_0_12_r,
-    output reg  [2:0]act5_0_13_r,
-    output reg  [2:0]act5_0_14_r,
-    output reg  [2:0]act5_0_15_r,
-    output reg  [2:0]act5_1_0_r,
-    output reg  [2:0]act5_1_1_r,
-    output reg  [2:0]act5_1_2_r,
-    output reg  [2:0]act5_1_3_r,
-    output reg  [2:0]act5_1_4_r,
-    output reg  [2:0]act5_1_5_r,
-    output reg  [2:0]act5_1_6_r,
-    output reg  [2:0]act5_1_7_r,
-    output reg  [2:0]act5_1_8_r,
-    output reg  [2:0]act5_1_9_r,
-    output reg  [2:0]act5_1_10_r,
-    output reg  [2:0]act5_1_11_r,
-    output reg  [2:0]act5_1_12_r,
-    output reg  [2:0]act5_1_13_r,
-    output reg  [2:0]act5_1_14_r,
-    output reg  [2:0]act5_1_15_r,
-    output reg  [2:0]act6_0_0_r,
-    output reg  [2:0]act6_0_1_r,
-    output reg  [2:0]act6_0_2_r,
-    output reg  [2:0]act6_0_3_r,
-    output reg  [2:0]act6_0_4_r,
-    output reg  [2:0]act6_0_5_r,
-    output reg  [2:0]act6_0_6_r,
-    output reg  [2:0]act6_0_7_r,
-    output reg  [2:0]act6_0_8_r,
-    output reg  [2:0]act6_0_9_r,
-    output reg  [2:0]act6_0_10_r,
-    output reg  [2:0]act6_0_11_r,
-    output reg  [2:0]act6_0_12_r,
-    output reg  [2:0]act6_0_13_r,
-    output reg  [2:0]act6_0_14_r,
-    output reg  [2:0]act6_0_15_r,
-    output reg  [2:0]act6_1_0_r,
-    output reg  [2:0]act6_1_1_r,
-    output reg  [2:0]act6_1_2_r,
-    output reg  [2:0]act6_1_3_r,
-    output reg  [2:0]act6_1_4_r,
-    output reg  [2:0]act6_1_5_r,
-    output reg  [2:0]act6_1_6_r,
-    output reg  [2:0]act6_1_7_r,
-    output reg  [2:0]act6_1_8_r,
-    output reg  [2:0]act6_1_9_r,
-    output reg  [2:0]act6_1_10_r,
-    output reg  [2:0]act6_1_11_r,
-    output reg  [2:0]act6_1_12_r,
-    output reg  [2:0]act6_1_13_r,
-    output reg  [2:0]act6_1_14_r,
-    output reg  [2:0]act6_1_15_r,
-    output reg  [2:0]act7_0_0_r,
-    output reg  [2:0]act7_0_1_r,
-    output reg  [2:0]act7_0_2_r,
-    output reg  [2:0]act7_0_3_r,
-    output reg  [2:0]act7_0_4_r,
-    output reg  [2:0]act7_0_5_r,
-    output reg  [2:0]act7_0_6_r,
-    output reg  [2:0]act7_0_7_r,
-    output reg  [2:0]act7_0_8_r,
-    output reg  [2:0]act7_0_9_r,
-    output reg  [2:0]act7_0_10_r,
-    output reg  [2:0]act7_0_11_r,
-    output reg  [2:0]act7_0_12_r,
-    output reg  [2:0]act7_0_13_r,
-    output reg  [2:0]act7_0_14_r,
-    output reg  [2:0]act7_0_15_r,
-    output reg  [2:0]act7_1_0_r,
-    output reg  [2:0]act7_1_1_r,
-    output reg  [2:0]act7_1_2_r,
-    output reg  [2:0]act7_1_3_r,
-    output reg  [2:0]act7_1_4_r,
-    output reg  [2:0]act7_1_5_r,
-    output reg  [2:0]act7_1_6_r,
-    output reg  [2:0]act7_1_7_r,
-    output reg  [2:0]act7_1_8_r,
-    output reg  [2:0]act7_1_9_r,
-    output reg  [2:0]act7_1_10_r,
-    output reg  [2:0]act7_1_11_r,
-    output reg  [2:0]act7_1_12_r,
-    output reg  [2:0]act7_1_13_r,
-    output reg  [2:0]act7_1_14_r,
-    output reg  [2:0]act7_1_15_r
+    output reg  [7:0]act0_0_0_r,
+    output reg  [7:0]act0_0_1_r,
+    output reg  [7:0]act0_0_2_r,
+    output reg  [7:0]act0_0_3_r,
+    output reg  [7:0]act0_0_4_r,
+    output reg  [7:0]act0_0_5_r,
+    output reg  [7:0]act0_0_6_r,
+    output reg  [7:0]act0_0_7_r,
+    output reg  [7:0]act0_0_8_r,
+    output reg  [7:0]act0_0_9_r,
+    output reg  [7:0]act0_0_10_r,
+    output reg  [7:0]act0_0_11_r,
+    output reg  [7:0]act0_0_12_r,
+    output reg  [7:0]act0_0_13_r,
+    output reg  [7:0]act0_0_14_r,
+    output reg  [7:0]act0_0_15_r,
+    output reg  [7:0]act0_1_0_r,
+    output reg  [7:0]act0_1_1_r,
+    output reg  [7:0]act0_1_2_r,
+    output reg  [7:0]act0_1_3_r,
+    output reg  [7:0]act0_1_4_r,
+    output reg  [7:0]act0_1_5_r,
+    output reg  [7:0]act0_1_6_r,
+    output reg  [7:0]act0_1_7_r,
+    output reg  [7:0]act0_1_8_r,
+    output reg  [7:0]act0_1_9_r,
+    output reg  [7:0]act0_1_10_r,
+    output reg  [7:0]act0_1_11_r,
+    output reg  [7:0]act0_1_12_r,
+    output reg  [7:0]act0_1_13_r,
+    output reg  [7:0]act0_1_14_r,
+    output reg  [7:0]act0_1_15_r,
+    output reg  [7:0]act1_0_0_r,
+    output reg  [7:0]act1_0_1_r,
+    output reg  [7:0]act1_0_2_r,
+    output reg  [7:0]act1_0_3_r,
+    output reg  [7:0]act1_0_4_r,
+    output reg  [7:0]act1_0_5_r,
+    output reg  [7:0]act1_0_6_r,
+    output reg  [7:0]act1_0_7_r,
+    output reg  [7:0]act1_0_8_r,
+    output reg  [7:0]act1_0_9_r,
+    output reg  [7:0]act1_0_10_r,
+    output reg  [7:0]act1_0_11_r,
+    output reg  [7:0]act1_0_12_r,
+    output reg  [7:0]act1_0_13_r,
+    output reg  [7:0]act1_0_14_r,
+    output reg  [7:0]act1_0_15_r,
+    output reg  [7:0]act1_1_0_r,
+    output reg  [7:0]act1_1_1_r,
+    output reg  [7:0]act1_1_2_r,
+    output reg  [7:0]act1_1_3_r,
+    output reg  [7:0]act1_1_4_r,
+    output reg  [7:0]act1_1_5_r,
+    output reg  [7:0]act1_1_6_r,
+    output reg  [7:0]act1_1_7_r,
+    output reg  [7:0]act1_1_8_r,
+    output reg  [7:0]act1_1_9_r,
+    output reg  [7:0]act1_1_10_r,
+    output reg  [7:0]act1_1_11_r,
+    output reg  [7:0]act1_1_12_r,
+    output reg  [7:0]act1_1_13_r,
+    output reg  [7:0]act1_1_14_r,
+    output reg  [7:0]act1_1_15_r,
+    output reg  [7:0]act2_0_0_r,
+    output reg  [7:0]act2_0_1_r,
+    output reg  [7:0]act2_0_2_r,
+    output reg  [7:0]act2_0_3_r,
+    output reg  [7:0]act2_0_4_r,
+    output reg  [7:0]act2_0_5_r,
+    output reg  [7:0]act2_0_6_r,
+    output reg  [7:0]act2_0_7_r,
+    output reg  [7:0]act2_0_8_r,
+    output reg  [7:0]act2_0_9_r,
+    output reg  [7:0]act2_0_10_r,
+    output reg  [7:0]act2_0_11_r,
+    output reg  [7:0]act2_0_12_r,
+    output reg  [7:0]act2_0_13_r,
+    output reg  [7:0]act2_0_14_r,
+    output reg  [7:0]act2_0_15_r,
+    output reg  [7:0]act2_1_0_r,
+    output reg  [7:0]act2_1_1_r,
+    output reg  [7:0]act2_1_2_r,
+    output reg  [7:0]act2_1_3_r,
+    output reg  [7:0]act2_1_4_r,
+    output reg  [7:0]act2_1_5_r,
+    output reg  [7:0]act2_1_6_r,
+    output reg  [7:0]act2_1_7_r,
+    output reg  [7:0]act2_1_8_r,
+    output reg  [7:0]act2_1_9_r,
+    output reg  [7:0]act2_1_10_r,
+    output reg  [7:0]act2_1_11_r,
+    output reg  [7:0]act2_1_12_r,
+    output reg  [7:0]act2_1_13_r,
+    output reg  [7:0]act2_1_14_r,
+    output reg  [7:0]act2_1_15_r,
+    output reg  [7:0]act3_0_0_r,
+    output reg  [7:0]act3_0_1_r,
+    output reg  [7:0]act3_0_2_r,
+    output reg  [7:0]act3_0_3_r,
+    output reg  [7:0]act3_0_4_r,
+    output reg  [7:0]act3_0_5_r,
+    output reg  [7:0]act3_0_6_r,
+    output reg  [7:0]act3_0_7_r,
+    output reg  [7:0]act3_0_8_r,
+    output reg  [7:0]act3_0_9_r,
+    output reg  [7:0]act3_0_10_r,
+    output reg  [7:0]act3_0_11_r,
+    output reg  [7:0]act3_0_12_r,
+    output reg  [7:0]act3_0_13_r,
+    output reg  [7:0]act3_0_14_r,
+    output reg  [7:0]act3_0_15_r,
+    output reg  [7:0]act3_1_0_r,
+    output reg  [7:0]act3_1_1_r,
+    output reg  [7:0]act3_1_2_r,
+    output reg  [7:0]act3_1_3_r,
+    output reg  [7:0]act3_1_4_r,
+    output reg  [7:0]act3_1_5_r,
+    output reg  [7:0]act3_1_6_r,
+    output reg  [7:0]act3_1_7_r,
+    output reg  [7:0]act3_1_8_r,
+    output reg  [7:0]act3_1_9_r,
+    output reg  [7:0]act3_1_10_r,
+    output reg  [7:0]act3_1_11_r,
+    output reg  [7:0]act3_1_12_r,
+    output reg  [7:0]act3_1_13_r,
+    output reg  [7:0]act3_1_14_r,
+    output reg  [7:0]act3_1_15_r,
+    output reg  [7:0]act4_0_0_r,
+    output reg  [7:0]act4_0_1_r,
+    output reg  [7:0]act4_0_2_r,
+    output reg  [7:0]act4_0_3_r,
+    output reg  [7:0]act4_0_4_r,
+    output reg  [7:0]act4_0_5_r,
+    output reg  [7:0]act4_0_6_r,
+    output reg  [7:0]act4_0_7_r,
+    output reg  [7:0]act4_0_8_r,
+    output reg  [7:0]act4_0_9_r,
+    output reg  [7:0]act4_0_10_r,
+    output reg  [7:0]act4_0_11_r,
+    output reg  [7:0]act4_0_12_r,
+    output reg  [7:0]act4_0_13_r,
+    output reg  [7:0]act4_0_14_r,
+    output reg  [7:0]act4_0_15_r,
+    output reg  [7:0]act4_1_0_r,
+    output reg  [7:0]act4_1_1_r,
+    output reg  [7:0]act4_1_2_r,
+    output reg  [7:0]act4_1_3_r,
+    output reg  [7:0]act4_1_4_r,
+    output reg  [7:0]act4_1_5_r,
+    output reg  [7:0]act4_1_6_r,
+    output reg  [7:0]act4_1_7_r,
+    output reg  [7:0]act4_1_8_r,
+    output reg  [7:0]act4_1_9_r,
+    output reg  [7:0]act4_1_10_r,
+    output reg  [7:0]act4_1_11_r,
+    output reg  [7:0]act4_1_12_r,
+    output reg  [7:0]act4_1_13_r,
+    output reg  [7:0]act4_1_14_r,
+    output reg  [7:0]act4_1_15_r,
+    output reg  [7:0]act5_0_0_r,
+    output reg  [7:0]act5_0_1_r,
+    output reg  [7:0]act5_0_2_r,
+    output reg  [7:0]act5_0_3_r,
+    output reg  [7:0]act5_0_4_r,
+    output reg  [7:0]act5_0_5_r,
+    output reg  [7:0]act5_0_6_r,
+    output reg  [7:0]act5_0_7_r,
+    output reg  [7:0]act5_0_8_r,
+    output reg  [7:0]act5_0_9_r,
+    output reg  [7:0]act5_0_10_r,
+    output reg  [7:0]act5_0_11_r,
+    output reg  [7:0]act5_0_12_r,
+    output reg  [7:0]act5_0_13_r,
+    output reg  [7:0]act5_0_14_r,
+    output reg  [7:0]act5_0_15_r,
+    output reg  [7:0]act5_1_0_r,
+    output reg  [7:0]act5_1_1_r,
+    output reg  [7:0]act5_1_2_r,
+    output reg  [7:0]act5_1_3_r,
+    output reg  [7:0]act5_1_4_r,
+    output reg  [7:0]act5_1_5_r,
+    output reg  [7:0]act5_1_6_r,
+    output reg  [7:0]act5_1_7_r,
+    output reg  [7:0]act5_1_8_r,
+    output reg  [7:0]act5_1_9_r,
+    output reg  [7:0]act5_1_10_r,
+    output reg  [7:0]act5_1_11_r,
+    output reg  [7:0]act5_1_12_r,
+    output reg  [7:0]act5_1_13_r,
+    output reg  [7:0]act5_1_14_r,
+    output reg  [7:0]act5_1_15_r,
+    output reg  [7:0]act6_0_0_r,
+    output reg  [7:0]act6_0_1_r,
+    output reg  [7:0]act6_0_2_r,
+    output reg  [7:0]act6_0_3_r,
+    output reg  [7:0]act6_0_4_r,
+    output reg  [7:0]act6_0_5_r,
+    output reg  [7:0]act6_0_6_r,
+    output reg  [7:0]act6_0_7_r,
+    output reg  [7:0]act6_0_8_r,
+    output reg  [7:0]act6_0_9_r,
+    output reg  [7:0]act6_0_10_r,
+    output reg  [7:0]act6_0_11_r,
+    output reg  [7:0]act6_0_12_r,
+    output reg  [7:0]act6_0_13_r,
+    output reg  [7:0]act6_0_14_r,
+    output reg  [7:0]act6_0_15_r,
+    output reg  [7:0]act6_1_0_r,
+    output reg  [7:0]act6_1_1_r,
+    output reg  [7:0]act6_1_2_r,
+    output reg  [7:0]act6_1_3_r,
+    output reg  [7:0]act6_1_4_r,
+    output reg  [7:0]act6_1_5_r,
+    output reg  [7:0]act6_1_6_r,
+    output reg  [7:0]act6_1_7_r,
+    output reg  [7:0]act6_1_8_r,
+    output reg  [7:0]act6_1_9_r,
+    output reg  [7:0]act6_1_10_r,
+    output reg  [7:0]act6_1_11_r,
+    output reg  [7:0]act6_1_12_r,
+    output reg  [7:0]act6_1_13_r,
+    output reg  [7:0]act6_1_14_r,
+    output reg  [7:0]act6_1_15_r,
+    output reg  [7:0]act7_0_0_r,
+    output reg  [7:0]act7_0_1_r,
+    output reg  [7:0]act7_0_2_r,
+    output reg  [7:0]act7_0_3_r,
+    output reg  [7:0]act7_0_4_r,
+    output reg  [7:0]act7_0_5_r,
+    output reg  [7:0]act7_0_6_r,
+    output reg  [7:0]act7_0_7_r,
+    output reg  [7:0]act7_0_8_r,
+    output reg  [7:0]act7_0_9_r,
+    output reg  [7:0]act7_0_10_r,
+    output reg  [7:0]act7_0_11_r,
+    output reg  [7:0]act7_0_12_r,
+    output reg  [7:0]act7_0_13_r,
+    output reg  [7:0]act7_0_14_r,
+    output reg  [7:0]act7_0_15_r,
+    output reg  [7:0]act7_1_0_r,
+    output reg  [7:0]act7_1_1_r,
+    output reg  [7:0]act7_1_2_r,
+    output reg  [7:0]act7_1_3_r,
+    output reg  [7:0]act7_1_4_r,
+    output reg  [7:0]act7_1_5_r,
+    output reg  [7:0]act7_1_6_r,
+    output reg  [7:0]act7_1_7_r,
+    output reg  [7:0]act7_1_8_r,
+    output reg  [7:0]act7_1_9_r,
+    output reg  [7:0]act7_1_10_r,
+    output reg  [7:0]act7_1_11_r,
+    output reg  [7:0]act7_1_12_r,
+    output reg  [7:0]act7_1_13_r,
+    output reg  [7:0]act7_1_14_r,
+    output reg  [7:0]act7_1_15_r
 );
 
   //--------------------------------------------------------------------------
   // 1) COMBINATIONAL WIRES
   //--------------------------------------------------------------------------
-  reg [1:0] ar0, ar1, ar2, ar3, ar4, ar5, ar6, ar7;
+  reg [6:0] ar0, ar1, ar2, ar3, ar4, ar5, ar6, ar7;
 
   initial begin
     ar0    = $random;
@@ -4805,1046 +5120,1046 @@ module share_boolean_arithmetic (
   end
 
   // Arithmetic shares driven by each converter (32 converters × 2 shares)
-  wire [2:0] act0_0_0_1;
-  wire [2:0] act0_0_1_1;
-  wire [2:0] act0_0_0_2;
-  wire [2:0] act0_0_1_2;
-  wire [2:0] act0_0_0_3;
-  wire [2:0] act0_0_1_3;
-  wire [2:0] act0_1_0_1;
-  wire [2:0] act0_1_1_1;
-  wire [2:0] act0_1_0_2;
-  wire [2:0] act0_1_1_2;
-  wire [2:0] act0_1_0_3;
-  wire [2:0] act0_1_1_3;
-  wire [2:0] act0_2_0_1;
-  wire [2:0] act0_2_1_1;
-  wire [2:0] act0_2_0_2;
-  wire [2:0] act0_2_1_2;
-  wire [2:0] act0_2_0_3;
-  wire [2:0] act0_2_1_3;
-  wire [2:0] act0_3_0_1;
-  wire [2:0] act0_3_1_1;
-  wire [2:0] act0_3_0_2;
-  wire [2:0] act0_3_1_2;
-  wire [2:0] act0_3_0_3;
-  wire [2:0] act0_3_1_3;
-  wire [2:0] act0_4_0_1;
-  wire [2:0] act0_4_1_1;
-  wire [2:0] act0_4_0_2;
-  wire [2:0] act0_4_1_2;
-  wire [2:0] act0_4_0_3;
-  wire [2:0] act0_4_1_3;
-  wire [2:0] act0_5_0_1;
-  wire [2:0] act0_5_1_1;
-  wire [2:0] act0_5_0_2;
-  wire [2:0] act0_5_1_2;
-  wire [2:0] act0_5_0_3;
-  wire [2:0] act0_5_1_3;
-  wire [2:0] act0_6_0_1;
-  wire [2:0] act0_6_1_1;
-  wire [2:0] act0_6_0_2;
-  wire [2:0] act0_6_1_2;
-  wire [2:0] act0_6_0_3;
-  wire [2:0] act0_6_1_3;
-  wire [2:0] act0_7_0_1;
-  wire [2:0] act0_7_1_1;
-  wire [2:0] act0_7_0_2;
-  wire [2:0] act0_7_1_2;
-  wire [2:0] act0_7_0_3;
-  wire [2:0] act0_7_1_3;
-  wire [2:0] act0_8_0_1;
-  wire [2:0] act0_8_1_1;
-  wire [2:0] act0_8_0_2;
-  wire [2:0] act0_8_1_2;
-  wire [2:0] act0_8_0_3;
-  wire [2:0] act0_8_1_3;
-  wire [2:0] act0_9_0_1;
-  wire [2:0] act0_9_1_1;
-  wire [2:0] act0_9_0_2;
-  wire [2:0] act0_9_1_2;
-  wire [2:0] act0_9_0_3;
-  wire [2:0] act0_9_1_3;
-  wire [2:0] act0_10_0_1;
-  wire [2:0] act0_10_1_1;
-  wire [2:0] act0_10_0_2;
-  wire [2:0] act0_10_1_2;
-  wire [2:0] act0_10_0_3;
-  wire [2:0] act0_10_1_3;
-  wire [2:0] act0_11_0_1;
-  wire [2:0] act0_11_1_1;
-  wire [2:0] act0_11_0_2;
-  wire [2:0] act0_11_1_2;
-  wire [2:0] act0_11_0_3;
-  wire [2:0] act0_11_1_3;
-  wire [2:0] act0_12_0_1;
-  wire [2:0] act0_12_1_1;
-  wire [2:0] act0_12_0_2;
-  wire [2:0] act0_12_1_2;
-  wire [2:0] act0_12_0_3;
-  wire [2:0] act0_12_1_3;
-  wire [2:0] act0_13_0_1;
-  wire [2:0] act0_13_1_1;
-  wire [2:0] act0_13_0_2;
-  wire [2:0] act0_13_1_2;
-  wire [2:0] act0_13_0_3;
-  wire [2:0] act0_13_1_3;
-  wire [2:0] act0_14_0_1;
-  wire [2:0] act0_14_1_1;
-  wire [2:0] act0_14_0_2;
-  wire [2:0] act0_14_1_2;
-  wire [2:0] act0_14_0_3;
-  wire [2:0] act0_14_1_3;
-  wire [2:0] act0_15_0_1;
-  wire [2:0] act0_15_1_1;
-  wire [2:0] act0_15_0_2;
-  wire [2:0] act0_15_1_2;
-  wire [2:0] act0_15_0_3;
-  wire [2:0] act0_15_1_3;
-  wire [2:0] act1_0_0_1;
-  wire [2:0] act1_0_1_1;
-  wire [2:0] act1_0_0_2;
-  wire [2:0] act1_0_1_2;
-  wire [2:0] act1_0_0_3;
-  wire [2:0] act1_0_1_3;
-  wire [2:0] act1_1_0_1;
-  wire [2:0] act1_1_1_1;
-  wire [2:0] act1_1_0_2;
-  wire [2:0] act1_1_1_2;
-  wire [2:0] act1_1_0_3;
-  wire [2:0] act1_1_1_3;
-  wire [2:0] act1_2_0_1;
-  wire [2:0] act1_2_1_1;
-  wire [2:0] act1_2_0_2;
-  wire [2:0] act1_2_1_2;
-  wire [2:0] act1_2_0_3;
-  wire [2:0] act1_2_1_3;
-  wire [2:0] act1_3_0_1;
-  wire [2:0] act1_3_1_1;
-  wire [2:0] act1_3_0_2;
-  wire [2:0] act1_3_1_2;
-  wire [2:0] act1_3_0_3;
-  wire [2:0] act1_3_1_3;
-  wire [2:0] act1_4_0_1;
-  wire [2:0] act1_4_1_1;
-  wire [2:0] act1_4_0_2;
-  wire [2:0] act1_4_1_2;
-  wire [2:0] act1_4_0_3;
-  wire [2:0] act1_4_1_3;
-  wire [2:0] act1_5_0_1;
-  wire [2:0] act1_5_1_1;
-  wire [2:0] act1_5_0_2;
-  wire [2:0] act1_5_1_2;
-  wire [2:0] act1_5_0_3;
-  wire [2:0] act1_5_1_3;
-  wire [2:0] act1_6_0_1;
-  wire [2:0] act1_6_1_1;
-  wire [2:0] act1_6_0_2;
-  wire [2:0] act1_6_1_2;
-  wire [2:0] act1_6_0_3;
-  wire [2:0] act1_6_1_3;
-  wire [2:0] act1_7_0_1;
-  wire [2:0] act1_7_1_1;
-  wire [2:0] act1_7_0_2;
-  wire [2:0] act1_7_1_2;
-  wire [2:0] act1_7_0_3;
-  wire [2:0] act1_7_1_3;
-  wire [2:0] act1_8_0_1;
-  wire [2:0] act1_8_1_1;
-  wire [2:0] act1_8_0_2;
-  wire [2:0] act1_8_1_2;
-  wire [2:0] act1_8_0_3;
-  wire [2:0] act1_8_1_3;
-  wire [2:0] act1_9_0_1;
-  wire [2:0] act1_9_1_1;
-  wire [2:0] act1_9_0_2;
-  wire [2:0] act1_9_1_2;
-  wire [2:0] act1_9_0_3;
-  wire [2:0] act1_9_1_3;
-  wire [2:0] act1_10_0_1;
-  wire [2:0] act1_10_1_1;
-  wire [2:0] act1_10_0_2;
-  wire [2:0] act1_10_1_2;
-  wire [2:0] act1_10_0_3;
-  wire [2:0] act1_10_1_3;
-  wire [2:0] act1_11_0_1;
-  wire [2:0] act1_11_1_1;
-  wire [2:0] act1_11_0_2;
-  wire [2:0] act1_11_1_2;
-  wire [2:0] act1_11_0_3;
-  wire [2:0] act1_11_1_3;
-  wire [2:0] act1_12_0_1;
-  wire [2:0] act1_12_1_1;
-  wire [2:0] act1_12_0_2;
-  wire [2:0] act1_12_1_2;
-  wire [2:0] act1_12_0_3;
-  wire [2:0] act1_12_1_3;
-  wire [2:0] act1_13_0_1;
-  wire [2:0] act1_13_1_1;
-  wire [2:0] act1_13_0_2;
-  wire [2:0] act1_13_1_2;
-  wire [2:0] act1_13_0_3;
-  wire [2:0] act1_13_1_3;
-  wire [2:0] act1_14_0_1;
-  wire [2:0] act1_14_1_1;
-  wire [2:0] act1_14_0_2;
-  wire [2:0] act1_14_1_2;
-  wire [2:0] act1_14_0_3;
-  wire [2:0] act1_14_1_3;
-  wire [2:0] act1_15_0_1;
-  wire [2:0] act1_15_1_1;
-  wire [2:0] act1_15_0_2;
-  wire [2:0] act1_15_1_2;
-  wire [2:0] act1_15_0_3;
-  wire [2:0] act1_15_1_3;
-  wire [2:0] act2_0_0_1;
-  wire [2:0] act2_0_1_1;
-  wire [2:0] act2_0_0_2;
-  wire [2:0] act2_0_1_2;
-  wire [2:0] act2_0_0_3;
-  wire [2:0] act2_0_1_3;
-  wire [2:0] act2_1_0_1;
-  wire [2:0] act2_1_1_1;
-  wire [2:0] act2_1_0_2;
-  wire [2:0] act2_1_1_2;
-  wire [2:0] act2_1_0_3;
-  wire [2:0] act2_1_1_3;
-  wire [2:0] act2_2_0_1;
-  wire [2:0] act2_2_1_1;
-  wire [2:0] act2_2_0_2;
-  wire [2:0] act2_2_1_2;
-  wire [2:0] act2_2_0_3;
-  wire [2:0] act2_2_1_3;
-  wire [2:0] act2_3_0_1;
-  wire [2:0] act2_3_1_1;
-  wire [2:0] act2_3_0_2;
-  wire [2:0] act2_3_1_2;
-  wire [2:0] act2_3_0_3;
-  wire [2:0] act2_3_1_3;
-  wire [2:0] act2_4_0_1;
-  wire [2:0] act2_4_1_1;
-  wire [2:0] act2_4_0_2;
-  wire [2:0] act2_4_1_2;
-  wire [2:0] act2_4_0_3;
-  wire [2:0] act2_4_1_3;
-  wire [2:0] act2_5_0_1;
-  wire [2:0] act2_5_1_1;
-  wire [2:0] act2_5_0_2;
-  wire [2:0] act2_5_1_2;
-  wire [2:0] act2_5_0_3;
-  wire [2:0] act2_5_1_3;
-  wire [2:0] act2_6_0_1;
-  wire [2:0] act2_6_1_1;
-  wire [2:0] act2_6_0_2;
-  wire [2:0] act2_6_1_2;
-  wire [2:0] act2_6_0_3;
-  wire [2:0] act2_6_1_3;
-  wire [2:0] act2_7_0_1;
-  wire [2:0] act2_7_1_1;
-  wire [2:0] act2_7_0_2;
-  wire [2:0] act2_7_1_2;
-  wire [2:0] act2_7_0_3;
-  wire [2:0] act2_7_1_3;
-  wire [2:0] act2_8_0_1;
-  wire [2:0] act2_8_1_1;
-  wire [2:0] act2_8_0_2;
-  wire [2:0] act2_8_1_2;
-  wire [2:0] act2_8_0_3;
-  wire [2:0] act2_8_1_3;
-  wire [2:0] act2_9_0_1;
-  wire [2:0] act2_9_1_1;
-  wire [2:0] act2_9_0_2;
-  wire [2:0] act2_9_1_2;
-  wire [2:0] act2_9_0_3;
-  wire [2:0] act2_9_1_3;
-  wire [2:0] act2_10_0_1;
-  wire [2:0] act2_10_1_1;
-  wire [2:0] act2_10_0_2;
-  wire [2:0] act2_10_1_2;
-  wire [2:0] act2_10_0_3;
-  wire [2:0] act2_10_1_3;
-  wire [2:0] act2_11_0_1;
-  wire [2:0] act2_11_1_1;
-  wire [2:0] act2_11_0_2;
-  wire [2:0] act2_11_1_2;
-  wire [2:0] act2_11_0_3;
-  wire [2:0] act2_11_1_3;
-  wire [2:0] act2_12_0_1;
-  wire [2:0] act2_12_1_1;
-  wire [2:0] act2_12_0_2;
-  wire [2:0] act2_12_1_2;
-  wire [2:0] act2_12_0_3;
-  wire [2:0] act2_12_1_3;
-  wire [2:0] act2_13_0_1;
-  wire [2:0] act2_13_1_1;
-  wire [2:0] act2_13_0_2;
-  wire [2:0] act2_13_1_2;
-  wire [2:0] act2_13_0_3;
-  wire [2:0] act2_13_1_3;
-  wire [2:0] act2_14_0_1;
-  wire [2:0] act2_14_1_1;
-  wire [2:0] act2_14_0_2;
-  wire [2:0] act2_14_1_2;
-  wire [2:0] act2_14_0_3;
-  wire [2:0] act2_14_1_3;
-  wire [2:0] act2_15_0_1;
-  wire [2:0] act2_15_1_1;
-  wire [2:0] act2_15_0_2;
-  wire [2:0] act2_15_1_2;
-  wire [2:0] act2_15_0_3;
-  wire [2:0] act2_15_1_3;
-  wire [2:0] act3_0_0_1;
-  wire [2:0] act3_0_1_1;
-  wire [2:0] act3_0_0_2;
-  wire [2:0] act3_0_1_2;
-  wire [2:0] act3_0_0_3;
-  wire [2:0] act3_0_1_3;
-  wire [2:0] act3_1_0_1;
-  wire [2:0] act3_1_1_1;
-  wire [2:0] act3_1_0_2;
-  wire [2:0] act3_1_1_2;
-  wire [2:0] act3_1_0_3;
-  wire [2:0] act3_1_1_3;
-  wire [2:0] act3_2_0_1;
-  wire [2:0] act3_2_1_1;
-  wire [2:0] act3_2_0_2;
-  wire [2:0] act3_2_1_2;
-  wire [2:0] act3_2_0_3;
-  wire [2:0] act3_2_1_3;
-  wire [2:0] act3_3_0_1;
-  wire [2:0] act3_3_1_1;
-  wire [2:0] act3_3_0_2;
-  wire [2:0] act3_3_1_2;
-  wire [2:0] act3_3_0_3;
-  wire [2:0] act3_3_1_3;
-  wire [2:0] act3_4_0_1;
-  wire [2:0] act3_4_1_1;
-  wire [2:0] act3_4_0_2;
-  wire [2:0] act3_4_1_2;
-  wire [2:0] act3_4_0_3;
-  wire [2:0] act3_4_1_3;
-  wire [2:0] act3_5_0_1;
-  wire [2:0] act3_5_1_1;
-  wire [2:0] act3_5_0_2;
-  wire [2:0] act3_5_1_2;
-  wire [2:0] act3_5_0_3;
-  wire [2:0] act3_5_1_3;
-  wire [2:0] act3_6_0_1;
-  wire [2:0] act3_6_1_1;
-  wire [2:0] act3_6_0_2;
-  wire [2:0] act3_6_1_2;
-  wire [2:0] act3_6_0_3;
-  wire [2:0] act3_6_1_3;
-  wire [2:0] act3_7_0_1;
-  wire [2:0] act3_7_1_1;
-  wire [2:0] act3_7_0_2;
-  wire [2:0] act3_7_1_2;
-  wire [2:0] act3_7_0_3;
-  wire [2:0] act3_7_1_3;
-  wire [2:0] act3_8_0_1;
-  wire [2:0] act3_8_1_1;
-  wire [2:0] act3_8_0_2;
-  wire [2:0] act3_8_1_2;
-  wire [2:0] act3_8_0_3;
-  wire [2:0] act3_8_1_3;
-  wire [2:0] act3_9_0_1;
-  wire [2:0] act3_9_1_1;
-  wire [2:0] act3_9_0_2;
-  wire [2:0] act3_9_1_2;
-  wire [2:0] act3_9_0_3;
-  wire [2:0] act3_9_1_3;
-  wire [2:0] act3_10_0_1;
-  wire [2:0] act3_10_1_1;
-  wire [2:0] act3_10_0_2;
-  wire [2:0] act3_10_1_2;
-  wire [2:0] act3_10_0_3;
-  wire [2:0] act3_10_1_3;
-  wire [2:0] act3_11_0_1;
-  wire [2:0] act3_11_1_1;
-  wire [2:0] act3_11_0_2;
-  wire [2:0] act3_11_1_2;
-  wire [2:0] act3_11_0_3;
-  wire [2:0] act3_11_1_3;
-  wire [2:0] act3_12_0_1;
-  wire [2:0] act3_12_1_1;
-  wire [2:0] act3_12_0_2;
-  wire [2:0] act3_12_1_2;
-  wire [2:0] act3_12_0_3;
-  wire [2:0] act3_12_1_3;
-  wire [2:0] act3_13_0_1;
-  wire [2:0] act3_13_1_1;
-  wire [2:0] act3_13_0_2;
-  wire [2:0] act3_13_1_2;
-  wire [2:0] act3_13_0_3;
-  wire [2:0] act3_13_1_3;
-  wire [2:0] act3_14_0_1;
-  wire [2:0] act3_14_1_1;
-  wire [2:0] act3_14_0_2;
-  wire [2:0] act3_14_1_2;
-  wire [2:0] act3_14_0_3;
-  wire [2:0] act3_14_1_3;
-  wire [2:0] act3_15_0_1;
-  wire [2:0] act3_15_1_1;
-  wire [2:0] act3_15_0_2;
-  wire [2:0] act3_15_1_2;
-  wire [2:0] act3_15_0_3;
-  wire [2:0] act3_15_1_3;
-  wire [2:0] act4_0_0_1;
-  wire [2:0] act4_0_1_1;
-  wire [2:0] act4_0_0_2;
-  wire [2:0] act4_0_1_2;
-  wire [2:0] act4_0_0_3;
-  wire [2:0] act4_0_1_3;
-  wire [2:0] act4_1_0_1;
-  wire [2:0] act4_1_1_1;
-  wire [2:0] act4_1_0_2;
-  wire [2:0] act4_1_1_2;
-  wire [2:0] act4_1_0_3;
-  wire [2:0] act4_1_1_3;
-  wire [2:0] act4_2_0_1;
-  wire [2:0] act4_2_1_1;
-  wire [2:0] act4_2_0_2;
-  wire [2:0] act4_2_1_2;
-  wire [2:0] act4_2_0_3;
-  wire [2:0] act4_2_1_3;
-  wire [2:0] act4_3_0_1;
-  wire [2:0] act4_3_1_1;
-  wire [2:0] act4_3_0_2;
-  wire [2:0] act4_3_1_2;
-  wire [2:0] act4_3_0_3;
-  wire [2:0] act4_3_1_3;
-  wire [2:0] act4_4_0_1;
-  wire [2:0] act4_4_1_1;
-  wire [2:0] act4_4_0_2;
-  wire [2:0] act4_4_1_2;
-  wire [2:0] act4_4_0_3;
-  wire [2:0] act4_4_1_3;
-  wire [2:0] act4_5_0_1;
-  wire [2:0] act4_5_1_1;
-  wire [2:0] act4_5_0_2;
-  wire [2:0] act4_5_1_2;
-  wire [2:0] act4_5_0_3;
-  wire [2:0] act4_5_1_3;
-  wire [2:0] act4_6_0_1;
-  wire [2:0] act4_6_1_1;
-  wire [2:0] act4_6_0_2;
-  wire [2:0] act4_6_1_2;
-  wire [2:0] act4_6_0_3;
-  wire [2:0] act4_6_1_3;
-  wire [2:0] act4_7_0_1;
-  wire [2:0] act4_7_1_1;
-  wire [2:0] act4_7_0_2;
-  wire [2:0] act4_7_1_2;
-  wire [2:0] act4_7_0_3;
-  wire [2:0] act4_7_1_3;
-  wire [2:0] act4_8_0_1;
-  wire [2:0] act4_8_1_1;
-  wire [2:0] act4_8_0_2;
-  wire [2:0] act4_8_1_2;
-  wire [2:0] act4_8_0_3;
-  wire [2:0] act4_8_1_3;
-  wire [2:0] act4_9_0_1;
-  wire [2:0] act4_9_1_1;
-  wire [2:0] act4_9_0_2;
-  wire [2:0] act4_9_1_2;
-  wire [2:0] act4_9_0_3;
-  wire [2:0] act4_9_1_3;
-  wire [2:0] act4_10_0_1;
-  wire [2:0] act4_10_1_1;
-  wire [2:0] act4_10_0_2;
-  wire [2:0] act4_10_1_2;
-  wire [2:0] act4_10_0_3;
-  wire [2:0] act4_10_1_3;
-  wire [2:0] act4_11_0_1;
-  wire [2:0] act4_11_1_1;
-  wire [2:0] act4_11_0_2;
-  wire [2:0] act4_11_1_2;
-  wire [2:0] act4_11_0_3;
-  wire [2:0] act4_11_1_3;
-  wire [2:0] act4_12_0_1;
-  wire [2:0] act4_12_1_1;
-  wire [2:0] act4_12_0_2;
-  wire [2:0] act4_12_1_2;
-  wire [2:0] act4_12_0_3;
-  wire [2:0] act4_12_1_3;
-  wire [2:0] act4_13_0_1;
-  wire [2:0] act4_13_1_1;
-  wire [2:0] act4_13_0_2;
-  wire [2:0] act4_13_1_2;
-  wire [2:0] act4_13_0_3;
-  wire [2:0] act4_13_1_3;
-  wire [2:0] act4_14_0_1;
-  wire [2:0] act4_14_1_1;
-  wire [2:0] act4_14_0_2;
-  wire [2:0] act4_14_1_2;
-  wire [2:0] act4_14_0_3;
-  wire [2:0] act4_14_1_3;
-  wire [2:0] act4_15_0_1;
-  wire [2:0] act4_15_1_1;
-  wire [2:0] act4_15_0_2;
-  wire [2:0] act4_15_1_2;
-  wire [2:0] act4_15_0_3;
-  wire [2:0] act4_15_1_3;
-  wire [2:0] act5_0_0_1;
-  wire [2:0] act5_0_1_1;
-  wire [2:0] act5_0_0_2;
-  wire [2:0] act5_0_1_2;
-  wire [2:0] act5_0_0_3;
-  wire [2:0] act5_0_1_3;
-  wire [2:0] act5_1_0_1;
-  wire [2:0] act5_1_1_1;
-  wire [2:0] act5_1_0_2;
-  wire [2:0] act5_1_1_2;
-  wire [2:0] act5_1_0_3;
-  wire [2:0] act5_1_1_3;
-  wire [2:0] act5_2_0_1;
-  wire [2:0] act5_2_1_1;
-  wire [2:0] act5_2_0_2;
-  wire [2:0] act5_2_1_2;
-  wire [2:0] act5_2_0_3;
-  wire [2:0] act5_2_1_3;
-  wire [2:0] act5_3_0_1;
-  wire [2:0] act5_3_1_1;
-  wire [2:0] act5_3_0_2;
-  wire [2:0] act5_3_1_2;
-  wire [2:0] act5_3_0_3;
-  wire [2:0] act5_3_1_3;
-  wire [2:0] act5_4_0_1;
-  wire [2:0] act5_4_1_1;
-  wire [2:0] act5_4_0_2;
-  wire [2:0] act5_4_1_2;
-  wire [2:0] act5_4_0_3;
-  wire [2:0] act5_4_1_3;
-  wire [2:0] act5_5_0_1;
-  wire [2:0] act5_5_1_1;
-  wire [2:0] act5_5_0_2;
-  wire [2:0] act5_5_1_2;
-  wire [2:0] act5_5_0_3;
-  wire [2:0] act5_5_1_3;
-  wire [2:0] act5_6_0_1;
-  wire [2:0] act5_6_1_1;
-  wire [2:0] act5_6_0_2;
-  wire [2:0] act5_6_1_2;
-  wire [2:0] act5_6_0_3;
-  wire [2:0] act5_6_1_3;
-  wire [2:0] act5_7_0_1;
-  wire [2:0] act5_7_1_1;
-  wire [2:0] act5_7_0_2;
-  wire [2:0] act5_7_1_2;
-  wire [2:0] act5_7_0_3;
-  wire [2:0] act5_7_1_3;
-  wire [2:0] act5_8_0_1;
-  wire [2:0] act5_8_1_1;
-  wire [2:0] act5_8_0_2;
-  wire [2:0] act5_8_1_2;
-  wire [2:0] act5_8_0_3;
-  wire [2:0] act5_8_1_3;
-  wire [2:0] act5_9_0_1;
-  wire [2:0] act5_9_1_1;
-  wire [2:0] act5_9_0_2;
-  wire [2:0] act5_9_1_2;
-  wire [2:0] act5_9_0_3;
-  wire [2:0] act5_9_1_3;
-  wire [2:0] act5_10_0_1;
-  wire [2:0] act5_10_1_1;
-  wire [2:0] act5_10_0_2;
-  wire [2:0] act5_10_1_2;
-  wire [2:0] act5_10_0_3;
-  wire [2:0] act5_10_1_3;
-  wire [2:0] act5_11_0_1;
-  wire [2:0] act5_11_1_1;
-  wire [2:0] act5_11_0_2;
-  wire [2:0] act5_11_1_2;
-  wire [2:0] act5_11_0_3;
-  wire [2:0] act5_11_1_3;
-  wire [2:0] act5_12_0_1;
-  wire [2:0] act5_12_1_1;
-  wire [2:0] act5_12_0_2;
-  wire [2:0] act5_12_1_2;
-  wire [2:0] act5_12_0_3;
-  wire [2:0] act5_12_1_3;
-  wire [2:0] act5_13_0_1;
-  wire [2:0] act5_13_1_1;
-  wire [2:0] act5_13_0_2;
-  wire [2:0] act5_13_1_2;
-  wire [2:0] act5_13_0_3;
-  wire [2:0] act5_13_1_3;
-  wire [2:0] act5_14_0_1;
-  wire [2:0] act5_14_1_1;
-  wire [2:0] act5_14_0_2;
-  wire [2:0] act5_14_1_2;
-  wire [2:0] act5_14_0_3;
-  wire [2:0] act5_14_1_3;
-  wire [2:0] act5_15_0_1;
-  wire [2:0] act5_15_1_1;
-  wire [2:0] act5_15_0_2;
-  wire [2:0] act5_15_1_2;
-  wire [2:0] act5_15_0_3;
-  wire [2:0] act5_15_1_3;
-  wire [2:0] act6_0_0_1;
-  wire [2:0] act6_0_1_1;
-  wire [2:0] act6_0_0_2;
-  wire [2:0] act6_0_1_2;
-  wire [2:0] act6_0_0_3;
-  wire [2:0] act6_0_1_3;
-  wire [2:0] act6_1_0_1;
-  wire [2:0] act6_1_1_1;
-  wire [2:0] act6_1_0_2;
-  wire [2:0] act6_1_1_2;
-  wire [2:0] act6_1_0_3;
-  wire [2:0] act6_1_1_3;
-  wire [2:0] act6_2_0_1;
-  wire [2:0] act6_2_1_1;
-  wire [2:0] act6_2_0_2;
-  wire [2:0] act6_2_1_2;
-  wire [2:0] act6_2_0_3;
-  wire [2:0] act6_2_1_3;
-  wire [2:0] act6_3_0_1;
-  wire [2:0] act6_3_1_1;
-  wire [2:0] act6_3_0_2;
-  wire [2:0] act6_3_1_2;
-  wire [2:0] act6_3_0_3;
-  wire [2:0] act6_3_1_3;
-  wire [2:0] act6_4_0_1;
-  wire [2:0] act6_4_1_1;
-  wire [2:0] act6_4_0_2;
-  wire [2:0] act6_4_1_2;
-  wire [2:0] act6_4_0_3;
-  wire [2:0] act6_4_1_3;
-  wire [2:0] act6_5_0_1;
-  wire [2:0] act6_5_1_1;
-  wire [2:0] act6_5_0_2;
-  wire [2:0] act6_5_1_2;
-  wire [2:0] act6_5_0_3;
-  wire [2:0] act6_5_1_3;
-  wire [2:0] act6_6_0_1;
-  wire [2:0] act6_6_1_1;
-  wire [2:0] act6_6_0_2;
-  wire [2:0] act6_6_1_2;
-  wire [2:0] act6_6_0_3;
-  wire [2:0] act6_6_1_3;
-  wire [2:0] act6_7_0_1;
-  wire [2:0] act6_7_1_1;
-  wire [2:0] act6_7_0_2;
-  wire [2:0] act6_7_1_2;
-  wire [2:0] act6_7_0_3;
-  wire [2:0] act6_7_1_3;
-  wire [2:0] act6_8_0_1;
-  wire [2:0] act6_8_1_1;
-  wire [2:0] act6_8_0_2;
-  wire [2:0] act6_8_1_2;
-  wire [2:0] act6_8_0_3;
-  wire [2:0] act6_8_1_3;
-  wire [2:0] act6_9_0_1;
-  wire [2:0] act6_9_1_1;
-  wire [2:0] act6_9_0_2;
-  wire [2:0] act6_9_1_2;
-  wire [2:0] act6_9_0_3;
-  wire [2:0] act6_9_1_3;
-  wire [2:0] act6_10_0_1;
-  wire [2:0] act6_10_1_1;
-  wire [2:0] act6_10_0_2;
-  wire [2:0] act6_10_1_2;
-  wire [2:0] act6_10_0_3;
-  wire [2:0] act6_10_1_3;
-  wire [2:0] act6_11_0_1;
-  wire [2:0] act6_11_1_1;
-  wire [2:0] act6_11_0_2;
-  wire [2:0] act6_11_1_2;
-  wire [2:0] act6_11_0_3;
-  wire [2:0] act6_11_1_3;
-  wire [2:0] act6_12_0_1;
-  wire [2:0] act6_12_1_1;
-  wire [2:0] act6_12_0_2;
-  wire [2:0] act6_12_1_2;
-  wire [2:0] act6_12_0_3;
-  wire [2:0] act6_12_1_3;
-  wire [2:0] act6_13_0_1;
-  wire [2:0] act6_13_1_1;
-  wire [2:0] act6_13_0_2;
-  wire [2:0] act6_13_1_2;
-  wire [2:0] act6_13_0_3;
-  wire [2:0] act6_13_1_3;
-  wire [2:0] act6_14_0_1;
-  wire [2:0] act6_14_1_1;
-  wire [2:0] act6_14_0_2;
-  wire [2:0] act6_14_1_2;
-  wire [2:0] act6_14_0_3;
-  wire [2:0] act6_14_1_3;
-  wire [2:0] act6_15_0_1;
-  wire [2:0] act6_15_1_1;
-  wire [2:0] act6_15_0_2;
-  wire [2:0] act6_15_1_2;
-  wire [2:0] act6_15_0_3;
-  wire [2:0] act6_15_1_3;
-  wire [2:0] act7_0_0_1;
-  wire [2:0] act7_0_1_1;
-  wire [2:0] act7_0_0_2;
-  wire [2:0] act7_0_1_2;
-  wire [2:0] act7_0_0_3;
-  wire [2:0] act7_0_1_3;
-  wire [2:0] act7_1_0_1;
-  wire [2:0] act7_1_1_1;
-  wire [2:0] act7_1_0_2;
-  wire [2:0] act7_1_1_2;
-  wire [2:0] act7_1_0_3;
-  wire [2:0] act7_1_1_3;
-  wire [2:0] act7_2_0_1;
-  wire [2:0] act7_2_1_1;
-  wire [2:0] act7_2_0_2;
-  wire [2:0] act7_2_1_2;
-  wire [2:0] act7_2_0_3;
-  wire [2:0] act7_2_1_3;
-  wire [2:0] act7_3_0_1;
-  wire [2:0] act7_3_1_1;
-  wire [2:0] act7_3_0_2;
-  wire [2:0] act7_3_1_2;
-  wire [2:0] act7_3_0_3;
-  wire [2:0] act7_3_1_3;
-  wire [2:0] act7_4_0_1;
-  wire [2:0] act7_4_1_1;
-  wire [2:0] act7_4_0_2;
-  wire [2:0] act7_4_1_2;
-  wire [2:0] act7_4_0_3;
-  wire [2:0] act7_4_1_3;
-  wire [2:0] act7_5_0_1;
-  wire [2:0] act7_5_1_1;
-  wire [2:0] act7_5_0_2;
-  wire [2:0] act7_5_1_2;
-  wire [2:0] act7_5_0_3;
-  wire [2:0] act7_5_1_3;
-  wire [2:0] act7_6_0_1;
-  wire [2:0] act7_6_1_1;
-  wire [2:0] act7_6_0_2;
-  wire [2:0] act7_6_1_2;
-  wire [2:0] act7_6_0_3;
-  wire [2:0] act7_6_1_3;
-  wire [2:0] act7_7_0_1;
-  wire [2:0] act7_7_1_1;
-  wire [2:0] act7_7_0_2;
-  wire [2:0] act7_7_1_2;
-  wire [2:0] act7_7_0_3;
-  wire [2:0] act7_7_1_3;
-  wire [2:0] act7_8_0_1;
-  wire [2:0] act7_8_1_1;
-  wire [2:0] act7_8_0_2;
-  wire [2:0] act7_8_1_2;
-  wire [2:0] act7_8_0_3;
-  wire [2:0] act7_8_1_3;
-  wire [2:0] act7_9_0_1;
-  wire [2:0] act7_9_1_1;
-  wire [2:0] act7_9_0_2;
-  wire [2:0] act7_9_1_2;
-  wire [2:0] act7_9_0_3;
-  wire [2:0] act7_9_1_3;
-  wire [2:0] act7_10_0_1;
-  wire [2:0] act7_10_1_1;
-  wire [2:0] act7_10_0_2;
-  wire [2:0] act7_10_1_2;
-  wire [2:0] act7_10_0_3;
-  wire [2:0] act7_10_1_3;
-  wire [2:0] act7_11_0_1;
-  wire [2:0] act7_11_1_1;
-  wire [2:0] act7_11_0_2;
-  wire [2:0] act7_11_1_2;
-  wire [2:0] act7_11_0_3;
-  wire [2:0] act7_11_1_3;
-  wire [2:0] act7_12_0_1;
-  wire [2:0] act7_12_1_1;
-  wire [2:0] act7_12_0_2;
-  wire [2:0] act7_12_1_2;
-  wire [2:0] act7_12_0_3;
-  wire [2:0] act7_12_1_3;
-  wire [2:0] act7_13_0_1;
-  wire [2:0] act7_13_1_1;
-  wire [2:0] act7_13_0_2;
-  wire [2:0] act7_13_1_2;
-  wire [2:0] act7_13_0_3;
-  wire [2:0] act7_13_1_3;
-  wire [2:0] act7_14_0_1;
-  wire [2:0] act7_14_1_1;
-  wire [2:0] act7_14_0_2;
-  wire [2:0] act7_14_1_2;
-  wire [2:0] act7_14_0_3;
-  wire [2:0] act7_14_1_3;
-  wire [2:0] act7_15_0_1;
-  wire [2:0] act7_15_1_1;
-  wire [2:0] act7_15_0_2;
-  wire [2:0] act7_15_1_2;
-  wire [2:0] act7_15_0_3;
-  wire [2:0] act7_15_1_3;
+  wire [7:0] act0_0_0_1;
+  wire [7:0] act0_0_1_1;
+  wire [7:0] act0_0_0_2;
+  wire [7:0] act0_0_1_2;
+  wire [7:0] act0_0_0_3;
+  wire [7:0] act0_0_1_3;
+  wire [7:0] act0_1_0_1;
+  wire [7:0] act0_1_1_1;
+  wire [7:0] act0_1_0_2;
+  wire [7:0] act0_1_1_2;
+  wire [7:0] act0_1_0_3;
+  wire [7:0] act0_1_1_3;
+  wire [7:0] act0_2_0_1;
+  wire [7:0] act0_2_1_1;
+  wire [7:0] act0_2_0_2;
+  wire [7:0] act0_2_1_2;
+  wire [7:0] act0_2_0_3;
+  wire [7:0] act0_2_1_3;
+  wire [7:0] act0_3_0_1;
+  wire [7:0] act0_3_1_1;
+  wire [7:0] act0_3_0_2;
+  wire [7:0] act0_3_1_2;
+  wire [7:0] act0_3_0_3;
+  wire [7:0] act0_3_1_3;
+  wire [7:0] act0_4_0_1;
+  wire [7:0] act0_4_1_1;
+  wire [7:0] act0_4_0_2;
+  wire [7:0] act0_4_1_2;
+  wire [7:0] act0_4_0_3;
+  wire [7:0] act0_4_1_3;
+  wire [7:0] act0_5_0_1;
+  wire [7:0] act0_5_1_1;
+  wire [7:0] act0_5_0_2;
+  wire [7:0] act0_5_1_2;
+  wire [7:0] act0_5_0_3;
+  wire [7:0] act0_5_1_3;
+  wire [7:0] act0_6_0_1;
+  wire [7:0] act0_6_1_1;
+  wire [7:0] act0_6_0_2;
+  wire [7:0] act0_6_1_2;
+  wire [7:0] act0_6_0_3;
+  wire [7:0] act0_6_1_3;
+  wire [7:0] act0_7_0_1;
+  wire [7:0] act0_7_1_1;
+  wire [7:0] act0_7_0_2;
+  wire [7:0] act0_7_1_2;
+  wire [7:0] act0_7_0_3;
+  wire [7:0] act0_7_1_3;
+  wire [7:0] act0_8_0_1;
+  wire [7:0] act0_8_1_1;
+  wire [7:0] act0_8_0_2;
+  wire [7:0] act0_8_1_2;
+  wire [7:0] act0_8_0_3;
+  wire [7:0] act0_8_1_3;
+  wire [7:0] act0_9_0_1;
+  wire [7:0] act0_9_1_1;
+  wire [7:0] act0_9_0_2;
+  wire [7:0] act0_9_1_2;
+  wire [7:0] act0_9_0_3;
+  wire [7:0] act0_9_1_3;
+  wire [7:0] act0_10_0_1;
+  wire [7:0] act0_10_1_1;
+  wire [7:0] act0_10_0_2;
+  wire [7:0] act0_10_1_2;
+  wire [7:0] act0_10_0_3;
+  wire [7:0] act0_10_1_3;
+  wire [7:0] act0_11_0_1;
+  wire [7:0] act0_11_1_1;
+  wire [7:0] act0_11_0_2;
+  wire [7:0] act0_11_1_2;
+  wire [7:0] act0_11_0_3;
+  wire [7:0] act0_11_1_3;
+  wire [7:0] act0_12_0_1;
+  wire [7:0] act0_12_1_1;
+  wire [7:0] act0_12_0_2;
+  wire [7:0] act0_12_1_2;
+  wire [7:0] act0_12_0_3;
+  wire [7:0] act0_12_1_3;
+  wire [7:0] act0_13_0_1;
+  wire [7:0] act0_13_1_1;
+  wire [7:0] act0_13_0_2;
+  wire [7:0] act0_13_1_2;
+  wire [7:0] act0_13_0_3;
+  wire [7:0] act0_13_1_3;
+  wire [7:0] act0_14_0_1;
+  wire [7:0] act0_14_1_1;
+  wire [7:0] act0_14_0_2;
+  wire [7:0] act0_14_1_2;
+  wire [7:0] act0_14_0_3;
+  wire [7:0] act0_14_1_3;
+  wire [7:0] act0_15_0_1;
+  wire [7:0] act0_15_1_1;
+  wire [7:0] act0_15_0_2;
+  wire [7:0] act0_15_1_2;
+  wire [7:0] act0_15_0_3;
+  wire [7:0] act0_15_1_3;
+  wire [7:0] act1_0_0_1;
+  wire [7:0] act1_0_1_1;
+  wire [7:0] act1_0_0_2;
+  wire [7:0] act1_0_1_2;
+  wire [7:0] act1_0_0_3;
+  wire [7:0] act1_0_1_3;
+  wire [7:0] act1_1_0_1;
+  wire [7:0] act1_1_1_1;
+  wire [7:0] act1_1_0_2;
+  wire [7:0] act1_1_1_2;
+  wire [7:0] act1_1_0_3;
+  wire [7:0] act1_1_1_3;
+  wire [7:0] act1_2_0_1;
+  wire [7:0] act1_2_1_1;
+  wire [7:0] act1_2_0_2;
+  wire [7:0] act1_2_1_2;
+  wire [7:0] act1_2_0_3;
+  wire [7:0] act1_2_1_3;
+  wire [7:0] act1_3_0_1;
+  wire [7:0] act1_3_1_1;
+  wire [7:0] act1_3_0_2;
+  wire [7:0] act1_3_1_2;
+  wire [7:0] act1_3_0_3;
+  wire [7:0] act1_3_1_3;
+  wire [7:0] act1_4_0_1;
+  wire [7:0] act1_4_1_1;
+  wire [7:0] act1_4_0_2;
+  wire [7:0] act1_4_1_2;
+  wire [7:0] act1_4_0_3;
+  wire [7:0] act1_4_1_3;
+  wire [7:0] act1_5_0_1;
+  wire [7:0] act1_5_1_1;
+  wire [7:0] act1_5_0_2;
+  wire [7:0] act1_5_1_2;
+  wire [7:0] act1_5_0_3;
+  wire [7:0] act1_5_1_3;
+  wire [7:0] act1_6_0_1;
+  wire [7:0] act1_6_1_1;
+  wire [7:0] act1_6_0_2;
+  wire [7:0] act1_6_1_2;
+  wire [7:0] act1_6_0_3;
+  wire [7:0] act1_6_1_3;
+  wire [7:0] act1_7_0_1;
+  wire [7:0] act1_7_1_1;
+  wire [7:0] act1_7_0_2;
+  wire [7:0] act1_7_1_2;
+  wire [7:0] act1_7_0_3;
+  wire [7:0] act1_7_1_3;
+  wire [7:0] act1_8_0_1;
+  wire [7:0] act1_8_1_1;
+  wire [7:0] act1_8_0_2;
+  wire [7:0] act1_8_1_2;
+  wire [7:0] act1_8_0_3;
+  wire [7:0] act1_8_1_3;
+  wire [7:0] act1_9_0_1;
+  wire [7:0] act1_9_1_1;
+  wire [7:0] act1_9_0_2;
+  wire [7:0] act1_9_1_2;
+  wire [7:0] act1_9_0_3;
+  wire [7:0] act1_9_1_3;
+  wire [7:0] act1_10_0_1;
+  wire [7:0] act1_10_1_1;
+  wire [7:0] act1_10_0_2;
+  wire [7:0] act1_10_1_2;
+  wire [7:0] act1_10_0_3;
+  wire [7:0] act1_10_1_3;
+  wire [7:0] act1_11_0_1;
+  wire [7:0] act1_11_1_1;
+  wire [7:0] act1_11_0_2;
+  wire [7:0] act1_11_1_2;
+  wire [7:0] act1_11_0_3;
+  wire [7:0] act1_11_1_3;
+  wire [7:0] act1_12_0_1;
+  wire [7:0] act1_12_1_1;
+  wire [7:0] act1_12_0_2;
+  wire [7:0] act1_12_1_2;
+  wire [7:0] act1_12_0_3;
+  wire [7:0] act1_12_1_3;
+  wire [7:0] act1_13_0_1;
+  wire [7:0] act1_13_1_1;
+  wire [7:0] act1_13_0_2;
+  wire [7:0] act1_13_1_2;
+  wire [7:0] act1_13_0_3;
+  wire [7:0] act1_13_1_3;
+  wire [7:0] act1_14_0_1;
+  wire [7:0] act1_14_1_1;
+  wire [7:0] act1_14_0_2;
+  wire [7:0] act1_14_1_2;
+  wire [7:0] act1_14_0_3;
+  wire [7:0] act1_14_1_3;
+  wire [7:0] act1_15_0_1;
+  wire [7:0] act1_15_1_1;
+  wire [7:0] act1_15_0_2;
+  wire [7:0] act1_15_1_2;
+  wire [7:0] act1_15_0_3;
+  wire [7:0] act1_15_1_3;
+  wire [7:0] act2_0_0_1;
+  wire [7:0] act2_0_1_1;
+  wire [7:0] act2_0_0_2;
+  wire [7:0] act2_0_1_2;
+  wire [7:0] act2_0_0_3;
+  wire [7:0] act2_0_1_3;
+  wire [7:0] act2_1_0_1;
+  wire [7:0] act2_1_1_1;
+  wire [7:0] act2_1_0_2;
+  wire [7:0] act2_1_1_2;
+  wire [7:0] act2_1_0_3;
+  wire [7:0] act2_1_1_3;
+  wire [7:0] act2_2_0_1;
+  wire [7:0] act2_2_1_1;
+  wire [7:0] act2_2_0_2;
+  wire [7:0] act2_2_1_2;
+  wire [7:0] act2_2_0_3;
+  wire [7:0] act2_2_1_3;
+  wire [7:0] act2_3_0_1;
+  wire [7:0] act2_3_1_1;
+  wire [7:0] act2_3_0_2;
+  wire [7:0] act2_3_1_2;
+  wire [7:0] act2_3_0_3;
+  wire [7:0] act2_3_1_3;
+  wire [7:0] act2_4_0_1;
+  wire [7:0] act2_4_1_1;
+  wire [7:0] act2_4_0_2;
+  wire [7:0] act2_4_1_2;
+  wire [7:0] act2_4_0_3;
+  wire [7:0] act2_4_1_3;
+  wire [7:0] act2_5_0_1;
+  wire [7:0] act2_5_1_1;
+  wire [7:0] act2_5_0_2;
+  wire [7:0] act2_5_1_2;
+  wire [7:0] act2_5_0_3;
+  wire [7:0] act2_5_1_3;
+  wire [7:0] act2_6_0_1;
+  wire [7:0] act2_6_1_1;
+  wire [7:0] act2_6_0_2;
+  wire [7:0] act2_6_1_2;
+  wire [7:0] act2_6_0_3;
+  wire [7:0] act2_6_1_3;
+  wire [7:0] act2_7_0_1;
+  wire [7:0] act2_7_1_1;
+  wire [7:0] act2_7_0_2;
+  wire [7:0] act2_7_1_2;
+  wire [7:0] act2_7_0_3;
+  wire [7:0] act2_7_1_3;
+  wire [7:0] act2_8_0_1;
+  wire [7:0] act2_8_1_1;
+  wire [7:0] act2_8_0_2;
+  wire [7:0] act2_8_1_2;
+  wire [7:0] act2_8_0_3;
+  wire [7:0] act2_8_1_3;
+  wire [7:0] act2_9_0_1;
+  wire [7:0] act2_9_1_1;
+  wire [7:0] act2_9_0_2;
+  wire [7:0] act2_9_1_2;
+  wire [7:0] act2_9_0_3;
+  wire [7:0] act2_9_1_3;
+  wire [7:0] act2_10_0_1;
+  wire [7:0] act2_10_1_1;
+  wire [7:0] act2_10_0_2;
+  wire [7:0] act2_10_1_2;
+  wire [7:0] act2_10_0_3;
+  wire [7:0] act2_10_1_3;
+  wire [7:0] act2_11_0_1;
+  wire [7:0] act2_11_1_1;
+  wire [7:0] act2_11_0_2;
+  wire [7:0] act2_11_1_2;
+  wire [7:0] act2_11_0_3;
+  wire [7:0] act2_11_1_3;
+  wire [7:0] act2_12_0_1;
+  wire [7:0] act2_12_1_1;
+  wire [7:0] act2_12_0_2;
+  wire [7:0] act2_12_1_2;
+  wire [7:0] act2_12_0_3;
+  wire [7:0] act2_12_1_3;
+  wire [7:0] act2_13_0_1;
+  wire [7:0] act2_13_1_1;
+  wire [7:0] act2_13_0_2;
+  wire [7:0] act2_13_1_2;
+  wire [7:0] act2_13_0_3;
+  wire [7:0] act2_13_1_3;
+  wire [7:0] act2_14_0_1;
+  wire [7:0] act2_14_1_1;
+  wire [7:0] act2_14_0_2;
+  wire [7:0] act2_14_1_2;
+  wire [7:0] act2_14_0_3;
+  wire [7:0] act2_14_1_3;
+  wire [7:0] act2_15_0_1;
+  wire [7:0] act2_15_1_1;
+  wire [7:0] act2_15_0_2;
+  wire [7:0] act2_15_1_2;
+  wire [7:0] act2_15_0_3;
+  wire [7:0] act2_15_1_3;
+  wire [7:0] act3_0_0_1;
+  wire [7:0] act3_0_1_1;
+  wire [7:0] act3_0_0_2;
+  wire [7:0] act3_0_1_2;
+  wire [7:0] act3_0_0_3;
+  wire [7:0] act3_0_1_3;
+  wire [7:0] act3_1_0_1;
+  wire [7:0] act3_1_1_1;
+  wire [7:0] act3_1_0_2;
+  wire [7:0] act3_1_1_2;
+  wire [7:0] act3_1_0_3;
+  wire [7:0] act3_1_1_3;
+  wire [7:0] act3_2_0_1;
+  wire [7:0] act3_2_1_1;
+  wire [7:0] act3_2_0_2;
+  wire [7:0] act3_2_1_2;
+  wire [7:0] act3_2_0_3;
+  wire [7:0] act3_2_1_3;
+  wire [7:0] act3_3_0_1;
+  wire [7:0] act3_3_1_1;
+  wire [7:0] act3_3_0_2;
+  wire [7:0] act3_3_1_2;
+  wire [7:0] act3_3_0_3;
+  wire [7:0] act3_3_1_3;
+  wire [7:0] act3_4_0_1;
+  wire [7:0] act3_4_1_1;
+  wire [7:0] act3_4_0_2;
+  wire [7:0] act3_4_1_2;
+  wire [7:0] act3_4_0_3;
+  wire [7:0] act3_4_1_3;
+  wire [7:0] act3_5_0_1;
+  wire [7:0] act3_5_1_1;
+  wire [7:0] act3_5_0_2;
+  wire [7:0] act3_5_1_2;
+  wire [7:0] act3_5_0_3;
+  wire [7:0] act3_5_1_3;
+  wire [7:0] act3_6_0_1;
+  wire [7:0] act3_6_1_1;
+  wire [7:0] act3_6_0_2;
+  wire [7:0] act3_6_1_2;
+  wire [7:0] act3_6_0_3;
+  wire [7:0] act3_6_1_3;
+  wire [7:0] act3_7_0_1;
+  wire [7:0] act3_7_1_1;
+  wire [7:0] act3_7_0_2;
+  wire [7:0] act3_7_1_2;
+  wire [7:0] act3_7_0_3;
+  wire [7:0] act3_7_1_3;
+  wire [7:0] act3_8_0_1;
+  wire [7:0] act3_8_1_1;
+  wire [7:0] act3_8_0_2;
+  wire [7:0] act3_8_1_2;
+  wire [7:0] act3_8_0_3;
+  wire [7:0] act3_8_1_3;
+  wire [7:0] act3_9_0_1;
+  wire [7:0] act3_9_1_1;
+  wire [7:0] act3_9_0_2;
+  wire [7:0] act3_9_1_2;
+  wire [7:0] act3_9_0_3;
+  wire [7:0] act3_9_1_3;
+  wire [7:0] act3_10_0_1;
+  wire [7:0] act3_10_1_1;
+  wire [7:0] act3_10_0_2;
+  wire [7:0] act3_10_1_2;
+  wire [7:0] act3_10_0_3;
+  wire [7:0] act3_10_1_3;
+  wire [7:0] act3_11_0_1;
+  wire [7:0] act3_11_1_1;
+  wire [7:0] act3_11_0_2;
+  wire [7:0] act3_11_1_2;
+  wire [7:0] act3_11_0_3;
+  wire [7:0] act3_11_1_3;
+  wire [7:0] act3_12_0_1;
+  wire [7:0] act3_12_1_1;
+  wire [7:0] act3_12_0_2;
+  wire [7:0] act3_12_1_2;
+  wire [7:0] act3_12_0_3;
+  wire [7:0] act3_12_1_3;
+  wire [7:0] act3_13_0_1;
+  wire [7:0] act3_13_1_1;
+  wire [7:0] act3_13_0_2;
+  wire [7:0] act3_13_1_2;
+  wire [7:0] act3_13_0_3;
+  wire [7:0] act3_13_1_3;
+  wire [7:0] act3_14_0_1;
+  wire [7:0] act3_14_1_1;
+  wire [7:0] act3_14_0_2;
+  wire [7:0] act3_14_1_2;
+  wire [7:0] act3_14_0_3;
+  wire [7:0] act3_14_1_3;
+  wire [7:0] act3_15_0_1;
+  wire [7:0] act3_15_1_1;
+  wire [7:0] act3_15_0_2;
+  wire [7:0] act3_15_1_2;
+  wire [7:0] act3_15_0_3;
+  wire [7:0] act3_15_1_3;
+  wire [7:0] act4_0_0_1;
+  wire [7:0] act4_0_1_1;
+  wire [7:0] act4_0_0_2;
+  wire [7:0] act4_0_1_2;
+  wire [7:0] act4_0_0_3;
+  wire [7:0] act4_0_1_3;
+  wire [7:0] act4_1_0_1;
+  wire [7:0] act4_1_1_1;
+  wire [7:0] act4_1_0_2;
+  wire [7:0] act4_1_1_2;
+  wire [7:0] act4_1_0_3;
+  wire [7:0] act4_1_1_3;
+  wire [7:0] act4_2_0_1;
+  wire [7:0] act4_2_1_1;
+  wire [7:0] act4_2_0_2;
+  wire [7:0] act4_2_1_2;
+  wire [7:0] act4_2_0_3;
+  wire [7:0] act4_2_1_3;
+  wire [7:0] act4_3_0_1;
+  wire [7:0] act4_3_1_1;
+  wire [7:0] act4_3_0_2;
+  wire [7:0] act4_3_1_2;
+  wire [7:0] act4_3_0_3;
+  wire [7:0] act4_3_1_3;
+  wire [7:0] act4_4_0_1;
+  wire [7:0] act4_4_1_1;
+  wire [7:0] act4_4_0_2;
+  wire [7:0] act4_4_1_2;
+  wire [7:0] act4_4_0_3;
+  wire [7:0] act4_4_1_3;
+  wire [7:0] act4_5_0_1;
+  wire [7:0] act4_5_1_1;
+  wire [7:0] act4_5_0_2;
+  wire [7:0] act4_5_1_2;
+  wire [7:0] act4_5_0_3;
+  wire [7:0] act4_5_1_3;
+  wire [7:0] act4_6_0_1;
+  wire [7:0] act4_6_1_1;
+  wire [7:0] act4_6_0_2;
+  wire [7:0] act4_6_1_2;
+  wire [7:0] act4_6_0_3;
+  wire [7:0] act4_6_1_3;
+  wire [7:0] act4_7_0_1;
+  wire [7:0] act4_7_1_1;
+  wire [7:0] act4_7_0_2;
+  wire [7:0] act4_7_1_2;
+  wire [7:0] act4_7_0_3;
+  wire [7:0] act4_7_1_3;
+  wire [7:0] act4_8_0_1;
+  wire [7:0] act4_8_1_1;
+  wire [7:0] act4_8_0_2;
+  wire [7:0] act4_8_1_2;
+  wire [7:0] act4_8_0_3;
+  wire [7:0] act4_8_1_3;
+  wire [7:0] act4_9_0_1;
+  wire [7:0] act4_9_1_1;
+  wire [7:0] act4_9_0_2;
+  wire [7:0] act4_9_1_2;
+  wire [7:0] act4_9_0_3;
+  wire [7:0] act4_9_1_3;
+  wire [7:0] act4_10_0_1;
+  wire [7:0] act4_10_1_1;
+  wire [7:0] act4_10_0_2;
+  wire [7:0] act4_10_1_2;
+  wire [7:0] act4_10_0_3;
+  wire [7:0] act4_10_1_3;
+  wire [7:0] act4_11_0_1;
+  wire [7:0] act4_11_1_1;
+  wire [7:0] act4_11_0_2;
+  wire [7:0] act4_11_1_2;
+  wire [7:0] act4_11_0_3;
+  wire [7:0] act4_11_1_3;
+  wire [7:0] act4_12_0_1;
+  wire [7:0] act4_12_1_1;
+  wire [7:0] act4_12_0_2;
+  wire [7:0] act4_12_1_2;
+  wire [7:0] act4_12_0_3;
+  wire [7:0] act4_12_1_3;
+  wire [7:0] act4_13_0_1;
+  wire [7:0] act4_13_1_1;
+  wire [7:0] act4_13_0_2;
+  wire [7:0] act4_13_1_2;
+  wire [7:0] act4_13_0_3;
+  wire [7:0] act4_13_1_3;
+  wire [7:0] act4_14_0_1;
+  wire [7:0] act4_14_1_1;
+  wire [7:0] act4_14_0_2;
+  wire [7:0] act4_14_1_2;
+  wire [7:0] act4_14_0_3;
+  wire [7:0] act4_14_1_3;
+  wire [7:0] act4_15_0_1;
+  wire [7:0] act4_15_1_1;
+  wire [7:0] act4_15_0_2;
+  wire [7:0] act4_15_1_2;
+  wire [7:0] act4_15_0_3;
+  wire [7:0] act4_15_1_3;
+  wire [7:0] act5_0_0_1;
+  wire [7:0] act5_0_1_1;
+  wire [7:0] act5_0_0_2;
+  wire [7:0] act5_0_1_2;
+  wire [7:0] act5_0_0_3;
+  wire [7:0] act5_0_1_3;
+  wire [7:0] act5_1_0_1;
+  wire [7:0] act5_1_1_1;
+  wire [7:0] act5_1_0_2;
+  wire [7:0] act5_1_1_2;
+  wire [7:0] act5_1_0_3;
+  wire [7:0] act5_1_1_3;
+  wire [7:0] act5_2_0_1;
+  wire [7:0] act5_2_1_1;
+  wire [7:0] act5_2_0_2;
+  wire [7:0] act5_2_1_2;
+  wire [7:0] act5_2_0_3;
+  wire [7:0] act5_2_1_3;
+  wire [7:0] act5_3_0_1;
+  wire [7:0] act5_3_1_1;
+  wire [7:0] act5_3_0_2;
+  wire [7:0] act5_3_1_2;
+  wire [7:0] act5_3_0_3;
+  wire [7:0] act5_3_1_3;
+  wire [7:0] act5_4_0_1;
+  wire [7:0] act5_4_1_1;
+  wire [7:0] act5_4_0_2;
+  wire [7:0] act5_4_1_2;
+  wire [7:0] act5_4_0_3;
+  wire [7:0] act5_4_1_3;
+  wire [7:0] act5_5_0_1;
+  wire [7:0] act5_5_1_1;
+  wire [7:0] act5_5_0_2;
+  wire [7:0] act5_5_1_2;
+  wire [7:0] act5_5_0_3;
+  wire [7:0] act5_5_1_3;
+  wire [7:0] act5_6_0_1;
+  wire [7:0] act5_6_1_1;
+  wire [7:0] act5_6_0_2;
+  wire [7:0] act5_6_1_2;
+  wire [7:0] act5_6_0_3;
+  wire [7:0] act5_6_1_3;
+  wire [7:0] act5_7_0_1;
+  wire [7:0] act5_7_1_1;
+  wire [7:0] act5_7_0_2;
+  wire [7:0] act5_7_1_2;
+  wire [7:0] act5_7_0_3;
+  wire [7:0] act5_7_1_3;
+  wire [7:0] act5_8_0_1;
+  wire [7:0] act5_8_1_1;
+  wire [7:0] act5_8_0_2;
+  wire [7:0] act5_8_1_2;
+  wire [7:0] act5_8_0_3;
+  wire [7:0] act5_8_1_3;
+  wire [7:0] act5_9_0_1;
+  wire [7:0] act5_9_1_1;
+  wire [7:0] act5_9_0_2;
+  wire [7:0] act5_9_1_2;
+  wire [7:0] act5_9_0_3;
+  wire [7:0] act5_9_1_3;
+  wire [7:0] act5_10_0_1;
+  wire [7:0] act5_10_1_1;
+  wire [7:0] act5_10_0_2;
+  wire [7:0] act5_10_1_2;
+  wire [7:0] act5_10_0_3;
+  wire [7:0] act5_10_1_3;
+  wire [7:0] act5_11_0_1;
+  wire [7:0] act5_11_1_1;
+  wire [7:0] act5_11_0_2;
+  wire [7:0] act5_11_1_2;
+  wire [7:0] act5_11_0_3;
+  wire [7:0] act5_11_1_3;
+  wire [7:0] act5_12_0_1;
+  wire [7:0] act5_12_1_1;
+  wire [7:0] act5_12_0_2;
+  wire [7:0] act5_12_1_2;
+  wire [7:0] act5_12_0_3;
+  wire [7:0] act5_12_1_3;
+  wire [7:0] act5_13_0_1;
+  wire [7:0] act5_13_1_1;
+  wire [7:0] act5_13_0_2;
+  wire [7:0] act5_13_1_2;
+  wire [7:0] act5_13_0_3;
+  wire [7:0] act5_13_1_3;
+  wire [7:0] act5_14_0_1;
+  wire [7:0] act5_14_1_1;
+  wire [7:0] act5_14_0_2;
+  wire [7:0] act5_14_1_2;
+  wire [7:0] act5_14_0_3;
+  wire [7:0] act5_14_1_3;
+  wire [7:0] act5_15_0_1;
+  wire [7:0] act5_15_1_1;
+  wire [7:0] act5_15_0_2;
+  wire [7:0] act5_15_1_2;
+  wire [7:0] act5_15_0_3;
+  wire [7:0] act5_15_1_3;
+  wire [7:0] act6_0_0_1;
+  wire [7:0] act6_0_1_1;
+  wire [7:0] act6_0_0_2;
+  wire [7:0] act6_0_1_2;
+  wire [7:0] act6_0_0_3;
+  wire [7:0] act6_0_1_3;
+  wire [7:0] act6_1_0_1;
+  wire [7:0] act6_1_1_1;
+  wire [7:0] act6_1_0_2;
+  wire [7:0] act6_1_1_2;
+  wire [7:0] act6_1_0_3;
+  wire [7:0] act6_1_1_3;
+  wire [7:0] act6_2_0_1;
+  wire [7:0] act6_2_1_1;
+  wire [7:0] act6_2_0_2;
+  wire [7:0] act6_2_1_2;
+  wire [7:0] act6_2_0_3;
+  wire [7:0] act6_2_1_3;
+  wire [7:0] act6_3_0_1;
+  wire [7:0] act6_3_1_1;
+  wire [7:0] act6_3_0_2;
+  wire [7:0] act6_3_1_2;
+  wire [7:0] act6_3_0_3;
+  wire [7:0] act6_3_1_3;
+  wire [7:0] act6_4_0_1;
+  wire [7:0] act6_4_1_1;
+  wire [7:0] act6_4_0_2;
+  wire [7:0] act6_4_1_2;
+  wire [7:0] act6_4_0_3;
+  wire [7:0] act6_4_1_3;
+  wire [7:0] act6_5_0_1;
+  wire [7:0] act6_5_1_1;
+  wire [7:0] act6_5_0_2;
+  wire [7:0] act6_5_1_2;
+  wire [7:0] act6_5_0_3;
+  wire [7:0] act6_5_1_3;
+  wire [7:0] act6_6_0_1;
+  wire [7:0] act6_6_1_1;
+  wire [7:0] act6_6_0_2;
+  wire [7:0] act6_6_1_2;
+  wire [7:0] act6_6_0_3;
+  wire [7:0] act6_6_1_3;
+  wire [7:0] act6_7_0_1;
+  wire [7:0] act6_7_1_1;
+  wire [7:0] act6_7_0_2;
+  wire [7:0] act6_7_1_2;
+  wire [7:0] act6_7_0_3;
+  wire [7:0] act6_7_1_3;
+  wire [7:0] act6_8_0_1;
+  wire [7:0] act6_8_1_1;
+  wire [7:0] act6_8_0_2;
+  wire [7:0] act6_8_1_2;
+  wire [7:0] act6_8_0_3;
+  wire [7:0] act6_8_1_3;
+  wire [7:0] act6_9_0_1;
+  wire [7:0] act6_9_1_1;
+  wire [7:0] act6_9_0_2;
+  wire [7:0] act6_9_1_2;
+  wire [7:0] act6_9_0_3;
+  wire [7:0] act6_9_1_3;
+  wire [7:0] act6_10_0_1;
+  wire [7:0] act6_10_1_1;
+  wire [7:0] act6_10_0_2;
+  wire [7:0] act6_10_1_2;
+  wire [7:0] act6_10_0_3;
+  wire [7:0] act6_10_1_3;
+  wire [7:0] act6_11_0_1;
+  wire [7:0] act6_11_1_1;
+  wire [7:0] act6_11_0_2;
+  wire [7:0] act6_11_1_2;
+  wire [7:0] act6_11_0_3;
+  wire [7:0] act6_11_1_3;
+  wire [7:0] act6_12_0_1;
+  wire [7:0] act6_12_1_1;
+  wire [7:0] act6_12_0_2;
+  wire [7:0] act6_12_1_2;
+  wire [7:0] act6_12_0_3;
+  wire [7:0] act6_12_1_3;
+  wire [7:0] act6_13_0_1;
+  wire [7:0] act6_13_1_1;
+  wire [7:0] act6_13_0_2;
+  wire [7:0] act6_13_1_2;
+  wire [7:0] act6_13_0_3;
+  wire [7:0] act6_13_1_3;
+  wire [7:0] act6_14_0_1;
+  wire [7:0] act6_14_1_1;
+  wire [7:0] act6_14_0_2;
+  wire [7:0] act6_14_1_2;
+  wire [7:0] act6_14_0_3;
+  wire [7:0] act6_14_1_3;
+  wire [7:0] act6_15_0_1;
+  wire [7:0] act6_15_1_1;
+  wire [7:0] act6_15_0_2;
+  wire [7:0] act6_15_1_2;
+  wire [7:0] act6_15_0_3;
+  wire [7:0] act6_15_1_3;
+  wire [7:0] act7_0_0_1;
+  wire [7:0] act7_0_1_1;
+  wire [7:0] act7_0_0_2;
+  wire [7:0] act7_0_1_2;
+  wire [7:0] act7_0_0_3;
+  wire [7:0] act7_0_1_3;
+  wire [7:0] act7_1_0_1;
+  wire [7:0] act7_1_1_1;
+  wire [7:0] act7_1_0_2;
+  wire [7:0] act7_1_1_2;
+  wire [7:0] act7_1_0_3;
+  wire [7:0] act7_1_1_3;
+  wire [7:0] act7_2_0_1;
+  wire [7:0] act7_2_1_1;
+  wire [7:0] act7_2_0_2;
+  wire [7:0] act7_2_1_2;
+  wire [7:0] act7_2_0_3;
+  wire [7:0] act7_2_1_3;
+  wire [7:0] act7_3_0_1;
+  wire [7:0] act7_3_1_1;
+  wire [7:0] act7_3_0_2;
+  wire [7:0] act7_3_1_2;
+  wire [7:0] act7_3_0_3;
+  wire [7:0] act7_3_1_3;
+  wire [7:0] act7_4_0_1;
+  wire [7:0] act7_4_1_1;
+  wire [7:0] act7_4_0_2;
+  wire [7:0] act7_4_1_2;
+  wire [7:0] act7_4_0_3;
+  wire [7:0] act7_4_1_3;
+  wire [7:0] act7_5_0_1;
+  wire [7:0] act7_5_1_1;
+  wire [7:0] act7_5_0_2;
+  wire [7:0] act7_5_1_2;
+  wire [7:0] act7_5_0_3;
+  wire [7:0] act7_5_1_3;
+  wire [7:0] act7_6_0_1;
+  wire [7:0] act7_6_1_1;
+  wire [7:0] act7_6_0_2;
+  wire [7:0] act7_6_1_2;
+  wire [7:0] act7_6_0_3;
+  wire [7:0] act7_6_1_3;
+  wire [7:0] act7_7_0_1;
+  wire [7:0] act7_7_1_1;
+  wire [7:0] act7_7_0_2;
+  wire [7:0] act7_7_1_2;
+  wire [7:0] act7_7_0_3;
+  wire [7:0] act7_7_1_3;
+  wire [7:0] act7_8_0_1;
+  wire [7:0] act7_8_1_1;
+  wire [7:0] act7_8_0_2;
+  wire [7:0] act7_8_1_2;
+  wire [7:0] act7_8_0_3;
+  wire [7:0] act7_8_1_3;
+  wire [7:0] act7_9_0_1;
+  wire [7:0] act7_9_1_1;
+  wire [7:0] act7_9_0_2;
+  wire [7:0] act7_9_1_2;
+  wire [7:0] act7_9_0_3;
+  wire [7:0] act7_9_1_3;
+  wire [7:0] act7_10_0_1;
+  wire [7:0] act7_10_1_1;
+  wire [7:0] act7_10_0_2;
+  wire [7:0] act7_10_1_2;
+  wire [7:0] act7_10_0_3;
+  wire [7:0] act7_10_1_3;
+  wire [7:0] act7_11_0_1;
+  wire [7:0] act7_11_1_1;
+  wire [7:0] act7_11_0_2;
+  wire [7:0] act7_11_1_2;
+  wire [7:0] act7_11_0_3;
+  wire [7:0] act7_11_1_3;
+  wire [7:0] act7_12_0_1;
+  wire [7:0] act7_12_1_1;
+  wire [7:0] act7_12_0_2;
+  wire [7:0] act7_12_1_2;
+  wire [7:0] act7_12_0_3;
+  wire [7:0] act7_12_1_3;
+  wire [7:0] act7_13_0_1;
+  wire [7:0] act7_13_1_1;
+  wire [7:0] act7_13_0_2;
+  wire [7:0] act7_13_1_2;
+  wire [7:0] act7_13_0_3;
+  wire [7:0] act7_13_1_3;
+  wire [7:0] act7_14_0_1;
+  wire [7:0] act7_14_1_1;
+  wire [7:0] act7_14_0_2;
+  wire [7:0] act7_14_1_2;
+  wire [7:0] act7_14_0_3;
+  wire [7:0] act7_14_1_3;
+  wire [7:0] act7_15_0_1;
+  wire [7:0] act7_15_1_1;
+  wire [7:0] act7_15_0_2;
+  wire [7:0] act7_15_1_2;
+  wire [7:0] act7_15_0_3;
+  wire [7:0] act7_15_1_3;
 
   // Layer 1, act0
-  wire [2:0] act0_0_0;
-  wire [2:0] act0_1_0;
-  wire [2:0] act0_0_1;
-  wire [2:0] act0_1_1;
-  wire [2:0] act0_0_2;
-  wire [2:0] act0_1_2;
-  wire [2:0] act0_0_3;
-  wire [2:0] act0_1_3;
-  wire [2:0] act0_0_4;
-  wire [2:0] act0_1_4;
-  wire [2:0] act0_0_5;
-  wire [2:0] act0_1_5;
-  wire [2:0] act0_0_6;
-  wire [2:0] act0_1_6;
-  wire [2:0] act0_0_7;
-  wire [2:0] act0_1_7;
-  wire [2:0] act0_0_8;
-  wire [2:0] act0_1_8;
-  wire [2:0] act0_0_9;
-  wire [2:0] act0_1_9;
-  wire [2:0] act0_0_10;
-  wire [2:0] act0_1_10;
-  wire [2:0] act0_0_11;
-  wire [2:0] act0_1_11;
-  wire [2:0] act0_0_12;
-  wire [2:0] act0_1_12;
-  wire [2:0] act0_0_13;
-  wire [2:0] act0_1_13;
-  wire [2:0] act0_0_14;
-  wire [2:0] act0_1_14;
-  wire [2:0] act0_0_15;
-  wire [2:0] act0_1_15;
+  wire [7:0] act0_0_0;
+  wire [7:0] act0_1_0;
+  wire [7:0] act0_0_1;
+  wire [7:0] act0_1_1;
+  wire [7:0] act0_0_2;
+  wire [7:0] act0_1_2;
+  wire [7:0] act0_0_3;
+  wire [7:0] act0_1_3;
+  wire [7:0] act0_0_4;
+  wire [7:0] act0_1_4;
+  wire [7:0] act0_0_5;
+  wire [7:0] act0_1_5;
+  wire [7:0] act0_0_6;
+  wire [7:0] act0_1_6;
+  wire [7:0] act0_0_7;
+  wire [7:0] act0_1_7;
+  wire [7:0] act0_0_8;
+  wire [7:0] act0_1_8;
+  wire [7:0] act0_0_9;
+  wire [7:0] act0_1_9;
+  wire [7:0] act0_0_10;
+  wire [7:0] act0_1_10;
+  wire [7:0] act0_0_11;
+  wire [7:0] act0_1_11;
+  wire [7:0] act0_0_12;
+  wire [7:0] act0_1_12;
+  wire [7:0] act0_0_13;
+  wire [7:0] act0_1_13;
+  wire [7:0] act0_0_14;
+  wire [7:0] act0_1_14;
+  wire [7:0] act0_0_15;
+  wire [7:0] act0_1_15;
 
   // Layer 1, act1
-  wire [2:0] act1_0_0;
-  wire [2:0] act1_1_0;
-  wire [2:0] act1_0_1;
-  wire [2:0] act1_1_1;
-  wire [2:0] act1_0_2;
-  wire [2:0] act1_1_2;
-  wire [2:0] act1_0_3;
-  wire [2:0] act1_1_3;
-  wire [2:0] act1_0_4;
-  wire [2:0] act1_1_4;
-  wire [2:0] act1_0_5;
-  wire [2:0] act1_1_5;
-  wire [2:0] act1_0_6;
-  wire [2:0] act1_1_6;
-  wire [2:0] act1_0_7;
-  wire [2:0] act1_1_7;
-  wire [2:0] act1_0_8;
-  wire [2:0] act1_1_8;
-  wire [2:0] act1_0_9;
-  wire [2:0] act1_1_9;
-  wire [2:0] act1_0_10;
-  wire [2:0] act1_1_10;
-  wire [2:0] act1_0_11;
-  wire [2:0] act1_1_11;
-  wire [2:0] act1_0_12;
-  wire [2:0] act1_1_12;
-  wire [2:0] act1_0_13;
-  wire [2:0] act1_1_13;
-  wire [2:0] act1_0_14;
-  wire [2:0] act1_1_14;
-  wire [2:0] act1_0_15;
-  wire [2:0] act1_1_15;
+  wire [7:0] act1_0_0;
+  wire [7:0] act1_1_0;
+  wire [7:0] act1_0_1;
+  wire [7:0] act1_1_1;
+  wire [7:0] act1_0_2;
+  wire [7:0] act1_1_2;
+  wire [7:0] act1_0_3;
+  wire [7:0] act1_1_3;
+  wire [7:0] act1_0_4;
+  wire [7:0] act1_1_4;
+  wire [7:0] act1_0_5;
+  wire [7:0] act1_1_5;
+  wire [7:0] act1_0_6;
+  wire [7:0] act1_1_6;
+  wire [7:0] act1_0_7;
+  wire [7:0] act1_1_7;
+  wire [7:0] act1_0_8;
+  wire [7:0] act1_1_8;
+  wire [7:0] act1_0_9;
+  wire [7:0] act1_1_9;
+  wire [7:0] act1_0_10;
+  wire [7:0] act1_1_10;
+  wire [7:0] act1_0_11;
+  wire [7:0] act1_1_11;
+  wire [7:0] act1_0_12;
+  wire [7:0] act1_1_12;
+  wire [7:0] act1_0_13;
+  wire [7:0] act1_1_13;
+  wire [7:0] act1_0_14;
+  wire [7:0] act1_1_14;
+  wire [7:0] act1_0_15;
+  wire [7:0] act1_1_15;
 
   // Layer 1, act2
-  wire [2:0] act2_0_0;
-  wire [2:0] act2_1_0;
-  wire [2:0] act2_0_1;
-  wire [2:0] act2_1_1;
-  wire [2:0] act2_0_2;
-  wire [2:0] act2_1_2;
-  wire [2:0] act2_0_3;
-  wire [2:0] act2_1_3;
-  wire [2:0] act2_0_4;
-  wire [2:0] act2_1_4;
-  wire [2:0] act2_0_5;
-  wire [2:0] act2_1_5;
-  wire [2:0] act2_0_6;
-  wire [2:0] act2_1_6;
-  wire [2:0] act2_0_7;
-  wire [2:0] act2_1_7;
-  wire [2:0] act2_0_8;
-  wire [2:0] act2_1_8;
-  wire [2:0] act2_0_9;
-  wire [2:0] act2_1_9;
-  wire [2:0] act2_0_10;
-  wire [2:0] act2_1_10;
-  wire [2:0] act2_0_11;
-  wire [2:0] act2_1_11;
-  wire [2:0] act2_0_12;
-  wire [2:0] act2_1_12;
-  wire [2:0] act2_0_13;
-  wire [2:0] act2_1_13;
-  wire [2:0] act2_0_14;
-  wire [2:0] act2_1_14;
-  wire [2:0] act2_0_15;
-  wire [2:0] act2_1_15;
+  wire [7:0] act2_0_0;
+  wire [7:0] act2_1_0;
+  wire [7:0] act2_0_1;
+  wire [7:0] act2_1_1;
+  wire [7:0] act2_0_2;
+  wire [7:0] act2_1_2;
+  wire [7:0] act2_0_3;
+  wire [7:0] act2_1_3;
+  wire [7:0] act2_0_4;
+  wire [7:0] act2_1_4;
+  wire [7:0] act2_0_5;
+  wire [7:0] act2_1_5;
+  wire [7:0] act2_0_6;
+  wire [7:0] act2_1_6;
+  wire [7:0] act2_0_7;
+  wire [7:0] act2_1_7;
+  wire [7:0] act2_0_8;
+  wire [7:0] act2_1_8;
+  wire [7:0] act2_0_9;
+  wire [7:0] act2_1_9;
+  wire [7:0] act2_0_10;
+  wire [7:0] act2_1_10;
+  wire [7:0] act2_0_11;
+  wire [7:0] act2_1_11;
+  wire [7:0] act2_0_12;
+  wire [7:0] act2_1_12;
+  wire [7:0] act2_0_13;
+  wire [7:0] act2_1_13;
+  wire [7:0] act2_0_14;
+  wire [7:0] act2_1_14;
+  wire [7:0] act2_0_15;
+  wire [7:0] act2_1_15;
 
   // Layer 1, act3
-  wire [2:0] act3_0_0;
-  wire [2:0] act3_1_0;
-  wire [2:0] act3_0_1;
-  wire [2:0] act3_1_1;
-  wire [2:0] act3_0_2;
-  wire [2:0] act3_1_2;
-  wire [2:0] act3_0_3;
-  wire [2:0] act3_1_3;
-  wire [2:0] act3_0_4;
-  wire [2:0] act3_1_4;
-  wire [2:0] act3_0_5;
-  wire [2:0] act3_1_5;
-  wire [2:0] act3_0_6;
-  wire [2:0] act3_1_6;
-  wire [2:0] act3_0_7;
-  wire [2:0] act3_1_7;
-  wire [2:0] act3_0_8;
-  wire [2:0] act3_1_8;
-  wire [2:0] act3_0_9;
-  wire [2:0] act3_1_9;
-  wire [2:0] act3_0_10;
-  wire [2:0] act3_1_10;
-  wire [2:0] act3_0_11;
-  wire [2:0] act3_1_11;
-  wire [2:0] act3_0_12;
-  wire [2:0] act3_1_12;
-  wire [2:0] act3_0_13;
-  wire [2:0] act3_1_13;
-  wire [2:0] act3_0_14;
-  wire [2:0] act3_1_14;
-  wire [2:0] act3_0_15;
-  wire [2:0] act3_1_15;
+  wire [7:0] act3_0_0;
+  wire [7:0] act3_1_0;
+  wire [7:0] act3_0_1;
+  wire [7:0] act3_1_1;
+  wire [7:0] act3_0_2;
+  wire [7:0] act3_1_2;
+  wire [7:0] act3_0_3;
+  wire [7:0] act3_1_3;
+  wire [7:0] act3_0_4;
+  wire [7:0] act3_1_4;
+  wire [7:0] act3_0_5;
+  wire [7:0] act3_1_5;
+  wire [7:0] act3_0_6;
+  wire [7:0] act3_1_6;
+  wire [7:0] act3_0_7;
+  wire [7:0] act3_1_7;
+  wire [7:0] act3_0_8;
+  wire [7:0] act3_1_8;
+  wire [7:0] act3_0_9;
+  wire [7:0] act3_1_9;
+  wire [7:0] act3_0_10;
+  wire [7:0] act3_1_10;
+  wire [7:0] act3_0_11;
+  wire [7:0] act3_1_11;
+  wire [7:0] act3_0_12;
+  wire [7:0] act3_1_12;
+  wire [7:0] act3_0_13;
+  wire [7:0] act3_1_13;
+  wire [7:0] act3_0_14;
+  wire [7:0] act3_1_14;
+  wire [7:0] act3_0_15;
+  wire [7:0] act3_1_15;
 
   // Layer 1, act4
-  wire [2:0] act4_0_0;
-  wire [2:0] act4_1_0;
-  wire [2:0] act4_0_1;
-  wire [2:0] act4_1_1;
-  wire [2:0] act4_0_2;
-  wire [2:0] act4_1_2;
-  wire [2:0] act4_0_3;
-  wire [2:0] act4_1_3;
-  wire [2:0] act4_0_4;
-  wire [2:0] act4_1_4;
-  wire [2:0] act4_0_5;
-  wire [2:0] act4_1_5;
-  wire [2:0] act4_0_6;
-  wire [2:0] act4_1_6;
-  wire [2:0] act4_0_7;
-  wire [2:0] act4_1_7;
-  wire [2:0] act4_0_8;
-  wire [2:0] act4_1_8;
-  wire [2:0] act4_0_9;
-  wire [2:0] act4_1_9;
-  wire [2:0] act4_0_10;
-  wire [2:0] act4_1_10;
-  wire [2:0] act4_0_11;
-  wire [2:0] act4_1_11;
-  wire [2:0] act4_0_12;
-  wire [2:0] act4_1_12;
-  wire [2:0] act4_0_13;
-  wire [2:0] act4_1_13;
-  wire [2:0] act4_0_14;
-  wire [2:0] act4_1_14;
-  wire [2:0] act4_0_15;
-  wire [2:0] act4_1_15;
+  wire [7:0] act4_0_0;
+  wire [7:0] act4_1_0;
+  wire [7:0] act4_0_1;
+  wire [7:0] act4_1_1;
+  wire [7:0] act4_0_2;
+  wire [7:0] act4_1_2;
+  wire [7:0] act4_0_3;
+  wire [7:0] act4_1_3;
+  wire [7:0] act4_0_4;
+  wire [7:0] act4_1_4;
+  wire [7:0] act4_0_5;
+  wire [7:0] act4_1_5;
+  wire [7:0] act4_0_6;
+  wire [7:0] act4_1_6;
+  wire [7:0] act4_0_7;
+  wire [7:0] act4_1_7;
+  wire [7:0] act4_0_8;
+  wire [7:0] act4_1_8;
+  wire [7:0] act4_0_9;
+  wire [7:0] act4_1_9;
+  wire [7:0] act4_0_10;
+  wire [7:0] act4_1_10;
+  wire [7:0] act4_0_11;
+  wire [7:0] act4_1_11;
+  wire [7:0] act4_0_12;
+  wire [7:0] act4_1_12;
+  wire [7:0] act4_0_13;
+  wire [7:0] act4_1_13;
+  wire [7:0] act4_0_14;
+  wire [7:0] act4_1_14;
+  wire [7:0] act4_0_15;
+  wire [7:0] act4_1_15;
 
   // Layer 1, act5
-  wire [2:0] act5_0_0;
-  wire [2:0] act5_1_0;
-  wire [2:0] act5_0_1;
-  wire [2:0] act5_1_1;
-  wire [2:0] act5_0_2;
-  wire [2:0] act5_1_2;
-  wire [2:0] act5_0_3;
-  wire [2:0] act5_1_3;
-  wire [2:0] act5_0_4;
-  wire [2:0] act5_1_4;
-  wire [2:0] act5_0_5;
-  wire [2:0] act5_1_5;
-  wire [2:0] act5_0_6;
-  wire [2:0] act5_1_6;
-  wire [2:0] act5_0_7;
-  wire [2:0] act5_1_7;
-  wire [2:0] act5_0_8;
-  wire [2:0] act5_1_8;
-  wire [2:0] act5_0_9;
-  wire [2:0] act5_1_9;
-  wire [2:0] act5_0_10;
-  wire [2:0] act5_1_10;
-  wire [2:0] act5_0_11;
-  wire [2:0] act5_1_11;
-  wire [2:0] act5_0_12;
-  wire [2:0] act5_1_12;
-  wire [2:0] act5_0_13;
-  wire [2:0] act5_1_13;
-  wire [2:0] act5_0_14;
-  wire [2:0] act5_1_14;
-  wire [2:0] act5_0_15;
-  wire [2:0] act5_1_15;
+  wire [7:0] act5_0_0;
+  wire [7:0] act5_1_0;
+  wire [7:0] act5_0_1;
+  wire [7:0] act5_1_1;
+  wire [7:0] act5_0_2;
+  wire [7:0] act5_1_2;
+  wire [7:0] act5_0_3;
+  wire [7:0] act5_1_3;
+  wire [7:0] act5_0_4;
+  wire [7:0] act5_1_4;
+  wire [7:0] act5_0_5;
+  wire [7:0] act5_1_5;
+  wire [7:0] act5_0_6;
+  wire [7:0] act5_1_6;
+  wire [7:0] act5_0_7;
+  wire [7:0] act5_1_7;
+  wire [7:0] act5_0_8;
+  wire [7:0] act5_1_8;
+  wire [7:0] act5_0_9;
+  wire [7:0] act5_1_9;
+  wire [7:0] act5_0_10;
+  wire [7:0] act5_1_10;
+  wire [7:0] act5_0_11;
+  wire [7:0] act5_1_11;
+  wire [7:0] act5_0_12;
+  wire [7:0] act5_1_12;
+  wire [7:0] act5_0_13;
+  wire [7:0] act5_1_13;
+  wire [7:0] act5_0_14;
+  wire [7:0] act5_1_14;
+  wire [7:0] act5_0_15;
+  wire [7:0] act5_1_15;
 
   // Layer 1, act6
-  wire [2:0] act6_0_0;
-  wire [2:0] act6_1_0;
-  wire [2:0] act6_0_1;
-  wire [2:0] act6_1_1;
-  wire [2:0] act6_0_2;
-  wire [2:0] act6_1_2;
-  wire [2:0] act6_0_3;
-  wire [2:0] act6_1_3;
-  wire [2:0] act6_0_4;
-  wire [2:0] act6_1_4;
-  wire [2:0] act6_0_5;
-  wire [2:0] act6_1_5;
-  wire [2:0] act6_0_6;
-  wire [2:0] act6_1_6;
-  wire [2:0] act6_0_7;
-  wire [2:0] act6_1_7;
-  wire [2:0] act6_0_8;
-  wire [2:0] act6_1_8;
-  wire [2:0] act6_0_9;
-  wire [2:0] act6_1_9;
-  wire [2:0] act6_0_10;
-  wire [2:0] act6_1_10;
-  wire [2:0] act6_0_11;
-  wire [2:0] act6_1_11;
-  wire [2:0] act6_0_12;
-  wire [2:0] act6_1_12;
-  wire [2:0] act6_0_13;
-  wire [2:0] act6_1_13;
-  wire [2:0] act6_0_14;
-  wire [2:0] act6_1_14;
-  wire [2:0] act6_0_15;
-  wire [2:0] act6_1_15;
+  wire [7:0] act6_0_0;
+  wire [7:0] act6_1_0;
+  wire [7:0] act6_0_1;
+  wire [7:0] act6_1_1;
+  wire [7:0] act6_0_2;
+  wire [7:0] act6_1_2;
+  wire [7:0] act6_0_3;
+  wire [7:0] act6_1_3;
+  wire [7:0] act6_0_4;
+  wire [7:0] act6_1_4;
+  wire [7:0] act6_0_5;
+  wire [7:0] act6_1_5;
+  wire [7:0] act6_0_6;
+  wire [7:0] act6_1_6;
+  wire [7:0] act6_0_7;
+  wire [7:0] act6_1_7;
+  wire [7:0] act6_0_8;
+  wire [7:0] act6_1_8;
+  wire [7:0] act6_0_9;
+  wire [7:0] act6_1_9;
+  wire [7:0] act6_0_10;
+  wire [7:0] act6_1_10;
+  wire [7:0] act6_0_11;
+  wire [7:0] act6_1_11;
+  wire [7:0] act6_0_12;
+  wire [7:0] act6_1_12;
+  wire [7:0] act6_0_13;
+  wire [7:0] act6_1_13;
+  wire [7:0] act6_0_14;
+  wire [7:0] act6_1_14;
+  wire [7:0] act6_0_15;
+  wire [7:0] act6_1_15;
 
   // Layer 1, act7
-  wire [2:0] act7_0_0;
-  wire [2:0] act7_1_0;
-  wire [2:0] act7_0_1;
-  wire [2:0] act7_1_1;
-  wire [2:0] act7_0_2;
-  wire [2:0] act7_1_2;
-  wire [2:0] act7_0_3;
-  wire [2:0] act7_1_3;
-  wire [2:0] act7_0_4;
-  wire [2:0] act7_1_4;
-  wire [2:0] act7_0_5;
-  wire [2:0] act7_1_5;
-  wire [2:0] act7_0_6;
-  wire [2:0] act7_1_6;
-  wire [2:0] act7_0_7;
-  wire [2:0] act7_1_7;
-  wire [2:0] act7_0_8;
-  wire [2:0] act7_1_8;
-  wire [2:0] act7_0_9;
-  wire [2:0] act7_1_9;
-  wire [2:0] act7_0_10;
-  wire [2:0] act7_1_10;
-  wire [2:0] act7_0_11;
-  wire [2:0] act7_1_11;
-  wire [2:0] act7_0_12;
-  wire [2:0] act7_1_12;
-  wire [2:0] act7_0_13;
-  wire [2:0] act7_1_13;
-  wire [2:0] act7_0_14;
-  wire [2:0] act7_1_14;
-  wire [2:0] act7_0_15;
-  wire [2:0] act7_1_15;
+  wire [7:0] act7_0_0;
+  wire [7:0] act7_1_0;
+  wire [7:0] act7_0_1;
+  wire [7:0] act7_1_1;
+  wire [7:0] act7_0_2;
+  wire [7:0] act7_1_2;
+  wire [7:0] act7_0_3;
+  wire [7:0] act7_1_3;
+  wire [7:0] act7_0_4;
+  wire [7:0] act7_1_4;
+  wire [7:0] act7_0_5;
+  wire [7:0] act7_1_5;
+  wire [7:0] act7_0_6;
+  wire [7:0] act7_1_6;
+  wire [7:0] act7_0_7;
+  wire [7:0] act7_1_7;
+  wire [7:0] act7_0_8;
+  wire [7:0] act7_1_8;
+  wire [7:0] act7_0_9;
+  wire [7:0] act7_1_9;
+  wire [7:0] act7_0_10;
+  wire [7:0] act7_1_10;
+  wire [7:0] act7_0_11;
+  wire [7:0] act7_1_11;
+  wire [7:0] act7_0_12;
+  wire [7:0] act7_1_12;
+  wire [7:0] act7_0_13;
+  wire [7:0] act7_1_13;
+  wire [7:0] act7_0_14;
+  wire [7:0] act7_1_14;
+  wire [7:0] act7_0_15;
+  wire [7:0] act7_1_15;
 
   wire [15:0] w1_0;
   wire [15:0] w1_1;
@@ -6861,262 +7176,262 @@ module share_boolean_arithmetic (
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
       done <= 1'b0;
-        act0_0_0_r <= 3'd0 ;
-        act0_0_1_r <= 3'd0 ;
-        act0_0_2_r <= 3'd0 ;
-        act0_0_3_r <= 3'd0 ;
-        act0_0_4_r <= 3'd0 ;
-        act0_0_5_r <= 3'd0 ;
-        act0_0_6_r <= 3'd0 ;
-        act0_0_7_r <= 3'd0 ;
-        act0_0_8_r <= 3'd0 ;
-        act0_0_9_r <= 3'd0 ;
-        act0_0_10_r <= 3'd0 ;
-        act0_0_11_r <= 3'd0 ;
-        act0_0_12_r <= 3'd0 ;
-        act0_0_13_r <= 3'd0 ;
-        act0_0_14_r <= 3'd0 ;
-        act0_0_15_r <= 3'd0 ;
-        act0_1_0_r <= 3'd0 ;
-        act0_1_1_r <= 3'd0 ;
-        act0_1_2_r <= 3'd0 ;
-        act0_1_3_r <= 3'd0 ;
-        act0_1_4_r <= 3'd0 ;
-        act0_1_5_r <= 3'd0 ;
-        act0_1_6_r <= 3'd0 ;
-        act0_1_7_r <= 3'd0 ;
-        act0_1_8_r <= 3'd0 ;
-        act0_1_9_r <= 3'd0 ;
-        act0_1_10_r <= 3'd0 ;
-        act0_1_11_r <= 3'd0 ;
-        act0_1_12_r <= 3'd0 ;
-        act0_1_13_r <= 3'd0 ;
-        act0_1_14_r <= 3'd0 ;
-        act0_1_15_r <= 3'd0 ;
-        act1_0_0_r <= 3'd0 ;
-        act1_0_1_r <= 3'd0 ;
-        act1_0_2_r <= 3'd0 ;
-        act1_0_3_r <= 3'd0 ;
-        act1_0_4_r <= 3'd0 ;
-        act1_0_5_r <= 3'd0 ;
-        act1_0_6_r <= 3'd0 ;
-        act1_0_7_r <= 3'd0 ;
-        act1_0_8_r <= 3'd0 ;
-        act1_0_9_r <= 3'd0 ;
-        act1_0_10_r <= 3'd0 ;
-        act1_0_11_r <= 3'd0 ;
-        act1_0_12_r <= 3'd0 ;
-        act1_0_13_r <= 3'd0 ;
-        act1_0_14_r <= 3'd0 ;
-        act1_0_15_r <= 3'd0 ;
-        act1_1_0_r <= 3'd0 ;
-        act1_1_1_r <= 3'd0 ;
-        act1_1_2_r <= 3'd0 ;
-        act1_1_3_r <= 3'd0 ;
-        act1_1_4_r <= 3'd0 ;
-        act1_1_5_r <= 3'd0 ;
-        act1_1_6_r <= 3'd0 ;
-        act1_1_7_r <= 3'd0 ;
-        act1_1_8_r <= 3'd0 ;
-        act1_1_9_r <= 3'd0 ;
-        act1_1_10_r <= 3'd0 ;
-        act1_1_11_r <= 3'd0 ;
-        act1_1_12_r <= 3'd0 ;
-        act1_1_13_r <= 3'd0 ;
-        act1_1_14_r <= 3'd0 ;
-        act1_1_15_r <= 3'd0 ;
-        act2_0_0_r <= 3'd0 ;
-        act2_0_1_r <= 3'd0 ;
-        act2_0_2_r <= 3'd0 ;
-        act2_0_3_r <= 3'd0 ;
-        act2_0_4_r <= 3'd0 ;
-        act2_0_5_r <= 3'd0 ;
-        act2_0_6_r <= 3'd0 ;
-        act2_0_7_r <= 3'd0 ;
-        act2_0_8_r <= 3'd0 ;
-        act2_0_9_r <= 3'd0 ;
-        act2_0_10_r <= 3'd0 ;
-        act2_0_11_r <= 3'd0 ;
-        act2_0_12_r <= 3'd0 ;
-        act2_0_13_r <= 3'd0 ;
-        act2_0_14_r <= 3'd0 ;
-        act2_0_15_r <= 3'd0 ;
-        act2_1_0_r <= 3'd0 ;
-        act2_1_1_r <= 3'd0 ;
-        act2_1_2_r <= 3'd0 ;
-        act2_1_3_r <= 3'd0 ;
-        act2_1_4_r <= 3'd0 ;
-        act2_1_5_r <= 3'd0 ;
-        act2_1_6_r <= 3'd0 ;
-        act2_1_7_r <= 3'd0 ;
-        act2_1_8_r <= 3'd0 ;
-        act2_1_9_r <= 3'd0 ;
-        act2_1_10_r <= 3'd0 ;
-        act2_1_11_r <= 3'd0 ;
-        act2_1_12_r <= 3'd0 ;
-        act2_1_13_r <= 3'd0 ;
-        act2_1_14_r <= 3'd0 ;
-        act2_1_15_r <= 3'd0 ;
-        act3_0_0_r <= 3'd0 ;
-        act3_0_1_r <= 3'd0 ;
-        act3_0_2_r <= 3'd0 ;
-        act3_0_3_r <= 3'd0 ;
-        act3_0_4_r <= 3'd0 ;
-        act3_0_5_r <= 3'd0 ;
-        act3_0_6_r <= 3'd0 ;
-        act3_0_7_r <= 3'd0 ;
-        act3_0_8_r <= 3'd0 ;
-        act3_0_9_r <= 3'd0 ;
-        act3_0_10_r <= 3'd0 ;
-        act3_0_11_r <= 3'd0 ;
-        act3_0_12_r <= 3'd0 ;
-        act3_0_13_r <= 3'd0 ;
-        act3_0_14_r <= 3'd0 ;
-        act3_0_15_r <= 3'd0 ;
-        act3_1_0_r <= 3'd0 ;
-        act3_1_1_r <= 3'd0 ;
-        act3_1_2_r <= 3'd0 ;
-        act3_1_3_r <= 3'd0 ;
-        act3_1_4_r <= 3'd0 ;
-        act3_1_5_r <= 3'd0 ;
-        act3_1_6_r <= 3'd0 ;
-        act3_1_7_r <= 3'd0 ;
-        act3_1_8_r <= 3'd0 ;
-        act3_1_9_r <= 3'd0 ;
-        act3_1_10_r <= 3'd0 ;
-        act3_1_11_r <= 3'd0 ;
-        act3_1_12_r <= 3'd0 ;
-        act3_1_13_r <= 3'd0 ;
-        act3_1_14_r <= 3'd0 ;
-        act3_1_15_r <= 3'd0 ;
-        act4_0_0_r <= 3'd0 ;
-        act4_0_1_r <= 3'd0 ;
-        act4_0_2_r <= 3'd0 ;
-        act4_0_3_r <= 3'd0 ;
-        act4_0_4_r <= 3'd0 ;
-        act4_0_5_r <= 3'd0 ;
-        act4_0_6_r <= 3'd0 ;
-        act4_0_7_r <= 3'd0 ;
-        act4_0_8_r <= 3'd0 ;
-        act4_0_9_r <= 3'd0 ;
-        act4_0_10_r <= 3'd0 ;
-        act4_0_11_r <= 3'd0 ;
-        act4_0_12_r <= 3'd0 ;
-        act4_0_13_r <= 3'd0 ;
-        act4_0_14_r <= 3'd0 ;
-        act4_0_15_r <= 3'd0 ;
-        act4_1_0_r <= 3'd0 ;
-        act4_1_1_r <= 3'd0 ;
-        act4_1_2_r <= 3'd0 ;
-        act4_1_3_r <= 3'd0 ;
-        act4_1_4_r <= 3'd0 ;
-        act4_1_5_r <= 3'd0 ;
-        act4_1_6_r <= 3'd0 ;
-        act4_1_7_r <= 3'd0 ;
-        act4_1_8_r <= 3'd0 ;
-        act4_1_9_r <= 3'd0 ;
-        act4_1_10_r <= 3'd0 ;
-        act4_1_11_r <= 3'd0 ;
-        act4_1_12_r <= 3'd0 ;
-        act4_1_13_r <= 3'd0 ;
-        act4_1_14_r <= 3'd0 ;
-        act4_1_15_r <= 3'd0 ;
-        act5_0_0_r <= 3'd0 ;
-        act5_0_1_r <= 3'd0 ;
-        act5_0_2_r <= 3'd0 ;
-        act5_0_3_r <= 3'd0 ;
-        act5_0_4_r <= 3'd0 ;
-        act5_0_5_r <= 3'd0 ;
-        act5_0_6_r <= 3'd0 ;
-        act5_0_7_r <= 3'd0 ;
-        act5_0_8_r <= 3'd0 ;
-        act5_0_9_r <= 3'd0 ;
-        act5_0_10_r <= 3'd0 ;
-        act5_0_11_r <= 3'd0 ;
-        act5_0_12_r <= 3'd0 ;
-        act5_0_13_r <= 3'd0 ;
-        act5_0_14_r <= 3'd0 ;
-        act5_0_15_r <= 3'd0 ;
-        act5_1_0_r <= 3'd0 ;
-        act5_1_1_r <= 3'd0 ;
-        act5_1_2_r <= 3'd0 ;
-        act5_1_3_r <= 3'd0 ;
-        act5_1_4_r <= 3'd0 ;
-        act5_1_5_r <= 3'd0 ;
-        act5_1_6_r <= 3'd0 ;
-        act5_1_7_r <= 3'd0 ;
-        act5_1_8_r <= 3'd0 ;
-        act5_1_9_r <= 3'd0 ;
-        act5_1_10_r <= 3'd0 ;
-        act5_1_11_r <= 3'd0 ;
-        act5_1_12_r <= 3'd0 ;
-        act5_1_13_r <= 3'd0 ;
-        act5_1_14_r <= 3'd0 ;
-        act5_1_15_r <= 3'd0 ;
-        act6_0_0_r <= 3'd0 ;
-        act6_0_1_r <= 3'd0 ;
-        act6_0_2_r <= 3'd0 ;
-        act6_0_3_r <= 3'd0 ;
-        act6_0_4_r <= 3'd0 ;
-        act6_0_5_r <= 3'd0 ;
-        act6_0_6_r <= 3'd0 ;
-        act6_0_7_r <= 3'd0 ;
-        act6_0_8_r <= 3'd0 ;
-        act6_0_9_r <= 3'd0 ;
-        act6_0_10_r <= 3'd0 ;
-        act6_0_11_r <= 3'd0 ;
-        act6_0_12_r <= 3'd0 ;
-        act6_0_13_r <= 3'd0 ;
-        act6_0_14_r <= 3'd0 ;
-        act6_0_15_r <= 3'd0 ;
-        act6_1_0_r <= 3'd0 ;
-        act6_1_1_r <= 3'd0 ;
-        act6_1_2_r <= 3'd0 ;
-        act6_1_3_r <= 3'd0 ;
-        act6_1_4_r <= 3'd0 ;
-        act6_1_5_r <= 3'd0 ;
-        act6_1_6_r <= 3'd0 ;
-        act6_1_7_r <= 3'd0 ;
-        act6_1_8_r <= 3'd0 ;
-        act6_1_9_r <= 3'd0 ;
-        act6_1_10_r <= 3'd0 ;
-        act6_1_11_r <= 3'd0 ;
-        act6_1_12_r <= 3'd0 ;
-        act6_1_13_r <= 3'd0 ;
-        act6_1_14_r <= 3'd0 ;
-        act6_1_15_r <= 3'd0 ;
-        act7_0_0_r <= 3'd0 ;
-        act7_0_1_r <= 3'd0 ;
-        act7_0_2_r <= 3'd0 ;
-        act7_0_3_r <= 3'd0 ;
-        act7_0_4_r <= 3'd0 ;
-        act7_0_5_r <= 3'd0 ;
-        act7_0_6_r <= 3'd0 ;
-        act7_0_7_r <= 3'd0 ;
-        act7_0_8_r <= 3'd0 ;
-        act7_0_9_r <= 3'd0 ;
-        act7_0_10_r <= 3'd0 ;
-        act7_0_11_r <= 3'd0 ;
-        act7_0_12_r <= 3'd0 ;
-        act7_0_13_r <= 3'd0 ;
-        act7_0_14_r <= 3'd0 ;
-        act7_0_15_r <= 3'd0 ;
-        act7_1_0_r <= 3'd0 ;
-        act7_1_1_r <= 3'd0 ;
-        act7_1_2_r <= 3'd0 ;
-        act7_1_3_r <= 3'd0 ;
-        act7_1_4_r <= 3'd0 ;
-        act7_1_5_r <= 3'd0 ;
-        act7_1_6_r <= 3'd0 ;
-        act7_1_7_r <= 3'd0 ;
-        act7_1_8_r <= 3'd0 ;
-        act7_1_9_r <= 3'd0 ;
-        act7_1_10_r <= 3'd0 ;
-        act7_1_11_r <= 3'd0 ;
-        act7_1_12_r <= 3'd0 ;
-        act7_1_13_r <= 3'd0 ;
-        act7_1_14_r <= 3'd0 ;
-        act7_1_15_r <= 3'd0 ;
+        act0_0_0_r <= 8'd0 ;
+        act0_0_1_r <= 8'd0 ;
+        act0_0_2_r <= 8'd0 ;
+        act0_0_3_r <= 8'd0 ;
+        act0_0_4_r <= 8'd0 ;
+        act0_0_5_r <= 8'd0 ;
+        act0_0_6_r <= 8'd0 ;
+        act0_0_7_r <= 8'd0 ;
+        act0_0_8_r <= 8'd0 ;
+        act0_0_9_r <= 8'd0 ;
+        act0_0_10_r <= 8'd0 ;
+        act0_0_11_r <= 8'd0 ;
+        act0_0_12_r <= 8'd0 ;
+        act0_0_13_r <= 8'd0 ;
+        act0_0_14_r <= 8'd0 ;
+        act0_0_15_r <= 8'd0 ;
+        act0_1_0_r <= 8'd0 ;
+        act0_1_1_r <= 8'd0 ;
+        act0_1_2_r <= 8'd0 ;
+        act0_1_3_r <= 8'd0 ;
+        act0_1_4_r <= 8'd0 ;
+        act0_1_5_r <= 8'd0 ;
+        act0_1_6_r <= 8'd0 ;
+        act0_1_7_r <= 8'd0 ;
+        act0_1_8_r <= 8'd0 ;
+        act0_1_9_r <= 8'd0 ;
+        act0_1_10_r <= 8'd0 ;
+        act0_1_11_r <= 8'd0 ;
+        act0_1_12_r <= 8'd0 ;
+        act0_1_13_r <= 8'd0 ;
+        act0_1_14_r <= 8'd0 ;
+        act0_1_15_r <= 8'd0 ;
+        act1_0_0_r <= 8'd0 ;
+        act1_0_1_r <= 8'd0 ;
+        act1_0_2_r <= 8'd0 ;
+        act1_0_3_r <= 8'd0 ;
+        act1_0_4_r <= 8'd0 ;
+        act1_0_5_r <= 8'd0 ;
+        act1_0_6_r <= 8'd0 ;
+        act1_0_7_r <= 8'd0 ;
+        act1_0_8_r <= 8'd0 ;
+        act1_0_9_r <= 8'd0 ;
+        act1_0_10_r <= 8'd0 ;
+        act1_0_11_r <= 8'd0 ;
+        act1_0_12_r <= 8'd0 ;
+        act1_0_13_r <= 8'd0 ;
+        act1_0_14_r <= 8'd0 ;
+        act1_0_15_r <= 8'd0 ;
+        act1_1_0_r <= 8'd0 ;
+        act1_1_1_r <= 8'd0 ;
+        act1_1_2_r <= 8'd0 ;
+        act1_1_3_r <= 8'd0 ;
+        act1_1_4_r <= 8'd0 ;
+        act1_1_5_r <= 8'd0 ;
+        act1_1_6_r <= 8'd0 ;
+        act1_1_7_r <= 8'd0 ;
+        act1_1_8_r <= 8'd0 ;
+        act1_1_9_r <= 8'd0 ;
+        act1_1_10_r <= 8'd0 ;
+        act1_1_11_r <= 8'd0 ;
+        act1_1_12_r <= 8'd0 ;
+        act1_1_13_r <= 8'd0 ;
+        act1_1_14_r <= 8'd0 ;
+        act1_1_15_r <= 8'd0 ;
+        act2_0_0_r <= 8'd0 ;
+        act2_0_1_r <= 8'd0 ;
+        act2_0_2_r <= 8'd0 ;
+        act2_0_3_r <= 8'd0 ;
+        act2_0_4_r <= 8'd0 ;
+        act2_0_5_r <= 8'd0 ;
+        act2_0_6_r <= 8'd0 ;
+        act2_0_7_r <= 8'd0 ;
+        act2_0_8_r <= 8'd0 ;
+        act2_0_9_r <= 8'd0 ;
+        act2_0_10_r <= 8'd0 ;
+        act2_0_11_r <= 8'd0 ;
+        act2_0_12_r <= 8'd0 ;
+        act2_0_13_r <= 8'd0 ;
+        act2_0_14_r <= 8'd0 ;
+        act2_0_15_r <= 8'd0 ;
+        act2_1_0_r <= 8'd0 ;
+        act2_1_1_r <= 8'd0 ;
+        act2_1_2_r <= 8'd0 ;
+        act2_1_3_r <= 8'd0 ;
+        act2_1_4_r <= 8'd0 ;
+        act2_1_5_r <= 8'd0 ;
+        act2_1_6_r <= 8'd0 ;
+        act2_1_7_r <= 8'd0 ;
+        act2_1_8_r <= 8'd0 ;
+        act2_1_9_r <= 8'd0 ;
+        act2_1_10_r <= 8'd0 ;
+        act2_1_11_r <= 8'd0 ;
+        act2_1_12_r <= 8'd0 ;
+        act2_1_13_r <= 8'd0 ;
+        act2_1_14_r <= 8'd0 ;
+        act2_1_15_r <= 8'd0 ;
+        act3_0_0_r <= 8'd0 ;
+        act3_0_1_r <= 8'd0 ;
+        act3_0_2_r <= 8'd0 ;
+        act3_0_3_r <= 8'd0 ;
+        act3_0_4_r <= 8'd0 ;
+        act3_0_5_r <= 8'd0 ;
+        act3_0_6_r <= 8'd0 ;
+        act3_0_7_r <= 8'd0 ;
+        act3_0_8_r <= 8'd0 ;
+        act3_0_9_r <= 8'd0 ;
+        act3_0_10_r <= 8'd0 ;
+        act3_0_11_r <= 8'd0 ;
+        act3_0_12_r <= 8'd0 ;
+        act3_0_13_r <= 8'd0 ;
+        act3_0_14_r <= 8'd0 ;
+        act3_0_15_r <= 8'd0 ;
+        act3_1_0_r <= 8'd0 ;
+        act3_1_1_r <= 8'd0 ;
+        act3_1_2_r <= 8'd0 ;
+        act3_1_3_r <= 8'd0 ;
+        act3_1_4_r <= 8'd0 ;
+        act3_1_5_r <= 8'd0 ;
+        act3_1_6_r <= 8'd0 ;
+        act3_1_7_r <= 8'd0 ;
+        act3_1_8_r <= 8'd0 ;
+        act3_1_9_r <= 8'd0 ;
+        act3_1_10_r <= 8'd0 ;
+        act3_1_11_r <= 8'd0 ;
+        act3_1_12_r <= 8'd0 ;
+        act3_1_13_r <= 8'd0 ;
+        act3_1_14_r <= 8'd0 ;
+        act3_1_15_r <= 8'd0 ;
+        act4_0_0_r <= 8'd0 ;
+        act4_0_1_r <= 8'd0 ;
+        act4_0_2_r <= 8'd0 ;
+        act4_0_3_r <= 8'd0 ;
+        act4_0_4_r <= 8'd0 ;
+        act4_0_5_r <= 8'd0 ;
+        act4_0_6_r <= 8'd0 ;
+        act4_0_7_r <= 8'd0 ;
+        act4_0_8_r <= 8'd0 ;
+        act4_0_9_r <= 8'd0 ;
+        act4_0_10_r <= 8'd0 ;
+        act4_0_11_r <= 8'd0 ;
+        act4_0_12_r <= 8'd0 ;
+        act4_0_13_r <= 8'd0 ;
+        act4_0_14_r <= 8'd0 ;
+        act4_0_15_r <= 8'd0 ;
+        act4_1_0_r <= 8'd0 ;
+        act4_1_1_r <= 8'd0 ;
+        act4_1_2_r <= 8'd0 ;
+        act4_1_3_r <= 8'd0 ;
+        act4_1_4_r <= 8'd0 ;
+        act4_1_5_r <= 8'd0 ;
+        act4_1_6_r <= 8'd0 ;
+        act4_1_7_r <= 8'd0 ;
+        act4_1_8_r <= 8'd0 ;
+        act4_1_9_r <= 8'd0 ;
+        act4_1_10_r <= 8'd0 ;
+        act4_1_11_r <= 8'd0 ;
+        act4_1_12_r <= 8'd0 ;
+        act4_1_13_r <= 8'd0 ;
+        act4_1_14_r <= 8'd0 ;
+        act4_1_15_r <= 8'd0 ;
+        act5_0_0_r <= 8'd0 ;
+        act5_0_1_r <= 8'd0 ;
+        act5_0_2_r <= 8'd0 ;
+        act5_0_3_r <= 8'd0 ;
+        act5_0_4_r <= 8'd0 ;
+        act5_0_5_r <= 8'd0 ;
+        act5_0_6_r <= 8'd0 ;
+        act5_0_7_r <= 8'd0 ;
+        act5_0_8_r <= 8'd0 ;
+        act5_0_9_r <= 8'd0 ;
+        act5_0_10_r <= 8'd0 ;
+        act5_0_11_r <= 8'd0 ;
+        act5_0_12_r <= 8'd0 ;
+        act5_0_13_r <= 8'd0 ;
+        act5_0_14_r <= 8'd0 ;
+        act5_0_15_r <= 8'd0 ;
+        act5_1_0_r <= 8'd0 ;
+        act5_1_1_r <= 8'd0 ;
+        act5_1_2_r <= 8'd0 ;
+        act5_1_3_r <= 8'd0 ;
+        act5_1_4_r <= 8'd0 ;
+        act5_1_5_r <= 8'd0 ;
+        act5_1_6_r <= 8'd0 ;
+        act5_1_7_r <= 8'd0 ;
+        act5_1_8_r <= 8'd0 ;
+        act5_1_9_r <= 8'd0 ;
+        act5_1_10_r <= 8'd0 ;
+        act5_1_11_r <= 8'd0 ;
+        act5_1_12_r <= 8'd0 ;
+        act5_1_13_r <= 8'd0 ;
+        act5_1_14_r <= 8'd0 ;
+        act5_1_15_r <= 8'd0 ;
+        act6_0_0_r <= 8'd0 ;
+        act6_0_1_r <= 8'd0 ;
+        act6_0_2_r <= 8'd0 ;
+        act6_0_3_r <= 8'd0 ;
+        act6_0_4_r <= 8'd0 ;
+        act6_0_5_r <= 8'd0 ;
+        act6_0_6_r <= 8'd0 ;
+        act6_0_7_r <= 8'd0 ;
+        act6_0_8_r <= 8'd0 ;
+        act6_0_9_r <= 8'd0 ;
+        act6_0_10_r <= 8'd0 ;
+        act6_0_11_r <= 8'd0 ;
+        act6_0_12_r <= 8'd0 ;
+        act6_0_13_r <= 8'd0 ;
+        act6_0_14_r <= 8'd0 ;
+        act6_0_15_r <= 8'd0 ;
+        act6_1_0_r <= 8'd0 ;
+        act6_1_1_r <= 8'd0 ;
+        act6_1_2_r <= 8'd0 ;
+        act6_1_3_r <= 8'd0 ;
+        act6_1_4_r <= 8'd0 ;
+        act6_1_5_r <= 8'd0 ;
+        act6_1_6_r <= 8'd0 ;
+        act6_1_7_r <= 8'd0 ;
+        act6_1_8_r <= 8'd0 ;
+        act6_1_9_r <= 8'd0 ;
+        act6_1_10_r <= 8'd0 ;
+        act6_1_11_r <= 8'd0 ;
+        act6_1_12_r <= 8'd0 ;
+        act6_1_13_r <= 8'd0 ;
+        act6_1_14_r <= 8'd0 ;
+        act6_1_15_r <= 8'd0 ;
+        act7_0_0_r <= 8'd0 ;
+        act7_0_1_r <= 8'd0 ;
+        act7_0_2_r <= 8'd0 ;
+        act7_0_3_r <= 8'd0 ;
+        act7_0_4_r <= 8'd0 ;
+        act7_0_5_r <= 8'd0 ;
+        act7_0_6_r <= 8'd0 ;
+        act7_0_7_r <= 8'd0 ;
+        act7_0_8_r <= 8'd0 ;
+        act7_0_9_r <= 8'd0 ;
+        act7_0_10_r <= 8'd0 ;
+        act7_0_11_r <= 8'd0 ;
+        act7_0_12_r <= 8'd0 ;
+        act7_0_13_r <= 8'd0 ;
+        act7_0_14_r <= 8'd0 ;
+        act7_0_15_r <= 8'd0 ;
+        act7_1_0_r <= 8'd0 ;
+        act7_1_1_r <= 8'd0 ;
+        act7_1_2_r <= 8'd0 ;
+        act7_1_3_r <= 8'd0 ;
+        act7_1_4_r <= 8'd0 ;
+        act7_1_5_r <= 8'd0 ;
+        act7_1_6_r <= 8'd0 ;
+        act7_1_7_r <= 8'd0 ;
+        act7_1_8_r <= 8'd0 ;
+        act7_1_9_r <= 8'd0 ;
+        act7_1_10_r <= 8'd0 ;
+        act7_1_11_r <= 8'd0 ;
+        act7_1_12_r <= 8'd0 ;
+        act7_1_13_r <= 8'd0 ;
+        act7_1_14_r <= 8'd0 ;
+        act7_1_15_r <= 8'd0 ;
     end else begin
       if (start) begin
         act0_0_0_r <= act0_0_0 ;
@@ -7383,22 +7698,22 @@ module share_boolean_arithmetic (
   end
 endmodule
 module subtractor (
-    input  wire signed [7:0] A,
-    input  wire signed [7:0] B,
-    output wire signed [8:0] Result
+    input  wire signed [12:0] A,
+    input  wire signed [12:0] B,
+    output wire signed [13:0] Result
 );
     assign Result = A - B;
 endmodule
 
 module comparator_1 (
-    input  wire [8:0] inputs0_0,
-    input  wire [8:0] inputs0_1,
-    input  wire r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0,
+    input  wire [13:0] inputs0_0,
+    input  wire [13:0] inputs0_1,
+    input  wire r0_0, r1_0, r2_0, r3_0, r4_0, r5_0, r6_0, r7_0, r8_0, r9_0, r10_0, r11_0, r12_0, r13_0,
     output wire comparator
 );
     // internal r_out chain
-    wire r1 , r2 , r3 , r4 , r5 , r6 , r7 , r8 , r9;
-    wire masked_c0_0 , masked_c1_0 , masked_c2_0 , masked_c3_0 , masked_c4_0 , masked_c5_0 , masked_c6_0 , masked_c7_0 , masked_c8_0;
+    wire r1 , r2 , r3 , r4 , r5 , r6 , r7 , r8 , r9 , r10 , r11 , r12 , r13 , r14;
+    wire masked_c0_0 , masked_c1_0 , masked_c2_0 , masked_c3_0 , masked_c4_0 , masked_c5_0 , masked_c6_0 , masked_c7_0 , masked_c8_0 , masked_c9_0 , masked_c10_0 , masked_c11_0 , masked_c12_0 , masked_c13_0;
 
     lut0 l0 (.a(inputs0_0[0]), .b(inputs0_1[0]), .c_in(1'b0),
                .r_i(r0_0), .r_out(r1), .c_masked(masked_c0_0));
@@ -7418,30 +7733,40 @@ module comparator_1 (
                .r_flow(r7), .r_i(r7_0), .r_out(r8), .c_masked(masked_c7_0));
     lut1 l8 (.a(inputs0_0[8]), .b(inputs0_1[8]), .c_in(masked_c7_0),
                .r_flow(r8), .r_i(r8_0), .r_out(r9), .c_masked(masked_c8_0));
+    lut1 l9 (.a(inputs0_0[9]), .b(inputs0_1[9]), .c_in(masked_c8_0),
+               .r_flow(r9), .r_i(r9_0), .r_out(r10), .c_masked(masked_c9_0));
+    lut1 l10 (.a(inputs0_0[10]), .b(inputs0_1[10]), .c_in(masked_c9_0),
+               .r_flow(r10), .r_i(r10_0), .r_out(r11), .c_masked(masked_c10_0));
+    lut1 l11 (.a(inputs0_0[11]), .b(inputs0_1[11]), .c_in(masked_c10_0),
+               .r_flow(r11), .r_i(r11_0), .r_out(r12), .c_masked(masked_c11_0));
+    lut1 l12 (.a(inputs0_0[12]), .b(inputs0_1[12]), .c_in(masked_c11_0),
+               .r_flow(r12), .r_i(r12_0), .r_out(r13), .c_masked(masked_c12_0));
+    lut1 l13 (.a(inputs0_0[13]), .b(inputs0_1[13]), .c_in(masked_c12_0),
+               .r_flow(r13), .r_i(r13_0), .r_out(r14), .c_masked(masked_c13_0));
 
-    wire carry = r9 ^ masked_c8_0;
+    wire carry = r14 ^ masked_c13_0;
     // final compare: if carry ^ inputs0_0[N-1] ^ inputs0_1[N-1] == 0 → comparator = 1
-    assign comparator = (carry ^ inputs0_0[8] ^ inputs0_1[8]) ? 1'b0 : 1'b1;
+    assign comparator = (carry ^ inputs0_0[13] ^ inputs0_1[13]) ? 1'b0 : 1'b1;
 endmodule
 
 
 module output_layer (
-  input  wire [7:0] biased_sum0_0,
-  input  wire [7:0] biased_sum0_1,
-  input  wire [7:0] biased_sum0_0bar,
-  input  wire [7:0] biased_sum0_1bar,
-  input  wire [7:0] biased_sum1_0,
-  input  wire [7:0] biased_sum1_1,
-  input  wire [7:0] biased_sum1_0bar,
-  input  wire [7:0] biased_sum1_1bar,
-  input  wire [7:0] biased_sum2_0,
-  input  wire [7:0] biased_sum2_1,
-  input  wire [7:0] biased_sum2_0bar,
-  input  wire [7:0] biased_sum2_1bar,
-  input  wire [7:0] biased_sum3_0,
-  input  wire [7:0] biased_sum3_1,
-  input  wire [7:0] biased_sum3_0bar,
-  input  wire [7:0] biased_sum3_1bar,
+  input  wire [12:0] biased_sum0_0,
+  input  wire [12:0] biased_sum0_1,
+  input  wire [12:0] biased_sum0_0bar,
+  input  wire [12:0] biased_sum0_1bar,
+  input  wire [12:0] biased_sum1_0,
+  input  wire [12:0] biased_sum1_1,
+  input  wire [12:0] biased_sum1_0bar,
+  input  wire [12:0] biased_sum1_1bar,
+  input  wire [12:0] biased_sum2_0,
+  input  wire [12:0] biased_sum2_1,
+  input  wire [12:0] biased_sum2_0bar,
+  input  wire [12:0] biased_sum2_1bar,
+  input  wire [12:0] biased_sum3_0,
+  input  wire [12:0] biased_sum3_1,
+  input  wire [12:0] biased_sum3_0bar,
+  input  wire [12:0] biased_sum3_1bar,
     output reg  a0, a0_bar,
     output reg  a1, a1_bar,
     output reg  a2, a2_bar,
@@ -7466,6 +7791,16 @@ module output_layer (
     reg r7_0bar;
     reg r8_0;
     reg r8_0bar;
+    reg r9_0;
+    reg r9_0bar;
+    reg r10_0;
+    reg r10_0bar;
+    reg r11_0;
+    reg r11_0bar;
+    reg r12_0;
+    reg r12_0bar;
+    reg r13_0;
+    reg r13_0bar;
     reg r0_1;
     reg r0_1bar;
     reg r1_1;
@@ -7484,6 +7819,16 @@ module output_layer (
     reg r7_1bar;
     reg r8_1;
     reg r8_1bar;
+    reg r9_1;
+    reg r9_1bar;
+    reg r10_1;
+    reg r10_1bar;
+    reg r11_1;
+    reg r11_1bar;
+    reg r12_1;
+    reg r12_1bar;
+    reg r13_1;
+    reg r13_1bar;
     reg r0_2;
     reg r0_2bar;
     reg r1_2;
@@ -7502,6 +7847,16 @@ module output_layer (
     reg r7_2bar;
     reg r8_2;
     reg r8_2bar;
+    reg r9_2;
+    reg r9_2bar;
+    reg r10_2;
+    reg r10_2bar;
+    reg r11_2;
+    reg r11_2bar;
+    reg r12_2;
+    reg r12_2bar;
+    reg r13_2;
+    reg r13_2bar;
 
   initial begin
      r0_0= $random;
@@ -7522,6 +7877,16 @@ module output_layer (
      r7_0bar = $random;
      r8_0= $random;
      r8_0bar = $random;
+     r9_0= $random;
+     r9_0bar = $random;
+     r10_0= $random;
+     r10_0bar = $random;
+     r11_0= $random;
+     r11_0bar = $random;
+     r12_0= $random;
+     r12_0bar = $random;
+     r13_0= $random;
+     r13_0bar = $random;
      r0_1= $random;
      r0_1bar = $random;
      r1_1= $random;
@@ -7540,6 +7905,16 @@ module output_layer (
      r7_1bar = $random;
      r8_1= $random;
      r8_1bar = $random;
+     r9_1= $random;
+     r9_1bar = $random;
+     r10_1= $random;
+     r10_1bar = $random;
+     r11_1= $random;
+     r11_1bar = $random;
+     r12_1= $random;
+     r12_1bar = $random;
+     r13_1= $random;
+     r13_1bar = $random;
      r0_2= $random;
      r0_2bar = $random;
      r1_2= $random;
@@ -7558,10 +7933,20 @@ module output_layer (
      r7_2bar = $random;
      r8_2= $random;
      r8_2bar = $random;
+     r9_2= $random;
+     r9_2bar = $random;
+     r10_2= $random;
+     r10_2bar = $random;
+     r11_2= $random;
+     r11_2bar = $random;
+     r12_2= $random;
+     r12_2bar = $random;
+     r13_2= $random;
+     r13_2bar = $random;
     #1;
   end
 
-    wire [8:0] temp0_0, temp0_1, temp0_0bar, temp0_1bar;
+    wire [13:0] temp0_0, temp0_1, temp0_0bar, temp0_1bar;
     subtractor s0a (.A(biased_sum0_0), .B(biased_sum1_0), .Result(temp0_0));
     subtractor s0b (.A(biased_sum0_1), .B(biased_sum1_1), .Result(temp0_1));
     subtractor s0abar (.A(biased_sum0_0bar), .B(biased_sum1_0bar), .Result(temp0_0bar));
@@ -7569,15 +7954,15 @@ module output_layer (
     wire comp0, comp0_bar;
     comparator_1 c0 (
         .inputs0_0(temp0_0), .inputs0_1(temp0_1),
-        .r0_0(r0_0), .r1_0(r1_0), .r2_0(r2_0), .r3_0(r3_0), .r4_0(r4_0), .r5_0(r5_0), .r6_0(r6_0), .r7_0(r7_0), .r8_0(r8_0),
+        .r0_0(r0_0), .r1_0(r1_0), .r2_0(r2_0), .r3_0(r3_0), .r4_0(r4_0), .r5_0(r5_0), .r6_0(r6_0), .r7_0(r7_0), .r8_0(r8_0), .r9_0(r9_0), .r10_0(r10_0), .r11_0(r11_0), .r12_0(r12_0), .r13_0(r13_0),
         .comparator(comp0)
     );
     comparator_1 c0_bar (
         .inputs0_0(temp0_0bar), .inputs0_1(temp0_1bar),
-        .r0_0(r0_0bar), .r1_0(r1_0bar), .r2_0(r2_0bar), .r3_0(r3_0bar), .r4_0(r4_0bar), .r5_0(r5_0bar), .r6_0(r6_0bar), .r7_0(r7_0bar), .r8_0(r8_0bar),
+        .r0_0(r0_0bar), .r1_0(r1_0bar), .r2_0(r2_0bar), .r3_0(r3_0bar), .r4_0(r4_0bar), .r5_0(r5_0bar), .r6_0(r6_0bar), .r7_0(r7_0bar), .r8_0(r8_0bar), .r9_0(r9_0bar), .r10_0(r10_0bar), .r11_0(r11_0bar), .r12_0(r12_0bar), .r13_0(r13_0bar),
         .comparator(comp0_bar)
     );
-    reg [7:0] stage1_0_0, stage1_0_1, stage1_0_0bar, stage1_0_1bar;
+    reg [12:0] stage1_0_0, stage1_0_1, stage1_0_0bar, stage1_0_1bar;
     always @(*) begin
         if (comp0)      begin stage1_0_0 = biased_sum0_0;    stage1_0_1 = biased_sum0_1;    end
         else                    begin stage1_0_0 = biased_sum1_0;    stage1_0_1 = biased_sum1_1;    end
@@ -7585,7 +7970,7 @@ module output_layer (
         else                    begin stage1_0_0bar = biased_sum1_0bar; stage1_0_1bar = biased_sum1_1bar; end
     end
 
-    wire [8:0] temp1_0, temp1_1, temp1_0bar, temp1_1bar;
+    wire [13:0] temp1_0, temp1_1, temp1_0bar, temp1_1bar;
     subtractor s1a (.A(biased_sum2_0), .B(biased_sum3_0), .Result(temp1_0));
     subtractor s1b (.A(biased_sum2_1), .B(biased_sum3_1), .Result(temp1_1));
     subtractor s1abar (.A(biased_sum2_0bar), .B(biased_sum3_0bar), .Result(temp1_0bar));
@@ -7593,15 +7978,15 @@ module output_layer (
     wire comp1, comp1_bar;
     comparator_1 c1 (
         .inputs0_0(temp1_0), .inputs0_1(temp1_1),
-        .r0_0(r0_1), .r1_0(r1_1), .r2_0(r2_1), .r3_0(r3_1), .r4_0(r4_1), .r5_0(r5_1), .r6_0(r6_1), .r7_0(r7_1), .r8_0(r8_1),
+        .r0_0(r0_1), .r1_0(r1_1), .r2_0(r2_1), .r3_0(r3_1), .r4_0(r4_1), .r5_0(r5_1), .r6_0(r6_1), .r7_0(r7_1), .r8_0(r8_1), .r9_0(r9_1), .r10_0(r10_1), .r11_0(r11_1), .r12_0(r12_1), .r13_0(r13_1),
         .comparator(comp1)
     );
     comparator_1 c1_bar (
         .inputs0_0(temp1_0bar), .inputs0_1(temp1_1bar),
-        .r0_0(r0_1bar), .r1_0(r1_1bar), .r2_0(r2_1bar), .r3_0(r3_1bar), .r4_0(r4_1bar), .r5_0(r5_1bar), .r6_0(r6_1bar), .r7_0(r7_1bar), .r8_0(r8_1bar),
+        .r0_0(r0_1bar), .r1_0(r1_1bar), .r2_0(r2_1bar), .r3_0(r3_1bar), .r4_0(r4_1bar), .r5_0(r5_1bar), .r6_0(r6_1bar), .r7_0(r7_1bar), .r8_0(r8_1bar), .r9_0(r9_1bar), .r10_0(r10_1bar), .r11_0(r11_1bar), .r12_0(r12_1bar), .r13_0(r13_1bar),
         .comparator(comp1_bar)
     );
-    reg [7:0] stage1_1_0, stage1_1_1, stage1_1_0bar, stage1_1_1bar;
+    reg [12:0] stage1_1_0, stage1_1_1, stage1_1_0bar, stage1_1_1bar;
     always @(*) begin
         if (comp1)      begin stage1_1_0 = biased_sum2_0;    stage1_1_1 = biased_sum2_1;    end
         else                    begin stage1_1_0 = biased_sum3_0;    stage1_1_1 = biased_sum3_1;    end
@@ -7609,7 +7994,7 @@ module output_layer (
         else                    begin stage1_1_0bar = biased_sum3_0bar; stage1_1_1bar = biased_sum3_1bar; end
     end
 
-    wire [8:0] temp2_0, temp2_1, temp2_0bar, temp2_1bar;
+    wire [13:0] temp2_0, temp2_1, temp2_0bar, temp2_1bar;
     subtractor s2a (.A(stage1_0_0), .B(stage1_1_0), .Result(temp2_0));
     subtractor s2b (.A(stage1_0_1), .B(stage1_1_1), .Result(temp2_1));
     subtractor s2abar (.A(stage1_0_0bar), .B(stage1_1_0bar), .Result(temp2_0bar));
@@ -7617,15 +8002,15 @@ module output_layer (
     wire comp2, comp2_bar;
     comparator_1 c2 (
         .inputs0_0(temp2_0), .inputs0_1(temp2_1),
-        .r0_0(r0_2), .r1_0(r1_2), .r2_0(r2_2), .r3_0(r3_2), .r4_0(r4_2), .r5_0(r5_2), .r6_0(r6_2), .r7_0(r7_2), .r8_0(r8_2),
+        .r0_0(r0_2), .r1_0(r1_2), .r2_0(r2_2), .r3_0(r3_2), .r4_0(r4_2), .r5_0(r5_2), .r6_0(r6_2), .r7_0(r7_2), .r8_0(r8_2), .r9_0(r9_2), .r10_0(r10_2), .r11_0(r11_2), .r12_0(r12_2), .r13_0(r13_2),
         .comparator(comp2)
     );
     comparator_1 c2_bar (
         .inputs0_0(temp2_0bar), .inputs0_1(temp2_1bar),
-        .r0_0(r0_2bar), .r1_0(r1_2bar), .r2_0(r2_2bar), .r3_0(r3_2bar), .r4_0(r4_2bar), .r5_0(r5_2bar), .r6_0(r6_2bar), .r7_0(r7_2bar), .r8_0(r8_2bar),
+        .r0_0(r0_2bar), .r1_0(r1_2bar), .r2_0(r2_2bar), .r3_0(r3_2bar), .r4_0(r4_2bar), .r5_0(r5_2bar), .r6_0(r6_2bar), .r7_0(r7_2bar), .r8_0(r8_2bar), .r9_0(r9_2bar), .r10_0(r10_2bar), .r11_0(r11_2bar), .r12_0(r12_2bar), .r13_0(r13_2bar),
         .comparator(comp2_bar)
     );
-    reg [7:0] stage2_0_0, stage2_0_1, stage2_0_0bar, stage2_0_1bar;
+    reg [12:0] stage2_0_0, stage2_0_1, stage2_0_0bar, stage2_0_1bar;
     always @(*) begin
         if (comp2)      begin stage2_0_0 = stage1_0_0;    stage2_0_1 = stage1_0_1;    end
         else                    begin stage2_0_0 = stage1_1_0;    stage2_0_1 = stage1_1_1;    end
@@ -7655,22 +8040,22 @@ module iterative_controller (
     input wire  rst_n,
     input wire  start,
     output reg   done,
-    input wire [2:0] inputs0_1,
-    input wire [2:0] inputs1_1,
-    input wire [2:0] inputs2_1,
-    input wire [2:0] inputs3_1,
-    input wire [2:0] inputs4_1,
-    input wire [2:0] inputs5_1,
-    input wire [2:0] inputs6_1,
-    input wire [2:0] inputs7_1,
-    input wire [2:0] inputs8_1,
-    input wire [2:0] inputs9_1,
-    input wire [2:0] inputs10_1,
-    input wire [2:0] inputs11_1,
-    input wire [2:0] inputs12_1,
-    input wire [2:0] inputs13_1,
-    input wire [2:0] inputs14_1,
-    input wire [2:0] inputs15_1,
+    input wire [7:0] inputs0_1,
+    input wire [7:0] inputs1_1,
+    input wire [7:0] inputs2_1,
+    input wire [7:0] inputs3_1,
+    input wire [7:0] inputs4_1,
+    input wire [7:0] inputs5_1,
+    input wire [7:0] inputs6_1,
+    input wire [7:0] inputs7_1,
+    input wire [7:0] inputs8_1,
+    input wire [7:0] inputs9_1,
+    input wire [7:0] inputs10_1,
+    input wire [7:0] inputs11_1,
+    input wire [7:0] inputs12_1,
+    input wire [7:0] inputs13_1,
+    input wire [7:0] inputs14_1,
+    input wire [7:0] inputs15_1,
     input wire [15:0] w1_0_1, w1_1_1,
     input wire [15:0] w1_0_2, w1_1_2,
     input wire [15:0] w1_0_3, w1_1_3,
@@ -7703,616 +8088,616 @@ module iterative_controller (
     input wire [15:0] w8_0_2, w8_1_2,
     input wire [15:0] w8_0_3, w8_1_3,
     input wire [15:0] w8_0_4, w8_1_4,
-    input wire [6:0] b1_1,
-    input wire [6:0] b1_2,
-    input wire [6:0] b1_3,
-    input wire [6:0] b1_4,
-    input wire [6:0] b1_5,
-    input wire [6:0] b1_6,
-    input wire [6:0] b1_7,
-    input wire [6:0] b1_8,
-    input wire [6:0] b2_1,
-    input wire [6:0] b2_2,
-    input wire [6:0] b2_3,
-    input wire [6:0] b2_4,
-    input wire [6:0] b2_5,
-    input wire [6:0] b2_6,
-    input wire [6:0] b2_7,
-    input wire [6:0] b2_8,
-    input wire [6:0] b3_1,
-    input wire [6:0] b3_2,
-    input wire [6:0] b3_3,
-    input wire [6:0] b3_4,
-    input wire [6:0] b3_5,
-    input wire [6:0] b3_6,
-    input wire [6:0] b3_7,
-    input wire [6:0] b3_8,
-    input wire [6:0] b4_1,
-    input wire [6:0] b4_2,
-    input wire [6:0] b4_3,
-    input wire [6:0] b4_4,
-    input wire [6:0] b4_5,
-    input wire [6:0] b4_6,
-    input wire [6:0] b4_7,
-    input wire [6:0] b4_8,
-    input wire [6:0] b5_1,
-    input wire [6:0] b5_2,
-    input wire [6:0] b5_3,
-    input wire [6:0] b5_4,
-    input wire [6:0] b5_5,
-    input wire [6:0] b5_6,
-    input wire [6:0] b5_7,
-    input wire [6:0] b5_8,
-    input wire [6:0] b6_1,
-    input wire [6:0] b6_2,
-    input wire [6:0] b6_3,
-    input wire [6:0] b6_4,
-    input wire [6:0] b6_5,
-    input wire [6:0] b6_6,
-    input wire [6:0] b6_7,
-    input wire [6:0] b6_8,
-    input wire [6:0] b7_1,
-    input wire [6:0] b7_2,
-    input wire [6:0] b7_3,
-    input wire [6:0] b7_4,
-    input wire [6:0] b7_5,
-    input wire [6:0] b7_6,
-    input wire [6:0] b7_7,
-    input wire [6:0] b7_8,
-    input wire [6:0] b8_1,
-    input wire [6:0] b8_2,
-    input wire [6:0] b8_3,
-    input wire [6:0] b8_4,
-    input wire [6:0] b8_5,
-    input wire [6:0] b8_6,
-    input wire [6:0] b8_7,
-    input wire [6:0] b8_8,
-    output wire  [2:0]act0_0_0_r,
-    output wire  [2:0]act0_0_1_r,
-    output wire  [2:0]act0_0_2_r,
-    output wire  [2:0]act0_0_3_r,
-    output wire  [2:0]act0_0_4_r,
-    output wire  [2:0]act0_0_5_r,
-    output wire  [2:0]act0_0_6_r,
-    output wire  [2:0]act0_0_7_r,
-    output wire  [2:0]act0_0_8_r,
-    output wire  [2:0]act0_0_9_r,
-    output wire  [2:0]act0_0_10_r,
-    output wire  [2:0]act0_0_11_r,
-    output wire  [2:0]act0_0_12_r,
-    output wire  [2:0]act0_0_13_r,
-    output wire  [2:0]act0_0_14_r,
-    output wire  [2:0]act0_0_15_r,
-    output wire  [2:0]act0_1_0_r,
-    output wire  [2:0]act0_1_1_r,
-    output wire  [2:0]act0_1_2_r,
-    output wire  [2:0]act0_1_3_r,
-    output wire  [2:0]act0_1_4_r,
-    output wire  [2:0]act0_1_5_r,
-    output wire  [2:0]act0_1_6_r,
-    output wire  [2:0]act0_1_7_r,
-    output wire  [2:0]act0_1_8_r,
-    output wire  [2:0]act0_1_9_r,
-    output wire  [2:0]act0_1_10_r,
-    output wire  [2:0]act0_1_11_r,
-    output wire  [2:0]act0_1_12_r,
-    output wire  [2:0]act0_1_13_r,
-    output wire  [2:0]act0_1_14_r,
-    output wire  [2:0]act0_1_15_r,
-    output wire  [2:0]act1_0_0_r,
-    output wire  [2:0]act1_0_1_r,
-    output wire  [2:0]act1_0_2_r,
-    output wire  [2:0]act1_0_3_r,
-    output wire  [2:0]act1_0_4_r,
-    output wire  [2:0]act1_0_5_r,
-    output wire  [2:0]act1_0_6_r,
-    output wire  [2:0]act1_0_7_r,
-    output wire  [2:0]act1_0_8_r,
-    output wire  [2:0]act1_0_9_r,
-    output wire  [2:0]act1_0_10_r,
-    output wire  [2:0]act1_0_11_r,
-    output wire  [2:0]act1_0_12_r,
-    output wire  [2:0]act1_0_13_r,
-    output wire  [2:0]act1_0_14_r,
-    output wire  [2:0]act1_0_15_r,
-    output wire  [2:0]act1_1_0_r,
-    output wire  [2:0]act1_1_1_r,
-    output wire  [2:0]act1_1_2_r,
-    output wire  [2:0]act1_1_3_r,
-    output wire  [2:0]act1_1_4_r,
-    output wire  [2:0]act1_1_5_r,
-    output wire  [2:0]act1_1_6_r,
-    output wire  [2:0]act1_1_7_r,
-    output wire  [2:0]act1_1_8_r,
-    output wire  [2:0]act1_1_9_r,
-    output wire  [2:0]act1_1_10_r,
-    output wire  [2:0]act1_1_11_r,
-    output wire  [2:0]act1_1_12_r,
-    output wire  [2:0]act1_1_13_r,
-    output wire  [2:0]act1_1_14_r,
-    output wire  [2:0]act1_1_15_r,
-    output wire  [2:0]act2_0_0_r,
-    output wire  [2:0]act2_0_1_r,
-    output wire  [2:0]act2_0_2_r,
-    output wire  [2:0]act2_0_3_r,
-    output wire  [2:0]act2_0_4_r,
-    output wire  [2:0]act2_0_5_r,
-    output wire  [2:0]act2_0_6_r,
-    output wire  [2:0]act2_0_7_r,
-    output wire  [2:0]act2_0_8_r,
-    output wire  [2:0]act2_0_9_r,
-    output wire  [2:0]act2_0_10_r,
-    output wire  [2:0]act2_0_11_r,
-    output wire  [2:0]act2_0_12_r,
-    output wire  [2:0]act2_0_13_r,
-    output wire  [2:0]act2_0_14_r,
-    output wire  [2:0]act2_0_15_r,
-    output wire  [2:0]act2_1_0_r,
-    output wire  [2:0]act2_1_1_r,
-    output wire  [2:0]act2_1_2_r,
-    output wire  [2:0]act2_1_3_r,
-    output wire  [2:0]act2_1_4_r,
-    output wire  [2:0]act2_1_5_r,
-    output wire  [2:0]act2_1_6_r,
-    output wire  [2:0]act2_1_7_r,
-    output wire  [2:0]act2_1_8_r,
-    output wire  [2:0]act2_1_9_r,
-    output wire  [2:0]act2_1_10_r,
-    output wire  [2:0]act2_1_11_r,
-    output wire  [2:0]act2_1_12_r,
-    output wire  [2:0]act2_1_13_r,
-    output wire  [2:0]act2_1_14_r,
-    output wire  [2:0]act2_1_15_r,
-    output wire  [2:0]act3_0_0_r,
-    output wire  [2:0]act3_0_1_r,
-    output wire  [2:0]act3_0_2_r,
-    output wire  [2:0]act3_0_3_r,
-    output wire  [2:0]act3_0_4_r,
-    output wire  [2:0]act3_0_5_r,
-    output wire  [2:0]act3_0_6_r,
-    output wire  [2:0]act3_0_7_r,
-    output wire  [2:0]act3_0_8_r,
-    output wire  [2:0]act3_0_9_r,
-    output wire  [2:0]act3_0_10_r,
-    output wire  [2:0]act3_0_11_r,
-    output wire  [2:0]act3_0_12_r,
-    output wire  [2:0]act3_0_13_r,
-    output wire  [2:0]act3_0_14_r,
-    output wire  [2:0]act3_0_15_r,
-    output wire  [2:0]act3_1_0_r,
-    output wire  [2:0]act3_1_1_r,
-    output wire  [2:0]act3_1_2_r,
-    output wire  [2:0]act3_1_3_r,
-    output wire  [2:0]act3_1_4_r,
-    output wire  [2:0]act3_1_5_r,
-    output wire  [2:0]act3_1_6_r,
-    output wire  [2:0]act3_1_7_r,
-    output wire  [2:0]act3_1_8_r,
-    output wire  [2:0]act3_1_9_r,
-    output wire  [2:0]act3_1_10_r,
-    output wire  [2:0]act3_1_11_r,
-    output wire  [2:0]act3_1_12_r,
-    output wire  [2:0]act3_1_13_r,
-    output wire  [2:0]act3_1_14_r,
-    output wire  [2:0]act3_1_15_r,
-    output wire  [2:0]act4_0_0_r,
-    output wire  [2:0]act4_0_1_r,
-    output wire  [2:0]act4_0_2_r,
-    output wire  [2:0]act4_0_3_r,
-    output wire  [2:0]act4_0_4_r,
-    output wire  [2:0]act4_0_5_r,
-    output wire  [2:0]act4_0_6_r,
-    output wire  [2:0]act4_0_7_r,
-    output wire  [2:0]act4_0_8_r,
-    output wire  [2:0]act4_0_9_r,
-    output wire  [2:0]act4_0_10_r,
-    output wire  [2:0]act4_0_11_r,
-    output wire  [2:0]act4_0_12_r,
-    output wire  [2:0]act4_0_13_r,
-    output wire  [2:0]act4_0_14_r,
-    output wire  [2:0]act4_0_15_r,
-    output wire  [2:0]act4_1_0_r,
-    output wire  [2:0]act4_1_1_r,
-    output wire  [2:0]act4_1_2_r,
-    output wire  [2:0]act4_1_3_r,
-    output wire  [2:0]act4_1_4_r,
-    output wire  [2:0]act4_1_5_r,
-    output wire  [2:0]act4_1_6_r,
-    output wire  [2:0]act4_1_7_r,
-    output wire  [2:0]act4_1_8_r,
-    output wire  [2:0]act4_1_9_r,
-    output wire  [2:0]act4_1_10_r,
-    output wire  [2:0]act4_1_11_r,
-    output wire  [2:0]act4_1_12_r,
-    output wire  [2:0]act4_1_13_r,
-    output wire  [2:0]act4_1_14_r,
-    output wire  [2:0]act4_1_15_r,
-    output wire  [2:0]act5_0_0_r,
-    output wire  [2:0]act5_0_1_r,
-    output wire  [2:0]act5_0_2_r,
-    output wire  [2:0]act5_0_3_r,
-    output wire  [2:0]act5_0_4_r,
-    output wire  [2:0]act5_0_5_r,
-    output wire  [2:0]act5_0_6_r,
-    output wire  [2:0]act5_0_7_r,
-    output wire  [2:0]act5_0_8_r,
-    output wire  [2:0]act5_0_9_r,
-    output wire  [2:0]act5_0_10_r,
-    output wire  [2:0]act5_0_11_r,
-    output wire  [2:0]act5_0_12_r,
-    output wire  [2:0]act5_0_13_r,
-    output wire  [2:0]act5_0_14_r,
-    output wire  [2:0]act5_0_15_r,
-    output wire  [2:0]act5_1_0_r,
-    output wire  [2:0]act5_1_1_r,
-    output wire  [2:0]act5_1_2_r,
-    output wire  [2:0]act5_1_3_r,
-    output wire  [2:0]act5_1_4_r,
-    output wire  [2:0]act5_1_5_r,
-    output wire  [2:0]act5_1_6_r,
-    output wire  [2:0]act5_1_7_r,
-    output wire  [2:0]act5_1_8_r,
-    output wire  [2:0]act5_1_9_r,
-    output wire  [2:0]act5_1_10_r,
-    output wire  [2:0]act5_1_11_r,
-    output wire  [2:0]act5_1_12_r,
-    output wire  [2:0]act5_1_13_r,
-    output wire  [2:0]act5_1_14_r,
-    output wire  [2:0]act5_1_15_r,
-    output wire  [2:0]act6_0_0_r,
-    output wire  [2:0]act6_0_1_r,
-    output wire  [2:0]act6_0_2_r,
-    output wire  [2:0]act6_0_3_r,
-    output wire  [2:0]act6_0_4_r,
-    output wire  [2:0]act6_0_5_r,
-    output wire  [2:0]act6_0_6_r,
-    output wire  [2:0]act6_0_7_r,
-    output wire  [2:0]act6_0_8_r,
-    output wire  [2:0]act6_0_9_r,
-    output wire  [2:0]act6_0_10_r,
-    output wire  [2:0]act6_0_11_r,
-    output wire  [2:0]act6_0_12_r,
-    output wire  [2:0]act6_0_13_r,
-    output wire  [2:0]act6_0_14_r,
-    output wire  [2:0]act6_0_15_r,
-    output wire  [2:0]act6_1_0_r,
-    output wire  [2:0]act6_1_1_r,
-    output wire  [2:0]act6_1_2_r,
-    output wire  [2:0]act6_1_3_r,
-    output wire  [2:0]act6_1_4_r,
-    output wire  [2:0]act6_1_5_r,
-    output wire  [2:0]act6_1_6_r,
-    output wire  [2:0]act6_1_7_r,
-    output wire  [2:0]act6_1_8_r,
-    output wire  [2:0]act6_1_9_r,
-    output wire  [2:0]act6_1_10_r,
-    output wire  [2:0]act6_1_11_r,
-    output wire  [2:0]act6_1_12_r,
-    output wire  [2:0]act6_1_13_r,
-    output wire  [2:0]act6_1_14_r,
-    output wire  [2:0]act6_1_15_r,
-    output wire  [2:0]act7_0_0_r,
-    output wire  [2:0]act7_0_1_r,
-    output wire  [2:0]act7_0_2_r,
-    output wire  [2:0]act7_0_3_r,
-    output wire  [2:0]act7_0_4_r,
-    output wire  [2:0]act7_0_5_r,
-    output wire  [2:0]act7_0_6_r,
-    output wire  [2:0]act7_0_7_r,
-    output wire  [2:0]act7_0_8_r,
-    output wire  [2:0]act7_0_9_r,
-    output wire  [2:0]act7_0_10_r,
-    output wire  [2:0]act7_0_11_r,
-    output wire  [2:0]act7_0_12_r,
-    output wire  [2:0]act7_0_13_r,
-    output wire  [2:0]act7_0_14_r,
-    output wire  [2:0]act7_0_15_r,
-    output wire  [2:0]act7_1_0_r,
-    output wire  [2:0]act7_1_1_r,
-    output wire  [2:0]act7_1_2_r,
-    output wire  [2:0]act7_1_3_r,
-    output wire  [2:0]act7_1_4_r,
-    output wire  [2:0]act7_1_5_r,
-    output wire  [2:0]act7_1_6_r,
-    output wire  [2:0]act7_1_7_r,
-    output wire  [2:0]act7_1_8_r,
-    output wire  [2:0]act7_1_9_r,
-    output wire  [2:0]act7_1_10_r,
-    output wire  [2:0]act7_1_11_r,
-    output wire  [2:0]act7_1_12_r,
-    output wire  [2:0]act7_1_13_r,
-    output wire  [2:0]act7_1_14_r,
-    output wire  [2:0]act7_1_15_r
+    input wire [11:0] b1_1,
+    input wire [11:0] b1_2,
+    input wire [11:0] b1_3,
+    input wire [11:0] b1_4,
+    input wire [11:0] b1_5,
+    input wire [11:0] b1_6,
+    input wire [11:0] b1_7,
+    input wire [11:0] b1_8,
+    input wire [11:0] b2_1,
+    input wire [11:0] b2_2,
+    input wire [11:0] b2_3,
+    input wire [11:0] b2_4,
+    input wire [11:0] b2_5,
+    input wire [11:0] b2_6,
+    input wire [11:0] b2_7,
+    input wire [11:0] b2_8,
+    input wire [11:0] b3_1,
+    input wire [11:0] b3_2,
+    input wire [11:0] b3_3,
+    input wire [11:0] b3_4,
+    input wire [11:0] b3_5,
+    input wire [11:0] b3_6,
+    input wire [11:0] b3_7,
+    input wire [11:0] b3_8,
+    input wire [11:0] b4_1,
+    input wire [11:0] b4_2,
+    input wire [11:0] b4_3,
+    input wire [11:0] b4_4,
+    input wire [11:0] b4_5,
+    input wire [11:0] b4_6,
+    input wire [11:0] b4_7,
+    input wire [11:0] b4_8,
+    input wire [11:0] b5_1,
+    input wire [11:0] b5_2,
+    input wire [11:0] b5_3,
+    input wire [11:0] b5_4,
+    input wire [11:0] b5_5,
+    input wire [11:0] b5_6,
+    input wire [11:0] b5_7,
+    input wire [11:0] b5_8,
+    input wire [11:0] b6_1,
+    input wire [11:0] b6_2,
+    input wire [11:0] b6_3,
+    input wire [11:0] b6_4,
+    input wire [11:0] b6_5,
+    input wire [11:0] b6_6,
+    input wire [11:0] b6_7,
+    input wire [11:0] b6_8,
+    input wire [11:0] b7_1,
+    input wire [11:0] b7_2,
+    input wire [11:0] b7_3,
+    input wire [11:0] b7_4,
+    input wire [11:0] b7_5,
+    input wire [11:0] b7_6,
+    input wire [11:0] b7_7,
+    input wire [11:0] b7_8,
+    input wire [11:0] b8_1,
+    input wire [11:0] b8_2,
+    input wire [11:0] b8_3,
+    input wire [11:0] b8_4,
+    input wire [11:0] b8_5,
+    input wire [11:0] b8_6,
+    input wire [11:0] b8_7,
+    input wire [11:0] b8_8,
+    output wire  [7:0]act0_0_0_r,
+    output wire  [7:0]act0_0_1_r,
+    output wire  [7:0]act0_0_2_r,
+    output wire  [7:0]act0_0_3_r,
+    output wire  [7:0]act0_0_4_r,
+    output wire  [7:0]act0_0_5_r,
+    output wire  [7:0]act0_0_6_r,
+    output wire  [7:0]act0_0_7_r,
+    output wire  [7:0]act0_0_8_r,
+    output wire  [7:0]act0_0_9_r,
+    output wire  [7:0]act0_0_10_r,
+    output wire  [7:0]act0_0_11_r,
+    output wire  [7:0]act0_0_12_r,
+    output wire  [7:0]act0_0_13_r,
+    output wire  [7:0]act0_0_14_r,
+    output wire  [7:0]act0_0_15_r,
+    output wire  [7:0]act0_1_0_r,
+    output wire  [7:0]act0_1_1_r,
+    output wire  [7:0]act0_1_2_r,
+    output wire  [7:0]act0_1_3_r,
+    output wire  [7:0]act0_1_4_r,
+    output wire  [7:0]act0_1_5_r,
+    output wire  [7:0]act0_1_6_r,
+    output wire  [7:0]act0_1_7_r,
+    output wire  [7:0]act0_1_8_r,
+    output wire  [7:0]act0_1_9_r,
+    output wire  [7:0]act0_1_10_r,
+    output wire  [7:0]act0_1_11_r,
+    output wire  [7:0]act0_1_12_r,
+    output wire  [7:0]act0_1_13_r,
+    output wire  [7:0]act0_1_14_r,
+    output wire  [7:0]act0_1_15_r,
+    output wire  [7:0]act1_0_0_r,
+    output wire  [7:0]act1_0_1_r,
+    output wire  [7:0]act1_0_2_r,
+    output wire  [7:0]act1_0_3_r,
+    output wire  [7:0]act1_0_4_r,
+    output wire  [7:0]act1_0_5_r,
+    output wire  [7:0]act1_0_6_r,
+    output wire  [7:0]act1_0_7_r,
+    output wire  [7:0]act1_0_8_r,
+    output wire  [7:0]act1_0_9_r,
+    output wire  [7:0]act1_0_10_r,
+    output wire  [7:0]act1_0_11_r,
+    output wire  [7:0]act1_0_12_r,
+    output wire  [7:0]act1_0_13_r,
+    output wire  [7:0]act1_0_14_r,
+    output wire  [7:0]act1_0_15_r,
+    output wire  [7:0]act1_1_0_r,
+    output wire  [7:0]act1_1_1_r,
+    output wire  [7:0]act1_1_2_r,
+    output wire  [7:0]act1_1_3_r,
+    output wire  [7:0]act1_1_4_r,
+    output wire  [7:0]act1_1_5_r,
+    output wire  [7:0]act1_1_6_r,
+    output wire  [7:0]act1_1_7_r,
+    output wire  [7:0]act1_1_8_r,
+    output wire  [7:0]act1_1_9_r,
+    output wire  [7:0]act1_1_10_r,
+    output wire  [7:0]act1_1_11_r,
+    output wire  [7:0]act1_1_12_r,
+    output wire  [7:0]act1_1_13_r,
+    output wire  [7:0]act1_1_14_r,
+    output wire  [7:0]act1_1_15_r,
+    output wire  [7:0]act2_0_0_r,
+    output wire  [7:0]act2_0_1_r,
+    output wire  [7:0]act2_0_2_r,
+    output wire  [7:0]act2_0_3_r,
+    output wire  [7:0]act2_0_4_r,
+    output wire  [7:0]act2_0_5_r,
+    output wire  [7:0]act2_0_6_r,
+    output wire  [7:0]act2_0_7_r,
+    output wire  [7:0]act2_0_8_r,
+    output wire  [7:0]act2_0_9_r,
+    output wire  [7:0]act2_0_10_r,
+    output wire  [7:0]act2_0_11_r,
+    output wire  [7:0]act2_0_12_r,
+    output wire  [7:0]act2_0_13_r,
+    output wire  [7:0]act2_0_14_r,
+    output wire  [7:0]act2_0_15_r,
+    output wire  [7:0]act2_1_0_r,
+    output wire  [7:0]act2_1_1_r,
+    output wire  [7:0]act2_1_2_r,
+    output wire  [7:0]act2_1_3_r,
+    output wire  [7:0]act2_1_4_r,
+    output wire  [7:0]act2_1_5_r,
+    output wire  [7:0]act2_1_6_r,
+    output wire  [7:0]act2_1_7_r,
+    output wire  [7:0]act2_1_8_r,
+    output wire  [7:0]act2_1_9_r,
+    output wire  [7:0]act2_1_10_r,
+    output wire  [7:0]act2_1_11_r,
+    output wire  [7:0]act2_1_12_r,
+    output wire  [7:0]act2_1_13_r,
+    output wire  [7:0]act2_1_14_r,
+    output wire  [7:0]act2_1_15_r,
+    output wire  [7:0]act3_0_0_r,
+    output wire  [7:0]act3_0_1_r,
+    output wire  [7:0]act3_0_2_r,
+    output wire  [7:0]act3_0_3_r,
+    output wire  [7:0]act3_0_4_r,
+    output wire  [7:0]act3_0_5_r,
+    output wire  [7:0]act3_0_6_r,
+    output wire  [7:0]act3_0_7_r,
+    output wire  [7:0]act3_0_8_r,
+    output wire  [7:0]act3_0_9_r,
+    output wire  [7:0]act3_0_10_r,
+    output wire  [7:0]act3_0_11_r,
+    output wire  [7:0]act3_0_12_r,
+    output wire  [7:0]act3_0_13_r,
+    output wire  [7:0]act3_0_14_r,
+    output wire  [7:0]act3_0_15_r,
+    output wire  [7:0]act3_1_0_r,
+    output wire  [7:0]act3_1_1_r,
+    output wire  [7:0]act3_1_2_r,
+    output wire  [7:0]act3_1_3_r,
+    output wire  [7:0]act3_1_4_r,
+    output wire  [7:0]act3_1_5_r,
+    output wire  [7:0]act3_1_6_r,
+    output wire  [7:0]act3_1_7_r,
+    output wire  [7:0]act3_1_8_r,
+    output wire  [7:0]act3_1_9_r,
+    output wire  [7:0]act3_1_10_r,
+    output wire  [7:0]act3_1_11_r,
+    output wire  [7:0]act3_1_12_r,
+    output wire  [7:0]act3_1_13_r,
+    output wire  [7:0]act3_1_14_r,
+    output wire  [7:0]act3_1_15_r,
+    output wire  [7:0]act4_0_0_r,
+    output wire  [7:0]act4_0_1_r,
+    output wire  [7:0]act4_0_2_r,
+    output wire  [7:0]act4_0_3_r,
+    output wire  [7:0]act4_0_4_r,
+    output wire  [7:0]act4_0_5_r,
+    output wire  [7:0]act4_0_6_r,
+    output wire  [7:0]act4_0_7_r,
+    output wire  [7:0]act4_0_8_r,
+    output wire  [7:0]act4_0_9_r,
+    output wire  [7:0]act4_0_10_r,
+    output wire  [7:0]act4_0_11_r,
+    output wire  [7:0]act4_0_12_r,
+    output wire  [7:0]act4_0_13_r,
+    output wire  [7:0]act4_0_14_r,
+    output wire  [7:0]act4_0_15_r,
+    output wire  [7:0]act4_1_0_r,
+    output wire  [7:0]act4_1_1_r,
+    output wire  [7:0]act4_1_2_r,
+    output wire  [7:0]act4_1_3_r,
+    output wire  [7:0]act4_1_4_r,
+    output wire  [7:0]act4_1_5_r,
+    output wire  [7:0]act4_1_6_r,
+    output wire  [7:0]act4_1_7_r,
+    output wire  [7:0]act4_1_8_r,
+    output wire  [7:0]act4_1_9_r,
+    output wire  [7:0]act4_1_10_r,
+    output wire  [7:0]act4_1_11_r,
+    output wire  [7:0]act4_1_12_r,
+    output wire  [7:0]act4_1_13_r,
+    output wire  [7:0]act4_1_14_r,
+    output wire  [7:0]act4_1_15_r,
+    output wire  [7:0]act5_0_0_r,
+    output wire  [7:0]act5_0_1_r,
+    output wire  [7:0]act5_0_2_r,
+    output wire  [7:0]act5_0_3_r,
+    output wire  [7:0]act5_0_4_r,
+    output wire  [7:0]act5_0_5_r,
+    output wire  [7:0]act5_0_6_r,
+    output wire  [7:0]act5_0_7_r,
+    output wire  [7:0]act5_0_8_r,
+    output wire  [7:0]act5_0_9_r,
+    output wire  [7:0]act5_0_10_r,
+    output wire  [7:0]act5_0_11_r,
+    output wire  [7:0]act5_0_12_r,
+    output wire  [7:0]act5_0_13_r,
+    output wire  [7:0]act5_0_14_r,
+    output wire  [7:0]act5_0_15_r,
+    output wire  [7:0]act5_1_0_r,
+    output wire  [7:0]act5_1_1_r,
+    output wire  [7:0]act5_1_2_r,
+    output wire  [7:0]act5_1_3_r,
+    output wire  [7:0]act5_1_4_r,
+    output wire  [7:0]act5_1_5_r,
+    output wire  [7:0]act5_1_6_r,
+    output wire  [7:0]act5_1_7_r,
+    output wire  [7:0]act5_1_8_r,
+    output wire  [7:0]act5_1_9_r,
+    output wire  [7:0]act5_1_10_r,
+    output wire  [7:0]act5_1_11_r,
+    output wire  [7:0]act5_1_12_r,
+    output wire  [7:0]act5_1_13_r,
+    output wire  [7:0]act5_1_14_r,
+    output wire  [7:0]act5_1_15_r,
+    output wire  [7:0]act6_0_0_r,
+    output wire  [7:0]act6_0_1_r,
+    output wire  [7:0]act6_0_2_r,
+    output wire  [7:0]act6_0_3_r,
+    output wire  [7:0]act6_0_4_r,
+    output wire  [7:0]act6_0_5_r,
+    output wire  [7:0]act6_0_6_r,
+    output wire  [7:0]act6_0_7_r,
+    output wire  [7:0]act6_0_8_r,
+    output wire  [7:0]act6_0_9_r,
+    output wire  [7:0]act6_0_10_r,
+    output wire  [7:0]act6_0_11_r,
+    output wire  [7:0]act6_0_12_r,
+    output wire  [7:0]act6_0_13_r,
+    output wire  [7:0]act6_0_14_r,
+    output wire  [7:0]act6_0_15_r,
+    output wire  [7:0]act6_1_0_r,
+    output wire  [7:0]act6_1_1_r,
+    output wire  [7:0]act6_1_2_r,
+    output wire  [7:0]act6_1_3_r,
+    output wire  [7:0]act6_1_4_r,
+    output wire  [7:0]act6_1_5_r,
+    output wire  [7:0]act6_1_6_r,
+    output wire  [7:0]act6_1_7_r,
+    output wire  [7:0]act6_1_8_r,
+    output wire  [7:0]act6_1_9_r,
+    output wire  [7:0]act6_1_10_r,
+    output wire  [7:0]act6_1_11_r,
+    output wire  [7:0]act6_1_12_r,
+    output wire  [7:0]act6_1_13_r,
+    output wire  [7:0]act6_1_14_r,
+    output wire  [7:0]act6_1_15_r,
+    output wire  [7:0]act7_0_0_r,
+    output wire  [7:0]act7_0_1_r,
+    output wire  [7:0]act7_0_2_r,
+    output wire  [7:0]act7_0_3_r,
+    output wire  [7:0]act7_0_4_r,
+    output wire  [7:0]act7_0_5_r,
+    output wire  [7:0]act7_0_6_r,
+    output wire  [7:0]act7_0_7_r,
+    output wire  [7:0]act7_0_8_r,
+    output wire  [7:0]act7_0_9_r,
+    output wire  [7:0]act7_0_10_r,
+    output wire  [7:0]act7_0_11_r,
+    output wire  [7:0]act7_0_12_r,
+    output wire  [7:0]act7_0_13_r,
+    output wire  [7:0]act7_0_14_r,
+    output wire  [7:0]act7_0_15_r,
+    output wire  [7:0]act7_1_0_r,
+    output wire  [7:0]act7_1_1_r,
+    output wire  [7:0]act7_1_2_r,
+    output wire  [7:0]act7_1_3_r,
+    output wire  [7:0]act7_1_4_r,
+    output wire  [7:0]act7_1_5_r,
+    output wire  [7:0]act7_1_6_r,
+    output wire  [7:0]act7_1_7_r,
+    output wire  [7:0]act7_1_8_r,
+    output wire  [7:0]act7_1_9_r,
+    output wire  [7:0]act7_1_10_r,
+    output wire  [7:0]act7_1_11_r,
+    output wire  [7:0]act7_1_12_r,
+    output wire  [7:0]act7_1_13_r,
+    output wire  [7:0]act7_1_14_r,
+    output wire  [7:0]act7_1_15_r
 );
 
   reg  [1:0]  s_count;
-  reg [2:0] act0_0_0_layer;
-  reg [2:0] act0_1_0_layer;
-  reg [2:0] act0_0_1_layer;
-  reg [2:0] act0_1_1_layer;
-  reg [2:0] act0_0_2_layer;
-  reg [2:0] act0_1_2_layer;
-  reg [2:0] act0_0_3_layer;
-  reg [2:0] act0_1_3_layer;
-  reg [2:0] act0_0_4_layer;
-  reg [2:0] act0_1_4_layer;
-  reg [2:0] act0_0_5_layer;
-  reg [2:0] act0_1_5_layer;
-  reg [2:0] act0_0_6_layer;
-  reg [2:0] act0_1_6_layer;
-  reg [2:0] act0_0_7_layer;
-  reg [2:0] act0_1_7_layer;
-  reg [2:0] act0_0_8_layer;
-  reg [2:0] act0_1_8_layer;
-  reg [2:0] act0_0_9_layer;
-  reg [2:0] act0_1_9_layer;
-  reg [2:0] act0_0_10_layer;
-  reg [2:0] act0_1_10_layer;
-  reg [2:0] act0_0_11_layer;
-  reg [2:0] act0_1_11_layer;
-  reg [2:0] act0_0_12_layer;
-  reg [2:0] act0_1_12_layer;
-  reg [2:0] act0_0_13_layer;
-  reg [2:0] act0_1_13_layer;
-  reg [2:0] act0_0_14_layer;
-  reg [2:0] act0_1_14_layer;
-  reg [2:0] act0_0_15_layer;
-  reg [2:0] act0_1_15_layer;
-  reg [2:0] act1_0_0_layer;
-  reg [2:0] act1_1_0_layer;
-  reg [2:0] act1_0_1_layer;
-  reg [2:0] act1_1_1_layer;
-  reg [2:0] act1_0_2_layer;
-  reg [2:0] act1_1_2_layer;
-  reg [2:0] act1_0_3_layer;
-  reg [2:0] act1_1_3_layer;
-  reg [2:0] act1_0_4_layer;
-  reg [2:0] act1_1_4_layer;
-  reg [2:0] act1_0_5_layer;
-  reg [2:0] act1_1_5_layer;
-  reg [2:0] act1_0_6_layer;
-  reg [2:0] act1_1_6_layer;
-  reg [2:0] act1_0_7_layer;
-  reg [2:0] act1_1_7_layer;
-  reg [2:0] act1_0_8_layer;
-  reg [2:0] act1_1_8_layer;
-  reg [2:0] act1_0_9_layer;
-  reg [2:0] act1_1_9_layer;
-  reg [2:0] act1_0_10_layer;
-  reg [2:0] act1_1_10_layer;
-  reg [2:0] act1_0_11_layer;
-  reg [2:0] act1_1_11_layer;
-  reg [2:0] act1_0_12_layer;
-  reg [2:0] act1_1_12_layer;
-  reg [2:0] act1_0_13_layer;
-  reg [2:0] act1_1_13_layer;
-  reg [2:0] act1_0_14_layer;
-  reg [2:0] act1_1_14_layer;
-  reg [2:0] act1_0_15_layer;
-  reg [2:0] act1_1_15_layer;
-  reg [2:0] act2_0_0_layer;
-  reg [2:0] act2_1_0_layer;
-  reg [2:0] act2_0_1_layer;
-  reg [2:0] act2_1_1_layer;
-  reg [2:0] act2_0_2_layer;
-  reg [2:0] act2_1_2_layer;
-  reg [2:0] act2_0_3_layer;
-  reg [2:0] act2_1_3_layer;
-  reg [2:0] act2_0_4_layer;
-  reg [2:0] act2_1_4_layer;
-  reg [2:0] act2_0_5_layer;
-  reg [2:0] act2_1_5_layer;
-  reg [2:0] act2_0_6_layer;
-  reg [2:0] act2_1_6_layer;
-  reg [2:0] act2_0_7_layer;
-  reg [2:0] act2_1_7_layer;
-  reg [2:0] act2_0_8_layer;
-  reg [2:0] act2_1_8_layer;
-  reg [2:0] act2_0_9_layer;
-  reg [2:0] act2_1_9_layer;
-  reg [2:0] act2_0_10_layer;
-  reg [2:0] act2_1_10_layer;
-  reg [2:0] act2_0_11_layer;
-  reg [2:0] act2_1_11_layer;
-  reg [2:0] act2_0_12_layer;
-  reg [2:0] act2_1_12_layer;
-  reg [2:0] act2_0_13_layer;
-  reg [2:0] act2_1_13_layer;
-  reg [2:0] act2_0_14_layer;
-  reg [2:0] act2_1_14_layer;
-  reg [2:0] act2_0_15_layer;
-  reg [2:0] act2_1_15_layer;
-  reg [2:0] act3_0_0_layer;
-  reg [2:0] act3_1_0_layer;
-  reg [2:0] act3_0_1_layer;
-  reg [2:0] act3_1_1_layer;
-  reg [2:0] act3_0_2_layer;
-  reg [2:0] act3_1_2_layer;
-  reg [2:0] act3_0_3_layer;
-  reg [2:0] act3_1_3_layer;
-  reg [2:0] act3_0_4_layer;
-  reg [2:0] act3_1_4_layer;
-  reg [2:0] act3_0_5_layer;
-  reg [2:0] act3_1_5_layer;
-  reg [2:0] act3_0_6_layer;
-  reg [2:0] act3_1_6_layer;
-  reg [2:0] act3_0_7_layer;
-  reg [2:0] act3_1_7_layer;
-  reg [2:0] act3_0_8_layer;
-  reg [2:0] act3_1_8_layer;
-  reg [2:0] act3_0_9_layer;
-  reg [2:0] act3_1_9_layer;
-  reg [2:0] act3_0_10_layer;
-  reg [2:0] act3_1_10_layer;
-  reg [2:0] act3_0_11_layer;
-  reg [2:0] act3_1_11_layer;
-  reg [2:0] act3_0_12_layer;
-  reg [2:0] act3_1_12_layer;
-  reg [2:0] act3_0_13_layer;
-  reg [2:0] act3_1_13_layer;
-  reg [2:0] act3_0_14_layer;
-  reg [2:0] act3_1_14_layer;
-  reg [2:0] act3_0_15_layer;
-  reg [2:0] act3_1_15_layer;
-  reg [2:0] act4_0_0_layer;
-  reg [2:0] act4_1_0_layer;
-  reg [2:0] act4_0_1_layer;
-  reg [2:0] act4_1_1_layer;
-  reg [2:0] act4_0_2_layer;
-  reg [2:0] act4_1_2_layer;
-  reg [2:0] act4_0_3_layer;
-  reg [2:0] act4_1_3_layer;
-  reg [2:0] act4_0_4_layer;
-  reg [2:0] act4_1_4_layer;
-  reg [2:0] act4_0_5_layer;
-  reg [2:0] act4_1_5_layer;
-  reg [2:0] act4_0_6_layer;
-  reg [2:0] act4_1_6_layer;
-  reg [2:0] act4_0_7_layer;
-  reg [2:0] act4_1_7_layer;
-  reg [2:0] act4_0_8_layer;
-  reg [2:0] act4_1_8_layer;
-  reg [2:0] act4_0_9_layer;
-  reg [2:0] act4_1_9_layer;
-  reg [2:0] act4_0_10_layer;
-  reg [2:0] act4_1_10_layer;
-  reg [2:0] act4_0_11_layer;
-  reg [2:0] act4_1_11_layer;
-  reg [2:0] act4_0_12_layer;
-  reg [2:0] act4_1_12_layer;
-  reg [2:0] act4_0_13_layer;
-  reg [2:0] act4_1_13_layer;
-  reg [2:0] act4_0_14_layer;
-  reg [2:0] act4_1_14_layer;
-  reg [2:0] act4_0_15_layer;
-  reg [2:0] act4_1_15_layer;
-  reg [2:0] act5_0_0_layer;
-  reg [2:0] act5_1_0_layer;
-  reg [2:0] act5_0_1_layer;
-  reg [2:0] act5_1_1_layer;
-  reg [2:0] act5_0_2_layer;
-  reg [2:0] act5_1_2_layer;
-  reg [2:0] act5_0_3_layer;
-  reg [2:0] act5_1_3_layer;
-  reg [2:0] act5_0_4_layer;
-  reg [2:0] act5_1_4_layer;
-  reg [2:0] act5_0_5_layer;
-  reg [2:0] act5_1_5_layer;
-  reg [2:0] act5_0_6_layer;
-  reg [2:0] act5_1_6_layer;
-  reg [2:0] act5_0_7_layer;
-  reg [2:0] act5_1_7_layer;
-  reg [2:0] act5_0_8_layer;
-  reg [2:0] act5_1_8_layer;
-  reg [2:0] act5_0_9_layer;
-  reg [2:0] act5_1_9_layer;
-  reg [2:0] act5_0_10_layer;
-  reg [2:0] act5_1_10_layer;
-  reg [2:0] act5_0_11_layer;
-  reg [2:0] act5_1_11_layer;
-  reg [2:0] act5_0_12_layer;
-  reg [2:0] act5_1_12_layer;
-  reg [2:0] act5_0_13_layer;
-  reg [2:0] act5_1_13_layer;
-  reg [2:0] act5_0_14_layer;
-  reg [2:0] act5_1_14_layer;
-  reg [2:0] act5_0_15_layer;
-  reg [2:0] act5_1_15_layer;
-  reg [2:0] act6_0_0_layer;
-  reg [2:0] act6_1_0_layer;
-  reg [2:0] act6_0_1_layer;
-  reg [2:0] act6_1_1_layer;
-  reg [2:0] act6_0_2_layer;
-  reg [2:0] act6_1_2_layer;
-  reg [2:0] act6_0_3_layer;
-  reg [2:0] act6_1_3_layer;
-  reg [2:0] act6_0_4_layer;
-  reg [2:0] act6_1_4_layer;
-  reg [2:0] act6_0_5_layer;
-  reg [2:0] act6_1_5_layer;
-  reg [2:0] act6_0_6_layer;
-  reg [2:0] act6_1_6_layer;
-  reg [2:0] act6_0_7_layer;
-  reg [2:0] act6_1_7_layer;
-  reg [2:0] act6_0_8_layer;
-  reg [2:0] act6_1_8_layer;
-  reg [2:0] act6_0_9_layer;
-  reg [2:0] act6_1_9_layer;
-  reg [2:0] act6_0_10_layer;
-  reg [2:0] act6_1_10_layer;
-  reg [2:0] act6_0_11_layer;
-  reg [2:0] act6_1_11_layer;
-  reg [2:0] act6_0_12_layer;
-  reg [2:0] act6_1_12_layer;
-  reg [2:0] act6_0_13_layer;
-  reg [2:0] act6_1_13_layer;
-  reg [2:0] act6_0_14_layer;
-  reg [2:0] act6_1_14_layer;
-  reg [2:0] act6_0_15_layer;
-  reg [2:0] act6_1_15_layer;
-  reg [2:0] act7_0_0_layer;
-  reg [2:0] act7_1_0_layer;
-  reg [2:0] act7_0_1_layer;
-  reg [2:0] act7_1_1_layer;
-  reg [2:0] act7_0_2_layer;
-  reg [2:0] act7_1_2_layer;
-  reg [2:0] act7_0_3_layer;
-  reg [2:0] act7_1_3_layer;
-  reg [2:0] act7_0_4_layer;
-  reg [2:0] act7_1_4_layer;
-  reg [2:0] act7_0_5_layer;
-  reg [2:0] act7_1_5_layer;
-  reg [2:0] act7_0_6_layer;
-  reg [2:0] act7_1_6_layer;
-  reg [2:0] act7_0_7_layer;
-  reg [2:0] act7_1_7_layer;
-  reg [2:0] act7_0_8_layer;
-  reg [2:0] act7_1_8_layer;
-  reg [2:0] act7_0_9_layer;
-  reg [2:0] act7_1_9_layer;
-  reg [2:0] act7_0_10_layer;
-  reg [2:0] act7_1_10_layer;
-  reg [2:0] act7_0_11_layer;
-  reg [2:0] act7_1_11_layer;
-  reg [2:0] act7_0_12_layer;
-  reg [2:0] act7_1_12_layer;
-  reg [2:0] act7_0_13_layer;
-  reg [2:0] act7_1_13_layer;
-  reg [2:0] act7_0_14_layer;
-  reg [2:0] act7_1_14_layer;
-  reg [2:0] act7_0_15_layer;
-  reg [2:0] act7_1_15_layer;
+  reg [7:0] act0_0_0_layer;
+  reg [7:0] act0_1_0_layer;
+  reg [7:0] act0_0_1_layer;
+  reg [7:0] act0_1_1_layer;
+  reg [7:0] act0_0_2_layer;
+  reg [7:0] act0_1_2_layer;
+  reg [7:0] act0_0_3_layer;
+  reg [7:0] act0_1_3_layer;
+  reg [7:0] act0_0_4_layer;
+  reg [7:0] act0_1_4_layer;
+  reg [7:0] act0_0_5_layer;
+  reg [7:0] act0_1_5_layer;
+  reg [7:0] act0_0_6_layer;
+  reg [7:0] act0_1_6_layer;
+  reg [7:0] act0_0_7_layer;
+  reg [7:0] act0_1_7_layer;
+  reg [7:0] act0_0_8_layer;
+  reg [7:0] act0_1_8_layer;
+  reg [7:0] act0_0_9_layer;
+  reg [7:0] act0_1_9_layer;
+  reg [7:0] act0_0_10_layer;
+  reg [7:0] act0_1_10_layer;
+  reg [7:0] act0_0_11_layer;
+  reg [7:0] act0_1_11_layer;
+  reg [7:0] act0_0_12_layer;
+  reg [7:0] act0_1_12_layer;
+  reg [7:0] act0_0_13_layer;
+  reg [7:0] act0_1_13_layer;
+  reg [7:0] act0_0_14_layer;
+  reg [7:0] act0_1_14_layer;
+  reg [7:0] act0_0_15_layer;
+  reg [7:0] act0_1_15_layer;
+  reg [7:0] act1_0_0_layer;
+  reg [7:0] act1_1_0_layer;
+  reg [7:0] act1_0_1_layer;
+  reg [7:0] act1_1_1_layer;
+  reg [7:0] act1_0_2_layer;
+  reg [7:0] act1_1_2_layer;
+  reg [7:0] act1_0_3_layer;
+  reg [7:0] act1_1_3_layer;
+  reg [7:0] act1_0_4_layer;
+  reg [7:0] act1_1_4_layer;
+  reg [7:0] act1_0_5_layer;
+  reg [7:0] act1_1_5_layer;
+  reg [7:0] act1_0_6_layer;
+  reg [7:0] act1_1_6_layer;
+  reg [7:0] act1_0_7_layer;
+  reg [7:0] act1_1_7_layer;
+  reg [7:0] act1_0_8_layer;
+  reg [7:0] act1_1_8_layer;
+  reg [7:0] act1_0_9_layer;
+  reg [7:0] act1_1_9_layer;
+  reg [7:0] act1_0_10_layer;
+  reg [7:0] act1_1_10_layer;
+  reg [7:0] act1_0_11_layer;
+  reg [7:0] act1_1_11_layer;
+  reg [7:0] act1_0_12_layer;
+  reg [7:0] act1_1_12_layer;
+  reg [7:0] act1_0_13_layer;
+  reg [7:0] act1_1_13_layer;
+  reg [7:0] act1_0_14_layer;
+  reg [7:0] act1_1_14_layer;
+  reg [7:0] act1_0_15_layer;
+  reg [7:0] act1_1_15_layer;
+  reg [7:0] act2_0_0_layer;
+  reg [7:0] act2_1_0_layer;
+  reg [7:0] act2_0_1_layer;
+  reg [7:0] act2_1_1_layer;
+  reg [7:0] act2_0_2_layer;
+  reg [7:0] act2_1_2_layer;
+  reg [7:0] act2_0_3_layer;
+  reg [7:0] act2_1_3_layer;
+  reg [7:0] act2_0_4_layer;
+  reg [7:0] act2_1_4_layer;
+  reg [7:0] act2_0_5_layer;
+  reg [7:0] act2_1_5_layer;
+  reg [7:0] act2_0_6_layer;
+  reg [7:0] act2_1_6_layer;
+  reg [7:0] act2_0_7_layer;
+  reg [7:0] act2_1_7_layer;
+  reg [7:0] act2_0_8_layer;
+  reg [7:0] act2_1_8_layer;
+  reg [7:0] act2_0_9_layer;
+  reg [7:0] act2_1_9_layer;
+  reg [7:0] act2_0_10_layer;
+  reg [7:0] act2_1_10_layer;
+  reg [7:0] act2_0_11_layer;
+  reg [7:0] act2_1_11_layer;
+  reg [7:0] act2_0_12_layer;
+  reg [7:0] act2_1_12_layer;
+  reg [7:0] act2_0_13_layer;
+  reg [7:0] act2_1_13_layer;
+  reg [7:0] act2_0_14_layer;
+  reg [7:0] act2_1_14_layer;
+  reg [7:0] act2_0_15_layer;
+  reg [7:0] act2_1_15_layer;
+  reg [7:0] act3_0_0_layer;
+  reg [7:0] act3_1_0_layer;
+  reg [7:0] act3_0_1_layer;
+  reg [7:0] act3_1_1_layer;
+  reg [7:0] act3_0_2_layer;
+  reg [7:0] act3_1_2_layer;
+  reg [7:0] act3_0_3_layer;
+  reg [7:0] act3_1_3_layer;
+  reg [7:0] act3_0_4_layer;
+  reg [7:0] act3_1_4_layer;
+  reg [7:0] act3_0_5_layer;
+  reg [7:0] act3_1_5_layer;
+  reg [7:0] act3_0_6_layer;
+  reg [7:0] act3_1_6_layer;
+  reg [7:0] act3_0_7_layer;
+  reg [7:0] act3_1_7_layer;
+  reg [7:0] act3_0_8_layer;
+  reg [7:0] act3_1_8_layer;
+  reg [7:0] act3_0_9_layer;
+  reg [7:0] act3_1_9_layer;
+  reg [7:0] act3_0_10_layer;
+  reg [7:0] act3_1_10_layer;
+  reg [7:0] act3_0_11_layer;
+  reg [7:0] act3_1_11_layer;
+  reg [7:0] act3_0_12_layer;
+  reg [7:0] act3_1_12_layer;
+  reg [7:0] act3_0_13_layer;
+  reg [7:0] act3_1_13_layer;
+  reg [7:0] act3_0_14_layer;
+  reg [7:0] act3_1_14_layer;
+  reg [7:0] act3_0_15_layer;
+  reg [7:0] act3_1_15_layer;
+  reg [7:0] act4_0_0_layer;
+  reg [7:0] act4_1_0_layer;
+  reg [7:0] act4_0_1_layer;
+  reg [7:0] act4_1_1_layer;
+  reg [7:0] act4_0_2_layer;
+  reg [7:0] act4_1_2_layer;
+  reg [7:0] act4_0_3_layer;
+  reg [7:0] act4_1_3_layer;
+  reg [7:0] act4_0_4_layer;
+  reg [7:0] act4_1_4_layer;
+  reg [7:0] act4_0_5_layer;
+  reg [7:0] act4_1_5_layer;
+  reg [7:0] act4_0_6_layer;
+  reg [7:0] act4_1_6_layer;
+  reg [7:0] act4_0_7_layer;
+  reg [7:0] act4_1_7_layer;
+  reg [7:0] act4_0_8_layer;
+  reg [7:0] act4_1_8_layer;
+  reg [7:0] act4_0_9_layer;
+  reg [7:0] act4_1_9_layer;
+  reg [7:0] act4_0_10_layer;
+  reg [7:0] act4_1_10_layer;
+  reg [7:0] act4_0_11_layer;
+  reg [7:0] act4_1_11_layer;
+  reg [7:0] act4_0_12_layer;
+  reg [7:0] act4_1_12_layer;
+  reg [7:0] act4_0_13_layer;
+  reg [7:0] act4_1_13_layer;
+  reg [7:0] act4_0_14_layer;
+  reg [7:0] act4_1_14_layer;
+  reg [7:0] act4_0_15_layer;
+  reg [7:0] act4_1_15_layer;
+  reg [7:0] act5_0_0_layer;
+  reg [7:0] act5_1_0_layer;
+  reg [7:0] act5_0_1_layer;
+  reg [7:0] act5_1_1_layer;
+  reg [7:0] act5_0_2_layer;
+  reg [7:0] act5_1_2_layer;
+  reg [7:0] act5_0_3_layer;
+  reg [7:0] act5_1_3_layer;
+  reg [7:0] act5_0_4_layer;
+  reg [7:0] act5_1_4_layer;
+  reg [7:0] act5_0_5_layer;
+  reg [7:0] act5_1_5_layer;
+  reg [7:0] act5_0_6_layer;
+  reg [7:0] act5_1_6_layer;
+  reg [7:0] act5_0_7_layer;
+  reg [7:0] act5_1_7_layer;
+  reg [7:0] act5_0_8_layer;
+  reg [7:0] act5_1_8_layer;
+  reg [7:0] act5_0_9_layer;
+  reg [7:0] act5_1_9_layer;
+  reg [7:0] act5_0_10_layer;
+  reg [7:0] act5_1_10_layer;
+  reg [7:0] act5_0_11_layer;
+  reg [7:0] act5_1_11_layer;
+  reg [7:0] act5_0_12_layer;
+  reg [7:0] act5_1_12_layer;
+  reg [7:0] act5_0_13_layer;
+  reg [7:0] act5_1_13_layer;
+  reg [7:0] act5_0_14_layer;
+  reg [7:0] act5_1_14_layer;
+  reg [7:0] act5_0_15_layer;
+  reg [7:0] act5_1_15_layer;
+  reg [7:0] act6_0_0_layer;
+  reg [7:0] act6_1_0_layer;
+  reg [7:0] act6_0_1_layer;
+  reg [7:0] act6_1_1_layer;
+  reg [7:0] act6_0_2_layer;
+  reg [7:0] act6_1_2_layer;
+  reg [7:0] act6_0_3_layer;
+  reg [7:0] act6_1_3_layer;
+  reg [7:0] act6_0_4_layer;
+  reg [7:0] act6_1_4_layer;
+  reg [7:0] act6_0_5_layer;
+  reg [7:0] act6_1_5_layer;
+  reg [7:0] act6_0_6_layer;
+  reg [7:0] act6_1_6_layer;
+  reg [7:0] act6_0_7_layer;
+  reg [7:0] act6_1_7_layer;
+  reg [7:0] act6_0_8_layer;
+  reg [7:0] act6_1_8_layer;
+  reg [7:0] act6_0_9_layer;
+  reg [7:0] act6_1_9_layer;
+  reg [7:0] act6_0_10_layer;
+  reg [7:0] act6_1_10_layer;
+  reg [7:0] act6_0_11_layer;
+  reg [7:0] act6_1_11_layer;
+  reg [7:0] act6_0_12_layer;
+  reg [7:0] act6_1_12_layer;
+  reg [7:0] act6_0_13_layer;
+  reg [7:0] act6_1_13_layer;
+  reg [7:0] act6_0_14_layer;
+  reg [7:0] act6_1_14_layer;
+  reg [7:0] act6_0_15_layer;
+  reg [7:0] act6_1_15_layer;
+  reg [7:0] act7_0_0_layer;
+  reg [7:0] act7_1_0_layer;
+  reg [7:0] act7_0_1_layer;
+  reg [7:0] act7_1_1_layer;
+  reg [7:0] act7_0_2_layer;
+  reg [7:0] act7_1_2_layer;
+  reg [7:0] act7_0_3_layer;
+  reg [7:0] act7_1_3_layer;
+  reg [7:0] act7_0_4_layer;
+  reg [7:0] act7_1_4_layer;
+  reg [7:0] act7_0_5_layer;
+  reg [7:0] act7_1_5_layer;
+  reg [7:0] act7_0_6_layer;
+  reg [7:0] act7_1_6_layer;
+  reg [7:0] act7_0_7_layer;
+  reg [7:0] act7_1_7_layer;
+  reg [7:0] act7_0_8_layer;
+  reg [7:0] act7_1_8_layer;
+  reg [7:0] act7_0_9_layer;
+  reg [7:0] act7_1_9_layer;
+  reg [7:0] act7_0_10_layer;
+  reg [7:0] act7_1_10_layer;
+  reg [7:0] act7_0_11_layer;
+  reg [7:0] act7_1_11_layer;
+  reg [7:0] act7_0_12_layer;
+  reg [7:0] act7_1_12_layer;
+  reg [7:0] act7_0_13_layer;
+  reg [7:0] act7_1_13_layer;
+  reg [7:0] act7_0_14_layer;
+  reg [7:0] act7_1_14_layer;
+  reg [7:0] act7_0_15_layer;
+  reg [7:0] act7_1_15_layer;
 
   // internal wires
-  wire [7:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar;
+  wire [12:0] biased_sum0_0, biased_sum0_1, biased_sum0_0bar, biased_sum0_1bar;
   wire masked_activation0_1, masked_activation0bar_1;
   wire mask0_1, mask0bar_1;
   wire  a0, a0_bar;
-  wire [7:0] biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar;
+  wire [12:0] biased_sum1_0, biased_sum1_1, biased_sum1_0bar, biased_sum1_1bar;
   wire masked_activation1_1, masked_activation1bar_1;
   wire mask1_1, mask1bar_1;
   wire  a1, a1_bar;
-  wire [7:0] biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar;
+  wire [12:0] biased_sum2_0, biased_sum2_1, biased_sum2_0bar, biased_sum2_1bar;
   wire masked_activation2_1, masked_activation2bar_1;
   wire mask2_1, mask2bar_1;
   wire  a2, a2_bar;
-  wire [7:0] biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar;
+  wire [12:0] biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar;
   wire masked_activation3_1, masked_activation3bar_1;
   wire mask3_1, mask3bar_1;
   wire  a3, a3_bar;
-  wire [7:0] biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar;
+  wire [12:0] biased_sum4_0, biased_sum4_1, biased_sum4_0bar, biased_sum4_1bar;
   wire masked_activation4_1, masked_activation4bar_1;
   wire mask4_1, mask4bar_1;
   wire  a4, a4_bar;
-  wire [7:0] biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar;
+  wire [12:0] biased_sum5_0, biased_sum5_1, biased_sum5_0bar, biased_sum5_1bar;
   wire masked_activation5_1, masked_activation5bar_1;
   wire mask5_1, mask5bar_1;
   wire  a5, a5_bar;
-  wire [7:0] biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar;
+  wire [12:0] biased_sum6_0, biased_sum6_1, biased_sum6_0bar, biased_sum6_1bar;
   wire masked_activation6_1, masked_activation6bar_1;
   wire mask6_1, mask6bar_1;
   wire  a6, a6_bar;
-  wire [7:0] biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar;
+  wire [12:0] biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar;
   wire masked_activation7_1, masked_activation7bar_1;
   wire mask7_1, mask7bar_1;
   wire  a7, a7_bar;
@@ -8368,149 +8753,149 @@ module iterative_controller (
 always @(posedge clk or negedge rst_n) begin
   if (!rst_n) begin
       // reset all feedback regs to zero
-            act0_0_0_layer <= 3'd0;        act0_0_1_layer <= 3'd0;
-            act0_0_2_layer <= 3'd0;        act0_0_3_layer <= 3'd0;
-            act0_0_4_layer <= 3'd0;        act0_0_5_layer <= 3'd0;
-            act0_0_6_layer <= 3'd0;        act0_0_7_layer <= 3'd0;
-            act0_0_8_layer <= 3'd0;        act0_0_9_layer <= 3'd0;
-            act0_0_10_layer <= 3'd0;        act0_0_11_layer <= 3'd0;
-            act0_0_12_layer <= 3'd0;        act0_0_13_layer <= 3'd0;
-            act0_0_14_layer <= 3'd0;        act0_0_15_layer <= 3'd0;
+            act0_0_0_layer <= 8'd0;        act0_0_1_layer <= 8'd0;
+            act0_0_2_layer <= 8'd0;        act0_0_3_layer <= 8'd0;
+            act0_0_4_layer <= 8'd0;        act0_0_5_layer <= 8'd0;
+            act0_0_6_layer <= 8'd0;        act0_0_7_layer <= 8'd0;
+            act0_0_8_layer <= 8'd0;        act0_0_9_layer <= 8'd0;
+            act0_0_10_layer <= 8'd0;        act0_0_11_layer <= 8'd0;
+            act0_0_12_layer <= 8'd0;        act0_0_13_layer <= 8'd0;
+            act0_0_14_layer <= 8'd0;        act0_0_15_layer <= 8'd0;
 
-            act0_1_0_layer <= 3'd0;        act0_1_1_layer <= 3'd0;
-            act0_1_2_layer <= 3'd0;        act0_1_3_layer <= 3'd0;
-            act0_1_4_layer <= 3'd0;        act0_1_5_layer <= 3'd0;
-            act0_1_6_layer <= 3'd0;        act0_1_7_layer <= 3'd0;
-            act0_1_8_layer <= 3'd0;        act0_1_9_layer <= 3'd0;
-            act0_1_10_layer <= 3'd0;        act0_1_11_layer <= 3'd0;
-            act0_1_12_layer <= 3'd0;        act0_1_13_layer <= 3'd0;
-            act0_1_14_layer <= 3'd0;        act0_1_15_layer <= 3'd0;
+            act0_1_0_layer <= 8'd0;        act0_1_1_layer <= 8'd0;
+            act0_1_2_layer <= 8'd0;        act0_1_3_layer <= 8'd0;
+            act0_1_4_layer <= 8'd0;        act0_1_5_layer <= 8'd0;
+            act0_1_6_layer <= 8'd0;        act0_1_7_layer <= 8'd0;
+            act0_1_8_layer <= 8'd0;        act0_1_9_layer <= 8'd0;
+            act0_1_10_layer <= 8'd0;        act0_1_11_layer <= 8'd0;
+            act0_1_12_layer <= 8'd0;        act0_1_13_layer <= 8'd0;
+            act0_1_14_layer <= 8'd0;        act0_1_15_layer <= 8'd0;
 
-            act1_0_0_layer <= 3'd0;        act1_0_1_layer <= 3'd0;
-            act1_0_2_layer <= 3'd0;        act1_0_3_layer <= 3'd0;
-            act1_0_4_layer <= 3'd0;        act1_0_5_layer <= 3'd0;
-            act1_0_6_layer <= 3'd0;        act1_0_7_layer <= 3'd0;
-            act1_0_8_layer <= 3'd0;        act1_0_9_layer <= 3'd0;
-            act1_0_10_layer <= 3'd0;        act1_0_11_layer <= 3'd0;
-            act1_0_12_layer <= 3'd0;        act1_0_13_layer <= 3'd0;
-            act1_0_14_layer <= 3'd0;        act1_0_15_layer <= 3'd0;
+            act1_0_0_layer <= 8'd0;        act1_0_1_layer <= 8'd0;
+            act1_0_2_layer <= 8'd0;        act1_0_3_layer <= 8'd0;
+            act1_0_4_layer <= 8'd0;        act1_0_5_layer <= 8'd0;
+            act1_0_6_layer <= 8'd0;        act1_0_7_layer <= 8'd0;
+            act1_0_8_layer <= 8'd0;        act1_0_9_layer <= 8'd0;
+            act1_0_10_layer <= 8'd0;        act1_0_11_layer <= 8'd0;
+            act1_0_12_layer <= 8'd0;        act1_0_13_layer <= 8'd0;
+            act1_0_14_layer <= 8'd0;        act1_0_15_layer <= 8'd0;
 
-            act1_1_0_layer <= 3'd0;        act1_1_1_layer <= 3'd0;
-            act1_1_2_layer <= 3'd0;        act1_1_3_layer <= 3'd0;
-            act1_1_4_layer <= 3'd0;        act1_1_5_layer <= 3'd0;
-            act1_1_6_layer <= 3'd0;        act1_1_7_layer <= 3'd0;
-            act1_1_8_layer <= 3'd0;        act1_1_9_layer <= 3'd0;
-            act1_1_10_layer <= 3'd0;        act1_1_11_layer <= 3'd0;
-            act1_1_12_layer <= 3'd0;        act1_1_13_layer <= 3'd0;
-            act1_1_14_layer <= 3'd0;        act1_1_15_layer <= 3'd0;
+            act1_1_0_layer <= 8'd0;        act1_1_1_layer <= 8'd0;
+            act1_1_2_layer <= 8'd0;        act1_1_3_layer <= 8'd0;
+            act1_1_4_layer <= 8'd0;        act1_1_5_layer <= 8'd0;
+            act1_1_6_layer <= 8'd0;        act1_1_7_layer <= 8'd0;
+            act1_1_8_layer <= 8'd0;        act1_1_9_layer <= 8'd0;
+            act1_1_10_layer <= 8'd0;        act1_1_11_layer <= 8'd0;
+            act1_1_12_layer <= 8'd0;        act1_1_13_layer <= 8'd0;
+            act1_1_14_layer <= 8'd0;        act1_1_15_layer <= 8'd0;
 
-            act2_0_0_layer <= 3'd0;        act2_0_1_layer <= 3'd0;
-            act2_0_2_layer <= 3'd0;        act2_0_3_layer <= 3'd0;
-            act2_0_4_layer <= 3'd0;        act2_0_5_layer <= 3'd0;
-            act2_0_6_layer <= 3'd0;        act2_0_7_layer <= 3'd0;
-            act2_0_8_layer <= 3'd0;        act2_0_9_layer <= 3'd0;
-            act2_0_10_layer <= 3'd0;        act2_0_11_layer <= 3'd0;
-            act2_0_12_layer <= 3'd0;        act2_0_13_layer <= 3'd0;
-            act2_0_14_layer <= 3'd0;        act2_0_15_layer <= 3'd0;
+            act2_0_0_layer <= 8'd0;        act2_0_1_layer <= 8'd0;
+            act2_0_2_layer <= 8'd0;        act2_0_3_layer <= 8'd0;
+            act2_0_4_layer <= 8'd0;        act2_0_5_layer <= 8'd0;
+            act2_0_6_layer <= 8'd0;        act2_0_7_layer <= 8'd0;
+            act2_0_8_layer <= 8'd0;        act2_0_9_layer <= 8'd0;
+            act2_0_10_layer <= 8'd0;        act2_0_11_layer <= 8'd0;
+            act2_0_12_layer <= 8'd0;        act2_0_13_layer <= 8'd0;
+            act2_0_14_layer <= 8'd0;        act2_0_15_layer <= 8'd0;
 
-            act2_1_0_layer <= 3'd0;        act2_1_1_layer <= 3'd0;
-            act2_1_2_layer <= 3'd0;        act2_1_3_layer <= 3'd0;
-            act2_1_4_layer <= 3'd0;        act2_1_5_layer <= 3'd0;
-            act2_1_6_layer <= 3'd0;        act2_1_7_layer <= 3'd0;
-            act2_1_8_layer <= 3'd0;        act2_1_9_layer <= 3'd0;
-            act2_1_10_layer <= 3'd0;        act2_1_11_layer <= 3'd0;
-            act2_1_12_layer <= 3'd0;        act2_1_13_layer <= 3'd0;
-            act2_1_14_layer <= 3'd0;        act2_1_15_layer <= 3'd0;
+            act2_1_0_layer <= 8'd0;        act2_1_1_layer <= 8'd0;
+            act2_1_2_layer <= 8'd0;        act2_1_3_layer <= 8'd0;
+            act2_1_4_layer <= 8'd0;        act2_1_5_layer <= 8'd0;
+            act2_1_6_layer <= 8'd0;        act2_1_7_layer <= 8'd0;
+            act2_1_8_layer <= 8'd0;        act2_1_9_layer <= 8'd0;
+            act2_1_10_layer <= 8'd0;        act2_1_11_layer <= 8'd0;
+            act2_1_12_layer <= 8'd0;        act2_1_13_layer <= 8'd0;
+            act2_1_14_layer <= 8'd0;        act2_1_15_layer <= 8'd0;
 
-            act3_0_0_layer <= 3'd0;        act3_0_1_layer <= 3'd0;
-            act3_0_2_layer <= 3'd0;        act3_0_3_layer <= 3'd0;
-            act3_0_4_layer <= 3'd0;        act3_0_5_layer <= 3'd0;
-            act3_0_6_layer <= 3'd0;        act3_0_7_layer <= 3'd0;
-            act3_0_8_layer <= 3'd0;        act3_0_9_layer <= 3'd0;
-            act3_0_10_layer <= 3'd0;        act3_0_11_layer <= 3'd0;
-            act3_0_12_layer <= 3'd0;        act3_0_13_layer <= 3'd0;
-            act3_0_14_layer <= 3'd0;        act3_0_15_layer <= 3'd0;
+            act3_0_0_layer <= 8'd0;        act3_0_1_layer <= 8'd0;
+            act3_0_2_layer <= 8'd0;        act3_0_3_layer <= 8'd0;
+            act3_0_4_layer <= 8'd0;        act3_0_5_layer <= 8'd0;
+            act3_0_6_layer <= 8'd0;        act3_0_7_layer <= 8'd0;
+            act3_0_8_layer <= 8'd0;        act3_0_9_layer <= 8'd0;
+            act3_0_10_layer <= 8'd0;        act3_0_11_layer <= 8'd0;
+            act3_0_12_layer <= 8'd0;        act3_0_13_layer <= 8'd0;
+            act3_0_14_layer <= 8'd0;        act3_0_15_layer <= 8'd0;
 
-            act3_1_0_layer <= 3'd0;        act3_1_1_layer <= 3'd0;
-            act3_1_2_layer <= 3'd0;        act3_1_3_layer <= 3'd0;
-            act3_1_4_layer <= 3'd0;        act3_1_5_layer <= 3'd0;
-            act3_1_6_layer <= 3'd0;        act3_1_7_layer <= 3'd0;
-            act3_1_8_layer <= 3'd0;        act3_1_9_layer <= 3'd0;
-            act3_1_10_layer <= 3'd0;        act3_1_11_layer <= 3'd0;
-            act3_1_12_layer <= 3'd0;        act3_1_13_layer <= 3'd0;
-            act3_1_14_layer <= 3'd0;        act3_1_15_layer <= 3'd0;
+            act3_1_0_layer <= 8'd0;        act3_1_1_layer <= 8'd0;
+            act3_1_2_layer <= 8'd0;        act3_1_3_layer <= 8'd0;
+            act3_1_4_layer <= 8'd0;        act3_1_5_layer <= 8'd0;
+            act3_1_6_layer <= 8'd0;        act3_1_7_layer <= 8'd0;
+            act3_1_8_layer <= 8'd0;        act3_1_9_layer <= 8'd0;
+            act3_1_10_layer <= 8'd0;        act3_1_11_layer <= 8'd0;
+            act3_1_12_layer <= 8'd0;        act3_1_13_layer <= 8'd0;
+            act3_1_14_layer <= 8'd0;        act3_1_15_layer <= 8'd0;
 
-            act4_0_0_layer <= 3'd0;        act4_0_1_layer <= 3'd0;
-            act4_0_2_layer <= 3'd0;        act4_0_3_layer <= 3'd0;
-            act4_0_4_layer <= 3'd0;        act4_0_5_layer <= 3'd0;
-            act4_0_6_layer <= 3'd0;        act4_0_7_layer <= 3'd0;
-            act4_0_8_layer <= 3'd0;        act4_0_9_layer <= 3'd0;
-            act4_0_10_layer <= 3'd0;        act4_0_11_layer <= 3'd0;
-            act4_0_12_layer <= 3'd0;        act4_0_13_layer <= 3'd0;
-            act4_0_14_layer <= 3'd0;        act4_0_15_layer <= 3'd0;
+            act4_0_0_layer <= 8'd0;        act4_0_1_layer <= 8'd0;
+            act4_0_2_layer <= 8'd0;        act4_0_3_layer <= 8'd0;
+            act4_0_4_layer <= 8'd0;        act4_0_5_layer <= 8'd0;
+            act4_0_6_layer <= 8'd0;        act4_0_7_layer <= 8'd0;
+            act4_0_8_layer <= 8'd0;        act4_0_9_layer <= 8'd0;
+            act4_0_10_layer <= 8'd0;        act4_0_11_layer <= 8'd0;
+            act4_0_12_layer <= 8'd0;        act4_0_13_layer <= 8'd0;
+            act4_0_14_layer <= 8'd0;        act4_0_15_layer <= 8'd0;
 
-            act4_1_0_layer <= 3'd0;        act4_1_1_layer <= 3'd0;
-            act4_1_2_layer <= 3'd0;        act4_1_3_layer <= 3'd0;
-            act4_1_4_layer <= 3'd0;        act4_1_5_layer <= 3'd0;
-            act4_1_6_layer <= 3'd0;        act4_1_7_layer <= 3'd0;
-            act4_1_8_layer <= 3'd0;        act4_1_9_layer <= 3'd0;
-            act4_1_10_layer <= 3'd0;        act4_1_11_layer <= 3'd0;
-            act4_1_12_layer <= 3'd0;        act4_1_13_layer <= 3'd0;
-            act4_1_14_layer <= 3'd0;        act4_1_15_layer <= 3'd0;
+            act4_1_0_layer <= 8'd0;        act4_1_1_layer <= 8'd0;
+            act4_1_2_layer <= 8'd0;        act4_1_3_layer <= 8'd0;
+            act4_1_4_layer <= 8'd0;        act4_1_5_layer <= 8'd0;
+            act4_1_6_layer <= 8'd0;        act4_1_7_layer <= 8'd0;
+            act4_1_8_layer <= 8'd0;        act4_1_9_layer <= 8'd0;
+            act4_1_10_layer <= 8'd0;        act4_1_11_layer <= 8'd0;
+            act4_1_12_layer <= 8'd0;        act4_1_13_layer <= 8'd0;
+            act4_1_14_layer <= 8'd0;        act4_1_15_layer <= 8'd0;
 
-            act5_0_0_layer <= 3'd0;        act5_0_1_layer <= 3'd0;
-            act5_0_2_layer <= 3'd0;        act5_0_3_layer <= 3'd0;
-            act5_0_4_layer <= 3'd0;        act5_0_5_layer <= 3'd0;
-            act5_0_6_layer <= 3'd0;        act5_0_7_layer <= 3'd0;
-            act5_0_8_layer <= 3'd0;        act5_0_9_layer <= 3'd0;
-            act5_0_10_layer <= 3'd0;        act5_0_11_layer <= 3'd0;
-            act5_0_12_layer <= 3'd0;        act5_0_13_layer <= 3'd0;
-            act5_0_14_layer <= 3'd0;        act5_0_15_layer <= 3'd0;
+            act5_0_0_layer <= 8'd0;        act5_0_1_layer <= 8'd0;
+            act5_0_2_layer <= 8'd0;        act5_0_3_layer <= 8'd0;
+            act5_0_4_layer <= 8'd0;        act5_0_5_layer <= 8'd0;
+            act5_0_6_layer <= 8'd0;        act5_0_7_layer <= 8'd0;
+            act5_0_8_layer <= 8'd0;        act5_0_9_layer <= 8'd0;
+            act5_0_10_layer <= 8'd0;        act5_0_11_layer <= 8'd0;
+            act5_0_12_layer <= 8'd0;        act5_0_13_layer <= 8'd0;
+            act5_0_14_layer <= 8'd0;        act5_0_15_layer <= 8'd0;
 
-            act5_1_0_layer <= 3'd0;        act5_1_1_layer <= 3'd0;
-            act5_1_2_layer <= 3'd0;        act5_1_3_layer <= 3'd0;
-            act5_1_4_layer <= 3'd0;        act5_1_5_layer <= 3'd0;
-            act5_1_6_layer <= 3'd0;        act5_1_7_layer <= 3'd0;
-            act5_1_8_layer <= 3'd0;        act5_1_9_layer <= 3'd0;
-            act5_1_10_layer <= 3'd0;        act5_1_11_layer <= 3'd0;
-            act5_1_12_layer <= 3'd0;        act5_1_13_layer <= 3'd0;
-            act5_1_14_layer <= 3'd0;        act5_1_15_layer <= 3'd0;
+            act5_1_0_layer <= 8'd0;        act5_1_1_layer <= 8'd0;
+            act5_1_2_layer <= 8'd0;        act5_1_3_layer <= 8'd0;
+            act5_1_4_layer <= 8'd0;        act5_1_5_layer <= 8'd0;
+            act5_1_6_layer <= 8'd0;        act5_1_7_layer <= 8'd0;
+            act5_1_8_layer <= 8'd0;        act5_1_9_layer <= 8'd0;
+            act5_1_10_layer <= 8'd0;        act5_1_11_layer <= 8'd0;
+            act5_1_12_layer <= 8'd0;        act5_1_13_layer <= 8'd0;
+            act5_1_14_layer <= 8'd0;        act5_1_15_layer <= 8'd0;
 
-            act6_0_0_layer <= 3'd0;        act6_0_1_layer <= 3'd0;
-            act6_0_2_layer <= 3'd0;        act6_0_3_layer <= 3'd0;
-            act6_0_4_layer <= 3'd0;        act6_0_5_layer <= 3'd0;
-            act6_0_6_layer <= 3'd0;        act6_0_7_layer <= 3'd0;
-            act6_0_8_layer <= 3'd0;        act6_0_9_layer <= 3'd0;
-            act6_0_10_layer <= 3'd0;        act6_0_11_layer <= 3'd0;
-            act6_0_12_layer <= 3'd0;        act6_0_13_layer <= 3'd0;
-            act6_0_14_layer <= 3'd0;        act6_0_15_layer <= 3'd0;
+            act6_0_0_layer <= 8'd0;        act6_0_1_layer <= 8'd0;
+            act6_0_2_layer <= 8'd0;        act6_0_3_layer <= 8'd0;
+            act6_0_4_layer <= 8'd0;        act6_0_5_layer <= 8'd0;
+            act6_0_6_layer <= 8'd0;        act6_0_7_layer <= 8'd0;
+            act6_0_8_layer <= 8'd0;        act6_0_9_layer <= 8'd0;
+            act6_0_10_layer <= 8'd0;        act6_0_11_layer <= 8'd0;
+            act6_0_12_layer <= 8'd0;        act6_0_13_layer <= 8'd0;
+            act6_0_14_layer <= 8'd0;        act6_0_15_layer <= 8'd0;
 
-            act6_1_0_layer <= 3'd0;        act6_1_1_layer <= 3'd0;
-            act6_1_2_layer <= 3'd0;        act6_1_3_layer <= 3'd0;
-            act6_1_4_layer <= 3'd0;        act6_1_5_layer <= 3'd0;
-            act6_1_6_layer <= 3'd0;        act6_1_7_layer <= 3'd0;
-            act6_1_8_layer <= 3'd0;        act6_1_9_layer <= 3'd0;
-            act6_1_10_layer <= 3'd0;        act6_1_11_layer <= 3'd0;
-            act6_1_12_layer <= 3'd0;        act6_1_13_layer <= 3'd0;
-            act6_1_14_layer <= 3'd0;        act6_1_15_layer <= 3'd0;
+            act6_1_0_layer <= 8'd0;        act6_1_1_layer <= 8'd0;
+            act6_1_2_layer <= 8'd0;        act6_1_3_layer <= 8'd0;
+            act6_1_4_layer <= 8'd0;        act6_1_5_layer <= 8'd0;
+            act6_1_6_layer <= 8'd0;        act6_1_7_layer <= 8'd0;
+            act6_1_8_layer <= 8'd0;        act6_1_9_layer <= 8'd0;
+            act6_1_10_layer <= 8'd0;        act6_1_11_layer <= 8'd0;
+            act6_1_12_layer <= 8'd0;        act6_1_13_layer <= 8'd0;
+            act6_1_14_layer <= 8'd0;        act6_1_15_layer <= 8'd0;
 
-            act7_0_0_layer <= 3'd0;        act7_0_1_layer <= 3'd0;
-            act7_0_2_layer <= 3'd0;        act7_0_3_layer <= 3'd0;
-            act7_0_4_layer <= 3'd0;        act7_0_5_layer <= 3'd0;
-            act7_0_6_layer <= 3'd0;        act7_0_7_layer <= 3'd0;
-            act7_0_8_layer <= 3'd0;        act7_0_9_layer <= 3'd0;
-            act7_0_10_layer <= 3'd0;        act7_0_11_layer <= 3'd0;
-            act7_0_12_layer <= 3'd0;        act7_0_13_layer <= 3'd0;
-            act7_0_14_layer <= 3'd0;        act7_0_15_layer <= 3'd0;
+            act7_0_0_layer <= 8'd0;        act7_0_1_layer <= 8'd0;
+            act7_0_2_layer <= 8'd0;        act7_0_3_layer <= 8'd0;
+            act7_0_4_layer <= 8'd0;        act7_0_5_layer <= 8'd0;
+            act7_0_6_layer <= 8'd0;        act7_0_7_layer <= 8'd0;
+            act7_0_8_layer <= 8'd0;        act7_0_9_layer <= 8'd0;
+            act7_0_10_layer <= 8'd0;        act7_0_11_layer <= 8'd0;
+            act7_0_12_layer <= 8'd0;        act7_0_13_layer <= 8'd0;
+            act7_0_14_layer <= 8'd0;        act7_0_15_layer <= 8'd0;
 
-            act7_1_0_layer <= 3'd0;        act7_1_1_layer <= 3'd0;
-            act7_1_2_layer <= 3'd0;        act7_1_3_layer <= 3'd0;
-            act7_1_4_layer <= 3'd0;        act7_1_5_layer <= 3'd0;
-            act7_1_6_layer <= 3'd0;        act7_1_7_layer <= 3'd0;
-            act7_1_8_layer <= 3'd0;        act7_1_9_layer <= 3'd0;
-            act7_1_10_layer <= 3'd0;        act7_1_11_layer <= 3'd0;
-            act7_1_12_layer <= 3'd0;        act7_1_13_layer <= 3'd0;
-            act7_1_14_layer <= 3'd0;        act7_1_15_layer <= 3'd0;
+            act7_1_0_layer <= 8'd0;        act7_1_1_layer <= 8'd0;
+            act7_1_2_layer <= 8'd0;        act7_1_3_layer <= 8'd0;
+            act7_1_4_layer <= 8'd0;        act7_1_5_layer <= 8'd0;
+            act7_1_6_layer <= 8'd0;        act7_1_7_layer <= 8'd0;
+            act7_1_8_layer <= 8'd0;        act7_1_9_layer <= 8'd0;
+            act7_1_10_layer <= 8'd0;        act7_1_11_layer <= 8'd0;
+            act7_1_12_layer <= 8'd0;        act7_1_13_layer <= 8'd0;
+            act7_1_14_layer <= 8'd0;        act7_1_15_layer <= 8'd0;
   end else if (state == WAIT_SHARE && done_share) begin
       // capture the outputs of m2 into the next iteration's m1 inputs
             act0_0_0_layer <= act0_0_0_r;        act0_0_1_layer <= act0_0_1_r;
@@ -9567,4 +9952,3 @@ end
   );
 
 endmodule
-
