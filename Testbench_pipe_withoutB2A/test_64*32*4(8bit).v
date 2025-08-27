@@ -1,73 +1,73 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-`include "a4_py.v"
+`include "T1.V"
 
 module connector_tb;
-reg [2:0] inputs0_1;
-reg [2:0] inputs1_1;
-reg [2:0] inputs2_1;
-reg [2:0] inputs3_1;
-reg [2:0] inputs4_1;
-reg [2:0] inputs5_1;
-reg [2:0] inputs6_1;
-reg [2:0] inputs7_1;
-reg [2:0] inputs8_1;
-reg [2:0] inputs9_1;
-reg [2:0] inputs10_1;
-reg [2:0] inputs11_1;
-reg [2:0] inputs12_1;
-reg [2:0] inputs13_1;
-reg [2:0] inputs14_1;
-reg [2:0] inputs15_1;
-reg [2:0] inputs16_1;
-reg [2:0] inputs17_1;
-reg [2:0] inputs18_1;
-reg [2:0] inputs19_1;
-reg [2:0] inputs20_1;
-reg [2:0] inputs21_1;
-reg [2:0] inputs22_1;
-reg [2:0] inputs23_1;
-reg [2:0] inputs24_1;
-reg [2:0] inputs25_1;
-reg [2:0] inputs26_1;
-reg [2:0] inputs27_1;
-reg [2:0] inputs28_1;
-reg [2:0] inputs29_1;
-reg [2:0] inputs30_1;
-reg [2:0] inputs31_1;
-reg [2:0] inputs32_1;
-reg [2:0] inputs33_1;
-reg [2:0] inputs34_1;
-reg [2:0] inputs35_1;
-reg [2:0] inputs36_1;
-reg [2:0] inputs37_1;
-reg [2:0] inputs38_1;
-reg [2:0] inputs39_1;
-reg [2:0] inputs40_1;
-reg [2:0] inputs41_1;
-reg [2:0] inputs42_1;
-reg [2:0] inputs43_1;
-reg [2:0] inputs44_1;
-reg [2:0] inputs45_1;
-reg [2:0] inputs46_1;
-reg [2:0] inputs47_1;
-reg [2:0] inputs48_1;
-reg [2:0] inputs49_1;
-reg [2:0] inputs50_1;
-reg [2:0] inputs51_1;
-reg [2:0] inputs52_1;
-reg [2:0] inputs53_1;
-reg [2:0] inputs54_1;
-reg [2:0] inputs55_1;
-reg [2:0] inputs56_1;
-reg [2:0] inputs57_1;
-reg [2:0] inputs58_1;
-reg [2:0] inputs59_1;
-reg [2:0] inputs60_1;
-reg [2:0] inputs61_1;
-reg [2:0] inputs62_1;
-reg [2:0] inputs63_1;
+reg [7:0] inputs0_1;
+reg [7:0] inputs1_1;
+reg [7:0] inputs2_1;
+reg [7:0] inputs3_1;
+reg [7:0] inputs4_1;
+reg [7:0] inputs5_1;
+reg [7:0] inputs6_1;
+reg [7:0] inputs7_1;
+reg [7:0] inputs8_1;
+reg [7:0] inputs9_1;
+reg [7:0] inputs10_1;
+reg [7:0] inputs11_1;
+reg [7:0] inputs12_1;
+reg [7:0] inputs13_1;
+reg [7:0] inputs14_1;
+reg [7:0] inputs15_1;
+reg [7:0] inputs16_1;
+reg [7:0] inputs17_1;
+reg [7:0] inputs18_1;
+reg [7:0] inputs19_1;
+reg [7:0] inputs20_1;
+reg [7:0] inputs21_1;
+reg [7:0] inputs22_1;
+reg [7:0] inputs23_1;
+reg [7:0] inputs24_1;
+reg [7:0] inputs25_1;
+reg [7:0] inputs26_1;
+reg [7:0] inputs27_1;
+reg [7:0] inputs28_1;
+reg [7:0] inputs29_1;
+reg [7:0] inputs30_1;
+reg [7:0] inputs31_1;
+reg [7:0] inputs32_1;
+reg [7:0] inputs33_1;
+reg [7:0] inputs34_1;
+reg [7:0] inputs35_1;
+reg [7:0] inputs36_1;
+reg [7:0] inputs37_1;
+reg [7:0] inputs38_1;
+reg [7:0] inputs39_1;
+reg [7:0] inputs40_1;
+reg [7:0] inputs41_1;
+reg [7:0] inputs42_1;
+reg [7:0] inputs43_1;
+reg [7:0] inputs44_1;
+reg [7:0] inputs45_1;
+reg [7:0] inputs46_1;
+reg [7:0] inputs47_1;
+reg [7:0] inputs48_1;
+reg [7:0] inputs49_1;
+reg [7:0] inputs50_1;
+reg [7:0] inputs51_1;
+reg [7:0] inputs52_1;
+reg [7:0] inputs53_1;
+reg [7:0] inputs54_1;
+reg [7:0] inputs55_1;
+reg [7:0] inputs56_1;
+reg [7:0] inputs57_1;
+reg [7:0] inputs58_1;
+reg [7:0] inputs59_1;
+reg [7:0] inputs60_1;
+reg [7:0] inputs61_1;
+reg [7:0] inputs62_1;
+reg [7:0] inputs63_1;
 
 
 // Layer-1 weights & biases
@@ -103,7 +103,7 @@ reg [63:0] w29_0_1, w29_1_1;
 reg [63:0] w30_0_1, w30_1_1;
 reg [63:0] w31_0_1, w31_1_1;
 reg [63:0] w32_0_1, w32_1_1;
-reg [8:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1;
+reg [13:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1;
 
 // Layer-2 weights & biases
 
@@ -243,7 +243,86 @@ wire a3, a3_bar;
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
 
-inputs0_1 = 3'd2;  inputs1_1 = 3'd2;  inputs2_1 = 3'd3;  inputs3_1 = 3'd3;
+inputs0_1  = 3'd2;
+inputs1_1  = 3'd2;
+inputs2_1  = 3'd3;
+inputs3_1  = 3'd3;
+
+inputs4_1  = 3'd2;
+inputs5_1  = 3'd2;
+inputs6_1  = 3'd3;
+inputs7_1  = 3'd3;
+
+inputs8_1  = 3'd2;
+inputs9_1  = 3'd2;
+inputs10_1 = 3'd3;
+inputs11_1 = 3'd3;
+
+inputs12_1 = 3'd2;
+inputs13_1 = 3'd2;
+inputs14_1 = 3'd3;
+inputs15_1 = 3'd3;
+
+inputs16_1 = 3'd2;
+inputs17_1 = 3'd2;
+inputs18_1 = 3'd3;
+inputs19_1 = 3'd3;
+
+inputs20_1 = 3'd2;
+inputs21_1 = 3'd2;
+inputs22_1 = 3'd3;
+inputs23_1 = 3'd3;
+
+inputs24_1 = 3'd2;
+inputs25_1 = 3'd2;
+inputs26_1 = 3'd3;
+inputs27_1 = 3'd3;
+
+inputs28_1 = 3'd2;
+inputs29_1 = 3'd2;
+inputs30_1 = 3'd3;
+inputs31_1 = 3'd3;
+
+inputs32_1 = 3'd2;
+inputs33_1 = 3'd2;
+inputs34_1 = 3'd3;
+inputs35_1 = 3'd3;
+
+inputs36_1 = 3'd2;
+inputs37_1 = 3'd2;
+inputs38_1 = 3'd3;
+inputs39_1 = 3'd3;
+
+inputs40_1 = 3'd2;
+inputs41_1 = 3'd2;
+inputs42_1 = 3'd3;
+inputs43_1 = 3'd3;
+
+inputs44_1 = 3'd2;
+inputs45_1 = 3'd2;
+inputs46_1 = 3'd3;
+inputs47_1 = 3'd3;
+
+inputs48_1 = 3'd2;
+inputs49_1 = 3'd2;
+inputs50_1 = 3'd3;
+inputs51_1 = 3'd3;
+
+inputs52_1 = 3'd2;
+inputs53_1 = 3'd2;
+inputs54_1 = 3'd3;
+inputs55_1 = 3'd3;
+
+inputs56_1 = 3'd2;
+inputs57_1 = 3'd2;
+inputs58_1 = 3'd3;
+inputs59_1 = 3'd3;
+
+inputs60_1 = 3'd2;
+inputs61_1 = 3'd2;
+inputs62_1 = 3'd3;
+inputs63_1 = 3'd3;
+
 
 // Weights example pattern for 8 nodes (0th and 1st sets)
 {w1_0_1, w2_0_1, w3_0_1, w4_0_1, w5_0_1, w6_0_1, w7_0_1, w8_0_1,
@@ -265,9 +344,9 @@ inputs0_1 = 3'd2;  inputs1_1 = 3'd2;  inputs2_1 = 3'd3;  inputs3_1 = 3'd3;
 {b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, 
  b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, 
  b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, 
- b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1} = {32{8'd0}};
+ b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1} = {32{13'd0}};
 
-{b1_2, b2_2, b3_2, b4_2} = {4{6'd1}};
+{b1_2, b2_2, b3_2, b4_2} = {4{7'd1}};
 
 
 
