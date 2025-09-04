@@ -586,6 +586,7 @@ endmodule
 
 
 module adder_tree_1 (
+    input  wire   clk, 
     input  wire [7:0] in0,
     input  wire [7:0] in1,
     input  wire [7:0] in2,
@@ -605,76 +606,77 @@ module adder_tree_1 (
     output wire [11:0] sum
 );
 
-    wire [8:0] stage0_0_lo;
-    wire [8:0] stage0_1_lo;
-    wire [8:0] stage0_2_lo;
-    wire [8:0] stage0_3_lo;
-    wire [8:0] stage0_4_lo;
-    wire [8:0] stage0_5_lo;
-    wire [8:0] stage0_6_lo;
-    wire [8:0] stage0_7_lo;
-    wire [9:0] stage1_0_lo;
-    wire [9:0] stage1_1_lo;
-    wire [9:0] stage1_2_lo;
-    wire [9:0] stage1_3_lo;
-    wire [10:0] stage2_0_lo;
-    wire [10:0] stage2_1_lo;
-    wire [11:0] stage3_0_lo;
-    reg  [8:0] stage0_0;
-    reg  [8:0] stage0_1;
-    reg  [8:0] stage0_2;
-    reg  [8:0] stage0_3;
-    reg  [8:0] stage0_4;
-    reg  [8:0] stage0_5;
-    reg  [8:0] stage0_6;
-    reg  [8:0] stage0_7;
-    reg  [9:0] stage1_0;
-    reg  [9:0] stage1_1;
-    reg  [9:0] stage1_2;
-    reg  [9:0] stage1_3;
-    reg  [10:0] stage2_0;
-    reg  [10:0] stage2_1;
-    reg  [11:0] stage3_0;
+    wire [8:0] stage0_0_lo_1;
+    wire [8:0] stage0_1_lo_1;
+    wire [8:0] stage0_2_lo_1;
+    wire [8:0] stage0_3_lo_1;
+    wire [8:0] stage0_4_lo_1;
+    wire [8:0] stage0_5_lo_1;
+    wire [8:0] stage0_6_lo_1;
+    wire [8:0] stage0_7_lo_1;
+    wire [9:0] stage1_0_lo_1;
+    wire [9:0] stage1_1_lo_1;
+    wire [9:0] stage1_2_lo_1;
+    wire [9:0] stage1_3_lo_1;
+    wire [10:0] stage2_0_lo_1;
+    wire [10:0] stage2_1_lo_1;
+    wire [11:0] stage3_0_lo_1;
+    reg  [8:0] stage0_0_1;
+    reg  [8:0] stage0_1_1;
+    reg  [8:0] stage0_2_1;
+    reg  [8:0] stage0_3_1;
+    reg  [8:0] stage0_4_1;
+    reg  [8:0] stage0_5_1;
+    reg  [8:0] stage0_6_1;
+    reg  [8:0] stage0_7_1;
+    reg  [9:0] stage1_0_1;
+    reg  [9:0] stage1_1_1;
+    reg  [9:0] stage1_2_1;
+    reg  [9:0] stage1_3_1;
+    reg  [10:0] stage2_0_1;
+    reg  [10:0] stage2_1_1;
+    reg  [11:0] stage3_0_1;
 
-    add8bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add8bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add8bit_1 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add8bit_1 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add8bit_1 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add8bit_1 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add8bit_1 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add8bit_1 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add9bit_1 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add9bit_1 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add9bit_1 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add9bit_1 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add10bit_1 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add10bit_1 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add11bit_1 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
+    add8bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_1), .cout(), .cout_bar());
+    add9bit_1 u1_0 (.a(stage0_0_1), .b(stage0_1_1), .cin(1'b0), .y(stage1_0_lo_1), .cout(), .cout_bar());
+    add9bit_1 u1_1 (.a(stage0_2_1), .b(stage0_3_1), .cin(1'b0), .y(stage1_1_lo_1), .cout(), .cout_bar());
+    add9bit_1 u1_2 (.a(stage0_4_1), .b(stage0_5_1), .cin(1'b0), .y(stage1_2_lo_1), .cout(), .cout_bar());
+    add9bit_1 u1_3 (.a(stage0_6_1), .b(stage0_7_1), .cin(1'b0), .y(stage1_3_lo_1), .cout(), .cout_bar());
+    add10bit_1 u2_0 (.a(stage1_0_1), .b(stage1_1_1), .cin(1'b0), .y(stage2_0_lo_1), .cout(), .cout_bar());
+    add10bit_1 u2_1 (.a(stage1_2_1), .b(stage1_3_1), .cin(1'b0), .y(stage2_1_lo_1), .cout(), .cout_bar());
+    add11bit_1 u3_0 (.a(stage2_0_1), .b(stage2_1_1), .cin(1'b0), .y(stage3_0_lo_1), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo};
+    assign sum =  stage3_0_lo_1;
 
-    always @(*) begin
-        stage0_0 = {1'b0, stage0_0_lo};
-        stage0_1 = {1'b0, stage0_1_lo};
-        stage0_2 = {1'b0, stage0_2_lo};
-        stage0_3 = {1'b0, stage0_3_lo};
-        stage0_4 = {1'b0, stage0_4_lo};
-        stage0_5 = {1'b0, stage0_5_lo};
-        stage0_6 = {1'b0, stage0_6_lo};
-        stage0_7 = {1'b0, stage0_7_lo};
-        stage1_0 = {1'b0, stage1_0_lo};
-        stage1_1 = {1'b0, stage1_1_lo};
-        stage1_2 = {1'b0, stage1_2_lo};
-        stage1_3 = {1'b0, stage1_3_lo};
-        stage2_0 = {1'b0, stage2_0_lo};
-        stage2_1 = {1'b0, stage2_1_lo};
-        stage3_0 = {1'b0, stage3_0_lo};
+    always @(posedge clk) begin
+        stage0_0_1 <=  stage0_0_lo_1;
+        stage0_1_1 <=  stage0_1_lo_1;
+        stage0_2_1 <=  stage0_2_lo_1;
+        stage0_3_1 <=  stage0_3_lo_1;
+        stage0_4_1 <=  stage0_4_lo_1;
+        stage0_5_1 <=  stage0_5_lo_1;
+        stage0_6_1 <=  stage0_6_lo_1;
+        stage0_7_1 <=  stage0_7_lo_1;
+        stage1_0_1 <=  stage1_0_lo_1;
+        stage1_1_1 <=  stage1_1_lo_1;
+        stage1_2_1 <=  stage1_2_lo_1;
+        stage1_3_1 <=  stage1_3_lo_1;
+        stage2_0_1 <=  stage2_0_lo_1;
+        stage2_1_1 <=  stage2_1_lo_1;
+        stage3_0_1 <=  stage3_0_lo_1;
     end
 endmodule
 
 
 module adder_tree_bar_1 (
+    input  wire   clk, 
     input  wire [7:0] in0,
     input  wire [7:0] in1,
     input  wire [7:0] in2,
@@ -694,76 +696,77 @@ module adder_tree_bar_1 (
     output wire [11:0] sum
 );
 
-    wire [8:0] stage0_0_lo_bar;
-    wire [8:0] stage0_1_lo_bar;
-    wire [8:0] stage0_2_lo_bar;
-    wire [8:0] stage0_3_lo_bar;
-    wire [8:0] stage0_4_lo_bar;
-    wire [8:0] stage0_5_lo_bar;
-    wire [8:0] stage0_6_lo_bar;
-    wire [8:0] stage0_7_lo_bar;
-    wire [9:0] stage1_0_lo_bar;
-    wire [9:0] stage1_1_lo_bar;
-    wire [9:0] stage1_2_lo_bar;
-    wire [9:0] stage1_3_lo_bar;
-    wire [10:0] stage2_0_lo_bar;
-    wire [10:0] stage2_1_lo_bar;
-    wire [11:0] stage3_0_lo_bar;
-    reg  [8:0] stage0_0_bar;
-    reg  [8:0] stage0_1_bar;
-    reg  [8:0] stage0_2_bar;
-    reg  [8:0] stage0_3_bar;
-    reg  [8:0] stage0_4_bar;
-    reg  [8:0] stage0_5_bar;
-    reg  [8:0] stage0_6_bar;
-    reg  [8:0] stage0_7_bar;
-    reg  [9:0] stage1_0_bar;
-    reg  [9:0] stage1_1_bar;
-    reg  [9:0] stage1_2_bar;
-    reg  [9:0] stage1_3_bar;
-    reg  [10:0] stage2_0_bar;
-    reg  [10:0] stage2_1_bar;
-    reg  [11:0] stage3_0_bar;
+    wire [8:0] stage0_0_lo_bar_1;
+    wire [8:0] stage0_1_lo_bar_1;
+    wire [8:0] stage0_2_lo_bar_1;
+    wire [8:0] stage0_3_lo_bar_1;
+    wire [8:0] stage0_4_lo_bar_1;
+    wire [8:0] stage0_5_lo_bar_1;
+    wire [8:0] stage0_6_lo_bar_1;
+    wire [8:0] stage0_7_lo_bar_1;
+    wire [9:0] stage1_0_lo_bar_1;
+    wire [9:0] stage1_1_lo_bar_1;
+    wire [9:0] stage1_2_lo_bar_1;
+    wire [9:0] stage1_3_lo_bar_1;
+    wire [10:0] stage2_0_lo_bar_1;
+    wire [10:0] stage2_1_lo_bar_1;
+    wire [11:0] stage3_0_lo_bar_1;
+    reg  [8:0] stage0_0_bar_1;
+    reg  [8:0] stage0_1_bar_1;
+    reg  [8:0] stage0_2_bar_1;
+    reg  [8:0] stage0_3_bar_1;
+    reg  [8:0] stage0_4_bar_1;
+    reg  [8:0] stage0_5_bar_1;
+    reg  [8:0] stage0_6_bar_1;
+    reg  [8:0] stage0_7_bar_1;
+    reg  [9:0] stage1_0_bar_1;
+    reg  [9:0] stage1_1_bar_1;
+    reg  [9:0] stage1_2_bar_1;
+    reg  [9:0] stage1_3_bar_1;
+    reg  [10:0] stage2_0_bar_1;
+    reg  [10:0] stage2_1_bar_1;
+    reg  [11:0] stage3_0_bar_1;
 
-    add8bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add9bitbar_1 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add9bitbar_1 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add9bitbar_1 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add9bitbar_1 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add10bitbar_1 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add10bitbar_1 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add11bitbar_1 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar_1), .cout(), .cout_bar());
+    add9bitbar_1 u1_0_bar (.a(stage0_0_bar_1), .b(stage0_1_bar_1), .cin(1'b0), .y(stage1_0_lo_bar_1), .cout(), .cout_bar());
+    add9bitbar_1 u1_1_bar (.a(stage0_2_bar_1), .b(stage0_3_bar_1), .cin(1'b0), .y(stage1_1_lo_bar_1), .cout(), .cout_bar());
+    add9bitbar_1 u1_2_bar (.a(stage0_4_bar_1), .b(stage0_5_bar_1), .cin(1'b0), .y(stage1_2_lo_bar_1), .cout(), .cout_bar());
+    add9bitbar_1 u1_3_bar (.a(stage0_6_bar_1), .b(stage0_7_bar_1), .cin(1'b0), .y(stage1_3_lo_bar_1), .cout(), .cout_bar());
+    add10bitbar_1 u2_0_bar (.a(stage1_0_bar_1), .b(stage1_1_bar_1), .cin(1'b0), .y(stage2_0_lo_bar_1), .cout(), .cout_bar());
+    add10bitbar_1 u2_1_bar (.a(stage1_2_bar_1), .b(stage1_3_bar_1), .cin(1'b0), .y(stage2_1_lo_bar_1), .cout(), .cout_bar());
+    add11bitbar_1 u3_0_bar (.a(stage2_0_bar_1), .b(stage2_1_bar_1), .cin(1'b0), .y(stage3_0_lo_bar_1), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo_bar};
+    assign sum =  stage3_0_lo_bar_1;
 
-    always @(*) begin
-        stage0_0_bar = {1'b0, stage0_0_lo_bar};
-        stage0_1_bar = {1'b0, stage0_1_lo_bar};
-        stage0_2_bar = {1'b0, stage0_2_lo_bar};
-        stage0_3_bar = {1'b0, stage0_3_lo_bar};
-        stage0_4_bar = {1'b0, stage0_4_lo_bar};
-        stage0_5_bar = {1'b0, stage0_5_lo_bar};
-        stage0_6_bar = {1'b0, stage0_6_lo_bar};
-        stage0_7_bar = {1'b0, stage0_7_lo_bar};
-        stage1_0_bar = {1'b0, stage1_0_lo_bar};
-        stage1_1_bar = {1'b0, stage1_1_lo_bar};
-        stage1_2_bar = {1'b0, stage1_2_lo_bar};
-        stage1_3_bar = {1'b0, stage1_3_lo_bar};
-        stage2_0_bar = {1'b0, stage2_0_lo_bar};
-        stage2_1_bar = {1'b0, stage2_1_lo_bar};
-        stage3_0_bar = {1'b0, stage3_0_lo_bar};
+    always @(posedge clk) begin
+        stage0_0_bar_1 <=  stage0_0_lo_bar_1;
+        stage0_1_bar_1 <=  stage0_1_lo_bar_1;
+        stage0_2_bar_1 <=  stage0_2_lo_bar_1;
+        stage0_3_bar_1 <=  stage0_3_lo_bar_1;
+        stage0_4_bar_1 <=  stage0_4_lo_bar_1;
+        stage0_5_bar_1 <=  stage0_5_lo_bar_1;
+        stage0_6_bar_1 <=  stage0_6_lo_bar_1;
+        stage0_7_bar_1 <=  stage0_7_lo_bar_1;
+        stage1_0_bar_1 <=  stage1_0_lo_bar_1;
+        stage1_1_bar_1 <=  stage1_1_lo_bar_1;
+        stage1_2_bar_1 <=  stage1_2_lo_bar_1;
+        stage1_3_bar_1 <=  stage1_3_lo_bar_1;
+        stage2_0_bar_1 <=  stage2_0_lo_bar_1;
+        stage2_1_bar_1 <=  stage2_1_lo_bar_1;
+        stage3_0_bar_1 <=  stage3_0_lo_bar_1;
     end
 endmodule
 
 
 module layer1(
+    input clk,
     input [7:0] inputs0_1 , inputs1_1 , inputs2_1 , inputs3_1 , inputs4_1 , inputs5_1 , inputs6_1 , inputs7_1 , inputs8_1 , inputs9_1 , inputs10_1 , inputs11_1 , inputs12_1 , inputs13_1 , inputs14_1 , inputs15_1,
     input [15:0] w1_0_1, w1_1_1, w2_0_1, w2_1_1, w3_0_1, w3_1_1, w4_0_1, w4_1_1, w5_0_1, w5_1_1, w6_0_1, w6_1_1, w7_0_1, w7_1_1, w8_0_1, w8_1_1,
     input [11:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1,
@@ -1163,7 +1166,8 @@ module layer1(
     weighted_inputs_1 w127 (.inputs(inputs15_1), .w(w8_0_1[15]), .wi(weighted_inputs8_15_0));
     weighted_inputs_1 w127_bar (.inputs(inputs15_1), .w(w8_1_1[15]), .wi(weighted_inputs8_15_1));
     adder_tree_1 add0(
-        .in0(weighted_inputs1_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
         .in3(weighted_inputs1_3_0),
@@ -1182,7 +1186,8 @@ module layer1(
         .sum(sum1[0])
     );
     adder_tree_1 add8(
-        .in0(weighted_inputs1_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
         .in3(weighted_inputs1_3_1),
@@ -1201,7 +1206,8 @@ module layer1(
         .sum(sum2[0])
     );
     adder_tree_bar_1 addb0(
-        .in0(weighted_inputs1_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
         .in3(weighted_inputs1_3_0),
@@ -1220,7 +1226,8 @@ module layer1(
         .sum(sum1bar[0])
     );
     adder_tree_bar_1 addb8(
-        .in0(weighted_inputs1_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
         .in3(weighted_inputs1_3_1),
@@ -1239,7 +1246,8 @@ module layer1(
         .sum(sum2bar[0])
     );
     adder_tree_1 add1(
-        .in0(weighted_inputs2_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
         .in3(weighted_inputs2_3_0),
@@ -1258,7 +1266,8 @@ module layer1(
         .sum(sum1[1])
     );
     adder_tree_1 add9(
-        .in0(weighted_inputs2_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
         .in3(weighted_inputs2_3_1),
@@ -1277,7 +1286,8 @@ module layer1(
         .sum(sum2[1])
     );
     adder_tree_bar_1 addb1(
-        .in0(weighted_inputs2_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
         .in3(weighted_inputs2_3_0),
@@ -1296,7 +1306,8 @@ module layer1(
         .sum(sum1bar[1])
     );
     adder_tree_bar_1 addb9(
-        .in0(weighted_inputs2_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
         .in3(weighted_inputs2_3_1),
@@ -1315,7 +1326,8 @@ module layer1(
         .sum(sum2bar[1])
     );
     adder_tree_1 add2(
-        .in0(weighted_inputs3_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
         .in3(weighted_inputs3_3_0),
@@ -1334,7 +1346,8 @@ module layer1(
         .sum(sum1[2])
     );
     adder_tree_1 add10(
-        .in0(weighted_inputs3_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
         .in3(weighted_inputs3_3_1),
@@ -1353,7 +1366,8 @@ module layer1(
         .sum(sum2[2])
     );
     adder_tree_bar_1 addb2(
-        .in0(weighted_inputs3_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
         .in3(weighted_inputs3_3_0),
@@ -1372,7 +1386,8 @@ module layer1(
         .sum(sum1bar[2])
     );
     adder_tree_bar_1 addb10(
-        .in0(weighted_inputs3_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
         .in3(weighted_inputs3_3_1),
@@ -1391,7 +1406,8 @@ module layer1(
         .sum(sum2bar[2])
     );
     adder_tree_1 add3(
-        .in0(weighted_inputs4_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
         .in3(weighted_inputs4_3_0),
@@ -1410,7 +1426,8 @@ module layer1(
         .sum(sum1[3])
     );
     adder_tree_1 add11(
-        .in0(weighted_inputs4_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
         .in3(weighted_inputs4_3_1),
@@ -1429,7 +1446,8 @@ module layer1(
         .sum(sum2[3])
     );
     adder_tree_bar_1 addb3(
-        .in0(weighted_inputs4_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
         .in3(weighted_inputs4_3_0),
@@ -1448,7 +1466,8 @@ module layer1(
         .sum(sum1bar[3])
     );
     adder_tree_bar_1 addb11(
-        .in0(weighted_inputs4_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
         .in3(weighted_inputs4_3_1),
@@ -1467,7 +1486,8 @@ module layer1(
         .sum(sum2bar[3])
     );
     adder_tree_1 add4(
-        .in0(weighted_inputs5_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
         .in3(weighted_inputs5_3_0),
@@ -1486,7 +1506,8 @@ module layer1(
         .sum(sum1[4])
     );
     adder_tree_1 add12(
-        .in0(weighted_inputs5_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
         .in3(weighted_inputs5_3_1),
@@ -1505,7 +1526,8 @@ module layer1(
         .sum(sum2[4])
     );
     adder_tree_bar_1 addb4(
-        .in0(weighted_inputs5_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
         .in3(weighted_inputs5_3_0),
@@ -1524,7 +1546,8 @@ module layer1(
         .sum(sum1bar[4])
     );
     adder_tree_bar_1 addb12(
-        .in0(weighted_inputs5_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
         .in3(weighted_inputs5_3_1),
@@ -1543,7 +1566,8 @@ module layer1(
         .sum(sum2bar[4])
     );
     adder_tree_1 add5(
-        .in0(weighted_inputs6_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
         .in3(weighted_inputs6_3_0),
@@ -1562,7 +1586,8 @@ module layer1(
         .sum(sum1[5])
     );
     adder_tree_1 add13(
-        .in0(weighted_inputs6_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
         .in3(weighted_inputs6_3_1),
@@ -1581,7 +1606,8 @@ module layer1(
         .sum(sum2[5])
     );
     adder_tree_bar_1 addb5(
-        .in0(weighted_inputs6_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
         .in3(weighted_inputs6_3_0),
@@ -1600,7 +1626,8 @@ module layer1(
         .sum(sum1bar[5])
     );
     adder_tree_bar_1 addb13(
-        .in0(weighted_inputs6_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
         .in3(weighted_inputs6_3_1),
@@ -1619,7 +1646,8 @@ module layer1(
         .sum(sum2bar[5])
     );
     adder_tree_1 add6(
-        .in0(weighted_inputs7_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
         .in3(weighted_inputs7_3_0),
@@ -1638,7 +1666,8 @@ module layer1(
         .sum(sum1[6])
     );
     adder_tree_1 add14(
-        .in0(weighted_inputs7_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
         .in3(weighted_inputs7_3_1),
@@ -1657,7 +1686,8 @@ module layer1(
         .sum(sum2[6])
     );
     adder_tree_bar_1 addb6(
-        .in0(weighted_inputs7_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
         .in3(weighted_inputs7_3_0),
@@ -1676,7 +1706,8 @@ module layer1(
         .sum(sum1bar[6])
     );
     adder_tree_bar_1 addb14(
-        .in0(weighted_inputs7_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
         .in3(weighted_inputs7_3_1),
@@ -1695,7 +1726,8 @@ module layer1(
         .sum(sum2bar[6])
     );
     adder_tree_1 add7(
-        .in0(weighted_inputs8_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
         .in3(weighted_inputs8_3_0),
@@ -1714,7 +1746,8 @@ module layer1(
         .sum(sum1[7])
     );
     adder_tree_1 add15(
-        .in0(weighted_inputs8_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
         .in3(weighted_inputs8_3_1),
@@ -1733,7 +1766,8 @@ module layer1(
         .sum(sum2[7])
     );
     adder_tree_bar_1 addb7(
-        .in0(weighted_inputs8_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
         .in3(weighted_inputs8_3_0),
@@ -1752,7 +1786,8 @@ module layer1(
         .sum(sum1bar[7])
     );
     adder_tree_bar_1 addb15(
-        .in0(weighted_inputs8_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
         .in3(weighted_inputs8_3_1),
@@ -1834,7 +1869,7 @@ module layer1(
     assign biased_sum7_1 = biased_sum2[7];
     assign biased_sum7_0bar = biased_sum1bar[7];
     assign biased_sum7_1bar = biased_sum2bar[7];
-    always @(*) begin
+    always @(posedge clk) begin
         $display("----- BNN LAYER 1 OUTPUTS -----");
         $display("Inputs : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", inputs0_1, inputs1_1, inputs2_1, inputs3_1, inputs4_1, inputs5_1, inputs6_1, inputs7_1, inputs8_1, inputs9_1, inputs10_1, inputs11_1, inputs12_1, inputs13_1, inputs14_1, inputs15_1);
         $display("Weights0: %b %b %b %b %b %b %b %b", w1_0_1, w2_0_1, w3_0_1, w4_0_1, w5_0_1, w6_0_1, w7_0_1, w8_0_1);
@@ -2079,6 +2114,7 @@ endmodule
 
 
 module activation_and_conversion_1(
+  input  wire clk, 
   input  wire [7:0] inputs0_1,
   input  wire [7:0] inputs1_1,
   input  wire [7:0] inputs2_1,
@@ -2244,6 +2280,7 @@ module activation_and_conversion_1(
   wire [12:0] biased_sum7_1, biased_sum7_1bar;
 
     layer1 l1 (
+    .clk(clk),
     .inputs0_1(inputs0_1),
     .inputs1_1(inputs1_1),
     .inputs2_1(inputs2_1),
@@ -2588,7 +2625,7 @@ module activation_and_conversion_1(
     .mask7(mask7bar_1)
   );
 
-    always @(*) begin
+    always @(posedge clk) begin
     $display("----- LAYER 1   boolean activations -----");
     $display("masked_activation : %b %b %b %b %b %b %b %b", masked_activation0_1, masked_activation1_1, masked_activation2_1, masked_activation3_1, masked_activation4_1, masked_activation5_1, masked_activation6_1, masked_activation7_1);
     $display("masked_activationbar : %b %b %b %b %b %b %b %b", masked_activation0bar_1, masked_activation1bar_1, masked_activation2bar_1, masked_activation3bar_1, masked_activation4bar_1, masked_activation5bar_1, masked_activation6bar_1, masked_activation7bar_1);
@@ -2965,6 +3002,7 @@ endmodule
 
 
 module adder_tree_2 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -2984,76 +3022,77 @@ module adder_tree_2 (
     output wire [4:0] sum
 );
 
-    wire [1:0] stage0_0_lo;
-    wire [1:0] stage0_1_lo;
-    wire [1:0] stage0_2_lo;
-    wire [1:0] stage0_3_lo;
-    wire [1:0] stage0_4_lo;
-    wire [1:0] stage0_5_lo;
-    wire [1:0] stage0_6_lo;
-    wire [1:0] stage0_7_lo;
-    wire [2:0] stage1_0_lo;
-    wire [2:0] stage1_1_lo;
-    wire [2:0] stage1_2_lo;
-    wire [2:0] stage1_3_lo;
-    wire [3:0] stage2_0_lo;
-    wire [3:0] stage2_1_lo;
-    wire [4:0] stage3_0_lo;
-    reg  [1:0] stage0_0;
-    reg  [1:0] stage0_1;
-    reg  [1:0] stage0_2;
-    reg  [1:0] stage0_3;
-    reg  [1:0] stage0_4;
-    reg  [1:0] stage0_5;
-    reg  [1:0] stage0_6;
-    reg  [1:0] stage0_7;
-    reg  [2:0] stage1_0;
-    reg  [2:0] stage1_1;
-    reg  [2:0] stage1_2;
-    reg  [2:0] stage1_3;
-    reg  [3:0] stage2_0;
-    reg  [3:0] stage2_1;
-    reg  [4:0] stage3_0;
+    wire [1:0] stage0_0_lo_2;
+    wire [1:0] stage0_1_lo_2;
+    wire [1:0] stage0_2_lo_2;
+    wire [1:0] stage0_3_lo_2;
+    wire [1:0] stage0_4_lo_2;
+    wire [1:0] stage0_5_lo_2;
+    wire [1:0] stage0_6_lo_2;
+    wire [1:0] stage0_7_lo_2;
+    wire [2:0] stage1_0_lo_2;
+    wire [2:0] stage1_1_lo_2;
+    wire [2:0] stage1_2_lo_2;
+    wire [2:0] stage1_3_lo_2;
+    wire [3:0] stage2_0_lo_2;
+    wire [3:0] stage2_1_lo_2;
+    wire [4:0] stage3_0_lo_2;
+    reg  [1:0] stage0_0_2;
+    reg  [1:0] stage0_1_2;
+    reg  [1:0] stage0_2_2;
+    reg  [1:0] stage0_3_2;
+    reg  [1:0] stage0_4_2;
+    reg  [1:0] stage0_5_2;
+    reg  [1:0] stage0_6_2;
+    reg  [1:0] stage0_7_2;
+    reg  [2:0] stage1_0_2;
+    reg  [2:0] stage1_1_2;
+    reg  [2:0] stage1_2_2;
+    reg  [2:0] stage1_3_2;
+    reg  [3:0] stage2_0_2;
+    reg  [3:0] stage2_1_2;
+    reg  [4:0] stage3_0_2;
 
-    add1bit_2 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add1bit_2 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add1bit_2 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add1bit_2 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add1bit_2 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add1bit_2 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add1bit_2 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add1bit_2 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add2bit_2 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add2bit_2 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add2bit_2 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add2bit_2 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add3bit_2 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add3bit_2 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add4bit_2 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
+    add1bit_2 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_0 (.a(stage0_0_2), .b(stage0_1_2), .cin(1'b0), .y(stage1_0_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_1 (.a(stage0_2_2), .b(stage0_3_2), .cin(1'b0), .y(stage1_1_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_2 (.a(stage0_4_2), .b(stage0_5_2), .cin(1'b0), .y(stage1_2_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_3 (.a(stage0_6_2), .b(stage0_7_2), .cin(1'b0), .y(stage1_3_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_0 (.a(stage1_0_2), .b(stage1_1_2), .cin(1'b0), .y(stage2_0_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_1 (.a(stage1_2_2), .b(stage1_3_2), .cin(1'b0), .y(stage2_1_lo_2), .cout(), .cout_bar());
+    add4bit_2 u3_0 (.a(stage2_0_2), .b(stage2_1_2), .cin(1'b0), .y(stage3_0_lo_2), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo};
+    assign sum =  stage3_0_lo_2;
 
-    always @(*) begin
-        stage0_0 = {1'b0, stage0_0_lo};
-        stage0_1 = {1'b0, stage0_1_lo};
-        stage0_2 = {1'b0, stage0_2_lo};
-        stage0_3 = {1'b0, stage0_3_lo};
-        stage0_4 = {1'b0, stage0_4_lo};
-        stage0_5 = {1'b0, stage0_5_lo};
-        stage0_6 = {1'b0, stage0_6_lo};
-        stage0_7 = {1'b0, stage0_7_lo};
-        stage1_0 = {1'b0, stage1_0_lo};
-        stage1_1 = {1'b0, stage1_1_lo};
-        stage1_2 = {1'b0, stage1_2_lo};
-        stage1_3 = {1'b0, stage1_3_lo};
-        stage2_0 = {1'b0, stage2_0_lo};
-        stage2_1 = {1'b0, stage2_1_lo};
-        stage3_0 = {1'b0, stage3_0_lo};
+    always @(posedge clk) begin
+        stage0_0_2 <=  stage0_0_lo_2;
+        stage0_1_2 <=  stage0_1_lo_2;
+        stage0_2_2 <=  stage0_2_lo_2;
+        stage0_3_2 <=  stage0_3_lo_2;
+        stage0_4_2 <=  stage0_4_lo_2;
+        stage0_5_2 <=  stage0_5_lo_2;
+        stage0_6_2 <=  stage0_6_lo_2;
+        stage0_7_2 <=  stage0_7_lo_2;
+        stage1_0_2 <=  stage1_0_lo_2;
+        stage1_1_2 <=  stage1_1_lo_2;
+        stage1_2_2 <=  stage1_2_lo_2;
+        stage1_3_2 <=  stage1_3_lo_2;
+        stage2_0_2 <=  stage2_0_lo_2;
+        stage2_1_2 <=  stage2_1_lo_2;
+        stage3_0_2 <=  stage3_0_lo_2;
     end
 endmodule
 
 
 module adder_tree_bar_2 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -3073,76 +3112,77 @@ module adder_tree_bar_2 (
     output wire [4:0] sum
 );
 
-    wire [1:0] stage0_0_lo_bar;
-    wire [1:0] stage0_1_lo_bar;
-    wire [1:0] stage0_2_lo_bar;
-    wire [1:0] stage0_3_lo_bar;
-    wire [1:0] stage0_4_lo_bar;
-    wire [1:0] stage0_5_lo_bar;
-    wire [1:0] stage0_6_lo_bar;
-    wire [1:0] stage0_7_lo_bar;
-    wire [2:0] stage1_0_lo_bar;
-    wire [2:0] stage1_1_lo_bar;
-    wire [2:0] stage1_2_lo_bar;
-    wire [2:0] stage1_3_lo_bar;
-    wire [3:0] stage2_0_lo_bar;
-    wire [3:0] stage2_1_lo_bar;
-    wire [4:0] stage3_0_lo_bar;
-    reg  [1:0] stage0_0_bar;
-    reg  [1:0] stage0_1_bar;
-    reg  [1:0] stage0_2_bar;
-    reg  [1:0] stage0_3_bar;
-    reg  [1:0] stage0_4_bar;
-    reg  [1:0] stage0_5_bar;
-    reg  [1:0] stage0_6_bar;
-    reg  [1:0] stage0_7_bar;
-    reg  [2:0] stage1_0_bar;
-    reg  [2:0] stage1_1_bar;
-    reg  [2:0] stage1_2_bar;
-    reg  [2:0] stage1_3_bar;
-    reg  [3:0] stage2_0_bar;
-    reg  [3:0] stage2_1_bar;
-    reg  [4:0] stage3_0_bar;
+    wire [1:0] stage0_0_lo_bar_2;
+    wire [1:0] stage0_1_lo_bar_2;
+    wire [1:0] stage0_2_lo_bar_2;
+    wire [1:0] stage0_3_lo_bar_2;
+    wire [1:0] stage0_4_lo_bar_2;
+    wire [1:0] stage0_5_lo_bar_2;
+    wire [1:0] stage0_6_lo_bar_2;
+    wire [1:0] stage0_7_lo_bar_2;
+    wire [2:0] stage1_0_lo_bar_2;
+    wire [2:0] stage1_1_lo_bar_2;
+    wire [2:0] stage1_2_lo_bar_2;
+    wire [2:0] stage1_3_lo_bar_2;
+    wire [3:0] stage2_0_lo_bar_2;
+    wire [3:0] stage2_1_lo_bar_2;
+    wire [4:0] stage3_0_lo_bar_2;
+    reg  [1:0] stage0_0_bar_2;
+    reg  [1:0] stage0_1_bar_2;
+    reg  [1:0] stage0_2_bar_2;
+    reg  [1:0] stage0_3_bar_2;
+    reg  [1:0] stage0_4_bar_2;
+    reg  [1:0] stage0_5_bar_2;
+    reg  [1:0] stage0_6_bar_2;
+    reg  [1:0] stage0_7_bar_2;
+    reg  [2:0] stage1_0_bar_2;
+    reg  [2:0] stage1_1_bar_2;
+    reg  [2:0] stage1_2_bar_2;
+    reg  [2:0] stage1_3_bar_2;
+    reg  [3:0] stage2_0_bar_2;
+    reg  [3:0] stage2_1_bar_2;
+    reg  [4:0] stage3_0_bar_2;
 
-    add1bitbar_2 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar_2 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
+    add1bitbar_2 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_0_bar (.a(stage0_0_bar_2), .b(stage0_1_bar_2), .cin(1'b0), .y(stage1_0_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_1_bar (.a(stage0_2_bar_2), .b(stage0_3_bar_2), .cin(1'b0), .y(stage1_1_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_2_bar (.a(stage0_4_bar_2), .b(stage0_5_bar_2), .cin(1'b0), .y(stage1_2_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_3_bar (.a(stage0_6_bar_2), .b(stage0_7_bar_2), .cin(1'b0), .y(stage1_3_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_0_bar (.a(stage1_0_bar_2), .b(stage1_1_bar_2), .cin(1'b0), .y(stage2_0_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_1_bar (.a(stage1_2_bar_2), .b(stage1_3_bar_2), .cin(1'b0), .y(stage2_1_lo_bar_2), .cout(), .cout_bar());
+    add4bitbar_2 u3_0_bar (.a(stage2_0_bar_2), .b(stage2_1_bar_2), .cin(1'b0), .y(stage3_0_lo_bar_2), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo_bar};
+    assign sum =  stage3_0_lo_bar_2;
 
-    always @(*) begin
-        stage0_0_bar = {1'b0, stage0_0_lo_bar};
-        stage0_1_bar = {1'b0, stage0_1_lo_bar};
-        stage0_2_bar = {1'b0, stage0_2_lo_bar};
-        stage0_3_bar = {1'b0, stage0_3_lo_bar};
-        stage0_4_bar = {1'b0, stage0_4_lo_bar};
-        stage0_5_bar = {1'b0, stage0_5_lo_bar};
-        stage0_6_bar = {1'b0, stage0_6_lo_bar};
-        stage0_7_bar = {1'b0, stage0_7_lo_bar};
-        stage1_0_bar = {1'b0, stage1_0_lo_bar};
-        stage1_1_bar = {1'b0, stage1_1_lo_bar};
-        stage1_2_bar = {1'b0, stage1_2_lo_bar};
-        stage1_3_bar = {1'b0, stage1_3_lo_bar};
-        stage2_0_bar = {1'b0, stage2_0_lo_bar};
-        stage2_1_bar = {1'b0, stage2_1_lo_bar};
-        stage3_0_bar = {1'b0, stage3_0_lo_bar};
+    always @(posedge clk) begin
+        stage0_0_bar_2 <=  stage0_0_lo_bar_2;
+        stage0_1_bar_2 <=  stage0_1_lo_bar_2;
+        stage0_2_bar_2 <=  stage0_2_lo_bar_2;
+        stage0_3_bar_2 <=  stage0_3_lo_bar_2;
+        stage0_4_bar_2 <=  stage0_4_lo_bar_2;
+        stage0_5_bar_2 <=  stage0_5_lo_bar_2;
+        stage0_6_bar_2 <=  stage0_6_lo_bar_2;
+        stage0_7_bar_2 <=  stage0_7_lo_bar_2;
+        stage1_0_bar_2 <=  stage1_0_lo_bar_2;
+        stage1_1_bar_2 <=  stage1_1_lo_bar_2;
+        stage1_2_bar_2 <=  stage1_2_lo_bar_2;
+        stage1_3_bar_2 <=  stage1_3_lo_bar_2;
+        stage2_0_bar_2 <=  stage2_0_lo_bar_2;
+        stage2_1_bar_2 <=  stage2_1_lo_bar_2;
+        stage3_0_bar_2 <=  stage3_0_lo_bar_2;
     end
 endmodule
 
 
 module layer2(
+    input clk,
     input [0:0] inputs0_2 , inputs1_2 , inputs2_2 , inputs3_2 , inputs4_2 , inputs5_2 , inputs6_2 , inputs7_2 , inputs8_2 , inputs9_2 , inputs10_2 , inputs11_2 , inputs12_2 , inputs13_2 , inputs14_2 , inputs15_2,
     input [15:0] w1_0_2, w1_1_2, w2_0_2, w2_1_2, w3_0_2, w3_1_2, w4_0_2, w4_1_2, w5_0_2, w5_1_2, w6_0_2, w6_1_2, w7_0_2, w7_1_2, w8_0_2, w8_1_2,
     input [4:0] b1_2, b2_2, b3_2, b4_2, b5_2, b6_2, b7_2, b8_2,
@@ -3542,6 +3582,7 @@ module layer2(
     weighted_inputs_2 w127 (.inputs(inputs15_2), .w(w8_0_2[15]), .wi(weighted_inputs8_15_0));
     weighted_inputs_2 w127_bar (.inputs(inputs15_2), .w(w8_1_2[15]), .wi(weighted_inputs8_15_1));
     adder_tree_2 add0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -3561,6 +3602,7 @@ module layer2(
         .sum(sum1[0])
     );
     adder_tree_2 add8(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -3580,6 +3622,7 @@ module layer2(
         .sum(sum2[0])
     );
     adder_tree_bar_2 addb0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -3599,6 +3642,7 @@ module layer2(
         .sum(sum1bar[0])
     );
     adder_tree_bar_2 addb8(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -3618,6 +3662,7 @@ module layer2(
         .sum(sum2bar[0])
     );
     adder_tree_2 add1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -3637,6 +3682,7 @@ module layer2(
         .sum(sum1[1])
     );
     adder_tree_2 add9(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -3656,6 +3702,7 @@ module layer2(
         .sum(sum2[1])
     );
     adder_tree_bar_2 addb1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -3675,6 +3722,7 @@ module layer2(
         .sum(sum1bar[1])
     );
     adder_tree_bar_2 addb9(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -3694,6 +3742,7 @@ module layer2(
         .sum(sum2bar[1])
     );
     adder_tree_2 add2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -3713,6 +3762,7 @@ module layer2(
         .sum(sum1[2])
     );
     adder_tree_2 add10(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -3732,6 +3782,7 @@ module layer2(
         .sum(sum2[2])
     );
     adder_tree_bar_2 addb2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -3751,6 +3802,7 @@ module layer2(
         .sum(sum1bar[2])
     );
     adder_tree_bar_2 addb10(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -3770,6 +3822,7 @@ module layer2(
         .sum(sum2bar[2])
     );
     adder_tree_2 add3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -3789,6 +3842,7 @@ module layer2(
         .sum(sum1[3])
     );
     adder_tree_2 add11(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -3808,6 +3862,7 @@ module layer2(
         .sum(sum2[3])
     );
     adder_tree_bar_2 addb3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -3827,6 +3882,7 @@ module layer2(
         .sum(sum1bar[3])
     );
     adder_tree_bar_2 addb11(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -3846,6 +3902,7 @@ module layer2(
         .sum(sum2bar[3])
     );
     adder_tree_2 add4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -3865,6 +3922,7 @@ module layer2(
         .sum(sum1[4])
     );
     adder_tree_2 add12(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -3884,6 +3942,7 @@ module layer2(
         .sum(sum2[4])
     );
     adder_tree_bar_2 addb4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -3903,6 +3962,7 @@ module layer2(
         .sum(sum1bar[4])
     );
     adder_tree_bar_2 addb12(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -3922,6 +3982,7 @@ module layer2(
         .sum(sum2bar[4])
     );
     adder_tree_2 add5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -3941,6 +4002,7 @@ module layer2(
         .sum(sum1[5])
     );
     adder_tree_2 add13(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -3960,6 +4022,7 @@ module layer2(
         .sum(sum2[5])
     );
     adder_tree_bar_2 addb5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -3979,6 +4042,7 @@ module layer2(
         .sum(sum1bar[5])
     );
     adder_tree_bar_2 addb13(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -3998,6 +4062,7 @@ module layer2(
         .sum(sum2bar[5])
     );
     adder_tree_2 add6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -4017,6 +4082,7 @@ module layer2(
         .sum(sum1[6])
     );
     adder_tree_2 add14(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -4036,6 +4102,7 @@ module layer2(
         .sum(sum2[6])
     );
     adder_tree_bar_2 addb6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -4055,6 +4122,7 @@ module layer2(
         .sum(sum1bar[6])
     );
     adder_tree_bar_2 addb14(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -4074,6 +4142,7 @@ module layer2(
         .sum(sum2bar[6])
     );
     adder_tree_2 add7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -4093,6 +4162,7 @@ module layer2(
         .sum(sum1[7])
     );
     adder_tree_2 add15(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -4112,6 +4182,7 @@ module layer2(
         .sum(sum2[7])
     );
     adder_tree_bar_2 addb7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -4131,6 +4202,7 @@ module layer2(
         .sum(sum1bar[7])
     );
     adder_tree_bar_2 addb15(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -4213,7 +4285,7 @@ module layer2(
     assign biased_sum7_1 = biased_sum2[7];
     assign biased_sum7_0bar = biased_sum1bar[7];
     assign biased_sum7_1bar = biased_sum2bar[7];
-    always @(*) begin
+    always @(posedge clk) begin
         $display("----- BNN LAYER 2 OUTPUTS -----");
         $display("Inputs : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", inputs0_2, inputs1_2, inputs2_2, inputs3_2, inputs4_2, inputs5_2, inputs6_2, inputs7_2, inputs8_2, inputs9_2, inputs10_2, inputs11_2, inputs12_2, inputs13_2, inputs14_2, inputs15_2);
         $display("Weights0: %b %b %b %b %b %b %b %b", w1_0_2, w2_0_2, w3_0_2, w4_0_2, w5_0_2, w6_0_2, w7_0_2, w8_0_2);
@@ -4395,6 +4467,7 @@ endmodule
 
 
 module activation_and_conversion_2(
+  input  wire clk, 
   input  wire [0:0] inputs0_2,
   input  wire [0:0] inputs1_2,
   input  wire [0:0] inputs2_2,
@@ -4504,6 +4577,7 @@ module activation_and_conversion_2(
   wire [5:0] biased_sum7_1, biased_sum7_1bar;
 
     layer2 l1 (
+    .clk(clk),
     .inputs0_2(inputs0_2),
     .inputs1_2(inputs1_2),
     .inputs2_2(inputs2_2),
@@ -4736,7 +4810,7 @@ module activation_and_conversion_2(
     .mask7(mask7bar_2)
   );
 
-    always @(*) begin
+    always @(posedge clk) begin
     $display("----- LAYER 2   boolean activations -----");
     $display("masked_activation : %b %b %b %b %b %b %b %b", masked_activation0_2, masked_activation1_2, masked_activation2_2, masked_activation3_2, masked_activation4_2, masked_activation5_2, masked_activation6_2, masked_activation7_2);
     $display("masked_activationbar : %b %b %b %b %b %b %b %b", masked_activation0bar_2, masked_activation1bar_2, masked_activation2bar_2, masked_activation3bar_2, masked_activation4bar_2, masked_activation5bar_2, masked_activation6bar_2, masked_activation7bar_2);
@@ -5113,6 +5187,7 @@ endmodule
 
 
 module adder_tree_3 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -5132,76 +5207,77 @@ module adder_tree_3 (
     output wire [4:0] sum
 );
 
-    wire [1:0] stage0_0_lo;
-    wire [1:0] stage0_1_lo;
-    wire [1:0] stage0_2_lo;
-    wire [1:0] stage0_3_lo;
-    wire [1:0] stage0_4_lo;
-    wire [1:0] stage0_5_lo;
-    wire [1:0] stage0_6_lo;
-    wire [1:0] stage0_7_lo;
-    wire [2:0] stage1_0_lo;
-    wire [2:0] stage1_1_lo;
-    wire [2:0] stage1_2_lo;
-    wire [2:0] stage1_3_lo;
-    wire [3:0] stage2_0_lo;
-    wire [3:0] stage2_1_lo;
-    wire [4:0] stage3_0_lo;
-    reg  [1:0] stage0_0;
-    reg  [1:0] stage0_1;
-    reg  [1:0] stage0_2;
-    reg  [1:0] stage0_3;
-    reg  [1:0] stage0_4;
-    reg  [1:0] stage0_5;
-    reg  [1:0] stage0_6;
-    reg  [1:0] stage0_7;
-    reg  [2:0] stage1_0;
-    reg  [2:0] stage1_1;
-    reg  [2:0] stage1_2;
-    reg  [2:0] stage1_3;
-    reg  [3:0] stage2_0;
-    reg  [3:0] stage2_1;
-    reg  [4:0] stage3_0;
+    wire [1:0] stage0_0_lo_3;
+    wire [1:0] stage0_1_lo_3;
+    wire [1:0] stage0_2_lo_3;
+    wire [1:0] stage0_3_lo_3;
+    wire [1:0] stage0_4_lo_3;
+    wire [1:0] stage0_5_lo_3;
+    wire [1:0] stage0_6_lo_3;
+    wire [1:0] stage0_7_lo_3;
+    wire [2:0] stage1_0_lo_3;
+    wire [2:0] stage1_1_lo_3;
+    wire [2:0] stage1_2_lo_3;
+    wire [2:0] stage1_3_lo_3;
+    wire [3:0] stage2_0_lo_3;
+    wire [3:0] stage2_1_lo_3;
+    wire [4:0] stage3_0_lo_3;
+    reg  [1:0] stage0_0_3;
+    reg  [1:0] stage0_1_3;
+    reg  [1:0] stage0_2_3;
+    reg  [1:0] stage0_3_3;
+    reg  [1:0] stage0_4_3;
+    reg  [1:0] stage0_5_3;
+    reg  [1:0] stage0_6_3;
+    reg  [1:0] stage0_7_3;
+    reg  [2:0] stage1_0_3;
+    reg  [2:0] stage1_1_3;
+    reg  [2:0] stage1_2_3;
+    reg  [2:0] stage1_3_3;
+    reg  [3:0] stage2_0_3;
+    reg  [3:0] stage2_1_3;
+    reg  [4:0] stage3_0_3;
 
-    add1bit_3 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add1bit_3 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add1bit_3 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add1bit_3 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add1bit_3 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add1bit_3 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add1bit_3 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add1bit_3 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add2bit_3 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add2bit_3 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add2bit_3 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add2bit_3 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add3bit_3 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add3bit_3 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add4bit_3 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
+    add1bit_3 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_0 (.a(stage0_0_3), .b(stage0_1_3), .cin(1'b0), .y(stage1_0_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_1 (.a(stage0_2_3), .b(stage0_3_3), .cin(1'b0), .y(stage1_1_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_2 (.a(stage0_4_3), .b(stage0_5_3), .cin(1'b0), .y(stage1_2_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_3 (.a(stage0_6_3), .b(stage0_7_3), .cin(1'b0), .y(stage1_3_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_0 (.a(stage1_0_3), .b(stage1_1_3), .cin(1'b0), .y(stage2_0_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_1 (.a(stage1_2_3), .b(stage1_3_3), .cin(1'b0), .y(stage2_1_lo_3), .cout(), .cout_bar());
+    add4bit_3 u3_0 (.a(stage2_0_3), .b(stage2_1_3), .cin(1'b0), .y(stage3_0_lo_3), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo};
+    assign sum =  stage3_0_lo_3;
 
-    always @(*) begin
-        stage0_0 = {1'b0, stage0_0_lo};
-        stage0_1 = {1'b0, stage0_1_lo};
-        stage0_2 = {1'b0, stage0_2_lo};
-        stage0_3 = {1'b0, stage0_3_lo};
-        stage0_4 = {1'b0, stage0_4_lo};
-        stage0_5 = {1'b0, stage0_5_lo};
-        stage0_6 = {1'b0, stage0_6_lo};
-        stage0_7 = {1'b0, stage0_7_lo};
-        stage1_0 = {1'b0, stage1_0_lo};
-        stage1_1 = {1'b0, stage1_1_lo};
-        stage1_2 = {1'b0, stage1_2_lo};
-        stage1_3 = {1'b0, stage1_3_lo};
-        stage2_0 = {1'b0, stage2_0_lo};
-        stage2_1 = {1'b0, stage2_1_lo};
-        stage3_0 = {1'b0, stage3_0_lo};
+    always @(posedge clk) begin
+        stage0_0_3 <=  stage0_0_lo_3;
+        stage0_1_3 <=  stage0_1_lo_3;
+        stage0_2_3 <=  stage0_2_lo_3;
+        stage0_3_3 <=  stage0_3_lo_3;
+        stage0_4_3 <=  stage0_4_lo_3;
+        stage0_5_3 <=  stage0_5_lo_3;
+        stage0_6_3 <=  stage0_6_lo_3;
+        stage0_7_3 <=  stage0_7_lo_3;
+        stage1_0_3 <=  stage1_0_lo_3;
+        stage1_1_3 <=  stage1_1_lo_3;
+        stage1_2_3 <=  stage1_2_lo_3;
+        stage1_3_3 <=  stage1_3_lo_3;
+        stage2_0_3 <=  stage2_0_lo_3;
+        stage2_1_3 <=  stage2_1_lo_3;
+        stage3_0_3 <=  stage3_0_lo_3;
     end
 endmodule
 
 
 module adder_tree_bar_3 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -5221,76 +5297,77 @@ module adder_tree_bar_3 (
     output wire [4:0] sum
 );
 
-    wire [1:0] stage0_0_lo_bar;
-    wire [1:0] stage0_1_lo_bar;
-    wire [1:0] stage0_2_lo_bar;
-    wire [1:0] stage0_3_lo_bar;
-    wire [1:0] stage0_4_lo_bar;
-    wire [1:0] stage0_5_lo_bar;
-    wire [1:0] stage0_6_lo_bar;
-    wire [1:0] stage0_7_lo_bar;
-    wire [2:0] stage1_0_lo_bar;
-    wire [2:0] stage1_1_lo_bar;
-    wire [2:0] stage1_2_lo_bar;
-    wire [2:0] stage1_3_lo_bar;
-    wire [3:0] stage2_0_lo_bar;
-    wire [3:0] stage2_1_lo_bar;
-    wire [4:0] stage3_0_lo_bar;
-    reg  [1:0] stage0_0_bar;
-    reg  [1:0] stage0_1_bar;
-    reg  [1:0] stage0_2_bar;
-    reg  [1:0] stage0_3_bar;
-    reg  [1:0] stage0_4_bar;
-    reg  [1:0] stage0_5_bar;
-    reg  [1:0] stage0_6_bar;
-    reg  [1:0] stage0_7_bar;
-    reg  [2:0] stage1_0_bar;
-    reg  [2:0] stage1_1_bar;
-    reg  [2:0] stage1_2_bar;
-    reg  [2:0] stage1_3_bar;
-    reg  [3:0] stage2_0_bar;
-    reg  [3:0] stage2_1_bar;
-    reg  [4:0] stage3_0_bar;
+    wire [1:0] stage0_0_lo_bar_3;
+    wire [1:0] stage0_1_lo_bar_3;
+    wire [1:0] stage0_2_lo_bar_3;
+    wire [1:0] stage0_3_lo_bar_3;
+    wire [1:0] stage0_4_lo_bar_3;
+    wire [1:0] stage0_5_lo_bar_3;
+    wire [1:0] stage0_6_lo_bar_3;
+    wire [1:0] stage0_7_lo_bar_3;
+    wire [2:0] stage1_0_lo_bar_3;
+    wire [2:0] stage1_1_lo_bar_3;
+    wire [2:0] stage1_2_lo_bar_3;
+    wire [2:0] stage1_3_lo_bar_3;
+    wire [3:0] stage2_0_lo_bar_3;
+    wire [3:0] stage2_1_lo_bar_3;
+    wire [4:0] stage3_0_lo_bar_3;
+    reg  [1:0] stage0_0_bar_3;
+    reg  [1:0] stage0_1_bar_3;
+    reg  [1:0] stage0_2_bar_3;
+    reg  [1:0] stage0_3_bar_3;
+    reg  [1:0] stage0_4_bar_3;
+    reg  [1:0] stage0_5_bar_3;
+    reg  [1:0] stage0_6_bar_3;
+    reg  [1:0] stage0_7_bar_3;
+    reg  [2:0] stage1_0_bar_3;
+    reg  [2:0] stage1_1_bar_3;
+    reg  [2:0] stage1_2_bar_3;
+    reg  [2:0] stage1_3_bar_3;
+    reg  [3:0] stage2_0_bar_3;
+    reg  [3:0] stage2_1_bar_3;
+    reg  [4:0] stage3_0_bar_3;
 
-    add1bitbar_3 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar_3 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
+    add1bitbar_3 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_0_bar (.a(stage0_0_bar_3), .b(stage0_1_bar_3), .cin(1'b0), .y(stage1_0_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_1_bar (.a(stage0_2_bar_3), .b(stage0_3_bar_3), .cin(1'b0), .y(stage1_1_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_2_bar (.a(stage0_4_bar_3), .b(stage0_5_bar_3), .cin(1'b0), .y(stage1_2_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_3_bar (.a(stage0_6_bar_3), .b(stage0_7_bar_3), .cin(1'b0), .y(stage1_3_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_0_bar (.a(stage1_0_bar_3), .b(stage1_1_bar_3), .cin(1'b0), .y(stage2_0_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_1_bar (.a(stage1_2_bar_3), .b(stage1_3_bar_3), .cin(1'b0), .y(stage2_1_lo_bar_3), .cout(), .cout_bar());
+    add4bitbar_3 u3_0_bar (.a(stage2_0_bar_3), .b(stage2_1_bar_3), .cin(1'b0), .y(stage3_0_lo_bar_3), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo_bar};
+    assign sum =  stage3_0_lo_bar_3;
 
-    always @(*) begin
-        stage0_0_bar = {1'b0, stage0_0_lo_bar};
-        stage0_1_bar = {1'b0, stage0_1_lo_bar};
-        stage0_2_bar = {1'b0, stage0_2_lo_bar};
-        stage0_3_bar = {1'b0, stage0_3_lo_bar};
-        stage0_4_bar = {1'b0, stage0_4_lo_bar};
-        stage0_5_bar = {1'b0, stage0_5_lo_bar};
-        stage0_6_bar = {1'b0, stage0_6_lo_bar};
-        stage0_7_bar = {1'b0, stage0_7_lo_bar};
-        stage1_0_bar = {1'b0, stage1_0_lo_bar};
-        stage1_1_bar = {1'b0, stage1_1_lo_bar};
-        stage1_2_bar = {1'b0, stage1_2_lo_bar};
-        stage1_3_bar = {1'b0, stage1_3_lo_bar};
-        stage2_0_bar = {1'b0, stage2_0_lo_bar};
-        stage2_1_bar = {1'b0, stage2_1_lo_bar};
-        stage3_0_bar = {1'b0, stage3_0_lo_bar};
+    always @(posedge clk) begin
+        stage0_0_bar_3 <=  stage0_0_lo_bar_3;
+        stage0_1_bar_3 <=  stage0_1_lo_bar_3;
+        stage0_2_bar_3 <=  stage0_2_lo_bar_3;
+        stage0_3_bar_3 <=  stage0_3_lo_bar_3;
+        stage0_4_bar_3 <=  stage0_4_lo_bar_3;
+        stage0_5_bar_3 <=  stage0_5_lo_bar_3;
+        stage0_6_bar_3 <=  stage0_6_lo_bar_3;
+        stage0_7_bar_3 <=  stage0_7_lo_bar_3;
+        stage1_0_bar_3 <=  stage1_0_lo_bar_3;
+        stage1_1_bar_3 <=  stage1_1_lo_bar_3;
+        stage1_2_bar_3 <=  stage1_2_lo_bar_3;
+        stage1_3_bar_3 <=  stage1_3_lo_bar_3;
+        stage2_0_bar_3 <=  stage2_0_lo_bar_3;
+        stage2_1_bar_3 <=  stage2_1_lo_bar_3;
+        stage3_0_bar_3 <=  stage3_0_lo_bar_3;
     end
 endmodule
 
 
 module layer3(
+    input clk,
     input [0:0] inputs0_3 , inputs1_3 , inputs2_3 , inputs3_3 , inputs4_3 , inputs5_3 , inputs6_3 , inputs7_3 , inputs8_3 , inputs9_3 , inputs10_3 , inputs11_3 , inputs12_3 , inputs13_3 , inputs14_3 , inputs15_3,
     input [15:0] w1_0_3, w1_1_3, w2_0_3, w2_1_3, w3_0_3, w3_1_3, w4_0_3, w4_1_3, w5_0_3, w5_1_3, w6_0_3, w6_1_3, w7_0_3, w7_1_3, w8_0_3, w8_1_3,
     input [4:0] b1_3, b2_3, b3_3, b4_3, b5_3, b6_3, b7_3, b8_3,
@@ -5690,6 +5767,7 @@ module layer3(
     weighted_inputs_2 w127 (.inputs(inputs15_3), .w(w8_0_3[15]), .wi(weighted_inputs8_15_0));
     weighted_inputs_2 w127_bar (.inputs(inputs15_3), .w(w8_1_3[15]), .wi(weighted_inputs8_15_1));
     adder_tree_3 add0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -5709,6 +5787,7 @@ module layer3(
         .sum(sum1[0])
     );
     adder_tree_3 add8(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -5728,6 +5807,7 @@ module layer3(
         .sum(sum2[0])
     );
     adder_tree_bar_3 addb0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -5747,6 +5827,7 @@ module layer3(
         .sum(sum1bar[0])
     );
     adder_tree_bar_3 addb8(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -5766,6 +5847,7 @@ module layer3(
         .sum(sum2bar[0])
     );
     adder_tree_3 add1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -5785,6 +5867,7 @@ module layer3(
         .sum(sum1[1])
     );
     adder_tree_3 add9(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -5804,6 +5887,7 @@ module layer3(
         .sum(sum2[1])
     );
     adder_tree_bar_3 addb1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -5823,6 +5907,7 @@ module layer3(
         .sum(sum1bar[1])
     );
     adder_tree_bar_3 addb9(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -5842,6 +5927,7 @@ module layer3(
         .sum(sum2bar[1])
     );
     adder_tree_3 add2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -5861,6 +5947,7 @@ module layer3(
         .sum(sum1[2])
     );
     adder_tree_3 add10(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -5880,6 +5967,7 @@ module layer3(
         .sum(sum2[2])
     );
     adder_tree_bar_3 addb2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -5899,6 +5987,7 @@ module layer3(
         .sum(sum1bar[2])
     );
     adder_tree_bar_3 addb10(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -5918,6 +6007,7 @@ module layer3(
         .sum(sum2bar[2])
     );
     adder_tree_3 add3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -5937,6 +6027,7 @@ module layer3(
         .sum(sum1[3])
     );
     adder_tree_3 add11(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -5956,6 +6047,7 @@ module layer3(
         .sum(sum2[3])
     );
     adder_tree_bar_3 addb3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -5975,6 +6067,7 @@ module layer3(
         .sum(sum1bar[3])
     );
     adder_tree_bar_3 addb11(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -5994,6 +6087,7 @@ module layer3(
         .sum(sum2bar[3])
     );
     adder_tree_3 add4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -6013,6 +6107,7 @@ module layer3(
         .sum(sum1[4])
     );
     adder_tree_3 add12(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -6032,6 +6127,7 @@ module layer3(
         .sum(sum2[4])
     );
     adder_tree_bar_3 addb4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -6051,6 +6147,7 @@ module layer3(
         .sum(sum1bar[4])
     );
     adder_tree_bar_3 addb12(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -6070,6 +6167,7 @@ module layer3(
         .sum(sum2bar[4])
     );
     adder_tree_3 add5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -6089,6 +6187,7 @@ module layer3(
         .sum(sum1[5])
     );
     adder_tree_3 add13(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -6108,6 +6207,7 @@ module layer3(
         .sum(sum2[5])
     );
     adder_tree_bar_3 addb5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -6127,6 +6227,7 @@ module layer3(
         .sum(sum1bar[5])
     );
     adder_tree_bar_3 addb13(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -6146,6 +6247,7 @@ module layer3(
         .sum(sum2bar[5])
     );
     adder_tree_3 add6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -6165,6 +6267,7 @@ module layer3(
         .sum(sum1[6])
     );
     adder_tree_3 add14(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -6184,6 +6287,7 @@ module layer3(
         .sum(sum2[6])
     );
     adder_tree_bar_3 addb6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -6203,6 +6307,7 @@ module layer3(
         .sum(sum1bar[6])
     );
     adder_tree_bar_3 addb14(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -6222,6 +6327,7 @@ module layer3(
         .sum(sum2bar[6])
     );
     adder_tree_3 add7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -6241,6 +6347,7 @@ module layer3(
         .sum(sum1[7])
     );
     adder_tree_3 add15(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -6260,6 +6367,7 @@ module layer3(
         .sum(sum2[7])
     );
     adder_tree_bar_3 addb7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -6279,6 +6387,7 @@ module layer3(
         .sum(sum1bar[7])
     );
     adder_tree_bar_3 addb15(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -6361,7 +6470,7 @@ module layer3(
     assign biased_sum7_1 = biased_sum2[7];
     assign biased_sum7_0bar = biased_sum1bar[7];
     assign biased_sum7_1bar = biased_sum2bar[7];
-    always @(*) begin
+    always @(posedge clk) begin
         $display("----- BNN LAYER 3 OUTPUTS -----");
         $display("Inputs : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", inputs0_3, inputs1_3, inputs2_3, inputs3_3, inputs4_3, inputs5_3, inputs6_3, inputs7_3, inputs8_3, inputs9_3, inputs10_3, inputs11_3, inputs12_3, inputs13_3, inputs14_3, inputs15_3);
         $display("Weights0: %b %b %b %b %b %b %b %b", w1_0_3, w2_0_3, w3_0_3, w4_0_3, w5_0_3, w6_0_3, w7_0_3, w8_0_3);
@@ -6543,6 +6652,7 @@ endmodule
 
 
 module activation_and_conversion_3(
+  input  wire clk, 
   input  wire [0:0] inputs0_3,
   input  wire [0:0] inputs1_3,
   input  wire [0:0] inputs2_3,
@@ -6652,6 +6762,7 @@ module activation_and_conversion_3(
   wire [5:0] biased_sum7_1, biased_sum7_1bar;
 
     layer3 l1 (
+    .clk(clk),
     .inputs0_3(inputs0_3),
     .inputs1_3(inputs1_3),
     .inputs2_3(inputs2_3),
@@ -6884,7 +6995,7 @@ module activation_and_conversion_3(
     .mask7(mask7bar_3)
   );
 
-    always @(*) begin
+    always @(posedge clk) begin
     $display("----- LAYER 3   boolean activations -----");
     $display("masked_activation : %b %b %b %b %b %b %b %b", masked_activation0_3, masked_activation1_3, masked_activation2_3, masked_activation3_3, masked_activation4_3, masked_activation5_3, masked_activation6_3, masked_activation7_3);
     $display("masked_activationbar : %b %b %b %b %b %b %b %b", masked_activation0bar_3, masked_activation1bar_3, masked_activation2bar_3, masked_activation3bar_3, masked_activation4bar_3, masked_activation5bar_3, masked_activation6bar_3, masked_activation7bar_3);
@@ -7260,6 +7371,7 @@ endmodule
 
 
 module adder_tree_4 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -7279,76 +7391,77 @@ module adder_tree_4 (
     output wire [4:0] sum
 );
 
-    wire [1:0] stage0_0_lo;
-    wire [1:0] stage0_1_lo;
-    wire [1:0] stage0_2_lo;
-    wire [1:0] stage0_3_lo;
-    wire [1:0] stage0_4_lo;
-    wire [1:0] stage0_5_lo;
-    wire [1:0] stage0_6_lo;
-    wire [1:0] stage0_7_lo;
-    wire [2:0] stage1_0_lo;
-    wire [2:0] stage1_1_lo;
-    wire [2:0] stage1_2_lo;
-    wire [2:0] stage1_3_lo;
-    wire [3:0] stage2_0_lo;
-    wire [3:0] stage2_1_lo;
-    wire [4:0] stage3_0_lo;
-    reg  [1:0] stage0_0;
-    reg  [1:0] stage0_1;
-    reg  [1:0] stage0_2;
-    reg  [1:0] stage0_3;
-    reg  [1:0] stage0_4;
-    reg  [1:0] stage0_5;
-    reg  [1:0] stage0_6;
-    reg  [1:0] stage0_7;
-    reg  [2:0] stage1_0;
-    reg  [2:0] stage1_1;
-    reg  [2:0] stage1_2;
-    reg  [2:0] stage1_3;
-    reg  [3:0] stage2_0;
-    reg  [3:0] stage2_1;
-    reg  [4:0] stage3_0;
+    wire [1:0] stage0_0_lo_4;
+    wire [1:0] stage0_1_lo_4;
+    wire [1:0] stage0_2_lo_4;
+    wire [1:0] stage0_3_lo_4;
+    wire [1:0] stage0_4_lo_4;
+    wire [1:0] stage0_5_lo_4;
+    wire [1:0] stage0_6_lo_4;
+    wire [1:0] stage0_7_lo_4;
+    wire [2:0] stage1_0_lo_4;
+    wire [2:0] stage1_1_lo_4;
+    wire [2:0] stage1_2_lo_4;
+    wire [2:0] stage1_3_lo_4;
+    wire [3:0] stage2_0_lo_4;
+    wire [3:0] stage2_1_lo_4;
+    wire [4:0] stage3_0_lo_4;
+    reg  [1:0] stage0_0_4;
+    reg  [1:0] stage0_1_4;
+    reg  [1:0] stage0_2_4;
+    reg  [1:0] stage0_3_4;
+    reg  [1:0] stage0_4_4;
+    reg  [1:0] stage0_5_4;
+    reg  [1:0] stage0_6_4;
+    reg  [1:0] stage0_7_4;
+    reg  [2:0] stage1_0_4;
+    reg  [2:0] stage1_1_4;
+    reg  [2:0] stage1_2_4;
+    reg  [2:0] stage1_3_4;
+    reg  [3:0] stage2_0_4;
+    reg  [3:0] stage2_1_4;
+    reg  [4:0] stage3_0_4;
 
-    add1bit_4 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add1bit_4 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add1bit_4 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add1bit_4 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add1bit_4 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add1bit_4 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add1bit_4 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add1bit_4 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add2bit_4 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add2bit_4 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add2bit_4 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add2bit_4 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add3bit_4 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add3bit_4 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add4bit_4 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
+    add1bit_4 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_4), .cout(), .cout_bar());
+    add1bit_4 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_4), .cout(), .cout_bar());
+    add1bit_4 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_4), .cout(), .cout_bar());
+    add1bit_4 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_4), .cout(), .cout_bar());
+    add1bit_4 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_4), .cout(), .cout_bar());
+    add1bit_4 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_4), .cout(), .cout_bar());
+    add1bit_4 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_4), .cout(), .cout_bar());
+    add1bit_4 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_4), .cout(), .cout_bar());
+    add2bit_4 u1_0 (.a(stage0_0_4), .b(stage0_1_4), .cin(1'b0), .y(stage1_0_lo_4), .cout(), .cout_bar());
+    add2bit_4 u1_1 (.a(stage0_2_4), .b(stage0_3_4), .cin(1'b0), .y(stage1_1_lo_4), .cout(), .cout_bar());
+    add2bit_4 u1_2 (.a(stage0_4_4), .b(stage0_5_4), .cin(1'b0), .y(stage1_2_lo_4), .cout(), .cout_bar());
+    add2bit_4 u1_3 (.a(stage0_6_4), .b(stage0_7_4), .cin(1'b0), .y(stage1_3_lo_4), .cout(), .cout_bar());
+    add3bit_4 u2_0 (.a(stage1_0_4), .b(stage1_1_4), .cin(1'b0), .y(stage2_0_lo_4), .cout(), .cout_bar());
+    add3bit_4 u2_1 (.a(stage1_2_4), .b(stage1_3_4), .cin(1'b0), .y(stage2_1_lo_4), .cout(), .cout_bar());
+    add4bit_4 u3_0 (.a(stage2_0_4), .b(stage2_1_4), .cin(1'b0), .y(stage3_0_lo_4), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo};
+    assign sum =  stage3_0_lo_4;
 
-    always @(*) begin
-        stage0_0 = {1'b0, stage0_0_lo};
-        stage0_1 = {1'b0, stage0_1_lo};
-        stage0_2 = {1'b0, stage0_2_lo};
-        stage0_3 = {1'b0, stage0_3_lo};
-        stage0_4 = {1'b0, stage0_4_lo};
-        stage0_5 = {1'b0, stage0_5_lo};
-        stage0_6 = {1'b0, stage0_6_lo};
-        stage0_7 = {1'b0, stage0_7_lo};
-        stage1_0 = {1'b0, stage1_0_lo};
-        stage1_1 = {1'b0, stage1_1_lo};
-        stage1_2 = {1'b0, stage1_2_lo};
-        stage1_3 = {1'b0, stage1_3_lo};
-        stage2_0 = {1'b0, stage2_0_lo};
-        stage2_1 = {1'b0, stage2_1_lo};
-        stage3_0 = {1'b0, stage3_0_lo};
+    always @(posedge clk) begin
+        stage0_0_4 <=  stage0_0_lo_4;
+        stage0_1_4 <=  stage0_1_lo_4;
+        stage0_2_4 <=  stage0_2_lo_4;
+        stage0_3_4 <=  stage0_3_lo_4;
+        stage0_4_4 <=  stage0_4_lo_4;
+        stage0_5_4 <=  stage0_5_lo_4;
+        stage0_6_4 <=  stage0_6_lo_4;
+        stage0_7_4 <=  stage0_7_lo_4;
+        stage1_0_4 <=  stage1_0_lo_4;
+        stage1_1_4 <=  stage1_1_lo_4;
+        stage1_2_4 <=  stage1_2_lo_4;
+        stage1_3_4 <=  stage1_3_lo_4;
+        stage2_0_4 <=  stage2_0_lo_4;
+        stage2_1_4 <=  stage2_1_lo_4;
+        stage3_0_4 <=  stage3_0_lo_4;
     end
 endmodule
 
 
 module adder_tree_bar_4 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -7368,76 +7481,77 @@ module adder_tree_bar_4 (
     output wire [4:0] sum
 );
 
-    wire [1:0] stage0_0_lo_bar;
-    wire [1:0] stage0_1_lo_bar;
-    wire [1:0] stage0_2_lo_bar;
-    wire [1:0] stage0_3_lo_bar;
-    wire [1:0] stage0_4_lo_bar;
-    wire [1:0] stage0_5_lo_bar;
-    wire [1:0] stage0_6_lo_bar;
-    wire [1:0] stage0_7_lo_bar;
-    wire [2:0] stage1_0_lo_bar;
-    wire [2:0] stage1_1_lo_bar;
-    wire [2:0] stage1_2_lo_bar;
-    wire [2:0] stage1_3_lo_bar;
-    wire [3:0] stage2_0_lo_bar;
-    wire [3:0] stage2_1_lo_bar;
-    wire [4:0] stage3_0_lo_bar;
-    reg  [1:0] stage0_0_bar;
-    reg  [1:0] stage0_1_bar;
-    reg  [1:0] stage0_2_bar;
-    reg  [1:0] stage0_3_bar;
-    reg  [1:0] stage0_4_bar;
-    reg  [1:0] stage0_5_bar;
-    reg  [1:0] stage0_6_bar;
-    reg  [1:0] stage0_7_bar;
-    reg  [2:0] stage1_0_bar;
-    reg  [2:0] stage1_1_bar;
-    reg  [2:0] stage1_2_bar;
-    reg  [2:0] stage1_3_bar;
-    reg  [3:0] stage2_0_bar;
-    reg  [3:0] stage2_1_bar;
-    reg  [4:0] stage3_0_bar;
+    wire [1:0] stage0_0_lo_bar_4;
+    wire [1:0] stage0_1_lo_bar_4;
+    wire [1:0] stage0_2_lo_bar_4;
+    wire [1:0] stage0_3_lo_bar_4;
+    wire [1:0] stage0_4_lo_bar_4;
+    wire [1:0] stage0_5_lo_bar_4;
+    wire [1:0] stage0_6_lo_bar_4;
+    wire [1:0] stage0_7_lo_bar_4;
+    wire [2:0] stage1_0_lo_bar_4;
+    wire [2:0] stage1_1_lo_bar_4;
+    wire [2:0] stage1_2_lo_bar_4;
+    wire [2:0] stage1_3_lo_bar_4;
+    wire [3:0] stage2_0_lo_bar_4;
+    wire [3:0] stage2_1_lo_bar_4;
+    wire [4:0] stage3_0_lo_bar_4;
+    reg  [1:0] stage0_0_bar_4;
+    reg  [1:0] stage0_1_bar_4;
+    reg  [1:0] stage0_2_bar_4;
+    reg  [1:0] stage0_3_bar_4;
+    reg  [1:0] stage0_4_bar_4;
+    reg  [1:0] stage0_5_bar_4;
+    reg  [1:0] stage0_6_bar_4;
+    reg  [1:0] stage0_7_bar_4;
+    reg  [2:0] stage1_0_bar_4;
+    reg  [2:0] stage1_1_bar_4;
+    reg  [2:0] stage1_2_bar_4;
+    reg  [2:0] stage1_3_bar_4;
+    reg  [3:0] stage2_0_bar_4;
+    reg  [3:0] stage2_1_bar_4;
+    reg  [4:0] stage3_0_bar_4;
 
-    add1bitbar_4 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add1bitbar_4 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add1bitbar_4 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add1bitbar_4 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add1bitbar_4 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add1bitbar_4 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add1bitbar_4 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add1bitbar_4 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add2bitbar_4 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add2bitbar_4 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add2bitbar_4 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add2bitbar_4 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add3bitbar_4 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar_4 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar_4 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
+    add1bitbar_4 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar_4), .cout(), .cout_bar());
+    add1bitbar_4 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar_4), .cout(), .cout_bar());
+    add1bitbar_4 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar_4), .cout(), .cout_bar());
+    add1bitbar_4 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar_4), .cout(), .cout_bar());
+    add1bitbar_4 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar_4), .cout(), .cout_bar());
+    add1bitbar_4 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar_4), .cout(), .cout_bar());
+    add1bitbar_4 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar_4), .cout(), .cout_bar());
+    add1bitbar_4 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar_4), .cout(), .cout_bar());
+    add2bitbar_4 u1_0_bar (.a(stage0_0_bar_4), .b(stage0_1_bar_4), .cin(1'b0), .y(stage1_0_lo_bar_4), .cout(), .cout_bar());
+    add2bitbar_4 u1_1_bar (.a(stage0_2_bar_4), .b(stage0_3_bar_4), .cin(1'b0), .y(stage1_1_lo_bar_4), .cout(), .cout_bar());
+    add2bitbar_4 u1_2_bar (.a(stage0_4_bar_4), .b(stage0_5_bar_4), .cin(1'b0), .y(stage1_2_lo_bar_4), .cout(), .cout_bar());
+    add2bitbar_4 u1_3_bar (.a(stage0_6_bar_4), .b(stage0_7_bar_4), .cin(1'b0), .y(stage1_3_lo_bar_4), .cout(), .cout_bar());
+    add3bitbar_4 u2_0_bar (.a(stage1_0_bar_4), .b(stage1_1_bar_4), .cin(1'b0), .y(stage2_0_lo_bar_4), .cout(), .cout_bar());
+    add3bitbar_4 u2_1_bar (.a(stage1_2_bar_4), .b(stage1_3_bar_4), .cin(1'b0), .y(stage2_1_lo_bar_4), .cout(), .cout_bar());
+    add4bitbar_4 u3_0_bar (.a(stage2_0_bar_4), .b(stage2_1_bar_4), .cin(1'b0), .y(stage3_0_lo_bar_4), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage3_0_lo_bar};
+    assign sum =  stage3_0_lo_bar_4;
 
-    always @(*) begin
-        stage0_0_bar = {1'b0, stage0_0_lo_bar};
-        stage0_1_bar = {1'b0, stage0_1_lo_bar};
-        stage0_2_bar = {1'b0, stage0_2_lo_bar};
-        stage0_3_bar = {1'b0, stage0_3_lo_bar};
-        stage0_4_bar = {1'b0, stage0_4_lo_bar};
-        stage0_5_bar = {1'b0, stage0_5_lo_bar};
-        stage0_6_bar = {1'b0, stage0_6_lo_bar};
-        stage0_7_bar = {1'b0, stage0_7_lo_bar};
-        stage1_0_bar = {1'b0, stage1_0_lo_bar};
-        stage1_1_bar = {1'b0, stage1_1_lo_bar};
-        stage1_2_bar = {1'b0, stage1_2_lo_bar};
-        stage1_3_bar = {1'b0, stage1_3_lo_bar};
-        stage2_0_bar = {1'b0, stage2_0_lo_bar};
-        stage2_1_bar = {1'b0, stage2_1_lo_bar};
-        stage3_0_bar = {1'b0, stage3_0_lo_bar};
+    always @(posedge clk) begin
+        stage0_0_bar_4 <=  stage0_0_lo_bar_4;
+        stage0_1_bar_4 <=  stage0_1_lo_bar_4;
+        stage0_2_bar_4 <=  stage0_2_lo_bar_4;
+        stage0_3_bar_4 <=  stage0_3_lo_bar_4;
+        stage0_4_bar_4 <=  stage0_4_lo_bar_4;
+        stage0_5_bar_4 <=  stage0_5_lo_bar_4;
+        stage0_6_bar_4 <=  stage0_6_lo_bar_4;
+        stage0_7_bar_4 <=  stage0_7_lo_bar_4;
+        stage1_0_bar_4 <=  stage1_0_lo_bar_4;
+        stage1_1_bar_4 <=  stage1_1_lo_bar_4;
+        stage1_2_bar_4 <=  stage1_2_lo_bar_4;
+        stage1_3_bar_4 <=  stage1_3_lo_bar_4;
+        stage2_0_bar_4 <=  stage2_0_lo_bar_4;
+        stage2_1_bar_4 <=  stage2_1_lo_bar_4;
+        stage3_0_bar_4 <=  stage3_0_lo_bar_4;
     end
 endmodule
 
 
 module layer4(
+    input clk,
     input [0:0] inputs0_4 , inputs1_4 , inputs2_4 , inputs3_4 , inputs4_4 , inputs5_4 , inputs6_4 , inputs7_4 , inputs8_4 , inputs9_4 , inputs10_4 , inputs11_4 , inputs12_4 , inputs13_4 , inputs14_4 , inputs15_4,
     input [15:0] w1_0_4, w1_1_4, w2_0_4, w2_1_4, w3_0_4, w3_1_4, w4_0_4, w4_1_4,
     input [4:0] b1_4, b2_4, b3_4, b4_4,
@@ -7645,6 +7759,7 @@ module layer4(
     weighted_inputs_2 w63 (.inputs(inputs15_4), .w(w4_0_4[15]), .wi(weighted_inputs4_15_0));
     weighted_inputs_2 w63_bar (.inputs(inputs15_4), .w(w4_1_4[15]), .wi(weighted_inputs4_15_1));
     adder_tree_4 add0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -7664,6 +7779,7 @@ module layer4(
         .sum(sum1[0])
     );
     adder_tree_4 add4(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -7683,6 +7799,7 @@ module layer4(
         .sum(sum2[0])
     );
     adder_tree_bar_4 addb0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -7702,6 +7819,7 @@ module layer4(
         .sum(sum1bar[0])
     );
     adder_tree_bar_4 addb4(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -7721,6 +7839,7 @@ module layer4(
         .sum(sum2bar[0])
     );
     adder_tree_4 add1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -7740,6 +7859,7 @@ module layer4(
         .sum(sum1[1])
     );
     adder_tree_4 add5(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -7759,6 +7879,7 @@ module layer4(
         .sum(sum2[1])
     );
     adder_tree_bar_4 addb1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -7778,6 +7899,7 @@ module layer4(
         .sum(sum1bar[1])
     );
     adder_tree_bar_4 addb5(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -7797,6 +7919,7 @@ module layer4(
         .sum(sum2bar[1])
     );
     adder_tree_4 add2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -7816,6 +7939,7 @@ module layer4(
         .sum(sum1[2])
     );
     adder_tree_4 add6(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -7835,6 +7959,7 @@ module layer4(
         .sum(sum2[2])
     );
     adder_tree_bar_4 addb2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -7854,6 +7979,7 @@ module layer4(
         .sum(sum1bar[2])
     );
     adder_tree_bar_4 addb6(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -7873,6 +7999,7 @@ module layer4(
         .sum(sum2bar[2])
     );
     adder_tree_4 add3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -7892,6 +8019,7 @@ module layer4(
         .sum(sum1[3])
     );
     adder_tree_4 add7(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -7911,6 +8039,7 @@ module layer4(
         .sum(sum2[3])
     );
     adder_tree_bar_4 addb3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -7930,6 +8059,7 @@ module layer4(
         .sum(sum1bar[3])
     );
     adder_tree_bar_4 addb7(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -7980,7 +8110,7 @@ module layer4(
     assign biased_sum3_1 = biased_sum2[3];
     assign biased_sum3_0bar = biased_sum1bar[3];
     assign biased_sum3_1bar = biased_sum2bar[3];
-    always @(*) begin
+    always @(posedge clk) begin
         $display("----- BNN LAYER 4 OUTPUTS -----");
         $display("Inputs : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", inputs0_4, inputs1_4, inputs2_4, inputs3_4, inputs4_4, inputs5_4, inputs6_4, inputs7_4, inputs8_4, inputs9_4, inputs10_4, inputs11_4, inputs12_4, inputs13_4, inputs14_4, inputs15_4);
         $display("Weights0: %b %b %b %b", w1_0_4, w2_0_4, w3_0_4, w4_0_4);
@@ -8037,6 +8167,7 @@ endmodule
 
 
 module output_layer_max (
+  input  clk, 
   input  wire [0:0] inputs0_4,
   input  wire [0:0] inputs1_4,
   input  wire [0:0] inputs2_4,
@@ -8115,6 +8246,7 @@ module output_layer_max (
     wire [5:0] biased_sum3_0, biased_sum3_1, biased_sum3_0bar, biased_sum3_1bar;
 
     layer4 l1 (
+        .clk(clk),
         .inputs0_4(inputs0_4),
         .inputs1_4(inputs1_4),
         .inputs2_4(inputs2_4),
@@ -8248,6 +8380,7 @@ module output_layer_max (
 endmodule
 module connector(
     // Layer-1 inputs
+    input  wire clk ,
     input  wire [7:0] inputs0_1,
     input  wire [7:0] inputs1_1,
     input  wire [7:0] inputs2_1,
@@ -8552,7 +8685,24 @@ module connector(
  wire mask5_1, mask5bar_1;
  wire mask6_1, mask6bar_1;
  wire mask7_1, mask7bar_1;
+ reg masked_activationr0_1, masked_activationr0bar_1;
+ reg masked_activationr1_1, masked_activationr1bar_1;
+ reg masked_activationr2_1, masked_activationr2bar_1;
+ reg masked_activationr3_1, masked_activationr3bar_1;
+ reg masked_activationr4_1, masked_activationr4bar_1;
+ reg masked_activationr5_1, masked_activationr5bar_1;
+ reg masked_activationr6_1, masked_activationr6bar_1;
+ reg masked_activationr7_1, masked_activationr7bar_1;
+ reg maskr0_1, maskr0bar_1;
+ reg maskr1_1, maskr1bar_1;
+ reg maskr2_1, maskr2bar_1;
+ reg maskr3_1, maskr3bar_1;
+ reg maskr4_1, maskr4bar_1;
+ reg maskr5_1, maskr5bar_1;
+ reg maskr6_1, maskr6bar_1;
+ reg maskr7_1, maskr7bar_1;
   activation_and_conversion_1 layer1_inst (
+    .clk(clk),
     .inputs0_1(inputs0_1),
     .inputs1_1(inputs1_1),
     .inputs2_1(inputs2_1),
@@ -8700,6 +8850,41 @@ module connector(
     .mask7_1(mask7_1), .mask7bar_1(mask7bar_1)
   );
 
+  always @(posedge clk) begin
+    maskr0_1 <= mask0_1;
+    maskr1_1 <= mask1_1;
+    maskr2_1 <= mask2_1;
+    maskr3_1 <= mask3_1;
+    maskr4_1 <= mask4_1;
+    maskr5_1 <= mask5_1;
+    maskr6_1 <= mask6_1;
+    maskr7_1 <= mask7_1;
+    masked_activationr0_1 <= masked_activation0_1;
+    masked_activationr1_1 <= masked_activation1_1;
+    masked_activationr2_1 <= masked_activation2_1;
+    masked_activationr3_1 <= masked_activation3_1;
+    masked_activationr4_1 <= masked_activation4_1;
+    masked_activationr5_1 <= masked_activation5_1;
+    masked_activationr6_1 <= masked_activation6_1;
+    masked_activationr7_1 <= masked_activation7_1;
+    maskr0bar_1 <= mask0_1;
+    maskr1bar_1 <= mask1_1;
+    maskr2bar_1 <= mask2_1;
+    maskr3bar_1 <= mask3_1;
+    maskr4bar_1 <= mask4_1;
+    maskr5bar_1 <= mask5_1;
+    maskr6bar_1 <= mask6_1;
+    maskr7bar_1 <= mask7_1;
+    masked_activationr0bar_1 <= masked_activation0_1;
+    masked_activationr1bar_1 <= masked_activation1_1;
+    masked_activationr2bar_1 <= masked_activation2_1;
+    masked_activationr3bar_1 <= masked_activation3_1;
+    masked_activationr4bar_1 <= masked_activation4_1;
+    masked_activationr5bar_1 <= masked_activation5_1;
+    masked_activationr6bar_1 <= masked_activation6_1;
+    masked_activationr7bar_1 <= masked_activation7_1;
+  end
+
   //--------------------------------------------------------------------------
   // Layer-2 randomness taps
   //--------------------------------------------------------------------------
@@ -8819,7 +9004,24 @@ module connector(
  wire mask5_2, mask5bar_2;
  wire mask6_2, mask6bar_2;
  wire mask7_2, mask7bar_2;
+ reg masked_activationr0_2, masked_activationr0bar_2;
+ reg masked_activationr1_2, masked_activationr1bar_2;
+ reg masked_activationr2_2, masked_activationr2bar_2;
+ reg masked_activationr3_2, masked_activationr3bar_2;
+ reg masked_activationr4_2, masked_activationr4bar_2;
+ reg masked_activationr5_2, masked_activationr5bar_2;
+ reg masked_activationr6_2, masked_activationr6bar_2;
+ reg masked_activationr7_2, masked_activationr7bar_2;
+ reg maskr0_2, maskr0bar_2;
+ reg maskr1_2, maskr1bar_2;
+ reg maskr2_2, maskr2bar_2;
+ reg maskr3_2, maskr3bar_2;
+ reg maskr4_2, maskr4bar_2;
+ reg maskr5_2, maskr5bar_2;
+ reg maskr6_2, maskr6bar_2;
+ reg maskr7_2, maskr7bar_2;
   activation_and_conversion_2 layer2_inst (
+    .clk(clk),
     .inputs0_2(masked_activation0_1),
     .inputs1_2(masked_activation1_1),
     .inputs2_2(masked_activation2_1),
@@ -8910,6 +9112,41 @@ module connector(
     .mask6_2(mask6_2), .mask6bar_2(mask6bar_2),
     .mask7_2(mask7_2), .mask7bar_2(mask7bar_2)
   );
+
+  always @(posedge clk) begin
+    maskr0_2 <= mask0_2;
+    maskr1_2 <= mask1_2;
+    maskr2_2 <= mask2_2;
+    maskr3_2 <= mask3_2;
+    maskr4_2 <= mask4_2;
+    maskr5_2 <= mask5_2;
+    maskr6_2 <= mask6_2;
+    maskr7_2 <= mask7_2;
+    masked_activationr0_2 <= masked_activation0_2;
+    masked_activationr1_2 <= masked_activation1_2;
+    masked_activationr2_2 <= masked_activation2_2;
+    masked_activationr3_2 <= masked_activation3_2;
+    masked_activationr4_2 <= masked_activation4_2;
+    masked_activationr5_2 <= masked_activation5_2;
+    masked_activationr6_2 <= masked_activation6_2;
+    masked_activationr7_2 <= masked_activation7_2;
+    maskr0bar_2 <= mask0_1;
+    maskr1bar_2 <= mask1_1;
+    maskr2bar_2 <= mask2_1;
+    maskr3bar_2 <= mask3_1;
+    maskr4bar_2 <= mask4_1;
+    maskr5bar_2 <= mask5_1;
+    maskr6bar_2 <= mask6_1;
+    maskr7bar_2 <= mask7_1;
+    masked_activationr0bar_2 <= masked_activation0_2;
+    masked_activationr1bar_2 <= masked_activation1_2;
+    masked_activationr2bar_2 <= masked_activation2_2;
+    masked_activationr3bar_2 <= masked_activation3_2;
+    masked_activationr4bar_2 <= masked_activation4_2;
+    masked_activationr5bar_2 <= masked_activation5_2;
+    masked_activationr6bar_2 <= masked_activation6_2;
+    masked_activationr7bar_2 <= masked_activation7_2;
+  end
 
   //--------------------------------------------------------------------------
   // Layer-3 randomness taps
@@ -9030,7 +9267,24 @@ module connector(
  wire mask5_3, mask5bar_3;
  wire mask6_3, mask6bar_3;
  wire mask7_3, mask7bar_3;
+ reg masked_activationr0_3, masked_activationr0bar_3;
+ reg masked_activationr1_3, masked_activationr1bar_3;
+ reg masked_activationr2_3, masked_activationr2bar_3;
+ reg masked_activationr3_3, masked_activationr3bar_3;
+ reg masked_activationr4_3, masked_activationr4bar_3;
+ reg masked_activationr5_3, masked_activationr5bar_3;
+ reg masked_activationr6_3, masked_activationr6bar_3;
+ reg masked_activationr7_3, masked_activationr7bar_3;
+ reg maskr0_3, maskr0bar_3;
+ reg maskr1_3, maskr1bar_3;
+ reg maskr2_3, maskr2bar_3;
+ reg maskr3_3, maskr3bar_3;
+ reg maskr4_3, maskr4bar_3;
+ reg maskr5_3, maskr5bar_3;
+ reg maskr6_3, maskr6bar_3;
+ reg maskr7_3, maskr7bar_3;
   activation_and_conversion_3 layer3_inst (
+    .clk(clk),
     .inputs0_3(masked_activation0_2),
     .inputs1_3(masked_activation1_2),
     .inputs2_3(masked_activation2_2),
@@ -9121,6 +9375,41 @@ module connector(
     .mask6_3(mask6_3), .mask6bar_3(mask6bar_3),
     .mask7_3(mask7_3), .mask7bar_3(mask7bar_3)
   );
+
+  always @(posedge clk) begin
+    maskr0_3 <= mask0_3;
+    maskr1_3 <= mask1_3;
+    maskr2_3 <= mask2_3;
+    maskr3_3 <= mask3_3;
+    maskr4_3 <= mask4_3;
+    maskr5_3 <= mask5_3;
+    maskr6_3 <= mask6_3;
+    maskr7_3 <= mask7_3;
+    masked_activationr0_3 <= masked_activation0_3;
+    masked_activationr1_3 <= masked_activation1_3;
+    masked_activationr2_3 <= masked_activation2_3;
+    masked_activationr3_3 <= masked_activation3_3;
+    masked_activationr4_3 <= masked_activation4_3;
+    masked_activationr5_3 <= masked_activation5_3;
+    masked_activationr6_3 <= masked_activation6_3;
+    masked_activationr7_3 <= masked_activation7_3;
+    maskr0bar_3 <= mask0_3;
+    maskr1bar_3 <= mask1_3;
+    maskr2bar_3 <= mask2_3;
+    maskr3bar_3 <= mask3_3;
+    maskr4bar_3 <= mask4_3;
+    maskr5bar_3 <= mask5_3;
+    maskr6bar_3 <= mask6_3;
+    maskr7bar_3 <= mask7_3;
+    masked_activationr0bar_3 <= masked_activation0_3;
+    masked_activationr1bar_3 <= masked_activation1_3;
+    masked_activationr2bar_3 <= masked_activation2_3;
+    masked_activationr3bar_3 <= masked_activation3_3;
+    masked_activationr4bar_3 <= masked_activation4_3;
+    masked_activationr5bar_3 <= masked_activation5_3;
+    masked_activationr6bar_3 <= masked_activation6_3;
+    masked_activationr7bar_3 <= masked_activation7_3;
+  end
 
   //--------------------------------------------------------------------------
   // Layer-4 randomness taps
@@ -9213,7 +9502,16 @@ module connector(
     #1;
   end
 
+ reg a0_reg ;
+ reg a1_reg ;
+ reg a2_reg ;
+ reg a3_reg ;
+ reg a0_bar_reg ;
+ reg a1_bar_reg ;
+ reg a2_bar_reg ;
+ reg a3_bar_reg ;
   output_layer_max layer4 (
+    .clk(clk),
     .inputs0_4(masked_activation0_3),
     .inputs1_4(masked_activation1_3),
     .inputs2_4(masked_activation2_3),
@@ -9262,5 +9560,17 @@ module connector(
     .a3(a3), .a3_bar(a3_bar)
   );
 
+  always @(posedge clk) begin
+    a0_reg <= a0;
+    a1_reg <= a1;
+    a2_reg <= a2;
+    a3_reg <= a3;
+    a0_bar_reg <= a0_bar;
+    a1_bar_reg <= a1_bar;
+    a2_bar_reg <= a2_bar;
+    a3_bar_reg <= a3_bar;
+  end
+
 endmodule
 `default_nettype wire
+
