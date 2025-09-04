@@ -402,6 +402,7 @@ endmodule
 
 
 module adder_tree_1 (
+    input  wire   clk, 
     input  wire [7:0] in0,
     input  wire [7:0] in1,
     input  wire [7:0] in2,
@@ -409,28 +410,29 @@ module adder_tree_1 (
     output wire [9:0] sum
 );
 
-    wire [8:0] stage0_0_lo;
-    wire [8:0] stage0_1_lo;
-    wire [9:0] stage1_0_lo;
-    reg  [8:0] stage0_0;
-    reg  [8:0] stage0_1;
-    reg  [9:0] stage1_0;
+    wire [8:0] stage0_0_lo_1;
+    wire [8:0] stage0_1_lo_1;
+    wire [9:0] stage1_0_lo_1;
+    reg  [8:0] stage0_0_1;
+    reg  [8:0] stage0_1_1;
+    reg  [9:0] stage1_0_1;
 
-    add8bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add8bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add9bit_1 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
+    add8bit_1 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_1), .cout(), .cout_bar());
+    add8bit_1 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_1), .cout(), .cout_bar());
+    add9bit_1 u1_0 (.a(stage0_0_1), .b(stage0_1_1), .cin(1'b0), .y(stage1_0_lo_1), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage1_0_lo};
+    assign sum =  stage1_0_lo_1;
 
-    always @(*) begin
-        stage0_0 = {1'b0, stage0_0_lo};
-        stage0_1 = {1'b0, stage0_1_lo};
-        stage1_0 = {1'b0, stage1_0_lo};
+    always @(posedge clk) begin
+        stage0_0_1 <=  stage0_0_lo_1;
+        stage0_1_1 <=  stage0_1_lo_1;
+        stage1_0_1 <=  stage1_0_lo_1;
     end
 endmodule
 
 
 module adder_tree_bar_1 (
+    input  wire   clk, 
     input  wire [7:0] in0,
     input  wire [7:0] in1,
     input  wire [7:0] in2,
@@ -438,28 +440,29 @@ module adder_tree_bar_1 (
     output wire [9:0] sum
 );
 
-    wire [8:0] stage0_0_lo_bar;
-    wire [8:0] stage0_1_lo_bar;
-    wire [9:0] stage1_0_lo_bar;
-    reg  [8:0] stage0_0_bar;
-    reg  [8:0] stage0_1_bar;
-    reg  [9:0] stage1_0_bar;
+    wire [8:0] stage0_0_lo_bar_1;
+    wire [8:0] stage0_1_lo_bar_1;
+    wire [9:0] stage1_0_lo_bar_1;
+    reg  [8:0] stage0_0_bar_1;
+    reg  [8:0] stage0_1_bar_1;
+    reg  [9:0] stage1_0_bar_1;
 
-    add8bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add8bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add9bitbar_1 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
+    add8bitbar_1 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar_1), .cout(), .cout_bar());
+    add8bitbar_1 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar_1), .cout(), .cout_bar());
+    add9bitbar_1 u1_0_bar (.a(stage0_0_bar_1), .b(stage0_1_bar_1), .cin(1'b0), .y(stage1_0_lo_bar_1), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage1_0_lo_bar};
+    assign sum =  stage1_0_lo_bar_1;
 
-    always @(*) begin
-        stage0_0_bar = {1'b0, stage0_0_lo_bar};
-        stage0_1_bar = {1'b0, stage0_1_lo_bar};
-        stage1_0_bar = {1'b0, stage1_0_lo_bar};
+    always @(posedge clk) begin
+        stage0_0_bar_1 <=  stage0_0_lo_bar_1;
+        stage0_1_bar_1 <=  stage0_1_lo_bar_1;
+        stage1_0_bar_1 <=  stage1_0_lo_bar_1;
     end
 endmodule
 
 
 module layer1(
+    input clk,
     input [7:0] inputs0_1 , inputs1_1 , inputs2_1 , inputs3_1,
     input [3:0] w1_0_1, w1_1_1, w2_0_1, w2_1_1, w3_0_1, w3_1_1, w4_0_1, w4_1_1, w5_0_1, w5_1_1, w6_0_1, w6_1_1, w7_0_1, w7_1_1, w8_0_1, w8_1_1, w9_0_1, w9_1_1, w10_0_1, w10_1_1, w11_0_1, w11_1_1, w12_0_1, w12_1_1, w13_0_1, w13_1_1, w14_0_1, w14_1_1, w15_0_1, w15_1_1, w16_0_1, w16_1_1, w17_0_1, w17_1_1, w18_0_1, w18_1_1, w19_0_1, w19_1_1, w20_0_1, w20_1_1, w21_0_1, w21_1_1, w22_0_1, w22_1_1, w23_0_1, w23_1_1, w24_0_1, w24_1_1, w25_0_1, w25_1_1, w26_0_1, w26_1_1, w27_0_1, w27_1_1, w28_0_1, w28_1_1, w29_0_1, w29_1_1, w30_0_1, w30_1_1, w31_0_1, w31_1_1, w32_0_1, w32_1_1,
     input [9:0] b1_1, b2_1, b3_1, b4_1, b5_1, b6_1, b7_1, b8_1, b9_1, b10_1, b11_1, b12_1, b13_1, b14_1, b15_1, b16_1, b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1,
@@ -859,896 +862,1024 @@ module layer1(
     weighted_inputs_1 w127 (.inputs(inputs3_1), .w(w32_0_1[3]), .wi(weighted_inputs32_3_0));
     weighted_inputs_1 w127_bar (.inputs(inputs3_1), .w(w32_1_1[3]), .wi(weighted_inputs32_3_1));
     adder_tree_1 add0(
-        .in0(weighted_inputs1_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
         .in3(weighted_inputs1_3_0),
         .sum(sum1[0])
     );
     adder_tree_1 add32(
-        .in0(weighted_inputs1_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
         .in3(weighted_inputs1_3_1),
         .sum(sum2[0])
     );
     adder_tree_bar_1 addb0(
-        .in0(weighted_inputs1_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
         .in3(weighted_inputs1_3_0),
         .sum(sum1bar[0])
     );
     adder_tree_bar_1 addb32(
-        .in0(weighted_inputs1_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
         .in3(weighted_inputs1_3_1),
         .sum(sum2bar[0])
     );
     adder_tree_1 add1(
-        .in0(weighted_inputs2_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
         .in3(weighted_inputs2_3_0),
         .sum(sum1[1])
     );
     adder_tree_1 add33(
-        .in0(weighted_inputs2_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
         .in3(weighted_inputs2_3_1),
         .sum(sum2[1])
     );
     adder_tree_bar_1 addb1(
-        .in0(weighted_inputs2_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
         .in3(weighted_inputs2_3_0),
         .sum(sum1bar[1])
     );
     adder_tree_bar_1 addb33(
-        .in0(weighted_inputs2_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
         .in3(weighted_inputs2_3_1),
         .sum(sum2bar[1])
     );
     adder_tree_1 add2(
-        .in0(weighted_inputs3_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
         .in3(weighted_inputs3_3_0),
         .sum(sum1[2])
     );
     adder_tree_1 add34(
-        .in0(weighted_inputs3_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
         .in3(weighted_inputs3_3_1),
         .sum(sum2[2])
     );
     adder_tree_bar_1 addb2(
-        .in0(weighted_inputs3_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
         .in3(weighted_inputs3_3_0),
         .sum(sum1bar[2])
     );
     adder_tree_bar_1 addb34(
-        .in0(weighted_inputs3_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
         .in3(weighted_inputs3_3_1),
         .sum(sum2bar[2])
     );
     adder_tree_1 add3(
-        .in0(weighted_inputs4_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
         .in3(weighted_inputs4_3_0),
         .sum(sum1[3])
     );
     adder_tree_1 add35(
-        .in0(weighted_inputs4_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
         .in3(weighted_inputs4_3_1),
         .sum(sum2[3])
     );
     adder_tree_bar_1 addb3(
-        .in0(weighted_inputs4_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
         .in3(weighted_inputs4_3_0),
         .sum(sum1bar[3])
     );
     adder_tree_bar_1 addb35(
-        .in0(weighted_inputs4_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
         .in3(weighted_inputs4_3_1),
         .sum(sum2bar[3])
     );
     adder_tree_1 add4(
-        .in0(weighted_inputs5_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
         .in3(weighted_inputs5_3_0),
         .sum(sum1[4])
     );
     adder_tree_1 add36(
-        .in0(weighted_inputs5_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
         .in3(weighted_inputs5_3_1),
         .sum(sum2[4])
     );
     adder_tree_bar_1 addb4(
-        .in0(weighted_inputs5_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
         .in3(weighted_inputs5_3_0),
         .sum(sum1bar[4])
     );
     adder_tree_bar_1 addb36(
-        .in0(weighted_inputs5_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
         .in3(weighted_inputs5_3_1),
         .sum(sum2bar[4])
     );
     adder_tree_1 add5(
-        .in0(weighted_inputs6_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
         .in3(weighted_inputs6_3_0),
         .sum(sum1[5])
     );
     adder_tree_1 add37(
-        .in0(weighted_inputs6_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
         .in3(weighted_inputs6_3_1),
         .sum(sum2[5])
     );
     adder_tree_bar_1 addb5(
-        .in0(weighted_inputs6_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
         .in3(weighted_inputs6_3_0),
         .sum(sum1bar[5])
     );
     adder_tree_bar_1 addb37(
-        .in0(weighted_inputs6_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
         .in3(weighted_inputs6_3_1),
         .sum(sum2bar[5])
     );
     adder_tree_1 add6(
-        .in0(weighted_inputs7_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
         .in3(weighted_inputs7_3_0),
         .sum(sum1[6])
     );
     adder_tree_1 add38(
-        .in0(weighted_inputs7_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
         .in3(weighted_inputs7_3_1),
         .sum(sum2[6])
     );
     adder_tree_bar_1 addb6(
-        .in0(weighted_inputs7_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
         .in3(weighted_inputs7_3_0),
         .sum(sum1bar[6])
     );
     adder_tree_bar_1 addb38(
-        .in0(weighted_inputs7_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
         .in3(weighted_inputs7_3_1),
         .sum(sum2bar[6])
     );
     adder_tree_1 add7(
-        .in0(weighted_inputs8_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
         .in3(weighted_inputs8_3_0),
         .sum(sum1[7])
     );
     adder_tree_1 add39(
-        .in0(weighted_inputs8_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
         .in3(weighted_inputs8_3_1),
         .sum(sum2[7])
     );
     adder_tree_bar_1 addb7(
-        .in0(weighted_inputs8_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
         .in3(weighted_inputs8_3_0),
         .sum(sum1bar[7])
     );
     adder_tree_bar_1 addb39(
-        .in0(weighted_inputs8_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
         .in3(weighted_inputs8_3_1),
         .sum(sum2bar[7])
     );
     adder_tree_1 add8(
-        .in0(weighted_inputs9_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs9_0_0),
         .in1(weighted_inputs9_1_0),
         .in2(weighted_inputs9_2_0),
         .in3(weighted_inputs9_3_0),
         .sum(sum1[8])
     );
     adder_tree_1 add40(
-        .in0(weighted_inputs9_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs9_0_1),
         .in1(weighted_inputs9_1_1),
         .in2(weighted_inputs9_2_1),
         .in3(weighted_inputs9_3_1),
         .sum(sum2[8])
     );
     adder_tree_bar_1 addb8(
-        .in0(weighted_inputs9_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs9_0_0),
         .in1(weighted_inputs9_1_0),
         .in2(weighted_inputs9_2_0),
         .in3(weighted_inputs9_3_0),
         .sum(sum1bar[8])
     );
     adder_tree_bar_1 addb40(
-        .in0(weighted_inputs9_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs9_0_1),
         .in1(weighted_inputs9_1_1),
         .in2(weighted_inputs9_2_1),
         .in3(weighted_inputs9_3_1),
         .sum(sum2bar[8])
     );
     adder_tree_1 add9(
-        .in0(weighted_inputs10_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs10_0_0),
         .in1(weighted_inputs10_1_0),
         .in2(weighted_inputs10_2_0),
         .in3(weighted_inputs10_3_0),
         .sum(sum1[9])
     );
     adder_tree_1 add41(
-        .in0(weighted_inputs10_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs10_0_1),
         .in1(weighted_inputs10_1_1),
         .in2(weighted_inputs10_2_1),
         .in3(weighted_inputs10_3_1),
         .sum(sum2[9])
     );
     adder_tree_bar_1 addb9(
-        .in0(weighted_inputs10_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs10_0_0),
         .in1(weighted_inputs10_1_0),
         .in2(weighted_inputs10_2_0),
         .in3(weighted_inputs10_3_0),
         .sum(sum1bar[9])
     );
     adder_tree_bar_1 addb41(
-        .in0(weighted_inputs10_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs10_0_1),
         .in1(weighted_inputs10_1_1),
         .in2(weighted_inputs10_2_1),
         .in3(weighted_inputs10_3_1),
         .sum(sum2bar[9])
     );
     adder_tree_1 add10(
-        .in0(weighted_inputs11_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs11_0_0),
         .in1(weighted_inputs11_1_0),
         .in2(weighted_inputs11_2_0),
         .in3(weighted_inputs11_3_0),
         .sum(sum1[10])
     );
     adder_tree_1 add42(
-        .in0(weighted_inputs11_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs11_0_1),
         .in1(weighted_inputs11_1_1),
         .in2(weighted_inputs11_2_1),
         .in3(weighted_inputs11_3_1),
         .sum(sum2[10])
     );
     adder_tree_bar_1 addb10(
-        .in0(weighted_inputs11_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs11_0_0),
         .in1(weighted_inputs11_1_0),
         .in2(weighted_inputs11_2_0),
         .in3(weighted_inputs11_3_0),
         .sum(sum1bar[10])
     );
     adder_tree_bar_1 addb42(
-        .in0(weighted_inputs11_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs11_0_1),
         .in1(weighted_inputs11_1_1),
         .in2(weighted_inputs11_2_1),
         .in3(weighted_inputs11_3_1),
         .sum(sum2bar[10])
     );
     adder_tree_1 add11(
-        .in0(weighted_inputs12_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs12_0_0),
         .in1(weighted_inputs12_1_0),
         .in2(weighted_inputs12_2_0),
         .in3(weighted_inputs12_3_0),
         .sum(sum1[11])
     );
     adder_tree_1 add43(
-        .in0(weighted_inputs12_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs12_0_1),
         .in1(weighted_inputs12_1_1),
         .in2(weighted_inputs12_2_1),
         .in3(weighted_inputs12_3_1),
         .sum(sum2[11])
     );
     adder_tree_bar_1 addb11(
-        .in0(weighted_inputs12_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs12_0_0),
         .in1(weighted_inputs12_1_0),
         .in2(weighted_inputs12_2_0),
         .in3(weighted_inputs12_3_0),
         .sum(sum1bar[11])
     );
     adder_tree_bar_1 addb43(
-        .in0(weighted_inputs12_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs12_0_1),
         .in1(weighted_inputs12_1_1),
         .in2(weighted_inputs12_2_1),
         .in3(weighted_inputs12_3_1),
         .sum(sum2bar[11])
     );
     adder_tree_1 add12(
-        .in0(weighted_inputs13_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs13_0_0),
         .in1(weighted_inputs13_1_0),
         .in2(weighted_inputs13_2_0),
         .in3(weighted_inputs13_3_0),
         .sum(sum1[12])
     );
     adder_tree_1 add44(
-        .in0(weighted_inputs13_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs13_0_1),
         .in1(weighted_inputs13_1_1),
         .in2(weighted_inputs13_2_1),
         .in3(weighted_inputs13_3_1),
         .sum(sum2[12])
     );
     adder_tree_bar_1 addb12(
-        .in0(weighted_inputs13_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs13_0_0),
         .in1(weighted_inputs13_1_0),
         .in2(weighted_inputs13_2_0),
         .in3(weighted_inputs13_3_0),
         .sum(sum1bar[12])
     );
     adder_tree_bar_1 addb44(
-        .in0(weighted_inputs13_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs13_0_1),
         .in1(weighted_inputs13_1_1),
         .in2(weighted_inputs13_2_1),
         .in3(weighted_inputs13_3_1),
         .sum(sum2bar[12])
     );
     adder_tree_1 add13(
-        .in0(weighted_inputs14_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs14_0_0),
         .in1(weighted_inputs14_1_0),
         .in2(weighted_inputs14_2_0),
         .in3(weighted_inputs14_3_0),
         .sum(sum1[13])
     );
     adder_tree_1 add45(
-        .in0(weighted_inputs14_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs14_0_1),
         .in1(weighted_inputs14_1_1),
         .in2(weighted_inputs14_2_1),
         .in3(weighted_inputs14_3_1),
         .sum(sum2[13])
     );
     adder_tree_bar_1 addb13(
-        .in0(weighted_inputs14_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs14_0_0),
         .in1(weighted_inputs14_1_0),
         .in2(weighted_inputs14_2_0),
         .in3(weighted_inputs14_3_0),
         .sum(sum1bar[13])
     );
     adder_tree_bar_1 addb45(
-        .in0(weighted_inputs14_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs14_0_1),
         .in1(weighted_inputs14_1_1),
         .in2(weighted_inputs14_2_1),
         .in3(weighted_inputs14_3_1),
         .sum(sum2bar[13])
     );
     adder_tree_1 add14(
-        .in0(weighted_inputs15_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs15_0_0),
         .in1(weighted_inputs15_1_0),
         .in2(weighted_inputs15_2_0),
         .in3(weighted_inputs15_3_0),
         .sum(sum1[14])
     );
     adder_tree_1 add46(
-        .in0(weighted_inputs15_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs15_0_1),
         .in1(weighted_inputs15_1_1),
         .in2(weighted_inputs15_2_1),
         .in3(weighted_inputs15_3_1),
         .sum(sum2[14])
     );
     adder_tree_bar_1 addb14(
-        .in0(weighted_inputs15_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs15_0_0),
         .in1(weighted_inputs15_1_0),
         .in2(weighted_inputs15_2_0),
         .in3(weighted_inputs15_3_0),
         .sum(sum1bar[14])
     );
     adder_tree_bar_1 addb46(
-        .in0(weighted_inputs15_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs15_0_1),
         .in1(weighted_inputs15_1_1),
         .in2(weighted_inputs15_2_1),
         .in3(weighted_inputs15_3_1),
         .sum(sum2bar[14])
     );
     adder_tree_1 add15(
-        .in0(weighted_inputs16_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs16_0_0),
         .in1(weighted_inputs16_1_0),
         .in2(weighted_inputs16_2_0),
         .in3(weighted_inputs16_3_0),
         .sum(sum1[15])
     );
     adder_tree_1 add47(
-        .in0(weighted_inputs16_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs16_0_1),
         .in1(weighted_inputs16_1_1),
         .in2(weighted_inputs16_2_1),
         .in3(weighted_inputs16_3_1),
         .sum(sum2[15])
     );
     adder_tree_bar_1 addb15(
-        .in0(weighted_inputs16_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs16_0_0),
         .in1(weighted_inputs16_1_0),
         .in2(weighted_inputs16_2_0),
         .in3(weighted_inputs16_3_0),
         .sum(sum1bar[15])
     );
     adder_tree_bar_1 addb47(
-        .in0(weighted_inputs16_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs16_0_1),
         .in1(weighted_inputs16_1_1),
         .in2(weighted_inputs16_2_1),
         .in3(weighted_inputs16_3_1),
         .sum(sum2bar[15])
     );
     adder_tree_1 add16(
-        .in0(weighted_inputs17_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs17_0_0),
         .in1(weighted_inputs17_1_0),
         .in2(weighted_inputs17_2_0),
         .in3(weighted_inputs17_3_0),
         .sum(sum1[16])
     );
     adder_tree_1 add48(
-        .in0(weighted_inputs17_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs17_0_1),
         .in1(weighted_inputs17_1_1),
         .in2(weighted_inputs17_2_1),
         .in3(weighted_inputs17_3_1),
         .sum(sum2[16])
     );
     adder_tree_bar_1 addb16(
-        .in0(weighted_inputs17_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs17_0_0),
         .in1(weighted_inputs17_1_0),
         .in2(weighted_inputs17_2_0),
         .in3(weighted_inputs17_3_0),
         .sum(sum1bar[16])
     );
     adder_tree_bar_1 addb48(
-        .in0(weighted_inputs17_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs17_0_1),
         .in1(weighted_inputs17_1_1),
         .in2(weighted_inputs17_2_1),
         .in3(weighted_inputs17_3_1),
         .sum(sum2bar[16])
     );
     adder_tree_1 add17(
-        .in0(weighted_inputs18_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs18_0_0),
         .in1(weighted_inputs18_1_0),
         .in2(weighted_inputs18_2_0),
         .in3(weighted_inputs18_3_0),
         .sum(sum1[17])
     );
     adder_tree_1 add49(
-        .in0(weighted_inputs18_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs18_0_1),
         .in1(weighted_inputs18_1_1),
         .in2(weighted_inputs18_2_1),
         .in3(weighted_inputs18_3_1),
         .sum(sum2[17])
     );
     adder_tree_bar_1 addb17(
-        .in0(weighted_inputs18_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs18_0_0),
         .in1(weighted_inputs18_1_0),
         .in2(weighted_inputs18_2_0),
         .in3(weighted_inputs18_3_0),
         .sum(sum1bar[17])
     );
     adder_tree_bar_1 addb49(
-        .in0(weighted_inputs18_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs18_0_1),
         .in1(weighted_inputs18_1_1),
         .in2(weighted_inputs18_2_1),
         .in3(weighted_inputs18_3_1),
         .sum(sum2bar[17])
     );
     adder_tree_1 add18(
-        .in0(weighted_inputs19_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs19_0_0),
         .in1(weighted_inputs19_1_0),
         .in2(weighted_inputs19_2_0),
         .in3(weighted_inputs19_3_0),
         .sum(sum1[18])
     );
     adder_tree_1 add50(
-        .in0(weighted_inputs19_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs19_0_1),
         .in1(weighted_inputs19_1_1),
         .in2(weighted_inputs19_2_1),
         .in3(weighted_inputs19_3_1),
         .sum(sum2[18])
     );
     adder_tree_bar_1 addb18(
-        .in0(weighted_inputs19_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs19_0_0),
         .in1(weighted_inputs19_1_0),
         .in2(weighted_inputs19_2_0),
         .in3(weighted_inputs19_3_0),
         .sum(sum1bar[18])
     );
     adder_tree_bar_1 addb50(
-        .in0(weighted_inputs19_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs19_0_1),
         .in1(weighted_inputs19_1_1),
         .in2(weighted_inputs19_2_1),
         .in3(weighted_inputs19_3_1),
         .sum(sum2bar[18])
     );
     adder_tree_1 add19(
-        .in0(weighted_inputs20_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs20_0_0),
         .in1(weighted_inputs20_1_0),
         .in2(weighted_inputs20_2_0),
         .in3(weighted_inputs20_3_0),
         .sum(sum1[19])
     );
     adder_tree_1 add51(
-        .in0(weighted_inputs20_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs20_0_1),
         .in1(weighted_inputs20_1_1),
         .in2(weighted_inputs20_2_1),
         .in3(weighted_inputs20_3_1),
         .sum(sum2[19])
     );
     adder_tree_bar_1 addb19(
-        .in0(weighted_inputs20_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs20_0_0),
         .in1(weighted_inputs20_1_0),
         .in2(weighted_inputs20_2_0),
         .in3(weighted_inputs20_3_0),
         .sum(sum1bar[19])
     );
     adder_tree_bar_1 addb51(
-        .in0(weighted_inputs20_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs20_0_1),
         .in1(weighted_inputs20_1_1),
         .in2(weighted_inputs20_2_1),
         .in3(weighted_inputs20_3_1),
         .sum(sum2bar[19])
     );
     adder_tree_1 add20(
-        .in0(weighted_inputs21_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs21_0_0),
         .in1(weighted_inputs21_1_0),
         .in2(weighted_inputs21_2_0),
         .in3(weighted_inputs21_3_0),
         .sum(sum1[20])
     );
     adder_tree_1 add52(
-        .in0(weighted_inputs21_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs21_0_1),
         .in1(weighted_inputs21_1_1),
         .in2(weighted_inputs21_2_1),
         .in3(weighted_inputs21_3_1),
         .sum(sum2[20])
     );
     adder_tree_bar_1 addb20(
-        .in0(weighted_inputs21_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs21_0_0),
         .in1(weighted_inputs21_1_0),
         .in2(weighted_inputs21_2_0),
         .in3(weighted_inputs21_3_0),
         .sum(sum1bar[20])
     );
     adder_tree_bar_1 addb52(
-        .in0(weighted_inputs21_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs21_0_1),
         .in1(weighted_inputs21_1_1),
         .in2(weighted_inputs21_2_1),
         .in3(weighted_inputs21_3_1),
         .sum(sum2bar[20])
     );
     adder_tree_1 add21(
-        .in0(weighted_inputs22_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs22_0_0),
         .in1(weighted_inputs22_1_0),
         .in2(weighted_inputs22_2_0),
         .in3(weighted_inputs22_3_0),
         .sum(sum1[21])
     );
     adder_tree_1 add53(
-        .in0(weighted_inputs22_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs22_0_1),
         .in1(weighted_inputs22_1_1),
         .in2(weighted_inputs22_2_1),
         .in3(weighted_inputs22_3_1),
         .sum(sum2[21])
     );
     adder_tree_bar_1 addb21(
-        .in0(weighted_inputs22_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs22_0_0),
         .in1(weighted_inputs22_1_0),
         .in2(weighted_inputs22_2_0),
         .in3(weighted_inputs22_3_0),
         .sum(sum1bar[21])
     );
     adder_tree_bar_1 addb53(
-        .in0(weighted_inputs22_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs22_0_1),
         .in1(weighted_inputs22_1_1),
         .in2(weighted_inputs22_2_1),
         .in3(weighted_inputs22_3_1),
         .sum(sum2bar[21])
     );
     adder_tree_1 add22(
-        .in0(weighted_inputs23_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs23_0_0),
         .in1(weighted_inputs23_1_0),
         .in2(weighted_inputs23_2_0),
         .in3(weighted_inputs23_3_0),
         .sum(sum1[22])
     );
     adder_tree_1 add54(
-        .in0(weighted_inputs23_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs23_0_1),
         .in1(weighted_inputs23_1_1),
         .in2(weighted_inputs23_2_1),
         .in3(weighted_inputs23_3_1),
         .sum(sum2[22])
     );
     adder_tree_bar_1 addb22(
-        .in0(weighted_inputs23_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs23_0_0),
         .in1(weighted_inputs23_1_0),
         .in2(weighted_inputs23_2_0),
         .in3(weighted_inputs23_3_0),
         .sum(sum1bar[22])
     );
     adder_tree_bar_1 addb54(
-        .in0(weighted_inputs23_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs23_0_1),
         .in1(weighted_inputs23_1_1),
         .in2(weighted_inputs23_2_1),
         .in3(weighted_inputs23_3_1),
         .sum(sum2bar[22])
     );
     adder_tree_1 add23(
-        .in0(weighted_inputs24_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs24_0_0),
         .in1(weighted_inputs24_1_0),
         .in2(weighted_inputs24_2_0),
         .in3(weighted_inputs24_3_0),
         .sum(sum1[23])
     );
     adder_tree_1 add55(
-        .in0(weighted_inputs24_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs24_0_1),
         .in1(weighted_inputs24_1_1),
         .in2(weighted_inputs24_2_1),
         .in3(weighted_inputs24_3_1),
         .sum(sum2[23])
     );
     adder_tree_bar_1 addb23(
-        .in0(weighted_inputs24_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs24_0_0),
         .in1(weighted_inputs24_1_0),
         .in2(weighted_inputs24_2_0),
         .in3(weighted_inputs24_3_0),
         .sum(sum1bar[23])
     );
     adder_tree_bar_1 addb55(
-        .in0(weighted_inputs24_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs24_0_1),
         .in1(weighted_inputs24_1_1),
         .in2(weighted_inputs24_2_1),
         .in3(weighted_inputs24_3_1),
         .sum(sum2bar[23])
     );
     adder_tree_1 add24(
-        .in0(weighted_inputs25_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs25_0_0),
         .in1(weighted_inputs25_1_0),
         .in2(weighted_inputs25_2_0),
         .in3(weighted_inputs25_3_0),
         .sum(sum1[24])
     );
     adder_tree_1 add56(
-        .in0(weighted_inputs25_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs25_0_1),
         .in1(weighted_inputs25_1_1),
         .in2(weighted_inputs25_2_1),
         .in3(weighted_inputs25_3_1),
         .sum(sum2[24])
     );
     adder_tree_bar_1 addb24(
-        .in0(weighted_inputs25_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs25_0_0),
         .in1(weighted_inputs25_1_0),
         .in2(weighted_inputs25_2_0),
         .in3(weighted_inputs25_3_0),
         .sum(sum1bar[24])
     );
     adder_tree_bar_1 addb56(
-        .in0(weighted_inputs25_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs25_0_1),
         .in1(weighted_inputs25_1_1),
         .in2(weighted_inputs25_2_1),
         .in3(weighted_inputs25_3_1),
         .sum(sum2bar[24])
     );
     adder_tree_1 add25(
-        .in0(weighted_inputs26_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs26_0_0),
         .in1(weighted_inputs26_1_0),
         .in2(weighted_inputs26_2_0),
         .in3(weighted_inputs26_3_0),
         .sum(sum1[25])
     );
     adder_tree_1 add57(
-        .in0(weighted_inputs26_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs26_0_1),
         .in1(weighted_inputs26_1_1),
         .in2(weighted_inputs26_2_1),
         .in3(weighted_inputs26_3_1),
         .sum(sum2[25])
     );
     adder_tree_bar_1 addb25(
-        .in0(weighted_inputs26_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs26_0_0),
         .in1(weighted_inputs26_1_0),
         .in2(weighted_inputs26_2_0),
         .in3(weighted_inputs26_3_0),
         .sum(sum1bar[25])
     );
     adder_tree_bar_1 addb57(
-        .in0(weighted_inputs26_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs26_0_1),
         .in1(weighted_inputs26_1_1),
         .in2(weighted_inputs26_2_1),
         .in3(weighted_inputs26_3_1),
         .sum(sum2bar[25])
     );
     adder_tree_1 add26(
-        .in0(weighted_inputs27_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs27_0_0),
         .in1(weighted_inputs27_1_0),
         .in2(weighted_inputs27_2_0),
         .in3(weighted_inputs27_3_0),
         .sum(sum1[26])
     );
     adder_tree_1 add58(
-        .in0(weighted_inputs27_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs27_0_1),
         .in1(weighted_inputs27_1_1),
         .in2(weighted_inputs27_2_1),
         .in3(weighted_inputs27_3_1),
         .sum(sum2[26])
     );
     adder_tree_bar_1 addb26(
-        .in0(weighted_inputs27_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs27_0_0),
         .in1(weighted_inputs27_1_0),
         .in2(weighted_inputs27_2_0),
         .in3(weighted_inputs27_3_0),
         .sum(sum1bar[26])
     );
     adder_tree_bar_1 addb58(
-        .in0(weighted_inputs27_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs27_0_1),
         .in1(weighted_inputs27_1_1),
         .in2(weighted_inputs27_2_1),
         .in3(weighted_inputs27_3_1),
         .sum(sum2bar[26])
     );
     adder_tree_1 add27(
-        .in0(weighted_inputs28_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs28_0_0),
         .in1(weighted_inputs28_1_0),
         .in2(weighted_inputs28_2_0),
         .in3(weighted_inputs28_3_0),
         .sum(sum1[27])
     );
     adder_tree_1 add59(
-        .in0(weighted_inputs28_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs28_0_1),
         .in1(weighted_inputs28_1_1),
         .in2(weighted_inputs28_2_1),
         .in3(weighted_inputs28_3_1),
         .sum(sum2[27])
     );
     adder_tree_bar_1 addb27(
-        .in0(weighted_inputs28_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs28_0_0),
         .in1(weighted_inputs28_1_0),
         .in2(weighted_inputs28_2_0),
         .in3(weighted_inputs28_3_0),
         .sum(sum1bar[27])
     );
     adder_tree_bar_1 addb59(
-        .in0(weighted_inputs28_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs28_0_1),
         .in1(weighted_inputs28_1_1),
         .in2(weighted_inputs28_2_1),
         .in3(weighted_inputs28_3_1),
         .sum(sum2bar[27])
     );
     adder_tree_1 add28(
-        .in0(weighted_inputs29_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs29_0_0),
         .in1(weighted_inputs29_1_0),
         .in2(weighted_inputs29_2_0),
         .in3(weighted_inputs29_3_0),
         .sum(sum1[28])
     );
     adder_tree_1 add60(
-        .in0(weighted_inputs29_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs29_0_1),
         .in1(weighted_inputs29_1_1),
         .in2(weighted_inputs29_2_1),
         .in3(weighted_inputs29_3_1),
         .sum(sum2[28])
     );
     adder_tree_bar_1 addb28(
-        .in0(weighted_inputs29_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs29_0_0),
         .in1(weighted_inputs29_1_0),
         .in2(weighted_inputs29_2_0),
         .in3(weighted_inputs29_3_0),
         .sum(sum1bar[28])
     );
     adder_tree_bar_1 addb60(
-        .in0(weighted_inputs29_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs29_0_1),
         .in1(weighted_inputs29_1_1),
         .in2(weighted_inputs29_2_1),
         .in3(weighted_inputs29_3_1),
         .sum(sum2bar[28])
     );
     adder_tree_1 add29(
-        .in0(weighted_inputs30_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs30_0_0),
         .in1(weighted_inputs30_1_0),
         .in2(weighted_inputs30_2_0),
         .in3(weighted_inputs30_3_0),
         .sum(sum1[29])
     );
     adder_tree_1 add61(
-        .in0(weighted_inputs30_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs30_0_1),
         .in1(weighted_inputs30_1_1),
         .in2(weighted_inputs30_2_1),
         .in3(weighted_inputs30_3_1),
         .sum(sum2[29])
     );
     adder_tree_bar_1 addb29(
-        .in0(weighted_inputs30_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs30_0_0),
         .in1(weighted_inputs30_1_0),
         .in2(weighted_inputs30_2_0),
         .in3(weighted_inputs30_3_0),
         .sum(sum1bar[29])
     );
     adder_tree_bar_1 addb61(
-        .in0(weighted_inputs30_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs30_0_1),
         .in1(weighted_inputs30_1_1),
         .in2(weighted_inputs30_2_1),
         .in3(weighted_inputs30_3_1),
         .sum(sum2bar[29])
     );
     adder_tree_1 add30(
-        .in0(weighted_inputs31_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs31_0_0),
         .in1(weighted_inputs31_1_0),
         .in2(weighted_inputs31_2_0),
         .in3(weighted_inputs31_3_0),
         .sum(sum1[30])
     );
     adder_tree_1 add62(
-        .in0(weighted_inputs31_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs31_0_1),
         .in1(weighted_inputs31_1_1),
         .in2(weighted_inputs31_2_1),
         .in3(weighted_inputs31_3_1),
         .sum(sum2[30])
     );
     adder_tree_bar_1 addb30(
-        .in0(weighted_inputs31_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs31_0_0),
         .in1(weighted_inputs31_1_0),
         .in2(weighted_inputs31_2_0),
         .in3(weighted_inputs31_3_0),
         .sum(sum1bar[30])
     );
     adder_tree_bar_1 addb62(
-        .in0(weighted_inputs31_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs31_0_1),
         .in1(weighted_inputs31_1_1),
         .in2(weighted_inputs31_2_1),
         .in3(weighted_inputs31_3_1),
         .sum(sum2bar[30])
     );
     adder_tree_1 add31(
-        .in0(weighted_inputs32_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs32_0_0),
         .in1(weighted_inputs32_1_0),
         .in2(weighted_inputs32_2_0),
         .in3(weighted_inputs32_3_0),
         .sum(sum1[31])
     );
     adder_tree_1 add63(
-        .in0(weighted_inputs32_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs32_0_1),
         .in1(weighted_inputs32_1_1),
         .in2(weighted_inputs32_2_1),
         .in3(weighted_inputs32_3_1),
         .sum(sum2[31])
     );
     adder_tree_bar_1 addb31(
-        .in0(weighted_inputs32_0_0),
+        .clk(clk), 
+            .in0(weighted_inputs32_0_0),
         .in1(weighted_inputs32_1_0),
         .in2(weighted_inputs32_2_0),
         .in3(weighted_inputs32_3_0),
         .sum(sum1bar[31])
     );
     adder_tree_bar_1 addb63(
-        .in0(weighted_inputs32_0_1),
+        .clk(clk), 
+            .in0(weighted_inputs32_0_1),
         .in1(weighted_inputs32_1_1),
         .in2(weighted_inputs32_2_1),
         .in3(weighted_inputs32_3_1),
@@ -2010,7 +2141,7 @@ module layer1(
     assign biased_sum31_1 = biased_sum2[31];
     assign biased_sum31_0bar = biased_sum1bar[31];
     assign biased_sum31_1bar = biased_sum2bar[31];
-    always @(*) begin
+    always @(posedge clk) begin
         $display("----- BNN LAYER 1 OUTPUTS -----");
         $display("Inputs : %b %b %b %b", inputs0_1, inputs1_1, inputs2_1, inputs3_1);
         $display("Weights0: %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", w1_0_1, w2_0_1, w3_0_1, w4_0_1, w5_0_1, w6_0_1, w7_0_1, w8_0_1, w9_0_1, w10_0_1, w11_0_1, w12_0_1, w13_0_1, w14_0_1, w15_0_1, w16_0_1, w17_0_1, w18_0_1, w19_0_1, w20_0_1, w21_0_1, w22_0_1, w23_0_1, w24_0_1, w25_0_1, w26_0_1, w27_0_1, w28_0_1, w29_0_1, w30_0_1, w31_0_1, w32_0_1);
@@ -2741,6 +2872,7 @@ endmodule
 
 
 module activation_and_conversion_1(
+  input  wire clk, 
   input  wire [7:0] inputs0_1,
   input  wire [7:0] inputs1_1,
   input  wire [7:0] inputs2_1,
@@ -3262,6 +3394,7 @@ module activation_and_conversion_1(
   wire [10:0] biased_sum31_1, biased_sum31_1bar;
 
     layer1 l1 (
+    .clk(clk),
     .inputs0_1(inputs0_1),
     .inputs1_1(inputs1_1),
     .inputs2_1(inputs2_1),
@@ -4426,7 +4559,7 @@ module activation_and_conversion_1(
     .mask31(mask31bar_1)
   );
 
-    always @(*) begin
+    always @(posedge clk) begin
     $display("----- LAYER 1   boolean activations -----");
     $display("masked_activation : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", masked_activation0_1, masked_activation1_1, masked_activation2_1, masked_activation3_1, masked_activation4_1, masked_activation5_1, masked_activation6_1, masked_activation7_1, masked_activation8_1, masked_activation9_1, masked_activation10_1, masked_activation11_1, masked_activation12_1, masked_activation13_1, masked_activation14_1, masked_activation15_1, masked_activation16_1, masked_activation17_1, masked_activation18_1, masked_activation19_1, masked_activation20_1, masked_activation21_1, masked_activation22_1, masked_activation23_1, masked_activation24_1, masked_activation25_1, masked_activation26_1, masked_activation27_1, masked_activation28_1, masked_activation29_1, masked_activation30_1, masked_activation31_1);
     $display("masked_activationbar : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", masked_activation0bar_1, masked_activation1bar_1, masked_activation2bar_1, masked_activation3bar_1, masked_activation4bar_1, masked_activation5bar_1, masked_activation6bar_1, masked_activation7bar_1, masked_activation8bar_1, masked_activation9bar_1, masked_activation10bar_1, masked_activation11bar_1, masked_activation12bar_1, masked_activation13bar_1, masked_activation14bar_1, masked_activation15bar_1, masked_activation16bar_1, masked_activation17bar_1, masked_activation18bar_1, masked_activation19bar_1, masked_activation20bar_1, masked_activation21bar_1, masked_activation22bar_1, masked_activation23bar_1, masked_activation24bar_1, masked_activation25bar_1, masked_activation26bar_1, masked_activation27bar_1, masked_activation28bar_1, masked_activation29bar_1, masked_activation30bar_1, masked_activation31bar_1);
@@ -4947,6 +5080,7 @@ endmodule
 
 
 module adder_tree_2 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -5014,268 +5148,269 @@ module adder_tree_2 (
     output wire [6:0] sum
 );
 
-    wire [1:0] stage0_0_lo;
-    wire [1:0] stage0_1_lo;
-    wire [1:0] stage0_2_lo;
-    wire [1:0] stage0_3_lo;
-    wire [1:0] stage0_4_lo;
-    wire [1:0] stage0_5_lo;
-    wire [1:0] stage0_6_lo;
-    wire [1:0] stage0_7_lo;
-    wire [1:0] stage0_8_lo;
-    wire [1:0] stage0_9_lo;
-    wire [1:0] stage0_10_lo;
-    wire [1:0] stage0_11_lo;
-    wire [1:0] stage0_12_lo;
-    wire [1:0] stage0_13_lo;
-    wire [1:0] stage0_14_lo;
-    wire [1:0] stage0_15_lo;
-    wire [1:0] stage0_16_lo;
-    wire [1:0] stage0_17_lo;
-    wire [1:0] stage0_18_lo;
-    wire [1:0] stage0_19_lo;
-    wire [1:0] stage0_20_lo;
-    wire [1:0] stage0_21_lo;
-    wire [1:0] stage0_22_lo;
-    wire [1:0] stage0_23_lo;
-    wire [1:0] stage0_24_lo;
-    wire [1:0] stage0_25_lo;
-    wire [1:0] stage0_26_lo;
-    wire [1:0] stage0_27_lo;
-    wire [1:0] stage0_28_lo;
-    wire [1:0] stage0_29_lo;
-    wire [1:0] stage0_30_lo;
-    wire [1:0] stage0_31_lo;
-    wire [2:0] stage1_0_lo;
-    wire [2:0] stage1_1_lo;
-    wire [2:0] stage1_2_lo;
-    wire [2:0] stage1_3_lo;
-    wire [2:0] stage1_4_lo;
-    wire [2:0] stage1_5_lo;
-    wire [2:0] stage1_6_lo;
-    wire [2:0] stage1_7_lo;
-    wire [2:0] stage1_8_lo;
-    wire [2:0] stage1_9_lo;
-    wire [2:0] stage1_10_lo;
-    wire [2:0] stage1_11_lo;
-    wire [2:0] stage1_12_lo;
-    wire [2:0] stage1_13_lo;
-    wire [2:0] stage1_14_lo;
-    wire [2:0] stage1_15_lo;
-    wire [3:0] stage2_0_lo;
-    wire [3:0] stage2_1_lo;
-    wire [3:0] stage2_2_lo;
-    wire [3:0] stage2_3_lo;
-    wire [3:0] stage2_4_lo;
-    wire [3:0] stage2_5_lo;
-    wire [3:0] stage2_6_lo;
-    wire [3:0] stage2_7_lo;
-    wire [4:0] stage3_0_lo;
-    wire [4:0] stage3_1_lo;
-    wire [4:0] stage3_2_lo;
-    wire [4:0] stage3_3_lo;
-    wire [5:0] stage4_0_lo;
-    wire [5:0] stage4_1_lo;
-    wire [6:0] stage5_0_lo;
-    reg  [1:0] stage0_0;
-    reg  [1:0] stage0_1;
-    reg  [1:0] stage0_2;
-    reg  [1:0] stage0_3;
-    reg  [1:0] stage0_4;
-    reg  [1:0] stage0_5;
-    reg  [1:0] stage0_6;
-    reg  [1:0] stage0_7;
-    reg  [1:0] stage0_8;
-    reg  [1:0] stage0_9;
-    reg  [1:0] stage0_10;
-    reg  [1:0] stage0_11;
-    reg  [1:0] stage0_12;
-    reg  [1:0] stage0_13;
-    reg  [1:0] stage0_14;
-    reg  [1:0] stage0_15;
-    reg  [1:0] stage0_16;
-    reg  [1:0] stage0_17;
-    reg  [1:0] stage0_18;
-    reg  [1:0] stage0_19;
-    reg  [1:0] stage0_20;
-    reg  [1:0] stage0_21;
-    reg  [1:0] stage0_22;
-    reg  [1:0] stage0_23;
-    reg  [1:0] stage0_24;
-    reg  [1:0] stage0_25;
-    reg  [1:0] stage0_26;
-    reg  [1:0] stage0_27;
-    reg  [1:0] stage0_28;
-    reg  [1:0] stage0_29;
-    reg  [1:0] stage0_30;
-    reg  [1:0] stage0_31;
-    reg  [2:0] stage1_0;
-    reg  [2:0] stage1_1;
-    reg  [2:0] stage1_2;
-    reg  [2:0] stage1_3;
-    reg  [2:0] stage1_4;
-    reg  [2:0] stage1_5;
-    reg  [2:0] stage1_6;
-    reg  [2:0] stage1_7;
-    reg  [2:0] stage1_8;
-    reg  [2:0] stage1_9;
-    reg  [2:0] stage1_10;
-    reg  [2:0] stage1_11;
-    reg  [2:0] stage1_12;
-    reg  [2:0] stage1_13;
-    reg  [2:0] stage1_14;
-    reg  [2:0] stage1_15;
-    reg  [3:0] stage2_0;
-    reg  [3:0] stage2_1;
-    reg  [3:0] stage2_2;
-    reg  [3:0] stage2_3;
-    reg  [3:0] stage2_4;
-    reg  [3:0] stage2_5;
-    reg  [3:0] stage2_6;
-    reg  [3:0] stage2_7;
-    reg  [4:0] stage3_0;
-    reg  [4:0] stage3_1;
-    reg  [4:0] stage3_2;
-    reg  [4:0] stage3_3;
-    reg  [5:0] stage4_0;
-    reg  [5:0] stage4_1;
-    reg  [6:0] stage5_0;
+    wire [1:0] stage0_0_lo_2;
+    wire [1:0] stage0_1_lo_2;
+    wire [1:0] stage0_2_lo_2;
+    wire [1:0] stage0_3_lo_2;
+    wire [1:0] stage0_4_lo_2;
+    wire [1:0] stage0_5_lo_2;
+    wire [1:0] stage0_6_lo_2;
+    wire [1:0] stage0_7_lo_2;
+    wire [1:0] stage0_8_lo_2;
+    wire [1:0] stage0_9_lo_2;
+    wire [1:0] stage0_10_lo_2;
+    wire [1:0] stage0_11_lo_2;
+    wire [1:0] stage0_12_lo_2;
+    wire [1:0] stage0_13_lo_2;
+    wire [1:0] stage0_14_lo_2;
+    wire [1:0] stage0_15_lo_2;
+    wire [1:0] stage0_16_lo_2;
+    wire [1:0] stage0_17_lo_2;
+    wire [1:0] stage0_18_lo_2;
+    wire [1:0] stage0_19_lo_2;
+    wire [1:0] stage0_20_lo_2;
+    wire [1:0] stage0_21_lo_2;
+    wire [1:0] stage0_22_lo_2;
+    wire [1:0] stage0_23_lo_2;
+    wire [1:0] stage0_24_lo_2;
+    wire [1:0] stage0_25_lo_2;
+    wire [1:0] stage0_26_lo_2;
+    wire [1:0] stage0_27_lo_2;
+    wire [1:0] stage0_28_lo_2;
+    wire [1:0] stage0_29_lo_2;
+    wire [1:0] stage0_30_lo_2;
+    wire [1:0] stage0_31_lo_2;
+    wire [2:0] stage1_0_lo_2;
+    wire [2:0] stage1_1_lo_2;
+    wire [2:0] stage1_2_lo_2;
+    wire [2:0] stage1_3_lo_2;
+    wire [2:0] stage1_4_lo_2;
+    wire [2:0] stage1_5_lo_2;
+    wire [2:0] stage1_6_lo_2;
+    wire [2:0] stage1_7_lo_2;
+    wire [2:0] stage1_8_lo_2;
+    wire [2:0] stage1_9_lo_2;
+    wire [2:0] stage1_10_lo_2;
+    wire [2:0] stage1_11_lo_2;
+    wire [2:0] stage1_12_lo_2;
+    wire [2:0] stage1_13_lo_2;
+    wire [2:0] stage1_14_lo_2;
+    wire [2:0] stage1_15_lo_2;
+    wire [3:0] stage2_0_lo_2;
+    wire [3:0] stage2_1_lo_2;
+    wire [3:0] stage2_2_lo_2;
+    wire [3:0] stage2_3_lo_2;
+    wire [3:0] stage2_4_lo_2;
+    wire [3:0] stage2_5_lo_2;
+    wire [3:0] stage2_6_lo_2;
+    wire [3:0] stage2_7_lo_2;
+    wire [4:0] stage3_0_lo_2;
+    wire [4:0] stage3_1_lo_2;
+    wire [4:0] stage3_2_lo_2;
+    wire [4:0] stage3_3_lo_2;
+    wire [5:0] stage4_0_lo_2;
+    wire [5:0] stage4_1_lo_2;
+    wire [6:0] stage5_0_lo_2;
+    reg  [1:0] stage0_0_2;
+    reg  [1:0] stage0_1_2;
+    reg  [1:0] stage0_2_2;
+    reg  [1:0] stage0_3_2;
+    reg  [1:0] stage0_4_2;
+    reg  [1:0] stage0_5_2;
+    reg  [1:0] stage0_6_2;
+    reg  [1:0] stage0_7_2;
+    reg  [1:0] stage0_8_2;
+    reg  [1:0] stage0_9_2;
+    reg  [1:0] stage0_10_2;
+    reg  [1:0] stage0_11_2;
+    reg  [1:0] stage0_12_2;
+    reg  [1:0] stage0_13_2;
+    reg  [1:0] stage0_14_2;
+    reg  [1:0] stage0_15_2;
+    reg  [1:0] stage0_16_2;
+    reg  [1:0] stage0_17_2;
+    reg  [1:0] stage0_18_2;
+    reg  [1:0] stage0_19_2;
+    reg  [1:0] stage0_20_2;
+    reg  [1:0] stage0_21_2;
+    reg  [1:0] stage0_22_2;
+    reg  [1:0] stage0_23_2;
+    reg  [1:0] stage0_24_2;
+    reg  [1:0] stage0_25_2;
+    reg  [1:0] stage0_26_2;
+    reg  [1:0] stage0_27_2;
+    reg  [1:0] stage0_28_2;
+    reg  [1:0] stage0_29_2;
+    reg  [1:0] stage0_30_2;
+    reg  [1:0] stage0_31_2;
+    reg  [2:0] stage1_0_2;
+    reg  [2:0] stage1_1_2;
+    reg  [2:0] stage1_2_2;
+    reg  [2:0] stage1_3_2;
+    reg  [2:0] stage1_4_2;
+    reg  [2:0] stage1_5_2;
+    reg  [2:0] stage1_6_2;
+    reg  [2:0] stage1_7_2;
+    reg  [2:0] stage1_8_2;
+    reg  [2:0] stage1_9_2;
+    reg  [2:0] stage1_10_2;
+    reg  [2:0] stage1_11_2;
+    reg  [2:0] stage1_12_2;
+    reg  [2:0] stage1_13_2;
+    reg  [2:0] stage1_14_2;
+    reg  [2:0] stage1_15_2;
+    reg  [3:0] stage2_0_2;
+    reg  [3:0] stage2_1_2;
+    reg  [3:0] stage2_2_2;
+    reg  [3:0] stage2_3_2;
+    reg  [3:0] stage2_4_2;
+    reg  [3:0] stage2_5_2;
+    reg  [3:0] stage2_6_2;
+    reg  [3:0] stage2_7_2;
+    reg  [4:0] stage3_0_2;
+    reg  [4:0] stage3_1_2;
+    reg  [4:0] stage3_2_2;
+    reg  [4:0] stage3_3_2;
+    reg  [5:0] stage4_0_2;
+    reg  [5:0] stage4_1_2;
+    reg  [6:0] stage5_0_2;
 
-    add1bit_2 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add1bit_2 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add1bit_2 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add1bit_2 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add1bit_2 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add1bit_2 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add1bit_2 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add1bit_2 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add1bit_2 u0_8 (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo), .cout(), .cout_bar());
-    add1bit_2 u0_9 (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo), .cout(), .cout_bar());
-    add1bit_2 u0_10 (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo), .cout(), .cout_bar());
-    add1bit_2 u0_11 (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo), .cout(), .cout_bar());
-    add1bit_2 u0_12 (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo), .cout(), .cout_bar());
-    add1bit_2 u0_13 (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo), .cout(), .cout_bar());
-    add1bit_2 u0_14 (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo), .cout(), .cout_bar());
-    add1bit_2 u0_15 (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo), .cout(), .cout_bar());
-    add1bit_2 u0_16 (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo), .cout(), .cout_bar());
-    add1bit_2 u0_17 (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo), .cout(), .cout_bar());
-    add1bit_2 u0_18 (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo), .cout(), .cout_bar());
-    add1bit_2 u0_19 (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo), .cout(), .cout_bar());
-    add1bit_2 u0_20 (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo), .cout(), .cout_bar());
-    add1bit_2 u0_21 (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo), .cout(), .cout_bar());
-    add1bit_2 u0_22 (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo), .cout(), .cout_bar());
-    add1bit_2 u0_23 (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo), .cout(), .cout_bar());
-    add1bit_2 u0_24 (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo), .cout(), .cout_bar());
-    add1bit_2 u0_25 (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo), .cout(), .cout_bar());
-    add1bit_2 u0_26 (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo), .cout(), .cout_bar());
-    add1bit_2 u0_27 (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo), .cout(), .cout_bar());
-    add1bit_2 u0_28 (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo), .cout(), .cout_bar());
-    add1bit_2 u0_29 (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo), .cout(), .cout_bar());
-    add1bit_2 u0_30 (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo), .cout(), .cout_bar());
-    add1bit_2 u0_31 (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo), .cout(), .cout_bar());
-    add2bit_2 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add2bit_2 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add2bit_2 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add2bit_2 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add2bit_2 u1_4 (.a(stage0_8), .b(stage0_9), .cin(1'b0), .y(stage1_4_lo), .cout(), .cout_bar());
-    add2bit_2 u1_5 (.a(stage0_10), .b(stage0_11), .cin(1'b0), .y(stage1_5_lo), .cout(), .cout_bar());
-    add2bit_2 u1_6 (.a(stage0_12), .b(stage0_13), .cin(1'b0), .y(stage1_6_lo), .cout(), .cout_bar());
-    add2bit_2 u1_7 (.a(stage0_14), .b(stage0_15), .cin(1'b0), .y(stage1_7_lo), .cout(), .cout_bar());
-    add2bit_2 u1_8 (.a(stage0_16), .b(stage0_17), .cin(1'b0), .y(stage1_8_lo), .cout(), .cout_bar());
-    add2bit_2 u1_9 (.a(stage0_18), .b(stage0_19), .cin(1'b0), .y(stage1_9_lo), .cout(), .cout_bar());
-    add2bit_2 u1_10 (.a(stage0_20), .b(stage0_21), .cin(1'b0), .y(stage1_10_lo), .cout(), .cout_bar());
-    add2bit_2 u1_11 (.a(stage0_22), .b(stage0_23), .cin(1'b0), .y(stage1_11_lo), .cout(), .cout_bar());
-    add2bit_2 u1_12 (.a(stage0_24), .b(stage0_25), .cin(1'b0), .y(stage1_12_lo), .cout(), .cout_bar());
-    add2bit_2 u1_13 (.a(stage0_26), .b(stage0_27), .cin(1'b0), .y(stage1_13_lo), .cout(), .cout_bar());
-    add2bit_2 u1_14 (.a(stage0_28), .b(stage0_29), .cin(1'b0), .y(stage1_14_lo), .cout(), .cout_bar());
-    add2bit_2 u1_15 (.a(stage0_30), .b(stage0_31), .cin(1'b0), .y(stage1_15_lo), .cout(), .cout_bar());
-    add3bit_2 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add3bit_2 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add3bit_2 u2_2 (.a(stage1_4), .b(stage1_5), .cin(1'b0), .y(stage2_2_lo), .cout(), .cout_bar());
-    add3bit_2 u2_3 (.a(stage1_6), .b(stage1_7), .cin(1'b0), .y(stage2_3_lo), .cout(), .cout_bar());
-    add3bit_2 u2_4 (.a(stage1_8), .b(stage1_9), .cin(1'b0), .y(stage2_4_lo), .cout(), .cout_bar());
-    add3bit_2 u2_5 (.a(stage1_10), .b(stage1_11), .cin(1'b0), .y(stage2_5_lo), .cout(), .cout_bar());
-    add3bit_2 u2_6 (.a(stage1_12), .b(stage1_13), .cin(1'b0), .y(stage2_6_lo), .cout(), .cout_bar());
-    add3bit_2 u2_7 (.a(stage1_14), .b(stage1_15), .cin(1'b0), .y(stage2_7_lo), .cout(), .cout_bar());
-    add4bit_2 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
-    add4bit_2 u3_1 (.a(stage2_2), .b(stage2_3), .cin(1'b0), .y(stage3_1_lo), .cout(), .cout_bar());
-    add4bit_2 u3_2 (.a(stage2_4), .b(stage2_5), .cin(1'b0), .y(stage3_2_lo), .cout(), .cout_bar());
-    add4bit_2 u3_3 (.a(stage2_6), .b(stage2_7), .cin(1'b0), .y(stage3_3_lo), .cout(), .cout_bar());
-    add5bit_2 u4_0 (.a(stage3_0), .b(stage3_1), .cin(1'b0), .y(stage4_0_lo), .cout(), .cout_bar());
-    add5bit_2 u4_1 (.a(stage3_2), .b(stage3_3), .cin(1'b0), .y(stage4_1_lo), .cout(), .cout_bar());
-    add6bit_2 u5_0 (.a(stage4_0), .b(stage4_1), .cin(1'b0), .y(stage5_0_lo), .cout(), .cout_bar());
+    add1bit_2 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_8 (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_9 (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_10 (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_11 (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_12 (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_13 (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_14 (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_15 (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_16 (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_17 (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_18 (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_19 (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_20 (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_21 (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_22 (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_23 (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_24 (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_25 (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_26 (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_27 (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_28 (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_29 (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_30 (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo_2), .cout(), .cout_bar());
+    add1bit_2 u0_31 (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_0 (.a(stage0_0_2), .b(stage0_1_2), .cin(1'b0), .y(stage1_0_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_1 (.a(stage0_2_2), .b(stage0_3_2), .cin(1'b0), .y(stage1_1_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_2 (.a(stage0_4_2), .b(stage0_5_2), .cin(1'b0), .y(stage1_2_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_3 (.a(stage0_6_2), .b(stage0_7_2), .cin(1'b0), .y(stage1_3_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_4 (.a(stage0_8_2), .b(stage0_9_2), .cin(1'b0), .y(stage1_4_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_5 (.a(stage0_10_2), .b(stage0_11_2), .cin(1'b0), .y(stage1_5_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_6 (.a(stage0_12_2), .b(stage0_13_2), .cin(1'b0), .y(stage1_6_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_7 (.a(stage0_14_2), .b(stage0_15_2), .cin(1'b0), .y(stage1_7_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_8 (.a(stage0_16_2), .b(stage0_17_2), .cin(1'b0), .y(stage1_8_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_9 (.a(stage0_18_2), .b(stage0_19_2), .cin(1'b0), .y(stage1_9_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_10 (.a(stage0_20_2), .b(stage0_21_2), .cin(1'b0), .y(stage1_10_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_11 (.a(stage0_22_2), .b(stage0_23_2), .cin(1'b0), .y(stage1_11_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_12 (.a(stage0_24_2), .b(stage0_25_2), .cin(1'b0), .y(stage1_12_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_13 (.a(stage0_26_2), .b(stage0_27_2), .cin(1'b0), .y(stage1_13_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_14 (.a(stage0_28_2), .b(stage0_29_2), .cin(1'b0), .y(stage1_14_lo_2), .cout(), .cout_bar());
+    add2bit_2 u1_15 (.a(stage0_30_2), .b(stage0_31_2), .cin(1'b0), .y(stage1_15_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_0 (.a(stage1_0_2), .b(stage1_1_2), .cin(1'b0), .y(stage2_0_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_1 (.a(stage1_2_2), .b(stage1_3_2), .cin(1'b0), .y(stage2_1_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_2 (.a(stage1_4_2), .b(stage1_5_2), .cin(1'b0), .y(stage2_2_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_3 (.a(stage1_6_2), .b(stage1_7_2), .cin(1'b0), .y(stage2_3_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_4 (.a(stage1_8_2), .b(stage1_9_2), .cin(1'b0), .y(stage2_4_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_5 (.a(stage1_10_2), .b(stage1_11_2), .cin(1'b0), .y(stage2_5_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_6 (.a(stage1_12_2), .b(stage1_13_2), .cin(1'b0), .y(stage2_6_lo_2), .cout(), .cout_bar());
+    add3bit_2 u2_7 (.a(stage1_14_2), .b(stage1_15_2), .cin(1'b0), .y(stage2_7_lo_2), .cout(), .cout_bar());
+    add4bit_2 u3_0 (.a(stage2_0_2), .b(stage2_1_2), .cin(1'b0), .y(stage3_0_lo_2), .cout(), .cout_bar());
+    add4bit_2 u3_1 (.a(stage2_2_2), .b(stage2_3_2), .cin(1'b0), .y(stage3_1_lo_2), .cout(), .cout_bar());
+    add4bit_2 u3_2 (.a(stage2_4_2), .b(stage2_5_2), .cin(1'b0), .y(stage3_2_lo_2), .cout(), .cout_bar());
+    add4bit_2 u3_3 (.a(stage2_6_2), .b(stage2_7_2), .cin(1'b0), .y(stage3_3_lo_2), .cout(), .cout_bar());
+    add5bit_2 u4_0 (.a(stage3_0_2), .b(stage3_1_2), .cin(1'b0), .y(stage4_0_lo_2), .cout(), .cout_bar());
+    add5bit_2 u4_1 (.a(stage3_2_2), .b(stage3_3_2), .cin(1'b0), .y(stage4_1_lo_2), .cout(), .cout_bar());
+    add6bit_2 u5_0 (.a(stage4_0_2), .b(stage4_1_2), .cin(1'b0), .y(stage5_0_lo_2), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage5_0_lo};
+    assign sum =  stage5_0_lo_2;
 
-    always @(*) begin
-        stage0_0 = {1'b0, stage0_0_lo};
-        stage0_1 = {1'b0, stage0_1_lo};
-        stage0_2 = {1'b0, stage0_2_lo};
-        stage0_3 = {1'b0, stage0_3_lo};
-        stage0_4 = {1'b0, stage0_4_lo};
-        stage0_5 = {1'b0, stage0_5_lo};
-        stage0_6 = {1'b0, stage0_6_lo};
-        stage0_7 = {1'b0, stage0_7_lo};
-        stage0_8 = {1'b0, stage0_8_lo};
-        stage0_9 = {1'b0, stage0_9_lo};
-        stage0_10 = {1'b0, stage0_10_lo};
-        stage0_11 = {1'b0, stage0_11_lo};
-        stage0_12 = {1'b0, stage0_12_lo};
-        stage0_13 = {1'b0, stage0_13_lo};
-        stage0_14 = {1'b0, stage0_14_lo};
-        stage0_15 = {1'b0, stage0_15_lo};
-        stage0_16 = {1'b0, stage0_16_lo};
-        stage0_17 = {1'b0, stage0_17_lo};
-        stage0_18 = {1'b0, stage0_18_lo};
-        stage0_19 = {1'b0, stage0_19_lo};
-        stage0_20 = {1'b0, stage0_20_lo};
-        stage0_21 = {1'b0, stage0_21_lo};
-        stage0_22 = {1'b0, stage0_22_lo};
-        stage0_23 = {1'b0, stage0_23_lo};
-        stage0_24 = {1'b0, stage0_24_lo};
-        stage0_25 = {1'b0, stage0_25_lo};
-        stage0_26 = {1'b0, stage0_26_lo};
-        stage0_27 = {1'b0, stage0_27_lo};
-        stage0_28 = {1'b0, stage0_28_lo};
-        stage0_29 = {1'b0, stage0_29_lo};
-        stage0_30 = {1'b0, stage0_30_lo};
-        stage0_31 = {1'b0, stage0_31_lo};
-        stage1_0 = {1'b0, stage1_0_lo};
-        stage1_1 = {1'b0, stage1_1_lo};
-        stage1_2 = {1'b0, stage1_2_lo};
-        stage1_3 = {1'b0, stage1_3_lo};
-        stage1_4 = {1'b0, stage1_4_lo};
-        stage1_5 = {1'b0, stage1_5_lo};
-        stage1_6 = {1'b0, stage1_6_lo};
-        stage1_7 = {1'b0, stage1_7_lo};
-        stage1_8 = {1'b0, stage1_8_lo};
-        stage1_9 = {1'b0, stage1_9_lo};
-        stage1_10 = {1'b0, stage1_10_lo};
-        stage1_11 = {1'b0, stage1_11_lo};
-        stage1_12 = {1'b0, stage1_12_lo};
-        stage1_13 = {1'b0, stage1_13_lo};
-        stage1_14 = {1'b0, stage1_14_lo};
-        stage1_15 = {1'b0, stage1_15_lo};
-        stage2_0 = {1'b0, stage2_0_lo};
-        stage2_1 = {1'b0, stage2_1_lo};
-        stage2_2 = {1'b0, stage2_2_lo};
-        stage2_3 = {1'b0, stage2_3_lo};
-        stage2_4 = {1'b0, stage2_4_lo};
-        stage2_5 = {1'b0, stage2_5_lo};
-        stage2_6 = {1'b0, stage2_6_lo};
-        stage2_7 = {1'b0, stage2_7_lo};
-        stage3_0 = {1'b0, stage3_0_lo};
-        stage3_1 = {1'b0, stage3_1_lo};
-        stage3_2 = {1'b0, stage3_2_lo};
-        stage3_3 = {1'b0, stage3_3_lo};
-        stage4_0 = {1'b0, stage4_0_lo};
-        stage4_1 = {1'b0, stage4_1_lo};
-        stage5_0 = {1'b0, stage5_0_lo};
+    always @(posedge clk) begin
+        stage0_0_2 <=  stage0_0_lo_2;
+        stage0_1_2 <=  stage0_1_lo_2;
+        stage0_2_2 <=  stage0_2_lo_2;
+        stage0_3_2 <=  stage0_3_lo_2;
+        stage0_4_2 <=  stage0_4_lo_2;
+        stage0_5_2 <=  stage0_5_lo_2;
+        stage0_6_2 <=  stage0_6_lo_2;
+        stage0_7_2 <=  stage0_7_lo_2;
+        stage0_8_2 <=  stage0_8_lo_2;
+        stage0_9_2 <=  stage0_9_lo_2;
+        stage0_10_2 <=  stage0_10_lo_2;
+        stage0_11_2 <=  stage0_11_lo_2;
+        stage0_12_2 <=  stage0_12_lo_2;
+        stage0_13_2 <=  stage0_13_lo_2;
+        stage0_14_2 <=  stage0_14_lo_2;
+        stage0_15_2 <=  stage0_15_lo_2;
+        stage0_16_2 <=  stage0_16_lo_2;
+        stage0_17_2 <=  stage0_17_lo_2;
+        stage0_18_2 <=  stage0_18_lo_2;
+        stage0_19_2 <=  stage0_19_lo_2;
+        stage0_20_2 <=  stage0_20_lo_2;
+        stage0_21_2 <=  stage0_21_lo_2;
+        stage0_22_2 <=  stage0_22_lo_2;
+        stage0_23_2 <=  stage0_23_lo_2;
+        stage0_24_2 <=  stage0_24_lo_2;
+        stage0_25_2 <=  stage0_25_lo_2;
+        stage0_26_2 <=  stage0_26_lo_2;
+        stage0_27_2 <=  stage0_27_lo_2;
+        stage0_28_2 <=  stage0_28_lo_2;
+        stage0_29_2 <=  stage0_29_lo_2;
+        stage0_30_2 <=  stage0_30_lo_2;
+        stage0_31_2 <=  stage0_31_lo_2;
+        stage1_0_2 <=  stage1_0_lo_2;
+        stage1_1_2 <=  stage1_1_lo_2;
+        stage1_2_2 <=  stage1_2_lo_2;
+        stage1_3_2 <=  stage1_3_lo_2;
+        stage1_4_2 <=  stage1_4_lo_2;
+        stage1_5_2 <=  stage1_5_lo_2;
+        stage1_6_2 <=  stage1_6_lo_2;
+        stage1_7_2 <=  stage1_7_lo_2;
+        stage1_8_2 <=  stage1_8_lo_2;
+        stage1_9_2 <=  stage1_9_lo_2;
+        stage1_10_2 <=  stage1_10_lo_2;
+        stage1_11_2 <=  stage1_11_lo_2;
+        stage1_12_2 <=  stage1_12_lo_2;
+        stage1_13_2 <=  stage1_13_lo_2;
+        stage1_14_2 <=  stage1_14_lo_2;
+        stage1_15_2 <=  stage1_15_lo_2;
+        stage2_0_2 <=  stage2_0_lo_2;
+        stage2_1_2 <=  stage2_1_lo_2;
+        stage2_2_2 <=  stage2_2_lo_2;
+        stage2_3_2 <=  stage2_3_lo_2;
+        stage2_4_2 <=  stage2_4_lo_2;
+        stage2_5_2 <=  stage2_5_lo_2;
+        stage2_6_2 <=  stage2_6_lo_2;
+        stage2_7_2 <=  stage2_7_lo_2;
+        stage3_0_2 <=  stage3_0_lo_2;
+        stage3_1_2 <=  stage3_1_lo_2;
+        stage3_2_2 <=  stage3_2_lo_2;
+        stage3_3_2 <=  stage3_3_lo_2;
+        stage4_0_2 <=  stage4_0_lo_2;
+        stage4_1_2 <=  stage4_1_lo_2;
+        stage5_0_2 <=  stage5_0_lo_2;
     end
 endmodule
 
 
 module adder_tree_bar_2 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -5343,268 +5478,269 @@ module adder_tree_bar_2 (
     output wire [6:0] sum
 );
 
-    wire [1:0] stage0_0_lo_bar;
-    wire [1:0] stage0_1_lo_bar;
-    wire [1:0] stage0_2_lo_bar;
-    wire [1:0] stage0_3_lo_bar;
-    wire [1:0] stage0_4_lo_bar;
-    wire [1:0] stage0_5_lo_bar;
-    wire [1:0] stage0_6_lo_bar;
-    wire [1:0] stage0_7_lo_bar;
-    wire [1:0] stage0_8_lo_bar;
-    wire [1:0] stage0_9_lo_bar;
-    wire [1:0] stage0_10_lo_bar;
-    wire [1:0] stage0_11_lo_bar;
-    wire [1:0] stage0_12_lo_bar;
-    wire [1:0] stage0_13_lo_bar;
-    wire [1:0] stage0_14_lo_bar;
-    wire [1:0] stage0_15_lo_bar;
-    wire [1:0] stage0_16_lo_bar;
-    wire [1:0] stage0_17_lo_bar;
-    wire [1:0] stage0_18_lo_bar;
-    wire [1:0] stage0_19_lo_bar;
-    wire [1:0] stage0_20_lo_bar;
-    wire [1:0] stage0_21_lo_bar;
-    wire [1:0] stage0_22_lo_bar;
-    wire [1:0] stage0_23_lo_bar;
-    wire [1:0] stage0_24_lo_bar;
-    wire [1:0] stage0_25_lo_bar;
-    wire [1:0] stage0_26_lo_bar;
-    wire [1:0] stage0_27_lo_bar;
-    wire [1:0] stage0_28_lo_bar;
-    wire [1:0] stage0_29_lo_bar;
-    wire [1:0] stage0_30_lo_bar;
-    wire [1:0] stage0_31_lo_bar;
-    wire [2:0] stage1_0_lo_bar;
-    wire [2:0] stage1_1_lo_bar;
-    wire [2:0] stage1_2_lo_bar;
-    wire [2:0] stage1_3_lo_bar;
-    wire [2:0] stage1_4_lo_bar;
-    wire [2:0] stage1_5_lo_bar;
-    wire [2:0] stage1_6_lo_bar;
-    wire [2:0] stage1_7_lo_bar;
-    wire [2:0] stage1_8_lo_bar;
-    wire [2:0] stage1_9_lo_bar;
-    wire [2:0] stage1_10_lo_bar;
-    wire [2:0] stage1_11_lo_bar;
-    wire [2:0] stage1_12_lo_bar;
-    wire [2:0] stage1_13_lo_bar;
-    wire [2:0] stage1_14_lo_bar;
-    wire [2:0] stage1_15_lo_bar;
-    wire [3:0] stage2_0_lo_bar;
-    wire [3:0] stage2_1_lo_bar;
-    wire [3:0] stage2_2_lo_bar;
-    wire [3:0] stage2_3_lo_bar;
-    wire [3:0] stage2_4_lo_bar;
-    wire [3:0] stage2_5_lo_bar;
-    wire [3:0] stage2_6_lo_bar;
-    wire [3:0] stage2_7_lo_bar;
-    wire [4:0] stage3_0_lo_bar;
-    wire [4:0] stage3_1_lo_bar;
-    wire [4:0] stage3_2_lo_bar;
-    wire [4:0] stage3_3_lo_bar;
-    wire [5:0] stage4_0_lo_bar;
-    wire [5:0] stage4_1_lo_bar;
-    wire [6:0] stage5_0_lo_bar;
-    reg  [1:0] stage0_0_bar;
-    reg  [1:0] stage0_1_bar;
-    reg  [1:0] stage0_2_bar;
-    reg  [1:0] stage0_3_bar;
-    reg  [1:0] stage0_4_bar;
-    reg  [1:0] stage0_5_bar;
-    reg  [1:0] stage0_6_bar;
-    reg  [1:0] stage0_7_bar;
-    reg  [1:0] stage0_8_bar;
-    reg  [1:0] stage0_9_bar;
-    reg  [1:0] stage0_10_bar;
-    reg  [1:0] stage0_11_bar;
-    reg  [1:0] stage0_12_bar;
-    reg  [1:0] stage0_13_bar;
-    reg  [1:0] stage0_14_bar;
-    reg  [1:0] stage0_15_bar;
-    reg  [1:0] stage0_16_bar;
-    reg  [1:0] stage0_17_bar;
-    reg  [1:0] stage0_18_bar;
-    reg  [1:0] stage0_19_bar;
-    reg  [1:0] stage0_20_bar;
-    reg  [1:0] stage0_21_bar;
-    reg  [1:0] stage0_22_bar;
-    reg  [1:0] stage0_23_bar;
-    reg  [1:0] stage0_24_bar;
-    reg  [1:0] stage0_25_bar;
-    reg  [1:0] stage0_26_bar;
-    reg  [1:0] stage0_27_bar;
-    reg  [1:0] stage0_28_bar;
-    reg  [1:0] stage0_29_bar;
-    reg  [1:0] stage0_30_bar;
-    reg  [1:0] stage0_31_bar;
-    reg  [2:0] stage1_0_bar;
-    reg  [2:0] stage1_1_bar;
-    reg  [2:0] stage1_2_bar;
-    reg  [2:0] stage1_3_bar;
-    reg  [2:0] stage1_4_bar;
-    reg  [2:0] stage1_5_bar;
-    reg  [2:0] stage1_6_bar;
-    reg  [2:0] stage1_7_bar;
-    reg  [2:0] stage1_8_bar;
-    reg  [2:0] stage1_9_bar;
-    reg  [2:0] stage1_10_bar;
-    reg  [2:0] stage1_11_bar;
-    reg  [2:0] stage1_12_bar;
-    reg  [2:0] stage1_13_bar;
-    reg  [2:0] stage1_14_bar;
-    reg  [2:0] stage1_15_bar;
-    reg  [3:0] stage2_0_bar;
-    reg  [3:0] stage2_1_bar;
-    reg  [3:0] stage2_2_bar;
-    reg  [3:0] stage2_3_bar;
-    reg  [3:0] stage2_4_bar;
-    reg  [3:0] stage2_5_bar;
-    reg  [3:0] stage2_6_bar;
-    reg  [3:0] stage2_7_bar;
-    reg  [4:0] stage3_0_bar;
-    reg  [4:0] stage3_1_bar;
-    reg  [4:0] stage3_2_bar;
-    reg  [4:0] stage3_3_bar;
-    reg  [5:0] stage4_0_bar;
-    reg  [5:0] stage4_1_bar;
-    reg  [6:0] stage5_0_bar;
+    wire [1:0] stage0_0_lo_bar_2;
+    wire [1:0] stage0_1_lo_bar_2;
+    wire [1:0] stage0_2_lo_bar_2;
+    wire [1:0] stage0_3_lo_bar_2;
+    wire [1:0] stage0_4_lo_bar_2;
+    wire [1:0] stage0_5_lo_bar_2;
+    wire [1:0] stage0_6_lo_bar_2;
+    wire [1:0] stage0_7_lo_bar_2;
+    wire [1:0] stage0_8_lo_bar_2;
+    wire [1:0] stage0_9_lo_bar_2;
+    wire [1:0] stage0_10_lo_bar_2;
+    wire [1:0] stage0_11_lo_bar_2;
+    wire [1:0] stage0_12_lo_bar_2;
+    wire [1:0] stage0_13_lo_bar_2;
+    wire [1:0] stage0_14_lo_bar_2;
+    wire [1:0] stage0_15_lo_bar_2;
+    wire [1:0] stage0_16_lo_bar_2;
+    wire [1:0] stage0_17_lo_bar_2;
+    wire [1:0] stage0_18_lo_bar_2;
+    wire [1:0] stage0_19_lo_bar_2;
+    wire [1:0] stage0_20_lo_bar_2;
+    wire [1:0] stage0_21_lo_bar_2;
+    wire [1:0] stage0_22_lo_bar_2;
+    wire [1:0] stage0_23_lo_bar_2;
+    wire [1:0] stage0_24_lo_bar_2;
+    wire [1:0] stage0_25_lo_bar_2;
+    wire [1:0] stage0_26_lo_bar_2;
+    wire [1:0] stage0_27_lo_bar_2;
+    wire [1:0] stage0_28_lo_bar_2;
+    wire [1:0] stage0_29_lo_bar_2;
+    wire [1:0] stage0_30_lo_bar_2;
+    wire [1:0] stage0_31_lo_bar_2;
+    wire [2:0] stage1_0_lo_bar_2;
+    wire [2:0] stage1_1_lo_bar_2;
+    wire [2:0] stage1_2_lo_bar_2;
+    wire [2:0] stage1_3_lo_bar_2;
+    wire [2:0] stage1_4_lo_bar_2;
+    wire [2:0] stage1_5_lo_bar_2;
+    wire [2:0] stage1_6_lo_bar_2;
+    wire [2:0] stage1_7_lo_bar_2;
+    wire [2:0] stage1_8_lo_bar_2;
+    wire [2:0] stage1_9_lo_bar_2;
+    wire [2:0] stage1_10_lo_bar_2;
+    wire [2:0] stage1_11_lo_bar_2;
+    wire [2:0] stage1_12_lo_bar_2;
+    wire [2:0] stage1_13_lo_bar_2;
+    wire [2:0] stage1_14_lo_bar_2;
+    wire [2:0] stage1_15_lo_bar_2;
+    wire [3:0] stage2_0_lo_bar_2;
+    wire [3:0] stage2_1_lo_bar_2;
+    wire [3:0] stage2_2_lo_bar_2;
+    wire [3:0] stage2_3_lo_bar_2;
+    wire [3:0] stage2_4_lo_bar_2;
+    wire [3:0] stage2_5_lo_bar_2;
+    wire [3:0] stage2_6_lo_bar_2;
+    wire [3:0] stage2_7_lo_bar_2;
+    wire [4:0] stage3_0_lo_bar_2;
+    wire [4:0] stage3_1_lo_bar_2;
+    wire [4:0] stage3_2_lo_bar_2;
+    wire [4:0] stage3_3_lo_bar_2;
+    wire [5:0] stage4_0_lo_bar_2;
+    wire [5:0] stage4_1_lo_bar_2;
+    wire [6:0] stage5_0_lo_bar_2;
+    reg  [1:0] stage0_0_bar_2;
+    reg  [1:0] stage0_1_bar_2;
+    reg  [1:0] stage0_2_bar_2;
+    reg  [1:0] stage0_3_bar_2;
+    reg  [1:0] stage0_4_bar_2;
+    reg  [1:0] stage0_5_bar_2;
+    reg  [1:0] stage0_6_bar_2;
+    reg  [1:0] stage0_7_bar_2;
+    reg  [1:0] stage0_8_bar_2;
+    reg  [1:0] stage0_9_bar_2;
+    reg  [1:0] stage0_10_bar_2;
+    reg  [1:0] stage0_11_bar_2;
+    reg  [1:0] stage0_12_bar_2;
+    reg  [1:0] stage0_13_bar_2;
+    reg  [1:0] stage0_14_bar_2;
+    reg  [1:0] stage0_15_bar_2;
+    reg  [1:0] stage0_16_bar_2;
+    reg  [1:0] stage0_17_bar_2;
+    reg  [1:0] stage0_18_bar_2;
+    reg  [1:0] stage0_19_bar_2;
+    reg  [1:0] stage0_20_bar_2;
+    reg  [1:0] stage0_21_bar_2;
+    reg  [1:0] stage0_22_bar_2;
+    reg  [1:0] stage0_23_bar_2;
+    reg  [1:0] stage0_24_bar_2;
+    reg  [1:0] stage0_25_bar_2;
+    reg  [1:0] stage0_26_bar_2;
+    reg  [1:0] stage0_27_bar_2;
+    reg  [1:0] stage0_28_bar_2;
+    reg  [1:0] stage0_29_bar_2;
+    reg  [1:0] stage0_30_bar_2;
+    reg  [1:0] stage0_31_bar_2;
+    reg  [2:0] stage1_0_bar_2;
+    reg  [2:0] stage1_1_bar_2;
+    reg  [2:0] stage1_2_bar_2;
+    reg  [2:0] stage1_3_bar_2;
+    reg  [2:0] stage1_4_bar_2;
+    reg  [2:0] stage1_5_bar_2;
+    reg  [2:0] stage1_6_bar_2;
+    reg  [2:0] stage1_7_bar_2;
+    reg  [2:0] stage1_8_bar_2;
+    reg  [2:0] stage1_9_bar_2;
+    reg  [2:0] stage1_10_bar_2;
+    reg  [2:0] stage1_11_bar_2;
+    reg  [2:0] stage1_12_bar_2;
+    reg  [2:0] stage1_13_bar_2;
+    reg  [2:0] stage1_14_bar_2;
+    reg  [2:0] stage1_15_bar_2;
+    reg  [3:0] stage2_0_bar_2;
+    reg  [3:0] stage2_1_bar_2;
+    reg  [3:0] stage2_2_bar_2;
+    reg  [3:0] stage2_3_bar_2;
+    reg  [3:0] stage2_4_bar_2;
+    reg  [3:0] stage2_5_bar_2;
+    reg  [3:0] stage2_6_bar_2;
+    reg  [3:0] stage2_7_bar_2;
+    reg  [4:0] stage3_0_bar_2;
+    reg  [4:0] stage3_1_bar_2;
+    reg  [4:0] stage3_2_bar_2;
+    reg  [4:0] stage3_3_bar_2;
+    reg  [5:0] stage4_0_bar_2;
+    reg  [5:0] stage4_1_bar_2;
+    reg  [6:0] stage5_0_bar_2;
 
-    add1bitbar_2 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_8_bar (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_9_bar (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_10_bar (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_11_bar (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_12_bar (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_13_bar (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_14_bar (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_15_bar (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_16_bar (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_17_bar (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_18_bar (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_19_bar (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_20_bar (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_21_bar (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_22_bar (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_23_bar (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_24_bar (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_25_bar (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_26_bar (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_27_bar (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_28_bar (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_29_bar (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_30_bar (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo_bar), .cout(), .cout_bar());
-    add1bitbar_2 u0_31_bar (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_4_bar (.a(stage0_8_bar), .b(stage0_9_bar), .cin(1'b0), .y(stage1_4_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_5_bar (.a(stage0_10_bar), .b(stage0_11_bar), .cin(1'b0), .y(stage1_5_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_6_bar (.a(stage0_12_bar), .b(stage0_13_bar), .cin(1'b0), .y(stage1_6_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_7_bar (.a(stage0_14_bar), .b(stage0_15_bar), .cin(1'b0), .y(stage1_7_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_8_bar (.a(stage0_16_bar), .b(stage0_17_bar), .cin(1'b0), .y(stage1_8_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_9_bar (.a(stage0_18_bar), .b(stage0_19_bar), .cin(1'b0), .y(stage1_9_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_10_bar (.a(stage0_20_bar), .b(stage0_21_bar), .cin(1'b0), .y(stage1_10_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_11_bar (.a(stage0_22_bar), .b(stage0_23_bar), .cin(1'b0), .y(stage1_11_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_12_bar (.a(stage0_24_bar), .b(stage0_25_bar), .cin(1'b0), .y(stage1_12_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_13_bar (.a(stage0_26_bar), .b(stage0_27_bar), .cin(1'b0), .y(stage1_13_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_14_bar (.a(stage0_28_bar), .b(stage0_29_bar), .cin(1'b0), .y(stage1_14_lo_bar), .cout(), .cout_bar());
-    add2bitbar_2 u1_15_bar (.a(stage0_30_bar), .b(stage0_31_bar), .cin(1'b0), .y(stage1_15_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_2_bar (.a(stage1_4_bar), .b(stage1_5_bar), .cin(1'b0), .y(stage2_2_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_3_bar (.a(stage1_6_bar), .b(stage1_7_bar), .cin(1'b0), .y(stage2_3_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_4_bar (.a(stage1_8_bar), .b(stage1_9_bar), .cin(1'b0), .y(stage2_4_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_5_bar (.a(stage1_10_bar), .b(stage1_11_bar), .cin(1'b0), .y(stage2_5_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_6_bar (.a(stage1_12_bar), .b(stage1_13_bar), .cin(1'b0), .y(stage2_6_lo_bar), .cout(), .cout_bar());
-    add3bitbar_2 u2_7_bar (.a(stage1_14_bar), .b(stage1_15_bar), .cin(1'b0), .y(stage2_7_lo_bar), .cout(), .cout_bar());
-    add4bitbar_2 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
-    add4bitbar_2 u3_1_bar (.a(stage2_2_bar), .b(stage2_3_bar), .cin(1'b0), .y(stage3_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar_2 u3_2_bar (.a(stage2_4_bar), .b(stage2_5_bar), .cin(1'b0), .y(stage3_2_lo_bar), .cout(), .cout_bar());
-    add4bitbar_2 u3_3_bar (.a(stage2_6_bar), .b(stage2_7_bar), .cin(1'b0), .y(stage3_3_lo_bar), .cout(), .cout_bar());
-    add5bitbar_2 u4_0_bar (.a(stage3_0_bar), .b(stage3_1_bar), .cin(1'b0), .y(stage4_0_lo_bar), .cout(), .cout_bar());
-    add5bitbar_2 u4_1_bar (.a(stage3_2_bar), .b(stage3_3_bar), .cin(1'b0), .y(stage4_1_lo_bar), .cout(), .cout_bar());
-    add6bitbar_2 u5_0_bar (.a(stage4_0_bar), .b(stage4_1_bar), .cin(1'b0), .y(stage5_0_lo_bar), .cout(), .cout_bar());
+    add1bitbar_2 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_8_bar (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_9_bar (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_10_bar (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_11_bar (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_12_bar (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_13_bar (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_14_bar (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_15_bar (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_16_bar (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_17_bar (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_18_bar (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_19_bar (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_20_bar (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_21_bar (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_22_bar (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_23_bar (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_24_bar (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_25_bar (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_26_bar (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_27_bar (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_28_bar (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_29_bar (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_30_bar (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo_bar_2), .cout(), .cout_bar());
+    add1bitbar_2 u0_31_bar (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_0_bar (.a(stage0_0_bar_2), .b(stage0_1_bar_2), .cin(1'b0), .y(stage1_0_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_1_bar (.a(stage0_2_bar_2), .b(stage0_3_bar_2), .cin(1'b0), .y(stage1_1_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_2_bar (.a(stage0_4_bar_2), .b(stage0_5_bar_2), .cin(1'b0), .y(stage1_2_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_3_bar (.a(stage0_6_bar_2), .b(stage0_7_bar_2), .cin(1'b0), .y(stage1_3_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_4_bar (.a(stage0_8_bar_2), .b(stage0_9_bar_2), .cin(1'b0), .y(stage1_4_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_5_bar (.a(stage0_10_bar_2), .b(stage0_11_bar_2), .cin(1'b0), .y(stage1_5_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_6_bar (.a(stage0_12_bar_2), .b(stage0_13_bar_2), .cin(1'b0), .y(stage1_6_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_7_bar (.a(stage0_14_bar_2), .b(stage0_15_bar_2), .cin(1'b0), .y(stage1_7_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_8_bar (.a(stage0_16_bar_2), .b(stage0_17_bar_2), .cin(1'b0), .y(stage1_8_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_9_bar (.a(stage0_18_bar_2), .b(stage0_19_bar_2), .cin(1'b0), .y(stage1_9_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_10_bar (.a(stage0_20_bar_2), .b(stage0_21_bar_2), .cin(1'b0), .y(stage1_10_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_11_bar (.a(stage0_22_bar_2), .b(stage0_23_bar_2), .cin(1'b0), .y(stage1_11_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_12_bar (.a(stage0_24_bar_2), .b(stage0_25_bar_2), .cin(1'b0), .y(stage1_12_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_13_bar (.a(stage0_26_bar_2), .b(stage0_27_bar_2), .cin(1'b0), .y(stage1_13_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_14_bar (.a(stage0_28_bar_2), .b(stage0_29_bar_2), .cin(1'b0), .y(stage1_14_lo_bar_2), .cout(), .cout_bar());
+    add2bitbar_2 u1_15_bar (.a(stage0_30_bar_2), .b(stage0_31_bar_2), .cin(1'b0), .y(stage1_15_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_0_bar (.a(stage1_0_bar_2), .b(stage1_1_bar_2), .cin(1'b0), .y(stage2_0_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_1_bar (.a(stage1_2_bar_2), .b(stage1_3_bar_2), .cin(1'b0), .y(stage2_1_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_2_bar (.a(stage1_4_bar_2), .b(stage1_5_bar_2), .cin(1'b0), .y(stage2_2_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_3_bar (.a(stage1_6_bar_2), .b(stage1_7_bar_2), .cin(1'b0), .y(stage2_3_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_4_bar (.a(stage1_8_bar_2), .b(stage1_9_bar_2), .cin(1'b0), .y(stage2_4_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_5_bar (.a(stage1_10_bar_2), .b(stage1_11_bar_2), .cin(1'b0), .y(stage2_5_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_6_bar (.a(stage1_12_bar_2), .b(stage1_13_bar_2), .cin(1'b0), .y(stage2_6_lo_bar_2), .cout(), .cout_bar());
+    add3bitbar_2 u2_7_bar (.a(stage1_14_bar_2), .b(stage1_15_bar_2), .cin(1'b0), .y(stage2_7_lo_bar_2), .cout(), .cout_bar());
+    add4bitbar_2 u3_0_bar (.a(stage2_0_bar_2), .b(stage2_1_bar_2), .cin(1'b0), .y(stage3_0_lo_bar_2), .cout(), .cout_bar());
+    add4bitbar_2 u3_1_bar (.a(stage2_2_bar_2), .b(stage2_3_bar_2), .cin(1'b0), .y(stage3_1_lo_bar_2), .cout(), .cout_bar());
+    add4bitbar_2 u3_2_bar (.a(stage2_4_bar_2), .b(stage2_5_bar_2), .cin(1'b0), .y(stage3_2_lo_bar_2), .cout(), .cout_bar());
+    add4bitbar_2 u3_3_bar (.a(stage2_6_bar_2), .b(stage2_7_bar_2), .cin(1'b0), .y(stage3_3_lo_bar_2), .cout(), .cout_bar());
+    add5bitbar_2 u4_0_bar (.a(stage3_0_bar_2), .b(stage3_1_bar_2), .cin(1'b0), .y(stage4_0_lo_bar_2), .cout(), .cout_bar());
+    add5bitbar_2 u4_1_bar (.a(stage3_2_bar_2), .b(stage3_3_bar_2), .cin(1'b0), .y(stage4_1_lo_bar_2), .cout(), .cout_bar());
+    add6bitbar_2 u5_0_bar (.a(stage4_0_bar_2), .b(stage4_1_bar_2), .cin(1'b0), .y(stage5_0_lo_bar_2), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage5_0_lo_bar};
+    assign sum =  stage5_0_lo_bar_2;
 
-    always @(*) begin
-        stage0_0_bar = {1'b0, stage0_0_lo_bar};
-        stage0_1_bar = {1'b0, stage0_1_lo_bar};
-        stage0_2_bar = {1'b0, stage0_2_lo_bar};
-        stage0_3_bar = {1'b0, stage0_3_lo_bar};
-        stage0_4_bar = {1'b0, stage0_4_lo_bar};
-        stage0_5_bar = {1'b0, stage0_5_lo_bar};
-        stage0_6_bar = {1'b0, stage0_6_lo_bar};
-        stage0_7_bar = {1'b0, stage0_7_lo_bar};
-        stage0_8_bar = {1'b0, stage0_8_lo_bar};
-        stage0_9_bar = {1'b0, stage0_9_lo_bar};
-        stage0_10_bar = {1'b0, stage0_10_lo_bar};
-        stage0_11_bar = {1'b0, stage0_11_lo_bar};
-        stage0_12_bar = {1'b0, stage0_12_lo_bar};
-        stage0_13_bar = {1'b0, stage0_13_lo_bar};
-        stage0_14_bar = {1'b0, stage0_14_lo_bar};
-        stage0_15_bar = {1'b0, stage0_15_lo_bar};
-        stage0_16_bar = {1'b0, stage0_16_lo_bar};
-        stage0_17_bar = {1'b0, stage0_17_lo_bar};
-        stage0_18_bar = {1'b0, stage0_18_lo_bar};
-        stage0_19_bar = {1'b0, stage0_19_lo_bar};
-        stage0_20_bar = {1'b0, stage0_20_lo_bar};
-        stage0_21_bar = {1'b0, stage0_21_lo_bar};
-        stage0_22_bar = {1'b0, stage0_22_lo_bar};
-        stage0_23_bar = {1'b0, stage0_23_lo_bar};
-        stage0_24_bar = {1'b0, stage0_24_lo_bar};
-        stage0_25_bar = {1'b0, stage0_25_lo_bar};
-        stage0_26_bar = {1'b0, stage0_26_lo_bar};
-        stage0_27_bar = {1'b0, stage0_27_lo_bar};
-        stage0_28_bar = {1'b0, stage0_28_lo_bar};
-        stage0_29_bar = {1'b0, stage0_29_lo_bar};
-        stage0_30_bar = {1'b0, stage0_30_lo_bar};
-        stage0_31_bar = {1'b0, stage0_31_lo_bar};
-        stage1_0_bar = {1'b0, stage1_0_lo_bar};
-        stage1_1_bar = {1'b0, stage1_1_lo_bar};
-        stage1_2_bar = {1'b0, stage1_2_lo_bar};
-        stage1_3_bar = {1'b0, stage1_3_lo_bar};
-        stage1_4_bar = {1'b0, stage1_4_lo_bar};
-        stage1_5_bar = {1'b0, stage1_5_lo_bar};
-        stage1_6_bar = {1'b0, stage1_6_lo_bar};
-        stage1_7_bar = {1'b0, stage1_7_lo_bar};
-        stage1_8_bar = {1'b0, stage1_8_lo_bar};
-        stage1_9_bar = {1'b0, stage1_9_lo_bar};
-        stage1_10_bar = {1'b0, stage1_10_lo_bar};
-        stage1_11_bar = {1'b0, stage1_11_lo_bar};
-        stage1_12_bar = {1'b0, stage1_12_lo_bar};
-        stage1_13_bar = {1'b0, stage1_13_lo_bar};
-        stage1_14_bar = {1'b0, stage1_14_lo_bar};
-        stage1_15_bar = {1'b0, stage1_15_lo_bar};
-        stage2_0_bar = {1'b0, stage2_0_lo_bar};
-        stage2_1_bar = {1'b0, stage2_1_lo_bar};
-        stage2_2_bar = {1'b0, stage2_2_lo_bar};
-        stage2_3_bar = {1'b0, stage2_3_lo_bar};
-        stage2_4_bar = {1'b0, stage2_4_lo_bar};
-        stage2_5_bar = {1'b0, stage2_5_lo_bar};
-        stage2_6_bar = {1'b0, stage2_6_lo_bar};
-        stage2_7_bar = {1'b0, stage2_7_lo_bar};
-        stage3_0_bar = {1'b0, stage3_0_lo_bar};
-        stage3_1_bar = {1'b0, stage3_1_lo_bar};
-        stage3_2_bar = {1'b0, stage3_2_lo_bar};
-        stage3_3_bar = {1'b0, stage3_3_lo_bar};
-        stage4_0_bar = {1'b0, stage4_0_lo_bar};
-        stage4_1_bar = {1'b0, stage4_1_lo_bar};
-        stage5_0_bar = {1'b0, stage5_0_lo_bar};
+    always @(posedge clk) begin
+        stage0_0_bar_2 <=  stage0_0_lo_bar_2;
+        stage0_1_bar_2 <=  stage0_1_lo_bar_2;
+        stage0_2_bar_2 <=  stage0_2_lo_bar_2;
+        stage0_3_bar_2 <=  stage0_3_lo_bar_2;
+        stage0_4_bar_2 <=  stage0_4_lo_bar_2;
+        stage0_5_bar_2 <=  stage0_5_lo_bar_2;
+        stage0_6_bar_2 <=  stage0_6_lo_bar_2;
+        stage0_7_bar_2 <=  stage0_7_lo_bar_2;
+        stage0_8_bar_2 <=  stage0_8_lo_bar_2;
+        stage0_9_bar_2 <=  stage0_9_lo_bar_2;
+        stage0_10_bar_2 <=  stage0_10_lo_bar_2;
+        stage0_11_bar_2 <=  stage0_11_lo_bar_2;
+        stage0_12_bar_2 <=  stage0_12_lo_bar_2;
+        stage0_13_bar_2 <=  stage0_13_lo_bar_2;
+        stage0_14_bar_2 <=  stage0_14_lo_bar_2;
+        stage0_15_bar_2 <=  stage0_15_lo_bar_2;
+        stage0_16_bar_2 <=  stage0_16_lo_bar_2;
+        stage0_17_bar_2 <=  stage0_17_lo_bar_2;
+        stage0_18_bar_2 <=  stage0_18_lo_bar_2;
+        stage0_19_bar_2 <=  stage0_19_lo_bar_2;
+        stage0_20_bar_2 <=  stage0_20_lo_bar_2;
+        stage0_21_bar_2 <=  stage0_21_lo_bar_2;
+        stage0_22_bar_2 <=  stage0_22_lo_bar_2;
+        stage0_23_bar_2 <=  stage0_23_lo_bar_2;
+        stage0_24_bar_2 <=  stage0_24_lo_bar_2;
+        stage0_25_bar_2 <=  stage0_25_lo_bar_2;
+        stage0_26_bar_2 <=  stage0_26_lo_bar_2;
+        stage0_27_bar_2 <=  stage0_27_lo_bar_2;
+        stage0_28_bar_2 <=  stage0_28_lo_bar_2;
+        stage0_29_bar_2 <=  stage0_29_lo_bar_2;
+        stage0_30_bar_2 <=  stage0_30_lo_bar_2;
+        stage0_31_bar_2 <=  stage0_31_lo_bar_2;
+        stage1_0_bar_2 <=  stage1_0_lo_bar_2;
+        stage1_1_bar_2 <=  stage1_1_lo_bar_2;
+        stage1_2_bar_2 <=  stage1_2_lo_bar_2;
+        stage1_3_bar_2 <=  stage1_3_lo_bar_2;
+        stage1_4_bar_2 <=  stage1_4_lo_bar_2;
+        stage1_5_bar_2 <=  stage1_5_lo_bar_2;
+        stage1_6_bar_2 <=  stage1_6_lo_bar_2;
+        stage1_7_bar_2 <=  stage1_7_lo_bar_2;
+        stage1_8_bar_2 <=  stage1_8_lo_bar_2;
+        stage1_9_bar_2 <=  stage1_9_lo_bar_2;
+        stage1_10_bar_2 <=  stage1_10_lo_bar_2;
+        stage1_11_bar_2 <=  stage1_11_lo_bar_2;
+        stage1_12_bar_2 <=  stage1_12_lo_bar_2;
+        stage1_13_bar_2 <=  stage1_13_lo_bar_2;
+        stage1_14_bar_2 <=  stage1_14_lo_bar_2;
+        stage1_15_bar_2 <=  stage1_15_lo_bar_2;
+        stage2_0_bar_2 <=  stage2_0_lo_bar_2;
+        stage2_1_bar_2 <=  stage2_1_lo_bar_2;
+        stage2_2_bar_2 <=  stage2_2_lo_bar_2;
+        stage2_3_bar_2 <=  stage2_3_lo_bar_2;
+        stage2_4_bar_2 <=  stage2_4_lo_bar_2;
+        stage2_5_bar_2 <=  stage2_5_lo_bar_2;
+        stage2_6_bar_2 <=  stage2_6_lo_bar_2;
+        stage2_7_bar_2 <=  stage2_7_lo_bar_2;
+        stage3_0_bar_2 <=  stage3_0_lo_bar_2;
+        stage3_1_bar_2 <=  stage3_1_lo_bar_2;
+        stage3_2_bar_2 <=  stage3_2_lo_bar_2;
+        stage3_3_bar_2 <=  stage3_3_lo_bar_2;
+        stage4_0_bar_2 <=  stage4_0_lo_bar_2;
+        stage4_1_bar_2 <=  stage4_1_lo_bar_2;
+        stage5_0_bar_2 <=  stage5_0_lo_bar_2;
     end
 endmodule
 
 
 module layer2(
+    input clk,
     input [0:0] inputs0_2 , inputs1_2 , inputs2_2 , inputs3_2 , inputs4_2 , inputs5_2 , inputs6_2 , inputs7_2 , inputs8_2 , inputs9_2 , inputs10_2 , inputs11_2 , inputs12_2 , inputs13_2 , inputs14_2 , inputs15_2 , inputs16_2 , inputs17_2 , inputs18_2 , inputs19_2 , inputs20_2 , inputs21_2 , inputs22_2 , inputs23_2 , inputs24_2 , inputs25_2 , inputs26_2 , inputs27_2 , inputs28_2 , inputs29_2 , inputs30_2 , inputs31_2 , inputs32_2 , inputs33_2 , inputs34_2 , inputs35_2 , inputs36_2 , inputs37_2 , inputs38_2 , inputs39_2 , inputs40_2 , inputs41_2 , inputs42_2 , inputs43_2 , inputs44_2 , inputs45_2 , inputs46_2 , inputs47_2 , inputs48_2 , inputs49_2 , inputs50_2 , inputs51_2 , inputs52_2 , inputs53_2 , inputs54_2 , inputs55_2 , inputs56_2 , inputs57_2 , inputs58_2 , inputs59_2 , inputs60_2 , inputs61_2 , inputs62_2 , inputs63_2,
     input [63:0] w1_0_2, w1_1_2, w2_0_2, w2_1_2, w3_0_2, w3_1_2, w4_0_2, w4_1_2, w5_0_2, w5_1_2, w6_0_2, w6_1_2, w7_0_2, w7_1_2, w8_0_2, w8_1_2, w9_0_2, w9_1_2, w10_0_2, w10_1_2, w11_0_2, w11_1_2, w12_0_2, w12_1_2, w13_0_2, w13_1_2, w14_0_2, w14_1_2, w15_0_2, w15_1_2, w16_0_2, w16_1_2, w17_0_2, w17_1_2, w18_0_2, w18_1_2, w19_0_2, w19_1_2, w20_0_2, w20_1_2, w21_0_2, w21_1_2, w22_0_2, w22_1_2, w23_0_2, w23_1_2, w24_0_2, w24_1_2, w25_0_2, w25_1_2, w26_0_2, w26_1_2, w27_0_2, w27_1_2, w28_0_2, w28_1_2, w29_0_2, w29_1_2, w30_0_2, w30_1_2, w31_0_2, w31_1_2, w32_0_2, w32_1_2,
     input [6:0] b1_2, b2_2, b3_2, b4_2, b5_2, b6_2, b7_2, b8_2, b9_2, b10_2, b11_2, b12_2, b13_2, b14_2, b15_2, b16_2, b17_2, b18_2, b19_2, b20_2, b21_2, b22_2, b23_2, b24_2, b25_2, b26_2, b27_2, b28_2, b29_2, b30_2, b31_2, b32_2,
@@ -11764,6 +11900,7 @@ module layer2(
     weighted_inputs_2 w2047 (.inputs(inputs63_2), .w(w32_0_2[63]), .wi(weighted_inputs32_63_0));
     weighted_inputs_2 w2047_bar (.inputs(inputs63_2), .w(w32_1_2[63]), .wi(weighted_inputs32_63_1));
     adder_tree_2 add0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -11831,6 +11968,7 @@ module layer2(
         .sum(sum1[0])
     );
     adder_tree_2 add32(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -11898,6 +12036,7 @@ module layer2(
         .sum(sum2[0])
     );
     adder_tree_bar_2 addb0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -11965,6 +12104,7 @@ module layer2(
         .sum(sum1bar[0])
     );
     adder_tree_bar_2 addb32(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -12032,6 +12172,7 @@ module layer2(
         .sum(sum2bar[0])
     );
     adder_tree_2 add1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -12099,6 +12240,7 @@ module layer2(
         .sum(sum1[1])
     );
     adder_tree_2 add33(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -12166,6 +12308,7 @@ module layer2(
         .sum(sum2[1])
     );
     adder_tree_bar_2 addb1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -12233,6 +12376,7 @@ module layer2(
         .sum(sum1bar[1])
     );
     adder_tree_bar_2 addb33(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -12300,6 +12444,7 @@ module layer2(
         .sum(sum2bar[1])
     );
     adder_tree_2 add2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -12367,6 +12512,7 @@ module layer2(
         .sum(sum1[2])
     );
     adder_tree_2 add34(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -12434,6 +12580,7 @@ module layer2(
         .sum(sum2[2])
     );
     adder_tree_bar_2 addb2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -12501,6 +12648,7 @@ module layer2(
         .sum(sum1bar[2])
     );
     adder_tree_bar_2 addb34(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -12568,6 +12716,7 @@ module layer2(
         .sum(sum2bar[2])
     );
     adder_tree_2 add3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -12635,6 +12784,7 @@ module layer2(
         .sum(sum1[3])
     );
     adder_tree_2 add35(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -12702,6 +12852,7 @@ module layer2(
         .sum(sum2[3])
     );
     adder_tree_bar_2 addb3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -12769,6 +12920,7 @@ module layer2(
         .sum(sum1bar[3])
     );
     adder_tree_bar_2 addb35(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -12836,6 +12988,7 @@ module layer2(
         .sum(sum2bar[3])
     );
     adder_tree_2 add4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -12903,6 +13056,7 @@ module layer2(
         .sum(sum1[4])
     );
     adder_tree_2 add36(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -12970,6 +13124,7 @@ module layer2(
         .sum(sum2[4])
     );
     adder_tree_bar_2 addb4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -13037,6 +13192,7 @@ module layer2(
         .sum(sum1bar[4])
     );
     adder_tree_bar_2 addb36(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -13104,6 +13260,7 @@ module layer2(
         .sum(sum2bar[4])
     );
     adder_tree_2 add5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -13171,6 +13328,7 @@ module layer2(
         .sum(sum1[5])
     );
     adder_tree_2 add37(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -13238,6 +13396,7 @@ module layer2(
         .sum(sum2[5])
     );
     adder_tree_bar_2 addb5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -13305,6 +13464,7 @@ module layer2(
         .sum(sum1bar[5])
     );
     adder_tree_bar_2 addb37(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -13372,6 +13532,7 @@ module layer2(
         .sum(sum2bar[5])
     );
     adder_tree_2 add6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -13439,6 +13600,7 @@ module layer2(
         .sum(sum1[6])
     );
     adder_tree_2 add38(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -13506,6 +13668,7 @@ module layer2(
         .sum(sum2[6])
     );
     adder_tree_bar_2 addb6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -13573,6 +13736,7 @@ module layer2(
         .sum(sum1bar[6])
     );
     adder_tree_bar_2 addb38(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -13640,6 +13804,7 @@ module layer2(
         .sum(sum2bar[6])
     );
     adder_tree_2 add7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -13707,6 +13872,7 @@ module layer2(
         .sum(sum1[7])
     );
     adder_tree_2 add39(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -13774,6 +13940,7 @@ module layer2(
         .sum(sum2[7])
     );
     adder_tree_bar_2 addb7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -13841,6 +14008,7 @@ module layer2(
         .sum(sum1bar[7])
     );
     adder_tree_bar_2 addb39(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -13908,6 +14076,7 @@ module layer2(
         .sum(sum2bar[7])
     );
     adder_tree_2 add8(
+    .clk(clk), 
         .in0(weighted_inputs9_0_0),
         .in1(weighted_inputs9_1_0),
         .in2(weighted_inputs9_2_0),
@@ -13975,6 +14144,7 @@ module layer2(
         .sum(sum1[8])
     );
     adder_tree_2 add40(
+    .clk(clk), 
         .in0(weighted_inputs9_0_1),
         .in1(weighted_inputs9_1_1),
         .in2(weighted_inputs9_2_1),
@@ -14042,6 +14212,7 @@ module layer2(
         .sum(sum2[8])
     );
     adder_tree_bar_2 addb8(
+    .clk(clk), 
         .in0(weighted_inputs9_0_0),
         .in1(weighted_inputs9_1_0),
         .in2(weighted_inputs9_2_0),
@@ -14109,6 +14280,7 @@ module layer2(
         .sum(sum1bar[8])
     );
     adder_tree_bar_2 addb40(
+    .clk(clk), 
         .in0(weighted_inputs9_0_1),
         .in1(weighted_inputs9_1_1),
         .in2(weighted_inputs9_2_1),
@@ -14176,6 +14348,7 @@ module layer2(
         .sum(sum2bar[8])
     );
     adder_tree_2 add9(
+    .clk(clk), 
         .in0(weighted_inputs10_0_0),
         .in1(weighted_inputs10_1_0),
         .in2(weighted_inputs10_2_0),
@@ -14243,6 +14416,7 @@ module layer2(
         .sum(sum1[9])
     );
     adder_tree_2 add41(
+    .clk(clk), 
         .in0(weighted_inputs10_0_1),
         .in1(weighted_inputs10_1_1),
         .in2(weighted_inputs10_2_1),
@@ -14310,6 +14484,7 @@ module layer2(
         .sum(sum2[9])
     );
     adder_tree_bar_2 addb9(
+    .clk(clk), 
         .in0(weighted_inputs10_0_0),
         .in1(weighted_inputs10_1_0),
         .in2(weighted_inputs10_2_0),
@@ -14377,6 +14552,7 @@ module layer2(
         .sum(sum1bar[9])
     );
     adder_tree_bar_2 addb41(
+    .clk(clk), 
         .in0(weighted_inputs10_0_1),
         .in1(weighted_inputs10_1_1),
         .in2(weighted_inputs10_2_1),
@@ -14444,6 +14620,7 @@ module layer2(
         .sum(sum2bar[9])
     );
     adder_tree_2 add10(
+    .clk(clk), 
         .in0(weighted_inputs11_0_0),
         .in1(weighted_inputs11_1_0),
         .in2(weighted_inputs11_2_0),
@@ -14511,6 +14688,7 @@ module layer2(
         .sum(sum1[10])
     );
     adder_tree_2 add42(
+    .clk(clk), 
         .in0(weighted_inputs11_0_1),
         .in1(weighted_inputs11_1_1),
         .in2(weighted_inputs11_2_1),
@@ -14578,6 +14756,7 @@ module layer2(
         .sum(sum2[10])
     );
     adder_tree_bar_2 addb10(
+    .clk(clk), 
         .in0(weighted_inputs11_0_0),
         .in1(weighted_inputs11_1_0),
         .in2(weighted_inputs11_2_0),
@@ -14645,6 +14824,7 @@ module layer2(
         .sum(sum1bar[10])
     );
     adder_tree_bar_2 addb42(
+    .clk(clk), 
         .in0(weighted_inputs11_0_1),
         .in1(weighted_inputs11_1_1),
         .in2(weighted_inputs11_2_1),
@@ -14712,6 +14892,7 @@ module layer2(
         .sum(sum2bar[10])
     );
     adder_tree_2 add11(
+    .clk(clk), 
         .in0(weighted_inputs12_0_0),
         .in1(weighted_inputs12_1_0),
         .in2(weighted_inputs12_2_0),
@@ -14779,6 +14960,7 @@ module layer2(
         .sum(sum1[11])
     );
     adder_tree_2 add43(
+    .clk(clk), 
         .in0(weighted_inputs12_0_1),
         .in1(weighted_inputs12_1_1),
         .in2(weighted_inputs12_2_1),
@@ -14846,6 +15028,7 @@ module layer2(
         .sum(sum2[11])
     );
     adder_tree_bar_2 addb11(
+    .clk(clk), 
         .in0(weighted_inputs12_0_0),
         .in1(weighted_inputs12_1_0),
         .in2(weighted_inputs12_2_0),
@@ -14913,6 +15096,7 @@ module layer2(
         .sum(sum1bar[11])
     );
     adder_tree_bar_2 addb43(
+    .clk(clk), 
         .in0(weighted_inputs12_0_1),
         .in1(weighted_inputs12_1_1),
         .in2(weighted_inputs12_2_1),
@@ -14980,6 +15164,7 @@ module layer2(
         .sum(sum2bar[11])
     );
     adder_tree_2 add12(
+    .clk(clk), 
         .in0(weighted_inputs13_0_0),
         .in1(weighted_inputs13_1_0),
         .in2(weighted_inputs13_2_0),
@@ -15047,6 +15232,7 @@ module layer2(
         .sum(sum1[12])
     );
     adder_tree_2 add44(
+    .clk(clk), 
         .in0(weighted_inputs13_0_1),
         .in1(weighted_inputs13_1_1),
         .in2(weighted_inputs13_2_1),
@@ -15114,6 +15300,7 @@ module layer2(
         .sum(sum2[12])
     );
     adder_tree_bar_2 addb12(
+    .clk(clk), 
         .in0(weighted_inputs13_0_0),
         .in1(weighted_inputs13_1_0),
         .in2(weighted_inputs13_2_0),
@@ -15181,6 +15368,7 @@ module layer2(
         .sum(sum1bar[12])
     );
     adder_tree_bar_2 addb44(
+    .clk(clk), 
         .in0(weighted_inputs13_0_1),
         .in1(weighted_inputs13_1_1),
         .in2(weighted_inputs13_2_1),
@@ -15248,6 +15436,7 @@ module layer2(
         .sum(sum2bar[12])
     );
     adder_tree_2 add13(
+    .clk(clk), 
         .in0(weighted_inputs14_0_0),
         .in1(weighted_inputs14_1_0),
         .in2(weighted_inputs14_2_0),
@@ -15315,6 +15504,7 @@ module layer2(
         .sum(sum1[13])
     );
     adder_tree_2 add45(
+    .clk(clk), 
         .in0(weighted_inputs14_0_1),
         .in1(weighted_inputs14_1_1),
         .in2(weighted_inputs14_2_1),
@@ -15382,6 +15572,7 @@ module layer2(
         .sum(sum2[13])
     );
     adder_tree_bar_2 addb13(
+    .clk(clk), 
         .in0(weighted_inputs14_0_0),
         .in1(weighted_inputs14_1_0),
         .in2(weighted_inputs14_2_0),
@@ -15449,6 +15640,7 @@ module layer2(
         .sum(sum1bar[13])
     );
     adder_tree_bar_2 addb45(
+    .clk(clk), 
         .in0(weighted_inputs14_0_1),
         .in1(weighted_inputs14_1_1),
         .in2(weighted_inputs14_2_1),
@@ -15516,6 +15708,7 @@ module layer2(
         .sum(sum2bar[13])
     );
     adder_tree_2 add14(
+    .clk(clk), 
         .in0(weighted_inputs15_0_0),
         .in1(weighted_inputs15_1_0),
         .in2(weighted_inputs15_2_0),
@@ -15583,6 +15776,7 @@ module layer2(
         .sum(sum1[14])
     );
     adder_tree_2 add46(
+    .clk(clk), 
         .in0(weighted_inputs15_0_1),
         .in1(weighted_inputs15_1_1),
         .in2(weighted_inputs15_2_1),
@@ -15650,6 +15844,7 @@ module layer2(
         .sum(sum2[14])
     );
     adder_tree_bar_2 addb14(
+    .clk(clk), 
         .in0(weighted_inputs15_0_0),
         .in1(weighted_inputs15_1_0),
         .in2(weighted_inputs15_2_0),
@@ -15717,6 +15912,7 @@ module layer2(
         .sum(sum1bar[14])
     );
     adder_tree_bar_2 addb46(
+    .clk(clk), 
         .in0(weighted_inputs15_0_1),
         .in1(weighted_inputs15_1_1),
         .in2(weighted_inputs15_2_1),
@@ -15784,6 +15980,7 @@ module layer2(
         .sum(sum2bar[14])
     );
     adder_tree_2 add15(
+    .clk(clk), 
         .in0(weighted_inputs16_0_0),
         .in1(weighted_inputs16_1_0),
         .in2(weighted_inputs16_2_0),
@@ -15851,6 +16048,7 @@ module layer2(
         .sum(sum1[15])
     );
     adder_tree_2 add47(
+    .clk(clk), 
         .in0(weighted_inputs16_0_1),
         .in1(weighted_inputs16_1_1),
         .in2(weighted_inputs16_2_1),
@@ -15918,6 +16116,7 @@ module layer2(
         .sum(sum2[15])
     );
     adder_tree_bar_2 addb15(
+    .clk(clk), 
         .in0(weighted_inputs16_0_0),
         .in1(weighted_inputs16_1_0),
         .in2(weighted_inputs16_2_0),
@@ -15985,6 +16184,7 @@ module layer2(
         .sum(sum1bar[15])
     );
     adder_tree_bar_2 addb47(
+    .clk(clk), 
         .in0(weighted_inputs16_0_1),
         .in1(weighted_inputs16_1_1),
         .in2(weighted_inputs16_2_1),
@@ -16052,6 +16252,7 @@ module layer2(
         .sum(sum2bar[15])
     );
     adder_tree_2 add16(
+    .clk(clk), 
         .in0(weighted_inputs17_0_0),
         .in1(weighted_inputs17_1_0),
         .in2(weighted_inputs17_2_0),
@@ -16119,6 +16320,7 @@ module layer2(
         .sum(sum1[16])
     );
     adder_tree_2 add48(
+    .clk(clk), 
         .in0(weighted_inputs17_0_1),
         .in1(weighted_inputs17_1_1),
         .in2(weighted_inputs17_2_1),
@@ -16186,6 +16388,7 @@ module layer2(
         .sum(sum2[16])
     );
     adder_tree_bar_2 addb16(
+    .clk(clk), 
         .in0(weighted_inputs17_0_0),
         .in1(weighted_inputs17_1_0),
         .in2(weighted_inputs17_2_0),
@@ -16253,6 +16456,7 @@ module layer2(
         .sum(sum1bar[16])
     );
     adder_tree_bar_2 addb48(
+    .clk(clk), 
         .in0(weighted_inputs17_0_1),
         .in1(weighted_inputs17_1_1),
         .in2(weighted_inputs17_2_1),
@@ -16320,6 +16524,7 @@ module layer2(
         .sum(sum2bar[16])
     );
     adder_tree_2 add17(
+    .clk(clk), 
         .in0(weighted_inputs18_0_0),
         .in1(weighted_inputs18_1_0),
         .in2(weighted_inputs18_2_0),
@@ -16387,6 +16592,7 @@ module layer2(
         .sum(sum1[17])
     );
     adder_tree_2 add49(
+    .clk(clk), 
         .in0(weighted_inputs18_0_1),
         .in1(weighted_inputs18_1_1),
         .in2(weighted_inputs18_2_1),
@@ -16454,6 +16660,7 @@ module layer2(
         .sum(sum2[17])
     );
     adder_tree_bar_2 addb17(
+    .clk(clk), 
         .in0(weighted_inputs18_0_0),
         .in1(weighted_inputs18_1_0),
         .in2(weighted_inputs18_2_0),
@@ -16521,6 +16728,7 @@ module layer2(
         .sum(sum1bar[17])
     );
     adder_tree_bar_2 addb49(
+    .clk(clk), 
         .in0(weighted_inputs18_0_1),
         .in1(weighted_inputs18_1_1),
         .in2(weighted_inputs18_2_1),
@@ -16588,6 +16796,7 @@ module layer2(
         .sum(sum2bar[17])
     );
     adder_tree_2 add18(
+    .clk(clk), 
         .in0(weighted_inputs19_0_0),
         .in1(weighted_inputs19_1_0),
         .in2(weighted_inputs19_2_0),
@@ -16655,6 +16864,7 @@ module layer2(
         .sum(sum1[18])
     );
     adder_tree_2 add50(
+    .clk(clk), 
         .in0(weighted_inputs19_0_1),
         .in1(weighted_inputs19_1_1),
         .in2(weighted_inputs19_2_1),
@@ -16722,6 +16932,7 @@ module layer2(
         .sum(sum2[18])
     );
     adder_tree_bar_2 addb18(
+    .clk(clk), 
         .in0(weighted_inputs19_0_0),
         .in1(weighted_inputs19_1_0),
         .in2(weighted_inputs19_2_0),
@@ -16789,6 +17000,7 @@ module layer2(
         .sum(sum1bar[18])
     );
     adder_tree_bar_2 addb50(
+    .clk(clk), 
         .in0(weighted_inputs19_0_1),
         .in1(weighted_inputs19_1_1),
         .in2(weighted_inputs19_2_1),
@@ -16856,6 +17068,7 @@ module layer2(
         .sum(sum2bar[18])
     );
     adder_tree_2 add19(
+    .clk(clk), 
         .in0(weighted_inputs20_0_0),
         .in1(weighted_inputs20_1_0),
         .in2(weighted_inputs20_2_0),
@@ -16923,6 +17136,7 @@ module layer2(
         .sum(sum1[19])
     );
     adder_tree_2 add51(
+    .clk(clk), 
         .in0(weighted_inputs20_0_1),
         .in1(weighted_inputs20_1_1),
         .in2(weighted_inputs20_2_1),
@@ -16990,6 +17204,7 @@ module layer2(
         .sum(sum2[19])
     );
     adder_tree_bar_2 addb19(
+    .clk(clk), 
         .in0(weighted_inputs20_0_0),
         .in1(weighted_inputs20_1_0),
         .in2(weighted_inputs20_2_0),
@@ -17057,6 +17272,7 @@ module layer2(
         .sum(sum1bar[19])
     );
     adder_tree_bar_2 addb51(
+    .clk(clk), 
         .in0(weighted_inputs20_0_1),
         .in1(weighted_inputs20_1_1),
         .in2(weighted_inputs20_2_1),
@@ -17124,6 +17340,7 @@ module layer2(
         .sum(sum2bar[19])
     );
     adder_tree_2 add20(
+    .clk(clk), 
         .in0(weighted_inputs21_0_0),
         .in1(weighted_inputs21_1_0),
         .in2(weighted_inputs21_2_0),
@@ -17191,6 +17408,7 @@ module layer2(
         .sum(sum1[20])
     );
     adder_tree_2 add52(
+    .clk(clk), 
         .in0(weighted_inputs21_0_1),
         .in1(weighted_inputs21_1_1),
         .in2(weighted_inputs21_2_1),
@@ -17258,6 +17476,7 @@ module layer2(
         .sum(sum2[20])
     );
     adder_tree_bar_2 addb20(
+    .clk(clk), 
         .in0(weighted_inputs21_0_0),
         .in1(weighted_inputs21_1_0),
         .in2(weighted_inputs21_2_0),
@@ -17325,6 +17544,7 @@ module layer2(
         .sum(sum1bar[20])
     );
     adder_tree_bar_2 addb52(
+    .clk(clk), 
         .in0(weighted_inputs21_0_1),
         .in1(weighted_inputs21_1_1),
         .in2(weighted_inputs21_2_1),
@@ -17392,6 +17612,7 @@ module layer2(
         .sum(sum2bar[20])
     );
     adder_tree_2 add21(
+    .clk(clk), 
         .in0(weighted_inputs22_0_0),
         .in1(weighted_inputs22_1_0),
         .in2(weighted_inputs22_2_0),
@@ -17459,6 +17680,7 @@ module layer2(
         .sum(sum1[21])
     );
     adder_tree_2 add53(
+    .clk(clk), 
         .in0(weighted_inputs22_0_1),
         .in1(weighted_inputs22_1_1),
         .in2(weighted_inputs22_2_1),
@@ -17526,6 +17748,7 @@ module layer2(
         .sum(sum2[21])
     );
     adder_tree_bar_2 addb21(
+    .clk(clk), 
         .in0(weighted_inputs22_0_0),
         .in1(weighted_inputs22_1_0),
         .in2(weighted_inputs22_2_0),
@@ -17593,6 +17816,7 @@ module layer2(
         .sum(sum1bar[21])
     );
     adder_tree_bar_2 addb53(
+    .clk(clk), 
         .in0(weighted_inputs22_0_1),
         .in1(weighted_inputs22_1_1),
         .in2(weighted_inputs22_2_1),
@@ -17660,6 +17884,7 @@ module layer2(
         .sum(sum2bar[21])
     );
     adder_tree_2 add22(
+    .clk(clk), 
         .in0(weighted_inputs23_0_0),
         .in1(weighted_inputs23_1_0),
         .in2(weighted_inputs23_2_0),
@@ -17727,6 +17952,7 @@ module layer2(
         .sum(sum1[22])
     );
     adder_tree_2 add54(
+    .clk(clk), 
         .in0(weighted_inputs23_0_1),
         .in1(weighted_inputs23_1_1),
         .in2(weighted_inputs23_2_1),
@@ -17794,6 +18020,7 @@ module layer2(
         .sum(sum2[22])
     );
     adder_tree_bar_2 addb22(
+    .clk(clk), 
         .in0(weighted_inputs23_0_0),
         .in1(weighted_inputs23_1_0),
         .in2(weighted_inputs23_2_0),
@@ -17861,6 +18088,7 @@ module layer2(
         .sum(sum1bar[22])
     );
     adder_tree_bar_2 addb54(
+    .clk(clk), 
         .in0(weighted_inputs23_0_1),
         .in1(weighted_inputs23_1_1),
         .in2(weighted_inputs23_2_1),
@@ -17928,6 +18156,7 @@ module layer2(
         .sum(sum2bar[22])
     );
     adder_tree_2 add23(
+    .clk(clk), 
         .in0(weighted_inputs24_0_0),
         .in1(weighted_inputs24_1_0),
         .in2(weighted_inputs24_2_0),
@@ -17995,6 +18224,7 @@ module layer2(
         .sum(sum1[23])
     );
     adder_tree_2 add55(
+    .clk(clk), 
         .in0(weighted_inputs24_0_1),
         .in1(weighted_inputs24_1_1),
         .in2(weighted_inputs24_2_1),
@@ -18062,6 +18292,7 @@ module layer2(
         .sum(sum2[23])
     );
     adder_tree_bar_2 addb23(
+    .clk(clk), 
         .in0(weighted_inputs24_0_0),
         .in1(weighted_inputs24_1_0),
         .in2(weighted_inputs24_2_0),
@@ -18129,6 +18360,7 @@ module layer2(
         .sum(sum1bar[23])
     );
     adder_tree_bar_2 addb55(
+    .clk(clk), 
         .in0(weighted_inputs24_0_1),
         .in1(weighted_inputs24_1_1),
         .in2(weighted_inputs24_2_1),
@@ -18196,6 +18428,7 @@ module layer2(
         .sum(sum2bar[23])
     );
     adder_tree_2 add24(
+    .clk(clk), 
         .in0(weighted_inputs25_0_0),
         .in1(weighted_inputs25_1_0),
         .in2(weighted_inputs25_2_0),
@@ -18263,6 +18496,7 @@ module layer2(
         .sum(sum1[24])
     );
     adder_tree_2 add56(
+    .clk(clk), 
         .in0(weighted_inputs25_0_1),
         .in1(weighted_inputs25_1_1),
         .in2(weighted_inputs25_2_1),
@@ -18330,6 +18564,7 @@ module layer2(
         .sum(sum2[24])
     );
     adder_tree_bar_2 addb24(
+    .clk(clk), 
         .in0(weighted_inputs25_0_0),
         .in1(weighted_inputs25_1_0),
         .in2(weighted_inputs25_2_0),
@@ -18397,6 +18632,7 @@ module layer2(
         .sum(sum1bar[24])
     );
     adder_tree_bar_2 addb56(
+    .clk(clk), 
         .in0(weighted_inputs25_0_1),
         .in1(weighted_inputs25_1_1),
         .in2(weighted_inputs25_2_1),
@@ -18464,6 +18700,7 @@ module layer2(
         .sum(sum2bar[24])
     );
     adder_tree_2 add25(
+    .clk(clk), 
         .in0(weighted_inputs26_0_0),
         .in1(weighted_inputs26_1_0),
         .in2(weighted_inputs26_2_0),
@@ -18531,6 +18768,7 @@ module layer2(
         .sum(sum1[25])
     );
     adder_tree_2 add57(
+    .clk(clk), 
         .in0(weighted_inputs26_0_1),
         .in1(weighted_inputs26_1_1),
         .in2(weighted_inputs26_2_1),
@@ -18598,6 +18836,7 @@ module layer2(
         .sum(sum2[25])
     );
     adder_tree_bar_2 addb25(
+    .clk(clk), 
         .in0(weighted_inputs26_0_0),
         .in1(weighted_inputs26_1_0),
         .in2(weighted_inputs26_2_0),
@@ -18665,6 +18904,7 @@ module layer2(
         .sum(sum1bar[25])
     );
     adder_tree_bar_2 addb57(
+    .clk(clk), 
         .in0(weighted_inputs26_0_1),
         .in1(weighted_inputs26_1_1),
         .in2(weighted_inputs26_2_1),
@@ -18732,6 +18972,7 @@ module layer2(
         .sum(sum2bar[25])
     );
     adder_tree_2 add26(
+    .clk(clk), 
         .in0(weighted_inputs27_0_0),
         .in1(weighted_inputs27_1_0),
         .in2(weighted_inputs27_2_0),
@@ -18799,6 +19040,7 @@ module layer2(
         .sum(sum1[26])
     );
     adder_tree_2 add58(
+    .clk(clk), 
         .in0(weighted_inputs27_0_1),
         .in1(weighted_inputs27_1_1),
         .in2(weighted_inputs27_2_1),
@@ -18866,6 +19108,7 @@ module layer2(
         .sum(sum2[26])
     );
     adder_tree_bar_2 addb26(
+    .clk(clk), 
         .in0(weighted_inputs27_0_0),
         .in1(weighted_inputs27_1_0),
         .in2(weighted_inputs27_2_0),
@@ -18933,6 +19176,7 @@ module layer2(
         .sum(sum1bar[26])
     );
     adder_tree_bar_2 addb58(
+    .clk(clk), 
         .in0(weighted_inputs27_0_1),
         .in1(weighted_inputs27_1_1),
         .in2(weighted_inputs27_2_1),
@@ -19000,6 +19244,7 @@ module layer2(
         .sum(sum2bar[26])
     );
     adder_tree_2 add27(
+    .clk(clk), 
         .in0(weighted_inputs28_0_0),
         .in1(weighted_inputs28_1_0),
         .in2(weighted_inputs28_2_0),
@@ -19067,6 +19312,7 @@ module layer2(
         .sum(sum1[27])
     );
     adder_tree_2 add59(
+    .clk(clk), 
         .in0(weighted_inputs28_0_1),
         .in1(weighted_inputs28_1_1),
         .in2(weighted_inputs28_2_1),
@@ -19134,6 +19380,7 @@ module layer2(
         .sum(sum2[27])
     );
     adder_tree_bar_2 addb27(
+    .clk(clk), 
         .in0(weighted_inputs28_0_0),
         .in1(weighted_inputs28_1_0),
         .in2(weighted_inputs28_2_0),
@@ -19201,6 +19448,7 @@ module layer2(
         .sum(sum1bar[27])
     );
     adder_tree_bar_2 addb59(
+    .clk(clk), 
         .in0(weighted_inputs28_0_1),
         .in1(weighted_inputs28_1_1),
         .in2(weighted_inputs28_2_1),
@@ -19268,6 +19516,7 @@ module layer2(
         .sum(sum2bar[27])
     );
     adder_tree_2 add28(
+    .clk(clk), 
         .in0(weighted_inputs29_0_0),
         .in1(weighted_inputs29_1_0),
         .in2(weighted_inputs29_2_0),
@@ -19335,6 +19584,7 @@ module layer2(
         .sum(sum1[28])
     );
     adder_tree_2 add60(
+    .clk(clk), 
         .in0(weighted_inputs29_0_1),
         .in1(weighted_inputs29_1_1),
         .in2(weighted_inputs29_2_1),
@@ -19402,6 +19652,7 @@ module layer2(
         .sum(sum2[28])
     );
     adder_tree_bar_2 addb28(
+    .clk(clk), 
         .in0(weighted_inputs29_0_0),
         .in1(weighted_inputs29_1_0),
         .in2(weighted_inputs29_2_0),
@@ -19469,6 +19720,7 @@ module layer2(
         .sum(sum1bar[28])
     );
     adder_tree_bar_2 addb60(
+    .clk(clk), 
         .in0(weighted_inputs29_0_1),
         .in1(weighted_inputs29_1_1),
         .in2(weighted_inputs29_2_1),
@@ -19536,6 +19788,7 @@ module layer2(
         .sum(sum2bar[28])
     );
     adder_tree_2 add29(
+    .clk(clk), 
         .in0(weighted_inputs30_0_0),
         .in1(weighted_inputs30_1_0),
         .in2(weighted_inputs30_2_0),
@@ -19603,6 +19856,7 @@ module layer2(
         .sum(sum1[29])
     );
     adder_tree_2 add61(
+    .clk(clk), 
         .in0(weighted_inputs30_0_1),
         .in1(weighted_inputs30_1_1),
         .in2(weighted_inputs30_2_1),
@@ -19670,6 +19924,7 @@ module layer2(
         .sum(sum2[29])
     );
     adder_tree_bar_2 addb29(
+    .clk(clk), 
         .in0(weighted_inputs30_0_0),
         .in1(weighted_inputs30_1_0),
         .in2(weighted_inputs30_2_0),
@@ -19737,6 +19992,7 @@ module layer2(
         .sum(sum1bar[29])
     );
     adder_tree_bar_2 addb61(
+    .clk(clk), 
         .in0(weighted_inputs30_0_1),
         .in1(weighted_inputs30_1_1),
         .in2(weighted_inputs30_2_1),
@@ -19804,6 +20060,7 @@ module layer2(
         .sum(sum2bar[29])
     );
     adder_tree_2 add30(
+    .clk(clk), 
         .in0(weighted_inputs31_0_0),
         .in1(weighted_inputs31_1_0),
         .in2(weighted_inputs31_2_0),
@@ -19871,6 +20128,7 @@ module layer2(
         .sum(sum1[30])
     );
     adder_tree_2 add62(
+    .clk(clk), 
         .in0(weighted_inputs31_0_1),
         .in1(weighted_inputs31_1_1),
         .in2(weighted_inputs31_2_1),
@@ -19938,6 +20196,7 @@ module layer2(
         .sum(sum2[30])
     );
     adder_tree_bar_2 addb30(
+    .clk(clk), 
         .in0(weighted_inputs31_0_0),
         .in1(weighted_inputs31_1_0),
         .in2(weighted_inputs31_2_0),
@@ -20005,6 +20264,7 @@ module layer2(
         .sum(sum1bar[30])
     );
     adder_tree_bar_2 addb62(
+    .clk(clk), 
         .in0(weighted_inputs31_0_1),
         .in1(weighted_inputs31_1_1),
         .in2(weighted_inputs31_2_1),
@@ -20072,6 +20332,7 @@ module layer2(
         .sum(sum2bar[30])
     );
     adder_tree_2 add31(
+    .clk(clk), 
         .in0(weighted_inputs32_0_0),
         .in1(weighted_inputs32_1_0),
         .in2(weighted_inputs32_2_0),
@@ -20139,6 +20400,7 @@ module layer2(
         .sum(sum1[31])
     );
     adder_tree_2 add63(
+    .clk(clk), 
         .in0(weighted_inputs32_0_1),
         .in1(weighted_inputs32_1_1),
         .in2(weighted_inputs32_2_1),
@@ -20206,6 +20468,7 @@ module layer2(
         .sum(sum2[31])
     );
     adder_tree_bar_2 addb31(
+    .clk(clk), 
         .in0(weighted_inputs32_0_0),
         .in1(weighted_inputs32_1_0),
         .in2(weighted_inputs32_2_0),
@@ -20273,6 +20536,7 @@ module layer2(
         .sum(sum1bar[31])
     );
     adder_tree_bar_2 addb63(
+    .clk(clk), 
         .in0(weighted_inputs32_0_1),
         .in1(weighted_inputs32_1_1),
         .in2(weighted_inputs32_2_1),
@@ -20595,7 +20859,7 @@ module layer2(
     assign biased_sum31_1 = biased_sum2[31];
     assign biased_sum31_0bar = biased_sum1bar[31];
     assign biased_sum31_1bar = biased_sum2bar[31];
-    always @(*) begin
+    always @(posedge clk) begin
         $display("----- BNN LAYER 2 OUTPUTS -----");
         $display("Inputs : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", inputs0_2, inputs1_2, inputs2_2, inputs3_2, inputs4_2, inputs5_2, inputs6_2, inputs7_2, inputs8_2, inputs9_2, inputs10_2, inputs11_2, inputs12_2, inputs13_2, inputs14_2, inputs15_2, inputs16_2, inputs17_2, inputs18_2, inputs19_2, inputs20_2, inputs21_2, inputs22_2, inputs23_2, inputs24_2, inputs25_2, inputs26_2, inputs27_2, inputs28_2, inputs29_2, inputs30_2, inputs31_2, inputs32_2, inputs33_2, inputs34_2, inputs35_2, inputs36_2, inputs37_2, inputs38_2, inputs39_2, inputs40_2, inputs41_2, inputs42_2, inputs43_2, inputs44_2, inputs45_2, inputs46_2, inputs47_2, inputs48_2, inputs49_2, inputs50_2, inputs51_2, inputs52_2, inputs53_2, inputs54_2, inputs55_2, inputs56_2, inputs57_2, inputs58_2, inputs59_2, inputs60_2, inputs61_2, inputs62_2, inputs63_2);
         $display("Weights0: %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", w1_0_2, w2_0_2, w3_0_2, w4_0_2, w5_0_2, w6_0_2, w7_0_2, w8_0_2, w9_0_2, w10_0_2, w11_0_2, w12_0_2, w13_0_2, w14_0_2, w15_0_2, w16_0_2, w17_0_2, w18_0_2, w19_0_2, w20_0_2, w21_0_2, w22_0_2, w23_0_2, w24_0_2, w25_0_2, w26_0_2, w27_0_2, w28_0_2, w29_0_2, w30_0_2, w31_0_2, w32_0_2);
@@ -21227,6 +21491,7 @@ endmodule
 
 
 module activation_and_conversion_2(
+  input  wire clk, 
   input  wire [0:0] inputs0_2,
   input  wire [0:0] inputs1_2,
   input  wire [0:0] inputs2_2,
@@ -21712,6 +21977,7 @@ module activation_and_conversion_2(
   wire [7:0] biased_sum31_1, biased_sum31_1bar;
 
     layer2 l1 (
+    .clk(clk),
     .inputs0_2(inputs0_2),
     .inputs1_2(inputs1_2),
     .inputs2_2(inputs2_2),
@@ -22744,7 +23010,7 @@ module activation_and_conversion_2(
     .mask31(mask31bar_2)
   );
 
-    always @(*) begin
+    always @(posedge clk) begin
     $display("----- LAYER 2   boolean activations -----");
     $display("masked_activation : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", masked_activation0_2, masked_activation1_2, masked_activation2_2, masked_activation3_2, masked_activation4_2, masked_activation5_2, masked_activation6_2, masked_activation7_2, masked_activation8_2, masked_activation9_2, masked_activation10_2, masked_activation11_2, masked_activation12_2, masked_activation13_2, masked_activation14_2, masked_activation15_2, masked_activation16_2, masked_activation17_2, masked_activation18_2, masked_activation19_2, masked_activation20_2, masked_activation21_2, masked_activation22_2, masked_activation23_2, masked_activation24_2, masked_activation25_2, masked_activation26_2, masked_activation27_2, masked_activation28_2, masked_activation29_2, masked_activation30_2, masked_activation31_2);
     $display("masked_activationbar : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", masked_activation0bar_2, masked_activation1bar_2, masked_activation2bar_2, masked_activation3bar_2, masked_activation4bar_2, masked_activation5bar_2, masked_activation6bar_2, masked_activation7bar_2, masked_activation8bar_2, masked_activation9bar_2, masked_activation10bar_2, masked_activation11bar_2, masked_activation12bar_2, masked_activation13bar_2, masked_activation14bar_2, masked_activation15bar_2, masked_activation16bar_2, masked_activation17bar_2, masked_activation18bar_2, masked_activation19bar_2, masked_activation20bar_2, masked_activation21bar_2, masked_activation22bar_2, masked_activation23bar_2, masked_activation24bar_2, masked_activation25bar_2, masked_activation26bar_2, masked_activation27bar_2, masked_activation28bar_2, masked_activation29bar_2, masked_activation30bar_2, masked_activation31bar_2);
@@ -23264,6 +23530,7 @@ endmodule
 
 
 module adder_tree_3 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -23331,268 +23598,269 @@ module adder_tree_3 (
     output wire [6:0] sum
 );
 
-    wire [1:0] stage0_0_lo;
-    wire [1:0] stage0_1_lo;
-    wire [1:0] stage0_2_lo;
-    wire [1:0] stage0_3_lo;
-    wire [1:0] stage0_4_lo;
-    wire [1:0] stage0_5_lo;
-    wire [1:0] stage0_6_lo;
-    wire [1:0] stage0_7_lo;
-    wire [1:0] stage0_8_lo;
-    wire [1:0] stage0_9_lo;
-    wire [1:0] stage0_10_lo;
-    wire [1:0] stage0_11_lo;
-    wire [1:0] stage0_12_lo;
-    wire [1:0] stage0_13_lo;
-    wire [1:0] stage0_14_lo;
-    wire [1:0] stage0_15_lo;
-    wire [1:0] stage0_16_lo;
-    wire [1:0] stage0_17_lo;
-    wire [1:0] stage0_18_lo;
-    wire [1:0] stage0_19_lo;
-    wire [1:0] stage0_20_lo;
-    wire [1:0] stage0_21_lo;
-    wire [1:0] stage0_22_lo;
-    wire [1:0] stage0_23_lo;
-    wire [1:0] stage0_24_lo;
-    wire [1:0] stage0_25_lo;
-    wire [1:0] stage0_26_lo;
-    wire [1:0] stage0_27_lo;
-    wire [1:0] stage0_28_lo;
-    wire [1:0] stage0_29_lo;
-    wire [1:0] stage0_30_lo;
-    wire [1:0] stage0_31_lo;
-    wire [2:0] stage1_0_lo;
-    wire [2:0] stage1_1_lo;
-    wire [2:0] stage1_2_lo;
-    wire [2:0] stage1_3_lo;
-    wire [2:0] stage1_4_lo;
-    wire [2:0] stage1_5_lo;
-    wire [2:0] stage1_6_lo;
-    wire [2:0] stage1_7_lo;
-    wire [2:0] stage1_8_lo;
-    wire [2:0] stage1_9_lo;
-    wire [2:0] stage1_10_lo;
-    wire [2:0] stage1_11_lo;
-    wire [2:0] stage1_12_lo;
-    wire [2:0] stage1_13_lo;
-    wire [2:0] stage1_14_lo;
-    wire [2:0] stage1_15_lo;
-    wire [3:0] stage2_0_lo;
-    wire [3:0] stage2_1_lo;
-    wire [3:0] stage2_2_lo;
-    wire [3:0] stage2_3_lo;
-    wire [3:0] stage2_4_lo;
-    wire [3:0] stage2_5_lo;
-    wire [3:0] stage2_6_lo;
-    wire [3:0] stage2_7_lo;
-    wire [4:0] stage3_0_lo;
-    wire [4:0] stage3_1_lo;
-    wire [4:0] stage3_2_lo;
-    wire [4:0] stage3_3_lo;
-    wire [5:0] stage4_0_lo;
-    wire [5:0] stage4_1_lo;
-    wire [6:0] stage5_0_lo;
-    reg  [1:0] stage0_0;
-    reg  [1:0] stage0_1;
-    reg  [1:0] stage0_2;
-    reg  [1:0] stage0_3;
-    reg  [1:0] stage0_4;
-    reg  [1:0] stage0_5;
-    reg  [1:0] stage0_6;
-    reg  [1:0] stage0_7;
-    reg  [1:0] stage0_8;
-    reg  [1:0] stage0_9;
-    reg  [1:0] stage0_10;
-    reg  [1:0] stage0_11;
-    reg  [1:0] stage0_12;
-    reg  [1:0] stage0_13;
-    reg  [1:0] stage0_14;
-    reg  [1:0] stage0_15;
-    reg  [1:0] stage0_16;
-    reg  [1:0] stage0_17;
-    reg  [1:0] stage0_18;
-    reg  [1:0] stage0_19;
-    reg  [1:0] stage0_20;
-    reg  [1:0] stage0_21;
-    reg  [1:0] stage0_22;
-    reg  [1:0] stage0_23;
-    reg  [1:0] stage0_24;
-    reg  [1:0] stage0_25;
-    reg  [1:0] stage0_26;
-    reg  [1:0] stage0_27;
-    reg  [1:0] stage0_28;
-    reg  [1:0] stage0_29;
-    reg  [1:0] stage0_30;
-    reg  [1:0] stage0_31;
-    reg  [2:0] stage1_0;
-    reg  [2:0] stage1_1;
-    reg  [2:0] stage1_2;
-    reg  [2:0] stage1_3;
-    reg  [2:0] stage1_4;
-    reg  [2:0] stage1_5;
-    reg  [2:0] stage1_6;
-    reg  [2:0] stage1_7;
-    reg  [2:0] stage1_8;
-    reg  [2:0] stage1_9;
-    reg  [2:0] stage1_10;
-    reg  [2:0] stage1_11;
-    reg  [2:0] stage1_12;
-    reg  [2:0] stage1_13;
-    reg  [2:0] stage1_14;
-    reg  [2:0] stage1_15;
-    reg  [3:0] stage2_0;
-    reg  [3:0] stage2_1;
-    reg  [3:0] stage2_2;
-    reg  [3:0] stage2_3;
-    reg  [3:0] stage2_4;
-    reg  [3:0] stage2_5;
-    reg  [3:0] stage2_6;
-    reg  [3:0] stage2_7;
-    reg  [4:0] stage3_0;
-    reg  [4:0] stage3_1;
-    reg  [4:0] stage3_2;
-    reg  [4:0] stage3_3;
-    reg  [5:0] stage4_0;
-    reg  [5:0] stage4_1;
-    reg  [6:0] stage5_0;
+    wire [1:0] stage0_0_lo_3;
+    wire [1:0] stage0_1_lo_3;
+    wire [1:0] stage0_2_lo_3;
+    wire [1:0] stage0_3_lo_3;
+    wire [1:0] stage0_4_lo_3;
+    wire [1:0] stage0_5_lo_3;
+    wire [1:0] stage0_6_lo_3;
+    wire [1:0] stage0_7_lo_3;
+    wire [1:0] stage0_8_lo_3;
+    wire [1:0] stage0_9_lo_3;
+    wire [1:0] stage0_10_lo_3;
+    wire [1:0] stage0_11_lo_3;
+    wire [1:0] stage0_12_lo_3;
+    wire [1:0] stage0_13_lo_3;
+    wire [1:0] stage0_14_lo_3;
+    wire [1:0] stage0_15_lo_3;
+    wire [1:0] stage0_16_lo_3;
+    wire [1:0] stage0_17_lo_3;
+    wire [1:0] stage0_18_lo_3;
+    wire [1:0] stage0_19_lo_3;
+    wire [1:0] stage0_20_lo_3;
+    wire [1:0] stage0_21_lo_3;
+    wire [1:0] stage0_22_lo_3;
+    wire [1:0] stage0_23_lo_3;
+    wire [1:0] stage0_24_lo_3;
+    wire [1:0] stage0_25_lo_3;
+    wire [1:0] stage0_26_lo_3;
+    wire [1:0] stage0_27_lo_3;
+    wire [1:0] stage0_28_lo_3;
+    wire [1:0] stage0_29_lo_3;
+    wire [1:0] stage0_30_lo_3;
+    wire [1:0] stage0_31_lo_3;
+    wire [2:0] stage1_0_lo_3;
+    wire [2:0] stage1_1_lo_3;
+    wire [2:0] stage1_2_lo_3;
+    wire [2:0] stage1_3_lo_3;
+    wire [2:0] stage1_4_lo_3;
+    wire [2:0] stage1_5_lo_3;
+    wire [2:0] stage1_6_lo_3;
+    wire [2:0] stage1_7_lo_3;
+    wire [2:0] stage1_8_lo_3;
+    wire [2:0] stage1_9_lo_3;
+    wire [2:0] stage1_10_lo_3;
+    wire [2:0] stage1_11_lo_3;
+    wire [2:0] stage1_12_lo_3;
+    wire [2:0] stage1_13_lo_3;
+    wire [2:0] stage1_14_lo_3;
+    wire [2:0] stage1_15_lo_3;
+    wire [3:0] stage2_0_lo_3;
+    wire [3:0] stage2_1_lo_3;
+    wire [3:0] stage2_2_lo_3;
+    wire [3:0] stage2_3_lo_3;
+    wire [3:0] stage2_4_lo_3;
+    wire [3:0] stage2_5_lo_3;
+    wire [3:0] stage2_6_lo_3;
+    wire [3:0] stage2_7_lo_3;
+    wire [4:0] stage3_0_lo_3;
+    wire [4:0] stage3_1_lo_3;
+    wire [4:0] stage3_2_lo_3;
+    wire [4:0] stage3_3_lo_3;
+    wire [5:0] stage4_0_lo_3;
+    wire [5:0] stage4_1_lo_3;
+    wire [6:0] stage5_0_lo_3;
+    reg  [1:0] stage0_0_3;
+    reg  [1:0] stage0_1_3;
+    reg  [1:0] stage0_2_3;
+    reg  [1:0] stage0_3_3;
+    reg  [1:0] stage0_4_3;
+    reg  [1:0] stage0_5_3;
+    reg  [1:0] stage0_6_3;
+    reg  [1:0] stage0_7_3;
+    reg  [1:0] stage0_8_3;
+    reg  [1:0] stage0_9_3;
+    reg  [1:0] stage0_10_3;
+    reg  [1:0] stage0_11_3;
+    reg  [1:0] stage0_12_3;
+    reg  [1:0] stage0_13_3;
+    reg  [1:0] stage0_14_3;
+    reg  [1:0] stage0_15_3;
+    reg  [1:0] stage0_16_3;
+    reg  [1:0] stage0_17_3;
+    reg  [1:0] stage0_18_3;
+    reg  [1:0] stage0_19_3;
+    reg  [1:0] stage0_20_3;
+    reg  [1:0] stage0_21_3;
+    reg  [1:0] stage0_22_3;
+    reg  [1:0] stage0_23_3;
+    reg  [1:0] stage0_24_3;
+    reg  [1:0] stage0_25_3;
+    reg  [1:0] stage0_26_3;
+    reg  [1:0] stage0_27_3;
+    reg  [1:0] stage0_28_3;
+    reg  [1:0] stage0_29_3;
+    reg  [1:0] stage0_30_3;
+    reg  [1:0] stage0_31_3;
+    reg  [2:0] stage1_0_3;
+    reg  [2:0] stage1_1_3;
+    reg  [2:0] stage1_2_3;
+    reg  [2:0] stage1_3_3;
+    reg  [2:0] stage1_4_3;
+    reg  [2:0] stage1_5_3;
+    reg  [2:0] stage1_6_3;
+    reg  [2:0] stage1_7_3;
+    reg  [2:0] stage1_8_3;
+    reg  [2:0] stage1_9_3;
+    reg  [2:0] stage1_10_3;
+    reg  [2:0] stage1_11_3;
+    reg  [2:0] stage1_12_3;
+    reg  [2:0] stage1_13_3;
+    reg  [2:0] stage1_14_3;
+    reg  [2:0] stage1_15_3;
+    reg  [3:0] stage2_0_3;
+    reg  [3:0] stage2_1_3;
+    reg  [3:0] stage2_2_3;
+    reg  [3:0] stage2_3_3;
+    reg  [3:0] stage2_4_3;
+    reg  [3:0] stage2_5_3;
+    reg  [3:0] stage2_6_3;
+    reg  [3:0] stage2_7_3;
+    reg  [4:0] stage3_0_3;
+    reg  [4:0] stage3_1_3;
+    reg  [4:0] stage3_2_3;
+    reg  [4:0] stage3_3_3;
+    reg  [5:0] stage4_0_3;
+    reg  [5:0] stage4_1_3;
+    reg  [6:0] stage5_0_3;
 
-    add1bit_3 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo), .cout(), .cout_bar());
-    add1bit_3 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo), .cout(), .cout_bar());
-    add1bit_3 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo), .cout(), .cout_bar());
-    add1bit_3 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo), .cout(), .cout_bar());
-    add1bit_3 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo), .cout(), .cout_bar());
-    add1bit_3 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo), .cout(), .cout_bar());
-    add1bit_3 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo), .cout(), .cout_bar());
-    add1bit_3 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo), .cout(), .cout_bar());
-    add1bit_3 u0_8 (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo), .cout(), .cout_bar());
-    add1bit_3 u0_9 (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo), .cout(), .cout_bar());
-    add1bit_3 u0_10 (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo), .cout(), .cout_bar());
-    add1bit_3 u0_11 (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo), .cout(), .cout_bar());
-    add1bit_3 u0_12 (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo), .cout(), .cout_bar());
-    add1bit_3 u0_13 (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo), .cout(), .cout_bar());
-    add1bit_3 u0_14 (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo), .cout(), .cout_bar());
-    add1bit_3 u0_15 (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo), .cout(), .cout_bar());
-    add1bit_3 u0_16 (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo), .cout(), .cout_bar());
-    add1bit_3 u0_17 (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo), .cout(), .cout_bar());
-    add1bit_3 u0_18 (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo), .cout(), .cout_bar());
-    add1bit_3 u0_19 (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo), .cout(), .cout_bar());
-    add1bit_3 u0_20 (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo), .cout(), .cout_bar());
-    add1bit_3 u0_21 (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo), .cout(), .cout_bar());
-    add1bit_3 u0_22 (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo), .cout(), .cout_bar());
-    add1bit_3 u0_23 (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo), .cout(), .cout_bar());
-    add1bit_3 u0_24 (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo), .cout(), .cout_bar());
-    add1bit_3 u0_25 (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo), .cout(), .cout_bar());
-    add1bit_3 u0_26 (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo), .cout(), .cout_bar());
-    add1bit_3 u0_27 (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo), .cout(), .cout_bar());
-    add1bit_3 u0_28 (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo), .cout(), .cout_bar());
-    add1bit_3 u0_29 (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo), .cout(), .cout_bar());
-    add1bit_3 u0_30 (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo), .cout(), .cout_bar());
-    add1bit_3 u0_31 (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo), .cout(), .cout_bar());
-    add2bit_3 u1_0 (.a(stage0_0), .b(stage0_1), .cin(1'b0), .y(stage1_0_lo), .cout(), .cout_bar());
-    add2bit_3 u1_1 (.a(stage0_2), .b(stage0_3), .cin(1'b0), .y(stage1_1_lo), .cout(), .cout_bar());
-    add2bit_3 u1_2 (.a(stage0_4), .b(stage0_5), .cin(1'b0), .y(stage1_2_lo), .cout(), .cout_bar());
-    add2bit_3 u1_3 (.a(stage0_6), .b(stage0_7), .cin(1'b0), .y(stage1_3_lo), .cout(), .cout_bar());
-    add2bit_3 u1_4 (.a(stage0_8), .b(stage0_9), .cin(1'b0), .y(stage1_4_lo), .cout(), .cout_bar());
-    add2bit_3 u1_5 (.a(stage0_10), .b(stage0_11), .cin(1'b0), .y(stage1_5_lo), .cout(), .cout_bar());
-    add2bit_3 u1_6 (.a(stage0_12), .b(stage0_13), .cin(1'b0), .y(stage1_6_lo), .cout(), .cout_bar());
-    add2bit_3 u1_7 (.a(stage0_14), .b(stage0_15), .cin(1'b0), .y(stage1_7_lo), .cout(), .cout_bar());
-    add2bit_3 u1_8 (.a(stage0_16), .b(stage0_17), .cin(1'b0), .y(stage1_8_lo), .cout(), .cout_bar());
-    add2bit_3 u1_9 (.a(stage0_18), .b(stage0_19), .cin(1'b0), .y(stage1_9_lo), .cout(), .cout_bar());
-    add2bit_3 u1_10 (.a(stage0_20), .b(stage0_21), .cin(1'b0), .y(stage1_10_lo), .cout(), .cout_bar());
-    add2bit_3 u1_11 (.a(stage0_22), .b(stage0_23), .cin(1'b0), .y(stage1_11_lo), .cout(), .cout_bar());
-    add2bit_3 u1_12 (.a(stage0_24), .b(stage0_25), .cin(1'b0), .y(stage1_12_lo), .cout(), .cout_bar());
-    add2bit_3 u1_13 (.a(stage0_26), .b(stage0_27), .cin(1'b0), .y(stage1_13_lo), .cout(), .cout_bar());
-    add2bit_3 u1_14 (.a(stage0_28), .b(stage0_29), .cin(1'b0), .y(stage1_14_lo), .cout(), .cout_bar());
-    add2bit_3 u1_15 (.a(stage0_30), .b(stage0_31), .cin(1'b0), .y(stage1_15_lo), .cout(), .cout_bar());
-    add3bit_3 u2_0 (.a(stage1_0), .b(stage1_1), .cin(1'b0), .y(stage2_0_lo), .cout(), .cout_bar());
-    add3bit_3 u2_1 (.a(stage1_2), .b(stage1_3), .cin(1'b0), .y(stage2_1_lo), .cout(), .cout_bar());
-    add3bit_3 u2_2 (.a(stage1_4), .b(stage1_5), .cin(1'b0), .y(stage2_2_lo), .cout(), .cout_bar());
-    add3bit_3 u2_3 (.a(stage1_6), .b(stage1_7), .cin(1'b0), .y(stage2_3_lo), .cout(), .cout_bar());
-    add3bit_3 u2_4 (.a(stage1_8), .b(stage1_9), .cin(1'b0), .y(stage2_4_lo), .cout(), .cout_bar());
-    add3bit_3 u2_5 (.a(stage1_10), .b(stage1_11), .cin(1'b0), .y(stage2_5_lo), .cout(), .cout_bar());
-    add3bit_3 u2_6 (.a(stage1_12), .b(stage1_13), .cin(1'b0), .y(stage2_6_lo), .cout(), .cout_bar());
-    add3bit_3 u2_7 (.a(stage1_14), .b(stage1_15), .cin(1'b0), .y(stage2_7_lo), .cout(), .cout_bar());
-    add4bit_3 u3_0 (.a(stage2_0), .b(stage2_1), .cin(1'b0), .y(stage3_0_lo), .cout(), .cout_bar());
-    add4bit_3 u3_1 (.a(stage2_2), .b(stage2_3), .cin(1'b0), .y(stage3_1_lo), .cout(), .cout_bar());
-    add4bit_3 u3_2 (.a(stage2_4), .b(stage2_5), .cin(1'b0), .y(stage3_2_lo), .cout(), .cout_bar());
-    add4bit_3 u3_3 (.a(stage2_6), .b(stage2_7), .cin(1'b0), .y(stage3_3_lo), .cout(), .cout_bar());
-    add5bit_3 u4_0 (.a(stage3_0), .b(stage3_1), .cin(1'b0), .y(stage4_0_lo), .cout(), .cout_bar());
-    add5bit_3 u4_1 (.a(stage3_2), .b(stage3_3), .cin(1'b0), .y(stage4_1_lo), .cout(), .cout_bar());
-    add6bit_3 u5_0 (.a(stage4_0), .b(stage4_1), .cin(1'b0), .y(stage5_0_lo), .cout(), .cout_bar());
+    add1bit_3 u0_0 (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_1 (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_2 (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_3 (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_4 (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_5 (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_6 (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_7 (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_8 (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_9 (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_10 (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_11 (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_12 (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_13 (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_14 (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_15 (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_16 (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_17 (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_18 (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_19 (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_20 (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_21 (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_22 (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_23 (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_24 (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_25 (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_26 (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_27 (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_28 (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_29 (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_30 (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo_3), .cout(), .cout_bar());
+    add1bit_3 u0_31 (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_0 (.a(stage0_0_3), .b(stage0_1_3), .cin(1'b0), .y(stage1_0_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_1 (.a(stage0_2_3), .b(stage0_3_3), .cin(1'b0), .y(stage1_1_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_2 (.a(stage0_4_3), .b(stage0_5_3), .cin(1'b0), .y(stage1_2_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_3 (.a(stage0_6_3), .b(stage0_7_3), .cin(1'b0), .y(stage1_3_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_4 (.a(stage0_8_3), .b(stage0_9_3), .cin(1'b0), .y(stage1_4_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_5 (.a(stage0_10_3), .b(stage0_11_3), .cin(1'b0), .y(stage1_5_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_6 (.a(stage0_12_3), .b(stage0_13_3), .cin(1'b0), .y(stage1_6_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_7 (.a(stage0_14_3), .b(stage0_15_3), .cin(1'b0), .y(stage1_7_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_8 (.a(stage0_16_3), .b(stage0_17_3), .cin(1'b0), .y(stage1_8_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_9 (.a(stage0_18_3), .b(stage0_19_3), .cin(1'b0), .y(stage1_9_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_10 (.a(stage0_20_3), .b(stage0_21_3), .cin(1'b0), .y(stage1_10_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_11 (.a(stage0_22_3), .b(stage0_23_3), .cin(1'b0), .y(stage1_11_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_12 (.a(stage0_24_3), .b(stage0_25_3), .cin(1'b0), .y(stage1_12_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_13 (.a(stage0_26_3), .b(stage0_27_3), .cin(1'b0), .y(stage1_13_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_14 (.a(stage0_28_3), .b(stage0_29_3), .cin(1'b0), .y(stage1_14_lo_3), .cout(), .cout_bar());
+    add2bit_3 u1_15 (.a(stage0_30_3), .b(stage0_31_3), .cin(1'b0), .y(stage1_15_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_0 (.a(stage1_0_3), .b(stage1_1_3), .cin(1'b0), .y(stage2_0_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_1 (.a(stage1_2_3), .b(stage1_3_3), .cin(1'b0), .y(stage2_1_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_2 (.a(stage1_4_3), .b(stage1_5_3), .cin(1'b0), .y(stage2_2_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_3 (.a(stage1_6_3), .b(stage1_7_3), .cin(1'b0), .y(stage2_3_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_4 (.a(stage1_8_3), .b(stage1_9_3), .cin(1'b0), .y(stage2_4_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_5 (.a(stage1_10_3), .b(stage1_11_3), .cin(1'b0), .y(stage2_5_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_6 (.a(stage1_12_3), .b(stage1_13_3), .cin(1'b0), .y(stage2_6_lo_3), .cout(), .cout_bar());
+    add3bit_3 u2_7 (.a(stage1_14_3), .b(stage1_15_3), .cin(1'b0), .y(stage2_7_lo_3), .cout(), .cout_bar());
+    add4bit_3 u3_0 (.a(stage2_0_3), .b(stage2_1_3), .cin(1'b0), .y(stage3_0_lo_3), .cout(), .cout_bar());
+    add4bit_3 u3_1 (.a(stage2_2_3), .b(stage2_3_3), .cin(1'b0), .y(stage3_1_lo_3), .cout(), .cout_bar());
+    add4bit_3 u3_2 (.a(stage2_4_3), .b(stage2_5_3), .cin(1'b0), .y(stage3_2_lo_3), .cout(), .cout_bar());
+    add4bit_3 u3_3 (.a(stage2_6_3), .b(stage2_7_3), .cin(1'b0), .y(stage3_3_lo_3), .cout(), .cout_bar());
+    add5bit_3 u4_0 (.a(stage3_0_3), .b(stage3_1_3), .cin(1'b0), .y(stage4_0_lo_3), .cout(), .cout_bar());
+    add5bit_3 u4_1 (.a(stage3_2_3), .b(stage3_3_3), .cin(1'b0), .y(stage4_1_lo_3), .cout(), .cout_bar());
+    add6bit_3 u5_0 (.a(stage4_0_3), .b(stage4_1_3), .cin(1'b0), .y(stage5_0_lo_3), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage5_0_lo};
+    assign sum =  stage5_0_lo_3;
 
-    always @(*) begin
-        stage0_0 = {1'b0, stage0_0_lo};
-        stage0_1 = {1'b0, stage0_1_lo};
-        stage0_2 = {1'b0, stage0_2_lo};
-        stage0_3 = {1'b0, stage0_3_lo};
-        stage0_4 = {1'b0, stage0_4_lo};
-        stage0_5 = {1'b0, stage0_5_lo};
-        stage0_6 = {1'b0, stage0_6_lo};
-        stage0_7 = {1'b0, stage0_7_lo};
-        stage0_8 = {1'b0, stage0_8_lo};
-        stage0_9 = {1'b0, stage0_9_lo};
-        stage0_10 = {1'b0, stage0_10_lo};
-        stage0_11 = {1'b0, stage0_11_lo};
-        stage0_12 = {1'b0, stage0_12_lo};
-        stage0_13 = {1'b0, stage0_13_lo};
-        stage0_14 = {1'b0, stage0_14_lo};
-        stage0_15 = {1'b0, stage0_15_lo};
-        stage0_16 = {1'b0, stage0_16_lo};
-        stage0_17 = {1'b0, stage0_17_lo};
-        stage0_18 = {1'b0, stage0_18_lo};
-        stage0_19 = {1'b0, stage0_19_lo};
-        stage0_20 = {1'b0, stage0_20_lo};
-        stage0_21 = {1'b0, stage0_21_lo};
-        stage0_22 = {1'b0, stage0_22_lo};
-        stage0_23 = {1'b0, stage0_23_lo};
-        stage0_24 = {1'b0, stage0_24_lo};
-        stage0_25 = {1'b0, stage0_25_lo};
-        stage0_26 = {1'b0, stage0_26_lo};
-        stage0_27 = {1'b0, stage0_27_lo};
-        stage0_28 = {1'b0, stage0_28_lo};
-        stage0_29 = {1'b0, stage0_29_lo};
-        stage0_30 = {1'b0, stage0_30_lo};
-        stage0_31 = {1'b0, stage0_31_lo};
-        stage1_0 = {1'b0, stage1_0_lo};
-        stage1_1 = {1'b0, stage1_1_lo};
-        stage1_2 = {1'b0, stage1_2_lo};
-        stage1_3 = {1'b0, stage1_3_lo};
-        stage1_4 = {1'b0, stage1_4_lo};
-        stage1_5 = {1'b0, stage1_5_lo};
-        stage1_6 = {1'b0, stage1_6_lo};
-        stage1_7 = {1'b0, stage1_7_lo};
-        stage1_8 = {1'b0, stage1_8_lo};
-        stage1_9 = {1'b0, stage1_9_lo};
-        stage1_10 = {1'b0, stage1_10_lo};
-        stage1_11 = {1'b0, stage1_11_lo};
-        stage1_12 = {1'b0, stage1_12_lo};
-        stage1_13 = {1'b0, stage1_13_lo};
-        stage1_14 = {1'b0, stage1_14_lo};
-        stage1_15 = {1'b0, stage1_15_lo};
-        stage2_0 = {1'b0, stage2_0_lo};
-        stage2_1 = {1'b0, stage2_1_lo};
-        stage2_2 = {1'b0, stage2_2_lo};
-        stage2_3 = {1'b0, stage2_3_lo};
-        stage2_4 = {1'b0, stage2_4_lo};
-        stage2_5 = {1'b0, stage2_5_lo};
-        stage2_6 = {1'b0, stage2_6_lo};
-        stage2_7 = {1'b0, stage2_7_lo};
-        stage3_0 = {1'b0, stage3_0_lo};
-        stage3_1 = {1'b0, stage3_1_lo};
-        stage3_2 = {1'b0, stage3_2_lo};
-        stage3_3 = {1'b0, stage3_3_lo};
-        stage4_0 = {1'b0, stage4_0_lo};
-        stage4_1 = {1'b0, stage4_1_lo};
-        stage5_0 = {1'b0, stage5_0_lo};
+    always @(posedge clk) begin
+        stage0_0_3 <=  stage0_0_lo_3;
+        stage0_1_3 <=  stage0_1_lo_3;
+        stage0_2_3 <=  stage0_2_lo_3;
+        stage0_3_3 <=  stage0_3_lo_3;
+        stage0_4_3 <=  stage0_4_lo_3;
+        stage0_5_3 <=  stage0_5_lo_3;
+        stage0_6_3 <=  stage0_6_lo_3;
+        stage0_7_3 <=  stage0_7_lo_3;
+        stage0_8_3 <=  stage0_8_lo_3;
+        stage0_9_3 <=  stage0_9_lo_3;
+        stage0_10_3 <=  stage0_10_lo_3;
+        stage0_11_3 <=  stage0_11_lo_3;
+        stage0_12_3 <=  stage0_12_lo_3;
+        stage0_13_3 <=  stage0_13_lo_3;
+        stage0_14_3 <=  stage0_14_lo_3;
+        stage0_15_3 <=  stage0_15_lo_3;
+        stage0_16_3 <=  stage0_16_lo_3;
+        stage0_17_3 <=  stage0_17_lo_3;
+        stage0_18_3 <=  stage0_18_lo_3;
+        stage0_19_3 <=  stage0_19_lo_3;
+        stage0_20_3 <=  stage0_20_lo_3;
+        stage0_21_3 <=  stage0_21_lo_3;
+        stage0_22_3 <=  stage0_22_lo_3;
+        stage0_23_3 <=  stage0_23_lo_3;
+        stage0_24_3 <=  stage0_24_lo_3;
+        stage0_25_3 <=  stage0_25_lo_3;
+        stage0_26_3 <=  stage0_26_lo_3;
+        stage0_27_3 <=  stage0_27_lo_3;
+        stage0_28_3 <=  stage0_28_lo_3;
+        stage0_29_3 <=  stage0_29_lo_3;
+        stage0_30_3 <=  stage0_30_lo_3;
+        stage0_31_3 <=  stage0_31_lo_3;
+        stage1_0_3 <=  stage1_0_lo_3;
+        stage1_1_3 <=  stage1_1_lo_3;
+        stage1_2_3 <=  stage1_2_lo_3;
+        stage1_3_3 <=  stage1_3_lo_3;
+        stage1_4_3 <=  stage1_4_lo_3;
+        stage1_5_3 <=  stage1_5_lo_3;
+        stage1_6_3 <=  stage1_6_lo_3;
+        stage1_7_3 <=  stage1_7_lo_3;
+        stage1_8_3 <=  stage1_8_lo_3;
+        stage1_9_3 <=  stage1_9_lo_3;
+        stage1_10_3 <=  stage1_10_lo_3;
+        stage1_11_3 <=  stage1_11_lo_3;
+        stage1_12_3 <=  stage1_12_lo_3;
+        stage1_13_3 <=  stage1_13_lo_3;
+        stage1_14_3 <=  stage1_14_lo_3;
+        stage1_15_3 <=  stage1_15_lo_3;
+        stage2_0_3 <=  stage2_0_lo_3;
+        stage2_1_3 <=  stage2_1_lo_3;
+        stage2_2_3 <=  stage2_2_lo_3;
+        stage2_3_3 <=  stage2_3_lo_3;
+        stage2_4_3 <=  stage2_4_lo_3;
+        stage2_5_3 <=  stage2_5_lo_3;
+        stage2_6_3 <=  stage2_6_lo_3;
+        stage2_7_3 <=  stage2_7_lo_3;
+        stage3_0_3 <=  stage3_0_lo_3;
+        stage3_1_3 <=  stage3_1_lo_3;
+        stage3_2_3 <=  stage3_2_lo_3;
+        stage3_3_3 <=  stage3_3_lo_3;
+        stage4_0_3 <=  stage4_0_lo_3;
+        stage4_1_3 <=  stage4_1_lo_3;
+        stage5_0_3 <=  stage5_0_lo_3;
     end
 endmodule
 
 
 module adder_tree_bar_3 (
+    input  wire   clk, 
     input  wire [0:0] in0,
     input  wire [0:0] in1,
     input  wire [0:0] in2,
@@ -23660,268 +23928,269 @@ module adder_tree_bar_3 (
     output wire [6:0] sum
 );
 
-    wire [1:0] stage0_0_lo_bar;
-    wire [1:0] stage0_1_lo_bar;
-    wire [1:0] stage0_2_lo_bar;
-    wire [1:0] stage0_3_lo_bar;
-    wire [1:0] stage0_4_lo_bar;
-    wire [1:0] stage0_5_lo_bar;
-    wire [1:0] stage0_6_lo_bar;
-    wire [1:0] stage0_7_lo_bar;
-    wire [1:0] stage0_8_lo_bar;
-    wire [1:0] stage0_9_lo_bar;
-    wire [1:0] stage0_10_lo_bar;
-    wire [1:0] stage0_11_lo_bar;
-    wire [1:0] stage0_12_lo_bar;
-    wire [1:0] stage0_13_lo_bar;
-    wire [1:0] stage0_14_lo_bar;
-    wire [1:0] stage0_15_lo_bar;
-    wire [1:0] stage0_16_lo_bar;
-    wire [1:0] stage0_17_lo_bar;
-    wire [1:0] stage0_18_lo_bar;
-    wire [1:0] stage0_19_lo_bar;
-    wire [1:0] stage0_20_lo_bar;
-    wire [1:0] stage0_21_lo_bar;
-    wire [1:0] stage0_22_lo_bar;
-    wire [1:0] stage0_23_lo_bar;
-    wire [1:0] stage0_24_lo_bar;
-    wire [1:0] stage0_25_lo_bar;
-    wire [1:0] stage0_26_lo_bar;
-    wire [1:0] stage0_27_lo_bar;
-    wire [1:0] stage0_28_lo_bar;
-    wire [1:0] stage0_29_lo_bar;
-    wire [1:0] stage0_30_lo_bar;
-    wire [1:0] stage0_31_lo_bar;
-    wire [2:0] stage1_0_lo_bar;
-    wire [2:0] stage1_1_lo_bar;
-    wire [2:0] stage1_2_lo_bar;
-    wire [2:0] stage1_3_lo_bar;
-    wire [2:0] stage1_4_lo_bar;
-    wire [2:0] stage1_5_lo_bar;
-    wire [2:0] stage1_6_lo_bar;
-    wire [2:0] stage1_7_lo_bar;
-    wire [2:0] stage1_8_lo_bar;
-    wire [2:0] stage1_9_lo_bar;
-    wire [2:0] stage1_10_lo_bar;
-    wire [2:0] stage1_11_lo_bar;
-    wire [2:0] stage1_12_lo_bar;
-    wire [2:0] stage1_13_lo_bar;
-    wire [2:0] stage1_14_lo_bar;
-    wire [2:0] stage1_15_lo_bar;
-    wire [3:0] stage2_0_lo_bar;
-    wire [3:0] stage2_1_lo_bar;
-    wire [3:0] stage2_2_lo_bar;
-    wire [3:0] stage2_3_lo_bar;
-    wire [3:0] stage2_4_lo_bar;
-    wire [3:0] stage2_5_lo_bar;
-    wire [3:0] stage2_6_lo_bar;
-    wire [3:0] stage2_7_lo_bar;
-    wire [4:0] stage3_0_lo_bar;
-    wire [4:0] stage3_1_lo_bar;
-    wire [4:0] stage3_2_lo_bar;
-    wire [4:0] stage3_3_lo_bar;
-    wire [5:0] stage4_0_lo_bar;
-    wire [5:0] stage4_1_lo_bar;
-    wire [6:0] stage5_0_lo_bar;
-    reg  [1:0] stage0_0_bar;
-    reg  [1:0] stage0_1_bar;
-    reg  [1:0] stage0_2_bar;
-    reg  [1:0] stage0_3_bar;
-    reg  [1:0] stage0_4_bar;
-    reg  [1:0] stage0_5_bar;
-    reg  [1:0] stage0_6_bar;
-    reg  [1:0] stage0_7_bar;
-    reg  [1:0] stage0_8_bar;
-    reg  [1:0] stage0_9_bar;
-    reg  [1:0] stage0_10_bar;
-    reg  [1:0] stage0_11_bar;
-    reg  [1:0] stage0_12_bar;
-    reg  [1:0] stage0_13_bar;
-    reg  [1:0] stage0_14_bar;
-    reg  [1:0] stage0_15_bar;
-    reg  [1:0] stage0_16_bar;
-    reg  [1:0] stage0_17_bar;
-    reg  [1:0] stage0_18_bar;
-    reg  [1:0] stage0_19_bar;
-    reg  [1:0] stage0_20_bar;
-    reg  [1:0] stage0_21_bar;
-    reg  [1:0] stage0_22_bar;
-    reg  [1:0] stage0_23_bar;
-    reg  [1:0] stage0_24_bar;
-    reg  [1:0] stage0_25_bar;
-    reg  [1:0] stage0_26_bar;
-    reg  [1:0] stage0_27_bar;
-    reg  [1:0] stage0_28_bar;
-    reg  [1:0] stage0_29_bar;
-    reg  [1:0] stage0_30_bar;
-    reg  [1:0] stage0_31_bar;
-    reg  [2:0] stage1_0_bar;
-    reg  [2:0] stage1_1_bar;
-    reg  [2:0] stage1_2_bar;
-    reg  [2:0] stage1_3_bar;
-    reg  [2:0] stage1_4_bar;
-    reg  [2:0] stage1_5_bar;
-    reg  [2:0] stage1_6_bar;
-    reg  [2:0] stage1_7_bar;
-    reg  [2:0] stage1_8_bar;
-    reg  [2:0] stage1_9_bar;
-    reg  [2:0] stage1_10_bar;
-    reg  [2:0] stage1_11_bar;
-    reg  [2:0] stage1_12_bar;
-    reg  [2:0] stage1_13_bar;
-    reg  [2:0] stage1_14_bar;
-    reg  [2:0] stage1_15_bar;
-    reg  [3:0] stage2_0_bar;
-    reg  [3:0] stage2_1_bar;
-    reg  [3:0] stage2_2_bar;
-    reg  [3:0] stage2_3_bar;
-    reg  [3:0] stage2_4_bar;
-    reg  [3:0] stage2_5_bar;
-    reg  [3:0] stage2_6_bar;
-    reg  [3:0] stage2_7_bar;
-    reg  [4:0] stage3_0_bar;
-    reg  [4:0] stage3_1_bar;
-    reg  [4:0] stage3_2_bar;
-    reg  [4:0] stage3_3_bar;
-    reg  [5:0] stage4_0_bar;
-    reg  [5:0] stage4_1_bar;
-    reg  [6:0] stage5_0_bar;
+    wire [1:0] stage0_0_lo_bar_3;
+    wire [1:0] stage0_1_lo_bar_3;
+    wire [1:0] stage0_2_lo_bar_3;
+    wire [1:0] stage0_3_lo_bar_3;
+    wire [1:0] stage0_4_lo_bar_3;
+    wire [1:0] stage0_5_lo_bar_3;
+    wire [1:0] stage0_6_lo_bar_3;
+    wire [1:0] stage0_7_lo_bar_3;
+    wire [1:0] stage0_8_lo_bar_3;
+    wire [1:0] stage0_9_lo_bar_3;
+    wire [1:0] stage0_10_lo_bar_3;
+    wire [1:0] stage0_11_lo_bar_3;
+    wire [1:0] stage0_12_lo_bar_3;
+    wire [1:0] stage0_13_lo_bar_3;
+    wire [1:0] stage0_14_lo_bar_3;
+    wire [1:0] stage0_15_lo_bar_3;
+    wire [1:0] stage0_16_lo_bar_3;
+    wire [1:0] stage0_17_lo_bar_3;
+    wire [1:0] stage0_18_lo_bar_3;
+    wire [1:0] stage0_19_lo_bar_3;
+    wire [1:0] stage0_20_lo_bar_3;
+    wire [1:0] stage0_21_lo_bar_3;
+    wire [1:0] stage0_22_lo_bar_3;
+    wire [1:0] stage0_23_lo_bar_3;
+    wire [1:0] stage0_24_lo_bar_3;
+    wire [1:0] stage0_25_lo_bar_3;
+    wire [1:0] stage0_26_lo_bar_3;
+    wire [1:0] stage0_27_lo_bar_3;
+    wire [1:0] stage0_28_lo_bar_3;
+    wire [1:0] stage0_29_lo_bar_3;
+    wire [1:0] stage0_30_lo_bar_3;
+    wire [1:0] stage0_31_lo_bar_3;
+    wire [2:0] stage1_0_lo_bar_3;
+    wire [2:0] stage1_1_lo_bar_3;
+    wire [2:0] stage1_2_lo_bar_3;
+    wire [2:0] stage1_3_lo_bar_3;
+    wire [2:0] stage1_4_lo_bar_3;
+    wire [2:0] stage1_5_lo_bar_3;
+    wire [2:0] stage1_6_lo_bar_3;
+    wire [2:0] stage1_7_lo_bar_3;
+    wire [2:0] stage1_8_lo_bar_3;
+    wire [2:0] stage1_9_lo_bar_3;
+    wire [2:0] stage1_10_lo_bar_3;
+    wire [2:0] stage1_11_lo_bar_3;
+    wire [2:0] stage1_12_lo_bar_3;
+    wire [2:0] stage1_13_lo_bar_3;
+    wire [2:0] stage1_14_lo_bar_3;
+    wire [2:0] stage1_15_lo_bar_3;
+    wire [3:0] stage2_0_lo_bar_3;
+    wire [3:0] stage2_1_lo_bar_3;
+    wire [3:0] stage2_2_lo_bar_3;
+    wire [3:0] stage2_3_lo_bar_3;
+    wire [3:0] stage2_4_lo_bar_3;
+    wire [3:0] stage2_5_lo_bar_3;
+    wire [3:0] stage2_6_lo_bar_3;
+    wire [3:0] stage2_7_lo_bar_3;
+    wire [4:0] stage3_0_lo_bar_3;
+    wire [4:0] stage3_1_lo_bar_3;
+    wire [4:0] stage3_2_lo_bar_3;
+    wire [4:0] stage3_3_lo_bar_3;
+    wire [5:0] stage4_0_lo_bar_3;
+    wire [5:0] stage4_1_lo_bar_3;
+    wire [6:0] stage5_0_lo_bar_3;
+    reg  [1:0] stage0_0_bar_3;
+    reg  [1:0] stage0_1_bar_3;
+    reg  [1:0] stage0_2_bar_3;
+    reg  [1:0] stage0_3_bar_3;
+    reg  [1:0] stage0_4_bar_3;
+    reg  [1:0] stage0_5_bar_3;
+    reg  [1:0] stage0_6_bar_3;
+    reg  [1:0] stage0_7_bar_3;
+    reg  [1:0] stage0_8_bar_3;
+    reg  [1:0] stage0_9_bar_3;
+    reg  [1:0] stage0_10_bar_3;
+    reg  [1:0] stage0_11_bar_3;
+    reg  [1:0] stage0_12_bar_3;
+    reg  [1:0] stage0_13_bar_3;
+    reg  [1:0] stage0_14_bar_3;
+    reg  [1:0] stage0_15_bar_3;
+    reg  [1:0] stage0_16_bar_3;
+    reg  [1:0] stage0_17_bar_3;
+    reg  [1:0] stage0_18_bar_3;
+    reg  [1:0] stage0_19_bar_3;
+    reg  [1:0] stage0_20_bar_3;
+    reg  [1:0] stage0_21_bar_3;
+    reg  [1:0] stage0_22_bar_3;
+    reg  [1:0] stage0_23_bar_3;
+    reg  [1:0] stage0_24_bar_3;
+    reg  [1:0] stage0_25_bar_3;
+    reg  [1:0] stage0_26_bar_3;
+    reg  [1:0] stage0_27_bar_3;
+    reg  [1:0] stage0_28_bar_3;
+    reg  [1:0] stage0_29_bar_3;
+    reg  [1:0] stage0_30_bar_3;
+    reg  [1:0] stage0_31_bar_3;
+    reg  [2:0] stage1_0_bar_3;
+    reg  [2:0] stage1_1_bar_3;
+    reg  [2:0] stage1_2_bar_3;
+    reg  [2:0] stage1_3_bar_3;
+    reg  [2:0] stage1_4_bar_3;
+    reg  [2:0] stage1_5_bar_3;
+    reg  [2:0] stage1_6_bar_3;
+    reg  [2:0] stage1_7_bar_3;
+    reg  [2:0] stage1_8_bar_3;
+    reg  [2:0] stage1_9_bar_3;
+    reg  [2:0] stage1_10_bar_3;
+    reg  [2:0] stage1_11_bar_3;
+    reg  [2:0] stage1_12_bar_3;
+    reg  [2:0] stage1_13_bar_3;
+    reg  [2:0] stage1_14_bar_3;
+    reg  [2:0] stage1_15_bar_3;
+    reg  [3:0] stage2_0_bar_3;
+    reg  [3:0] stage2_1_bar_3;
+    reg  [3:0] stage2_2_bar_3;
+    reg  [3:0] stage2_3_bar_3;
+    reg  [3:0] stage2_4_bar_3;
+    reg  [3:0] stage2_5_bar_3;
+    reg  [3:0] stage2_6_bar_3;
+    reg  [3:0] stage2_7_bar_3;
+    reg  [4:0] stage3_0_bar_3;
+    reg  [4:0] stage3_1_bar_3;
+    reg  [4:0] stage3_2_bar_3;
+    reg  [4:0] stage3_3_bar_3;
+    reg  [5:0] stage4_0_bar_3;
+    reg  [5:0] stage4_1_bar_3;
+    reg  [6:0] stage5_0_bar_3;
 
-    add1bitbar_3 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_8_bar (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_9_bar (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_10_bar (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_11_bar (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_12_bar (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_13_bar (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_14_bar (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_15_bar (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_16_bar (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_17_bar (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_18_bar (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_19_bar (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_20_bar (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_21_bar (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_22_bar (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_23_bar (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_24_bar (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_25_bar (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_26_bar (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_27_bar (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_28_bar (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_29_bar (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_30_bar (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo_bar), .cout(), .cout_bar());
-    add1bitbar_3 u0_31_bar (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_0_bar (.a(stage0_0_bar), .b(stage0_1_bar), .cin(1'b0), .y(stage1_0_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_1_bar (.a(stage0_2_bar), .b(stage0_3_bar), .cin(1'b0), .y(stage1_1_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_2_bar (.a(stage0_4_bar), .b(stage0_5_bar), .cin(1'b0), .y(stage1_2_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_3_bar (.a(stage0_6_bar), .b(stage0_7_bar), .cin(1'b0), .y(stage1_3_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_4_bar (.a(stage0_8_bar), .b(stage0_9_bar), .cin(1'b0), .y(stage1_4_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_5_bar (.a(stage0_10_bar), .b(stage0_11_bar), .cin(1'b0), .y(stage1_5_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_6_bar (.a(stage0_12_bar), .b(stage0_13_bar), .cin(1'b0), .y(stage1_6_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_7_bar (.a(stage0_14_bar), .b(stage0_15_bar), .cin(1'b0), .y(stage1_7_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_8_bar (.a(stage0_16_bar), .b(stage0_17_bar), .cin(1'b0), .y(stage1_8_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_9_bar (.a(stage0_18_bar), .b(stage0_19_bar), .cin(1'b0), .y(stage1_9_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_10_bar (.a(stage0_20_bar), .b(stage0_21_bar), .cin(1'b0), .y(stage1_10_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_11_bar (.a(stage0_22_bar), .b(stage0_23_bar), .cin(1'b0), .y(stage1_11_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_12_bar (.a(stage0_24_bar), .b(stage0_25_bar), .cin(1'b0), .y(stage1_12_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_13_bar (.a(stage0_26_bar), .b(stage0_27_bar), .cin(1'b0), .y(stage1_13_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_14_bar (.a(stage0_28_bar), .b(stage0_29_bar), .cin(1'b0), .y(stage1_14_lo_bar), .cout(), .cout_bar());
-    add2bitbar_3 u1_15_bar (.a(stage0_30_bar), .b(stage0_31_bar), .cin(1'b0), .y(stage1_15_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_0_bar (.a(stage1_0_bar), .b(stage1_1_bar), .cin(1'b0), .y(stage2_0_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_1_bar (.a(stage1_2_bar), .b(stage1_3_bar), .cin(1'b0), .y(stage2_1_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_2_bar (.a(stage1_4_bar), .b(stage1_5_bar), .cin(1'b0), .y(stage2_2_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_3_bar (.a(stage1_6_bar), .b(stage1_7_bar), .cin(1'b0), .y(stage2_3_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_4_bar (.a(stage1_8_bar), .b(stage1_9_bar), .cin(1'b0), .y(stage2_4_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_5_bar (.a(stage1_10_bar), .b(stage1_11_bar), .cin(1'b0), .y(stage2_5_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_6_bar (.a(stage1_12_bar), .b(stage1_13_bar), .cin(1'b0), .y(stage2_6_lo_bar), .cout(), .cout_bar());
-    add3bitbar_3 u2_7_bar (.a(stage1_14_bar), .b(stage1_15_bar), .cin(1'b0), .y(stage2_7_lo_bar), .cout(), .cout_bar());
-    add4bitbar_3 u3_0_bar (.a(stage2_0_bar), .b(stage2_1_bar), .cin(1'b0), .y(stage3_0_lo_bar), .cout(), .cout_bar());
-    add4bitbar_3 u3_1_bar (.a(stage2_2_bar), .b(stage2_3_bar), .cin(1'b0), .y(stage3_1_lo_bar), .cout(), .cout_bar());
-    add4bitbar_3 u3_2_bar (.a(stage2_4_bar), .b(stage2_5_bar), .cin(1'b0), .y(stage3_2_lo_bar), .cout(), .cout_bar());
-    add4bitbar_3 u3_3_bar (.a(stage2_6_bar), .b(stage2_7_bar), .cin(1'b0), .y(stage3_3_lo_bar), .cout(), .cout_bar());
-    add5bitbar_3 u4_0_bar (.a(stage3_0_bar), .b(stage3_1_bar), .cin(1'b0), .y(stage4_0_lo_bar), .cout(), .cout_bar());
-    add5bitbar_3 u4_1_bar (.a(stage3_2_bar), .b(stage3_3_bar), .cin(1'b0), .y(stage4_1_lo_bar), .cout(), .cout_bar());
-    add6bitbar_3 u5_0_bar (.a(stage4_0_bar), .b(stage4_1_bar), .cin(1'b0), .y(stage5_0_lo_bar), .cout(), .cout_bar());
+    add1bitbar_3 u0_0_bar (.a(in0), .b(in1), .cin(1'b0), .y(stage0_0_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_1_bar (.a(in2), .b(in3), .cin(1'b0), .y(stage0_1_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_2_bar (.a(in4), .b(in5), .cin(1'b0), .y(stage0_2_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_3_bar (.a(in6), .b(in7), .cin(1'b0), .y(stage0_3_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_4_bar (.a(in8), .b(in9), .cin(1'b0), .y(stage0_4_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_5_bar (.a(in10), .b(in11), .cin(1'b0), .y(stage0_5_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_6_bar (.a(in12), .b(in13), .cin(1'b0), .y(stage0_6_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_7_bar (.a(in14), .b(in15), .cin(1'b0), .y(stage0_7_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_8_bar (.a(in16), .b(in17), .cin(1'b0), .y(stage0_8_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_9_bar (.a(in18), .b(in19), .cin(1'b0), .y(stage0_9_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_10_bar (.a(in20), .b(in21), .cin(1'b0), .y(stage0_10_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_11_bar (.a(in22), .b(in23), .cin(1'b0), .y(stage0_11_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_12_bar (.a(in24), .b(in25), .cin(1'b0), .y(stage0_12_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_13_bar (.a(in26), .b(in27), .cin(1'b0), .y(stage0_13_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_14_bar (.a(in28), .b(in29), .cin(1'b0), .y(stage0_14_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_15_bar (.a(in30), .b(in31), .cin(1'b0), .y(stage0_15_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_16_bar (.a(in32), .b(in33), .cin(1'b0), .y(stage0_16_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_17_bar (.a(in34), .b(in35), .cin(1'b0), .y(stage0_17_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_18_bar (.a(in36), .b(in37), .cin(1'b0), .y(stage0_18_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_19_bar (.a(in38), .b(in39), .cin(1'b0), .y(stage0_19_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_20_bar (.a(in40), .b(in41), .cin(1'b0), .y(stage0_20_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_21_bar (.a(in42), .b(in43), .cin(1'b0), .y(stage0_21_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_22_bar (.a(in44), .b(in45), .cin(1'b0), .y(stage0_22_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_23_bar (.a(in46), .b(in47), .cin(1'b0), .y(stage0_23_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_24_bar (.a(in48), .b(in49), .cin(1'b0), .y(stage0_24_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_25_bar (.a(in50), .b(in51), .cin(1'b0), .y(stage0_25_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_26_bar (.a(in52), .b(in53), .cin(1'b0), .y(stage0_26_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_27_bar (.a(in54), .b(in55), .cin(1'b0), .y(stage0_27_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_28_bar (.a(in56), .b(in57), .cin(1'b0), .y(stage0_28_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_29_bar (.a(in58), .b(in59), .cin(1'b0), .y(stage0_29_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_30_bar (.a(in60), .b(in61), .cin(1'b0), .y(stage0_30_lo_bar_3), .cout(), .cout_bar());
+    add1bitbar_3 u0_31_bar (.a(in62), .b(in63), .cin(1'b0), .y(stage0_31_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_0_bar (.a(stage0_0_bar_3), .b(stage0_1_bar_3), .cin(1'b0), .y(stage1_0_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_1_bar (.a(stage0_2_bar_3), .b(stage0_3_bar_3), .cin(1'b0), .y(stage1_1_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_2_bar (.a(stage0_4_bar_3), .b(stage0_5_bar_3), .cin(1'b0), .y(stage1_2_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_3_bar (.a(stage0_6_bar_3), .b(stage0_7_bar_3), .cin(1'b0), .y(stage1_3_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_4_bar (.a(stage0_8_bar_3), .b(stage0_9_bar_3), .cin(1'b0), .y(stage1_4_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_5_bar (.a(stage0_10_bar_3), .b(stage0_11_bar_3), .cin(1'b0), .y(stage1_5_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_6_bar (.a(stage0_12_bar_3), .b(stage0_13_bar_3), .cin(1'b0), .y(stage1_6_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_7_bar (.a(stage0_14_bar_3), .b(stage0_15_bar_3), .cin(1'b0), .y(stage1_7_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_8_bar (.a(stage0_16_bar_3), .b(stage0_17_bar_3), .cin(1'b0), .y(stage1_8_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_9_bar (.a(stage0_18_bar_3), .b(stage0_19_bar_3), .cin(1'b0), .y(stage1_9_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_10_bar (.a(stage0_20_bar_3), .b(stage0_21_bar_3), .cin(1'b0), .y(stage1_10_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_11_bar (.a(stage0_22_bar_3), .b(stage0_23_bar_3), .cin(1'b0), .y(stage1_11_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_12_bar (.a(stage0_24_bar_3), .b(stage0_25_bar_3), .cin(1'b0), .y(stage1_12_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_13_bar (.a(stage0_26_bar_3), .b(stage0_27_bar_3), .cin(1'b0), .y(stage1_13_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_14_bar (.a(stage0_28_bar_3), .b(stage0_29_bar_3), .cin(1'b0), .y(stage1_14_lo_bar_3), .cout(), .cout_bar());
+    add2bitbar_3 u1_15_bar (.a(stage0_30_bar_3), .b(stage0_31_bar_3), .cin(1'b0), .y(stage1_15_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_0_bar (.a(stage1_0_bar_3), .b(stage1_1_bar_3), .cin(1'b0), .y(stage2_0_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_1_bar (.a(stage1_2_bar_3), .b(stage1_3_bar_3), .cin(1'b0), .y(stage2_1_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_2_bar (.a(stage1_4_bar_3), .b(stage1_5_bar_3), .cin(1'b0), .y(stage2_2_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_3_bar (.a(stage1_6_bar_3), .b(stage1_7_bar_3), .cin(1'b0), .y(stage2_3_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_4_bar (.a(stage1_8_bar_3), .b(stage1_9_bar_3), .cin(1'b0), .y(stage2_4_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_5_bar (.a(stage1_10_bar_3), .b(stage1_11_bar_3), .cin(1'b0), .y(stage2_5_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_6_bar (.a(stage1_12_bar_3), .b(stage1_13_bar_3), .cin(1'b0), .y(stage2_6_lo_bar_3), .cout(), .cout_bar());
+    add3bitbar_3 u2_7_bar (.a(stage1_14_bar_3), .b(stage1_15_bar_3), .cin(1'b0), .y(stage2_7_lo_bar_3), .cout(), .cout_bar());
+    add4bitbar_3 u3_0_bar (.a(stage2_0_bar_3), .b(stage2_1_bar_3), .cin(1'b0), .y(stage3_0_lo_bar_3), .cout(), .cout_bar());
+    add4bitbar_3 u3_1_bar (.a(stage2_2_bar_3), .b(stage2_3_bar_3), .cin(1'b0), .y(stage3_1_lo_bar_3), .cout(), .cout_bar());
+    add4bitbar_3 u3_2_bar (.a(stage2_4_bar_3), .b(stage2_5_bar_3), .cin(1'b0), .y(stage3_2_lo_bar_3), .cout(), .cout_bar());
+    add4bitbar_3 u3_3_bar (.a(stage2_6_bar_3), .b(stage2_7_bar_3), .cin(1'b0), .y(stage3_3_lo_bar_3), .cout(), .cout_bar());
+    add5bitbar_3 u4_0_bar (.a(stage3_0_bar_3), .b(stage3_1_bar_3), .cin(1'b0), .y(stage4_0_lo_bar_3), .cout(), .cout_bar());
+    add5bitbar_3 u4_1_bar (.a(stage3_2_bar_3), .b(stage3_3_bar_3), .cin(1'b0), .y(stage4_1_lo_bar_3), .cout(), .cout_bar());
+    add6bitbar_3 u5_0_bar (.a(stage4_0_bar_3), .b(stage4_1_bar_3), .cin(1'b0), .y(stage5_0_lo_bar_3), .cout(), .cout_bar());
 
-    assign sum = {1'b0, stage5_0_lo_bar};
+    assign sum =  stage5_0_lo_bar_3;
 
-    always @(*) begin
-        stage0_0_bar = {1'b0, stage0_0_lo_bar};
-        stage0_1_bar = {1'b0, stage0_1_lo_bar};
-        stage0_2_bar = {1'b0, stage0_2_lo_bar};
-        stage0_3_bar = {1'b0, stage0_3_lo_bar};
-        stage0_4_bar = {1'b0, stage0_4_lo_bar};
-        stage0_5_bar = {1'b0, stage0_5_lo_bar};
-        stage0_6_bar = {1'b0, stage0_6_lo_bar};
-        stage0_7_bar = {1'b0, stage0_7_lo_bar};
-        stage0_8_bar = {1'b0, stage0_8_lo_bar};
-        stage0_9_bar = {1'b0, stage0_9_lo_bar};
-        stage0_10_bar = {1'b0, stage0_10_lo_bar};
-        stage0_11_bar = {1'b0, stage0_11_lo_bar};
-        stage0_12_bar = {1'b0, stage0_12_lo_bar};
-        stage0_13_bar = {1'b0, stage0_13_lo_bar};
-        stage0_14_bar = {1'b0, stage0_14_lo_bar};
-        stage0_15_bar = {1'b0, stage0_15_lo_bar};
-        stage0_16_bar = {1'b0, stage0_16_lo_bar};
-        stage0_17_bar = {1'b0, stage0_17_lo_bar};
-        stage0_18_bar = {1'b0, stage0_18_lo_bar};
-        stage0_19_bar = {1'b0, stage0_19_lo_bar};
-        stage0_20_bar = {1'b0, stage0_20_lo_bar};
-        stage0_21_bar = {1'b0, stage0_21_lo_bar};
-        stage0_22_bar = {1'b0, stage0_22_lo_bar};
-        stage0_23_bar = {1'b0, stage0_23_lo_bar};
-        stage0_24_bar = {1'b0, stage0_24_lo_bar};
-        stage0_25_bar = {1'b0, stage0_25_lo_bar};
-        stage0_26_bar = {1'b0, stage0_26_lo_bar};
-        stage0_27_bar = {1'b0, stage0_27_lo_bar};
-        stage0_28_bar = {1'b0, stage0_28_lo_bar};
-        stage0_29_bar = {1'b0, stage0_29_lo_bar};
-        stage0_30_bar = {1'b0, stage0_30_lo_bar};
-        stage0_31_bar = {1'b0, stage0_31_lo_bar};
-        stage1_0_bar = {1'b0, stage1_0_lo_bar};
-        stage1_1_bar = {1'b0, stage1_1_lo_bar};
-        stage1_2_bar = {1'b0, stage1_2_lo_bar};
-        stage1_3_bar = {1'b0, stage1_3_lo_bar};
-        stage1_4_bar = {1'b0, stage1_4_lo_bar};
-        stage1_5_bar = {1'b0, stage1_5_lo_bar};
-        stage1_6_bar = {1'b0, stage1_6_lo_bar};
-        stage1_7_bar = {1'b0, stage1_7_lo_bar};
-        stage1_8_bar = {1'b0, stage1_8_lo_bar};
-        stage1_9_bar = {1'b0, stage1_9_lo_bar};
-        stage1_10_bar = {1'b0, stage1_10_lo_bar};
-        stage1_11_bar = {1'b0, stage1_11_lo_bar};
-        stage1_12_bar = {1'b0, stage1_12_lo_bar};
-        stage1_13_bar = {1'b0, stage1_13_lo_bar};
-        stage1_14_bar = {1'b0, stage1_14_lo_bar};
-        stage1_15_bar = {1'b0, stage1_15_lo_bar};
-        stage2_0_bar = {1'b0, stage2_0_lo_bar};
-        stage2_1_bar = {1'b0, stage2_1_lo_bar};
-        stage2_2_bar = {1'b0, stage2_2_lo_bar};
-        stage2_3_bar = {1'b0, stage2_3_lo_bar};
-        stage2_4_bar = {1'b0, stage2_4_lo_bar};
-        stage2_5_bar = {1'b0, stage2_5_lo_bar};
-        stage2_6_bar = {1'b0, stage2_6_lo_bar};
-        stage2_7_bar = {1'b0, stage2_7_lo_bar};
-        stage3_0_bar = {1'b0, stage3_0_lo_bar};
-        stage3_1_bar = {1'b0, stage3_1_lo_bar};
-        stage3_2_bar = {1'b0, stage3_2_lo_bar};
-        stage3_3_bar = {1'b0, stage3_3_lo_bar};
-        stage4_0_bar = {1'b0, stage4_0_lo_bar};
-        stage4_1_bar = {1'b0, stage4_1_lo_bar};
-        stage5_0_bar = {1'b0, stage5_0_lo_bar};
+    always @(posedge clk) begin
+        stage0_0_bar_3 <=  stage0_0_lo_bar_3;
+        stage0_1_bar_3 <=  stage0_1_lo_bar_3;
+        stage0_2_bar_3 <=  stage0_2_lo_bar_3;
+        stage0_3_bar_3 <=  stage0_3_lo_bar_3;
+        stage0_4_bar_3 <=  stage0_4_lo_bar_3;
+        stage0_5_bar_3 <=  stage0_5_lo_bar_3;
+        stage0_6_bar_3 <=  stage0_6_lo_bar_3;
+        stage0_7_bar_3 <=  stage0_7_lo_bar_3;
+        stage0_8_bar_3 <=  stage0_8_lo_bar_3;
+        stage0_9_bar_3 <=  stage0_9_lo_bar_3;
+        stage0_10_bar_3 <=  stage0_10_lo_bar_3;
+        stage0_11_bar_3 <=  stage0_11_lo_bar_3;
+        stage0_12_bar_3 <=  stage0_12_lo_bar_3;
+        stage0_13_bar_3 <=  stage0_13_lo_bar_3;
+        stage0_14_bar_3 <=  stage0_14_lo_bar_3;
+        stage0_15_bar_3 <=  stage0_15_lo_bar_3;
+        stage0_16_bar_3 <=  stage0_16_lo_bar_3;
+        stage0_17_bar_3 <=  stage0_17_lo_bar_3;
+        stage0_18_bar_3 <=  stage0_18_lo_bar_3;
+        stage0_19_bar_3 <=  stage0_19_lo_bar_3;
+        stage0_20_bar_3 <=  stage0_20_lo_bar_3;
+        stage0_21_bar_3 <=  stage0_21_lo_bar_3;
+        stage0_22_bar_3 <=  stage0_22_lo_bar_3;
+        stage0_23_bar_3 <=  stage0_23_lo_bar_3;
+        stage0_24_bar_3 <=  stage0_24_lo_bar_3;
+        stage0_25_bar_3 <=  stage0_25_lo_bar_3;
+        stage0_26_bar_3 <=  stage0_26_lo_bar_3;
+        stage0_27_bar_3 <=  stage0_27_lo_bar_3;
+        stage0_28_bar_3 <=  stage0_28_lo_bar_3;
+        stage0_29_bar_3 <=  stage0_29_lo_bar_3;
+        stage0_30_bar_3 <=  stage0_30_lo_bar_3;
+        stage0_31_bar_3 <=  stage0_31_lo_bar_3;
+        stage1_0_bar_3 <=  stage1_0_lo_bar_3;
+        stage1_1_bar_3 <=  stage1_1_lo_bar_3;
+        stage1_2_bar_3 <=  stage1_2_lo_bar_3;
+        stage1_3_bar_3 <=  stage1_3_lo_bar_3;
+        stage1_4_bar_3 <=  stage1_4_lo_bar_3;
+        stage1_5_bar_3 <=  stage1_5_lo_bar_3;
+        stage1_6_bar_3 <=  stage1_6_lo_bar_3;
+        stage1_7_bar_3 <=  stage1_7_lo_bar_3;
+        stage1_8_bar_3 <=  stage1_8_lo_bar_3;
+        stage1_9_bar_3 <=  stage1_9_lo_bar_3;
+        stage1_10_bar_3 <=  stage1_10_lo_bar_3;
+        stage1_11_bar_3 <=  stage1_11_lo_bar_3;
+        stage1_12_bar_3 <=  stage1_12_lo_bar_3;
+        stage1_13_bar_3 <=  stage1_13_lo_bar_3;
+        stage1_14_bar_3 <=  stage1_14_lo_bar_3;
+        stage1_15_bar_3 <=  stage1_15_lo_bar_3;
+        stage2_0_bar_3 <=  stage2_0_lo_bar_3;
+        stage2_1_bar_3 <=  stage2_1_lo_bar_3;
+        stage2_2_bar_3 <=  stage2_2_lo_bar_3;
+        stage2_3_bar_3 <=  stage2_3_lo_bar_3;
+        stage2_4_bar_3 <=  stage2_4_lo_bar_3;
+        stage2_5_bar_3 <=  stage2_5_lo_bar_3;
+        stage2_6_bar_3 <=  stage2_6_lo_bar_3;
+        stage2_7_bar_3 <=  stage2_7_lo_bar_3;
+        stage3_0_bar_3 <=  stage3_0_lo_bar_3;
+        stage3_1_bar_3 <=  stage3_1_lo_bar_3;
+        stage3_2_bar_3 <=  stage3_2_lo_bar_3;
+        stage3_3_bar_3 <=  stage3_3_lo_bar_3;
+        stage4_0_bar_3 <=  stage4_0_lo_bar_3;
+        stage4_1_bar_3 <=  stage4_1_lo_bar_3;
+        stage5_0_bar_3 <=  stage5_0_lo_bar_3;
     end
 endmodule
 
 
 module layer3(
+    input clk,
     input [0:0] inputs0_3 , inputs1_3 , inputs2_3 , inputs3_3 , inputs4_3 , inputs5_3 , inputs6_3 , inputs7_3 , inputs8_3 , inputs9_3 , inputs10_3 , inputs11_3 , inputs12_3 , inputs13_3 , inputs14_3 , inputs15_3 , inputs16_3 , inputs17_3 , inputs18_3 , inputs19_3 , inputs20_3 , inputs21_3 , inputs22_3 , inputs23_3 , inputs24_3 , inputs25_3 , inputs26_3 , inputs27_3 , inputs28_3 , inputs29_3 , inputs30_3 , inputs31_3 , inputs32_3 , inputs33_3 , inputs34_3 , inputs35_3 , inputs36_3 , inputs37_3 , inputs38_3 , inputs39_3 , inputs40_3 , inputs41_3 , inputs42_3 , inputs43_3 , inputs44_3 , inputs45_3 , inputs46_3 , inputs47_3 , inputs48_3 , inputs49_3 , inputs50_3 , inputs51_3 , inputs52_3 , inputs53_3 , inputs54_3 , inputs55_3 , inputs56_3 , inputs57_3 , inputs58_3 , inputs59_3 , inputs60_3 , inputs61_3 , inputs62_3 , inputs63_3,
     input [63:0] w1_0_3, w1_1_3, w2_0_3, w2_1_3, w3_0_3, w3_1_3, w4_0_3, w4_1_3, w5_0_3, w5_1_3, w6_0_3, w6_1_3, w7_0_3, w7_1_3, w8_0_3, w8_1_3,
     input [6:0] b1_3, b2_3, b3_3, b4_3, b5_3, b6_3, b7_3, b8_3,
@@ -25473,6 +25742,7 @@ module layer3(
     weighted_inputs_2 w511 (.inputs(inputs63_3), .w(w8_0_3[63]), .wi(weighted_inputs8_63_0));
     weighted_inputs_2 w511_bar (.inputs(inputs63_3), .w(w8_1_3[63]), .wi(weighted_inputs8_63_1));
     adder_tree_3 add0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -25540,6 +25810,7 @@ module layer3(
         .sum(sum1[0])
     );
     adder_tree_3 add8(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -25607,6 +25878,7 @@ module layer3(
         .sum(sum2[0])
     );
     adder_tree_bar_3 addb0(
+    .clk(clk), 
         .in0(weighted_inputs1_0_0),
         .in1(weighted_inputs1_1_0),
         .in2(weighted_inputs1_2_0),
@@ -25674,6 +25946,7 @@ module layer3(
         .sum(sum1bar[0])
     );
     adder_tree_bar_3 addb8(
+    .clk(clk), 
         .in0(weighted_inputs1_0_1),
         .in1(weighted_inputs1_1_1),
         .in2(weighted_inputs1_2_1),
@@ -25741,6 +26014,7 @@ module layer3(
         .sum(sum2bar[0])
     );
     adder_tree_3 add1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -25808,6 +26082,7 @@ module layer3(
         .sum(sum1[1])
     );
     adder_tree_3 add9(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -25875,6 +26150,7 @@ module layer3(
         .sum(sum2[1])
     );
     adder_tree_bar_3 addb1(
+    .clk(clk), 
         .in0(weighted_inputs2_0_0),
         .in1(weighted_inputs2_1_0),
         .in2(weighted_inputs2_2_0),
@@ -25942,6 +26218,7 @@ module layer3(
         .sum(sum1bar[1])
     );
     adder_tree_bar_3 addb9(
+    .clk(clk), 
         .in0(weighted_inputs2_0_1),
         .in1(weighted_inputs2_1_1),
         .in2(weighted_inputs2_2_1),
@@ -26009,6 +26286,7 @@ module layer3(
         .sum(sum2bar[1])
     );
     adder_tree_3 add2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -26076,6 +26354,7 @@ module layer3(
         .sum(sum1[2])
     );
     adder_tree_3 add10(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -26143,6 +26422,7 @@ module layer3(
         .sum(sum2[2])
     );
     adder_tree_bar_3 addb2(
+    .clk(clk), 
         .in0(weighted_inputs3_0_0),
         .in1(weighted_inputs3_1_0),
         .in2(weighted_inputs3_2_0),
@@ -26210,6 +26490,7 @@ module layer3(
         .sum(sum1bar[2])
     );
     adder_tree_bar_3 addb10(
+    .clk(clk), 
         .in0(weighted_inputs3_0_1),
         .in1(weighted_inputs3_1_1),
         .in2(weighted_inputs3_2_1),
@@ -26277,6 +26558,7 @@ module layer3(
         .sum(sum2bar[2])
     );
     adder_tree_3 add3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -26344,6 +26626,7 @@ module layer3(
         .sum(sum1[3])
     );
     adder_tree_3 add11(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -26411,6 +26694,7 @@ module layer3(
         .sum(sum2[3])
     );
     adder_tree_bar_3 addb3(
+    .clk(clk), 
         .in0(weighted_inputs4_0_0),
         .in1(weighted_inputs4_1_0),
         .in2(weighted_inputs4_2_0),
@@ -26478,6 +26762,7 @@ module layer3(
         .sum(sum1bar[3])
     );
     adder_tree_bar_3 addb11(
+    .clk(clk), 
         .in0(weighted_inputs4_0_1),
         .in1(weighted_inputs4_1_1),
         .in2(weighted_inputs4_2_1),
@@ -26545,6 +26830,7 @@ module layer3(
         .sum(sum2bar[3])
     );
     adder_tree_3 add4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -26612,6 +26898,7 @@ module layer3(
         .sum(sum1[4])
     );
     adder_tree_3 add12(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -26679,6 +26966,7 @@ module layer3(
         .sum(sum2[4])
     );
     adder_tree_bar_3 addb4(
+    .clk(clk), 
         .in0(weighted_inputs5_0_0),
         .in1(weighted_inputs5_1_0),
         .in2(weighted_inputs5_2_0),
@@ -26746,6 +27034,7 @@ module layer3(
         .sum(sum1bar[4])
     );
     adder_tree_bar_3 addb12(
+    .clk(clk), 
         .in0(weighted_inputs5_0_1),
         .in1(weighted_inputs5_1_1),
         .in2(weighted_inputs5_2_1),
@@ -26813,6 +27102,7 @@ module layer3(
         .sum(sum2bar[4])
     );
     adder_tree_3 add5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -26880,6 +27170,7 @@ module layer3(
         .sum(sum1[5])
     );
     adder_tree_3 add13(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -26947,6 +27238,7 @@ module layer3(
         .sum(sum2[5])
     );
     adder_tree_bar_3 addb5(
+    .clk(clk), 
         .in0(weighted_inputs6_0_0),
         .in1(weighted_inputs6_1_0),
         .in2(weighted_inputs6_2_0),
@@ -27014,6 +27306,7 @@ module layer3(
         .sum(sum1bar[5])
     );
     adder_tree_bar_3 addb13(
+    .clk(clk), 
         .in0(weighted_inputs6_0_1),
         .in1(weighted_inputs6_1_1),
         .in2(weighted_inputs6_2_1),
@@ -27081,6 +27374,7 @@ module layer3(
         .sum(sum2bar[5])
     );
     adder_tree_3 add6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -27148,6 +27442,7 @@ module layer3(
         .sum(sum1[6])
     );
     adder_tree_3 add14(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -27215,6 +27510,7 @@ module layer3(
         .sum(sum2[6])
     );
     adder_tree_bar_3 addb6(
+    .clk(clk), 
         .in0(weighted_inputs7_0_0),
         .in1(weighted_inputs7_1_0),
         .in2(weighted_inputs7_2_0),
@@ -27282,6 +27578,7 @@ module layer3(
         .sum(sum1bar[6])
     );
     adder_tree_bar_3 addb14(
+    .clk(clk), 
         .in0(weighted_inputs7_0_1),
         .in1(weighted_inputs7_1_1),
         .in2(weighted_inputs7_2_1),
@@ -27349,6 +27646,7 @@ module layer3(
         .sum(sum2bar[6])
     );
     adder_tree_3 add7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -27416,6 +27714,7 @@ module layer3(
         .sum(sum1[7])
     );
     adder_tree_3 add15(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -27483,6 +27782,7 @@ module layer3(
         .sum(sum2[7])
     );
     adder_tree_bar_3 addb7(
+    .clk(clk), 
         .in0(weighted_inputs8_0_0),
         .in1(weighted_inputs8_1_0),
         .in2(weighted_inputs8_2_0),
@@ -27550,6 +27850,7 @@ module layer3(
         .sum(sum1bar[7])
     );
     adder_tree_bar_3 addb15(
+    .clk(clk), 
         .in0(weighted_inputs8_0_1),
         .in1(weighted_inputs8_1_1),
         .in2(weighted_inputs8_2_1),
@@ -27680,7 +27981,7 @@ module layer3(
     assign biased_sum7_1 = biased_sum2[7];
     assign biased_sum7_0bar = biased_sum1bar[7];
     assign biased_sum7_1bar = biased_sum2bar[7];
-    always @(*) begin
+    always @(posedge clk) begin
         $display("----- BNN LAYER 3 OUTPUTS -----");
         $display("Inputs : %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b %b", inputs0_3, inputs1_3, inputs2_3, inputs3_3, inputs4_3, inputs5_3, inputs6_3, inputs7_3, inputs8_3, inputs9_3, inputs10_3, inputs11_3, inputs12_3, inputs13_3, inputs14_3, inputs15_3, inputs16_3, inputs17_3, inputs18_3, inputs19_3, inputs20_3, inputs21_3, inputs22_3, inputs23_3, inputs24_3, inputs25_3, inputs26_3, inputs27_3, inputs28_3, inputs29_3, inputs30_3, inputs31_3, inputs32_3, inputs33_3, inputs34_3, inputs35_3, inputs36_3, inputs37_3, inputs38_3, inputs39_3, inputs40_3, inputs41_3, inputs42_3, inputs43_3, inputs44_3, inputs45_3, inputs46_3, inputs47_3, inputs48_3, inputs49_3, inputs50_3, inputs51_3, inputs52_3, inputs53_3, inputs54_3, inputs55_3, inputs56_3, inputs57_3, inputs58_3, inputs59_3, inputs60_3, inputs61_3, inputs62_3, inputs63_3);
         $display("Weights0: %b %b %b %b %b %b %b %b", w1_0_3, w2_0_3, w3_0_3, w4_0_3, w5_0_3, w6_0_3, w7_0_3, w8_0_3);
@@ -27741,6 +28042,7 @@ endmodule
 
 
 module output_layer_max (
+  input  clk, 
   input  wire [0:0] inputs0_3,
   input  wire [0:0] inputs1_3,
   input  wire [0:0] inputs2_3,
@@ -27967,6 +28269,7 @@ module output_layer_max (
     wire [7:0] biased_sum7_0, biased_sum7_1, biased_sum7_0bar, biased_sum7_1bar;
 
     layer3 l1 (
+        .clk(clk),
         .inputs0_3(inputs0_3),
         .inputs1_3(inputs1_3),
         .inputs2_3(inputs2_3),
@@ -28280,6 +28583,7 @@ module output_layer_max (
 endmodule
 module connector(
     // Layer-1 inputs
+    input  wire clk ,
     input  wire [7:0] inputs0_1,
     input  wire [7:0] inputs1_1,
     input  wire [7:0] inputs2_1,
@@ -29158,7 +29462,72 @@ module connector(
  wire mask29_1, mask29bar_1;
  wire mask30_1, mask30bar_1;
  wire mask31_1, mask31bar_1;
+ reg masked_activationr0_1, masked_activationr0bar_1;
+ reg masked_activationr1_1, masked_activationr1bar_1;
+ reg masked_activationr2_1, masked_activationr2bar_1;
+ reg masked_activationr3_1, masked_activationr3bar_1;
+ reg masked_activationr4_1, masked_activationr4bar_1;
+ reg masked_activationr5_1, masked_activationr5bar_1;
+ reg masked_activationr6_1, masked_activationr6bar_1;
+ reg masked_activationr7_1, masked_activationr7bar_1;
+ reg masked_activationr8_1, masked_activationr8bar_1;
+ reg masked_activationr9_1, masked_activationr9bar_1;
+ reg masked_activationr10_1, masked_activationr10bar_1;
+ reg masked_activationr11_1, masked_activationr11bar_1;
+ reg masked_activationr12_1, masked_activationr12bar_1;
+ reg masked_activationr13_1, masked_activationr13bar_1;
+ reg masked_activationr14_1, masked_activationr14bar_1;
+ reg masked_activationr15_1, masked_activationr15bar_1;
+ reg masked_activationr16_1, masked_activationr16bar_1;
+ reg masked_activationr17_1, masked_activationr17bar_1;
+ reg masked_activationr18_1, masked_activationr18bar_1;
+ reg masked_activationr19_1, masked_activationr19bar_1;
+ reg masked_activationr20_1, masked_activationr20bar_1;
+ reg masked_activationr21_1, masked_activationr21bar_1;
+ reg masked_activationr22_1, masked_activationr22bar_1;
+ reg masked_activationr23_1, masked_activationr23bar_1;
+ reg masked_activationr24_1, masked_activationr24bar_1;
+ reg masked_activationr25_1, masked_activationr25bar_1;
+ reg masked_activationr26_1, masked_activationr26bar_1;
+ reg masked_activationr27_1, masked_activationr27bar_1;
+ reg masked_activationr28_1, masked_activationr28bar_1;
+ reg masked_activationr29_1, masked_activationr29bar_1;
+ reg masked_activationr30_1, masked_activationr30bar_1;
+ reg masked_activationr31_1, masked_activationr31bar_1;
+ reg maskr0_1, maskr0bar_1;
+ reg maskr1_1, maskr1bar_1;
+ reg maskr2_1, maskr2bar_1;
+ reg maskr3_1, maskr3bar_1;
+ reg maskr4_1, maskr4bar_1;
+ reg maskr5_1, maskr5bar_1;
+ reg maskr6_1, maskr6bar_1;
+ reg maskr7_1, maskr7bar_1;
+ reg maskr8_1, maskr8bar_1;
+ reg maskr9_1, maskr9bar_1;
+ reg maskr10_1, maskr10bar_1;
+ reg maskr11_1, maskr11bar_1;
+ reg maskr12_1, maskr12bar_1;
+ reg maskr13_1, maskr13bar_1;
+ reg maskr14_1, maskr14bar_1;
+ reg maskr15_1, maskr15bar_1;
+ reg maskr16_1, maskr16bar_1;
+ reg maskr17_1, maskr17bar_1;
+ reg maskr18_1, maskr18bar_1;
+ reg maskr19_1, maskr19bar_1;
+ reg maskr20_1, maskr20bar_1;
+ reg maskr21_1, maskr21bar_1;
+ reg maskr22_1, maskr22bar_1;
+ reg maskr23_1, maskr23bar_1;
+ reg maskr24_1, maskr24bar_1;
+ reg maskr25_1, maskr25bar_1;
+ reg maskr26_1, maskr26bar_1;
+ reg maskr27_1, maskr27bar_1;
+ reg maskr28_1, maskr28bar_1;
+ reg maskr29_1, maskr29bar_1;
+ reg maskr30_1, maskr30bar_1;
+ reg maskr31_1, maskr31bar_1;
   activation_and_conversion_1 layer1_inst (
+    .clk(clk),
     .inputs0_1(inputs0_1),
     .inputs1_1(inputs1_1),
     .inputs2_1(inputs2_1),
@@ -29613,6 +29982,137 @@ module connector(
     .mask30_1(mask30_1), .mask30bar_1(mask30bar_1),
     .mask31_1(mask31_1), .mask31bar_1(mask31bar_1)
   );
+
+  always @(posedge clk) begin
+    maskr0_1 <= mask0_1;
+    maskr1_1 <= mask1_1;
+    maskr2_1 <= mask2_1;
+    maskr3_1 <= mask3_1;
+    maskr4_1 <= mask4_1;
+    maskr5_1 <= mask5_1;
+    maskr6_1 <= mask6_1;
+    maskr7_1 <= mask7_1;
+    maskr8_1 <= mask8_1;
+    maskr9_1 <= mask9_1;
+    maskr10_1 <= mask10_1;
+    maskr11_1 <= mask11_1;
+    maskr12_1 <= mask12_1;
+    maskr13_1 <= mask13_1;
+    maskr14_1 <= mask14_1;
+    maskr15_1 <= mask15_1;
+    maskr16_1 <= mask16_1;
+    maskr17_1 <= mask17_1;
+    maskr18_1 <= mask18_1;
+    maskr19_1 <= mask19_1;
+    maskr20_1 <= mask20_1;
+    maskr21_1 <= mask21_1;
+    maskr22_1 <= mask22_1;
+    maskr23_1 <= mask23_1;
+    maskr24_1 <= mask24_1;
+    maskr25_1 <= mask25_1;
+    maskr26_1 <= mask26_1;
+    maskr27_1 <= mask27_1;
+    maskr28_1 <= mask28_1;
+    maskr29_1 <= mask29_1;
+    maskr30_1 <= mask30_1;
+    maskr31_1 <= mask31_1;
+    masked_activationr0_1 <= masked_activation0_1;
+    masked_activationr1_1 <= masked_activation1_1;
+    masked_activationr2_1 <= masked_activation2_1;
+    masked_activationr3_1 <= masked_activation3_1;
+    masked_activationr4_1 <= masked_activation4_1;
+    masked_activationr5_1 <= masked_activation5_1;
+    masked_activationr6_1 <= masked_activation6_1;
+    masked_activationr7_1 <= masked_activation7_1;
+    masked_activationr8_1 <= masked_activation8_1;
+    masked_activationr9_1 <= masked_activation9_1;
+    masked_activationr10_1 <= masked_activation10_1;
+    masked_activationr11_1 <= masked_activation11_1;
+    masked_activationr12_1 <= masked_activation12_1;
+    masked_activationr13_1 <= masked_activation13_1;
+    masked_activationr14_1 <= masked_activation14_1;
+    masked_activationr15_1 <= masked_activation15_1;
+    masked_activationr16_1 <= masked_activation16_1;
+    masked_activationr17_1 <= masked_activation17_1;
+    masked_activationr18_1 <= masked_activation18_1;
+    masked_activationr19_1 <= masked_activation19_1;
+    masked_activationr20_1 <= masked_activation20_1;
+    masked_activationr21_1 <= masked_activation21_1;
+    masked_activationr22_1 <= masked_activation22_1;
+    masked_activationr23_1 <= masked_activation23_1;
+    masked_activationr24_1 <= masked_activation24_1;
+    masked_activationr25_1 <= masked_activation25_1;
+    masked_activationr26_1 <= masked_activation26_1;
+    masked_activationr27_1 <= masked_activation27_1;
+    masked_activationr28_1 <= masked_activation28_1;
+    masked_activationr29_1 <= masked_activation29_1;
+    masked_activationr30_1 <= masked_activation30_1;
+    masked_activationr31_1 <= masked_activation31_1;
+    maskr0bar_1 <= mask0_1;
+    maskr1bar_1 <= mask1_1;
+    maskr2bar_1 <= mask2_1;
+    maskr3bar_1 <= mask3_1;
+    maskr4bar_1 <= mask4_1;
+    maskr5bar_1 <= mask5_1;
+    maskr6bar_1 <= mask6_1;
+    maskr7bar_1 <= mask7_1;
+    maskr8bar_1 <= mask8_1;
+    maskr9bar_1 <= mask9_1;
+    maskr10bar_1 <= mask10_1;
+    maskr11bar_1 <= mask11_1;
+    maskr12bar_1 <= mask12_1;
+    maskr13bar_1 <= mask13_1;
+    maskr14bar_1 <= mask14_1;
+    maskr15bar_1 <= mask15_1;
+    maskr16bar_1 <= mask16_1;
+    maskr17bar_1 <= mask17_1;
+    maskr18bar_1 <= mask18_1;
+    maskr19bar_1 <= mask19_1;
+    maskr20bar_1 <= mask20_1;
+    maskr21bar_1 <= mask21_1;
+    maskr22bar_1 <= mask22_1;
+    maskr23bar_1 <= mask23_1;
+    maskr24bar_1 <= mask24_1;
+    maskr25bar_1 <= mask25_1;
+    maskr26bar_1 <= mask26_1;
+    maskr27bar_1 <= mask27_1;
+    maskr28bar_1 <= mask28_1;
+    maskr29bar_1 <= mask29_1;
+    maskr30bar_1 <= mask30_1;
+    maskr31bar_1 <= mask31_1;
+    masked_activationr0bar_1 <= masked_activation0_1;
+    masked_activationr1bar_1 <= masked_activation1_1;
+    masked_activationr2bar_1 <= masked_activation2_1;
+    masked_activationr3bar_1 <= masked_activation3_1;
+    masked_activationr4bar_1 <= masked_activation4_1;
+    masked_activationr5bar_1 <= masked_activation5_1;
+    masked_activationr6bar_1 <= masked_activation6_1;
+    masked_activationr7bar_1 <= masked_activation7_1;
+    masked_activationr8bar_1 <= masked_activation8_1;
+    masked_activationr9bar_1 <= masked_activation9_1;
+    masked_activationr10bar_1 <= masked_activation10_1;
+    masked_activationr11bar_1 <= masked_activation11_1;
+    masked_activationr12bar_1 <= masked_activation12_1;
+    masked_activationr13bar_1 <= masked_activation13_1;
+    masked_activationr14bar_1 <= masked_activation14_1;
+    masked_activationr15bar_1 <= masked_activation15_1;
+    masked_activationr16bar_1 <= masked_activation16_1;
+    masked_activationr17bar_1 <= masked_activation17_1;
+    masked_activationr18bar_1 <= masked_activation18_1;
+    masked_activationr19bar_1 <= masked_activation19_1;
+    masked_activationr20bar_1 <= masked_activation20_1;
+    masked_activationr21bar_1 <= masked_activation21_1;
+    masked_activationr22bar_1 <= masked_activation22_1;
+    masked_activationr23bar_1 <= masked_activation23_1;
+    masked_activationr24bar_1 <= masked_activation24_1;
+    masked_activationr25bar_1 <= masked_activation25_1;
+    masked_activationr26bar_1 <= masked_activation26_1;
+    masked_activationr27bar_1 <= masked_activation27_1;
+    masked_activationr28bar_1 <= masked_activation28_1;
+    masked_activationr29bar_1 <= masked_activation29_1;
+    masked_activationr30bar_1 <= masked_activation30_1;
+    masked_activationr31bar_1 <= masked_activation31_1;
+  end
 
   //--------------------------------------------------------------------------
   // Layer-2 randomness taps
@@ -30197,7 +30697,72 @@ module connector(
  wire mask29_2, mask29bar_2;
  wire mask30_2, mask30bar_2;
  wire mask31_2, mask31bar_2;
+ reg masked_activationr0_2, masked_activationr0bar_2;
+ reg masked_activationr1_2, masked_activationr1bar_2;
+ reg masked_activationr2_2, masked_activationr2bar_2;
+ reg masked_activationr3_2, masked_activationr3bar_2;
+ reg masked_activationr4_2, masked_activationr4bar_2;
+ reg masked_activationr5_2, masked_activationr5bar_2;
+ reg masked_activationr6_2, masked_activationr6bar_2;
+ reg masked_activationr7_2, masked_activationr7bar_2;
+ reg masked_activationr8_2, masked_activationr8bar_2;
+ reg masked_activationr9_2, masked_activationr9bar_2;
+ reg masked_activationr10_2, masked_activationr10bar_2;
+ reg masked_activationr11_2, masked_activationr11bar_2;
+ reg masked_activationr12_2, masked_activationr12bar_2;
+ reg masked_activationr13_2, masked_activationr13bar_2;
+ reg masked_activationr14_2, masked_activationr14bar_2;
+ reg masked_activationr15_2, masked_activationr15bar_2;
+ reg masked_activationr16_2, masked_activationr16bar_2;
+ reg masked_activationr17_2, masked_activationr17bar_2;
+ reg masked_activationr18_2, masked_activationr18bar_2;
+ reg masked_activationr19_2, masked_activationr19bar_2;
+ reg masked_activationr20_2, masked_activationr20bar_2;
+ reg masked_activationr21_2, masked_activationr21bar_2;
+ reg masked_activationr22_2, masked_activationr22bar_2;
+ reg masked_activationr23_2, masked_activationr23bar_2;
+ reg masked_activationr24_2, masked_activationr24bar_2;
+ reg masked_activationr25_2, masked_activationr25bar_2;
+ reg masked_activationr26_2, masked_activationr26bar_2;
+ reg masked_activationr27_2, masked_activationr27bar_2;
+ reg masked_activationr28_2, masked_activationr28bar_2;
+ reg masked_activationr29_2, masked_activationr29bar_2;
+ reg masked_activationr30_2, masked_activationr30bar_2;
+ reg masked_activationr31_2, masked_activationr31bar_2;
+ reg maskr0_2, maskr0bar_2;
+ reg maskr1_2, maskr1bar_2;
+ reg maskr2_2, maskr2bar_2;
+ reg maskr3_2, maskr3bar_2;
+ reg maskr4_2, maskr4bar_2;
+ reg maskr5_2, maskr5bar_2;
+ reg maskr6_2, maskr6bar_2;
+ reg maskr7_2, maskr7bar_2;
+ reg maskr8_2, maskr8bar_2;
+ reg maskr9_2, maskr9bar_2;
+ reg maskr10_2, maskr10bar_2;
+ reg maskr11_2, maskr11bar_2;
+ reg maskr12_2, maskr12bar_2;
+ reg maskr13_2, maskr13bar_2;
+ reg maskr14_2, maskr14bar_2;
+ reg maskr15_2, maskr15bar_2;
+ reg maskr16_2, maskr16bar_2;
+ reg maskr17_2, maskr17bar_2;
+ reg maskr18_2, maskr18bar_2;
+ reg maskr19_2, maskr19bar_2;
+ reg maskr20_2, maskr20bar_2;
+ reg maskr21_2, maskr21bar_2;
+ reg maskr22_2, maskr22bar_2;
+ reg maskr23_2, maskr23bar_2;
+ reg maskr24_2, maskr24bar_2;
+ reg maskr25_2, maskr25bar_2;
+ reg maskr26_2, maskr26bar_2;
+ reg maskr27_2, maskr27bar_2;
+ reg maskr28_2, maskr28bar_2;
+ reg maskr29_2, maskr29bar_2;
+ reg maskr30_2, maskr30bar_2;
+ reg maskr31_2, maskr31bar_2;
   activation_and_conversion_2 layer2_inst (
+    .clk(clk),
     .inputs0_2(masked_activation0_1),
     .inputs1_2(masked_activation1_1),
     .inputs2_2(masked_activation2_1),
@@ -30617,6 +31182,137 @@ module connector(
     .mask31_2(mask31_2), .mask31bar_2(mask31bar_2)
   );
 
+  always @(posedge clk) begin
+    maskr0_2 <= mask0_2;
+    maskr1_2 <= mask1_2;
+    maskr2_2 <= mask2_2;
+    maskr3_2 <= mask3_2;
+    maskr4_2 <= mask4_2;
+    maskr5_2 <= mask5_2;
+    maskr6_2 <= mask6_2;
+    maskr7_2 <= mask7_2;
+    maskr8_2 <= mask8_2;
+    maskr9_2 <= mask9_2;
+    maskr10_2 <= mask10_2;
+    maskr11_2 <= mask11_2;
+    maskr12_2 <= mask12_2;
+    maskr13_2 <= mask13_2;
+    maskr14_2 <= mask14_2;
+    maskr15_2 <= mask15_2;
+    maskr16_2 <= mask16_2;
+    maskr17_2 <= mask17_2;
+    maskr18_2 <= mask18_2;
+    maskr19_2 <= mask19_2;
+    maskr20_2 <= mask20_2;
+    maskr21_2 <= mask21_2;
+    maskr22_2 <= mask22_2;
+    maskr23_2 <= mask23_2;
+    maskr24_2 <= mask24_2;
+    maskr25_2 <= mask25_2;
+    maskr26_2 <= mask26_2;
+    maskr27_2 <= mask27_2;
+    maskr28_2 <= mask28_2;
+    maskr29_2 <= mask29_2;
+    maskr30_2 <= mask30_2;
+    maskr31_2 <= mask31_2;
+    masked_activationr0_2 <= masked_activation0_2;
+    masked_activationr1_2 <= masked_activation1_2;
+    masked_activationr2_2 <= masked_activation2_2;
+    masked_activationr3_2 <= masked_activation3_2;
+    masked_activationr4_2 <= masked_activation4_2;
+    masked_activationr5_2 <= masked_activation5_2;
+    masked_activationr6_2 <= masked_activation6_2;
+    masked_activationr7_2 <= masked_activation7_2;
+    masked_activationr8_2 <= masked_activation8_2;
+    masked_activationr9_2 <= masked_activation9_2;
+    masked_activationr10_2 <= masked_activation10_2;
+    masked_activationr11_2 <= masked_activation11_2;
+    masked_activationr12_2 <= masked_activation12_2;
+    masked_activationr13_2 <= masked_activation13_2;
+    masked_activationr14_2 <= masked_activation14_2;
+    masked_activationr15_2 <= masked_activation15_2;
+    masked_activationr16_2 <= masked_activation16_2;
+    masked_activationr17_2 <= masked_activation17_2;
+    masked_activationr18_2 <= masked_activation18_2;
+    masked_activationr19_2 <= masked_activation19_2;
+    masked_activationr20_2 <= masked_activation20_2;
+    masked_activationr21_2 <= masked_activation21_2;
+    masked_activationr22_2 <= masked_activation22_2;
+    masked_activationr23_2 <= masked_activation23_2;
+    masked_activationr24_2 <= masked_activation24_2;
+    masked_activationr25_2 <= masked_activation25_2;
+    masked_activationr26_2 <= masked_activation26_2;
+    masked_activationr27_2 <= masked_activation27_2;
+    masked_activationr28_2 <= masked_activation28_2;
+    masked_activationr29_2 <= masked_activation29_2;
+    masked_activationr30_2 <= masked_activation30_2;
+    masked_activationr31_2 <= masked_activation31_2;
+    maskr0bar_2 <= mask0_1;
+    maskr1bar_2 <= mask1_1;
+    maskr2bar_2 <= mask2_1;
+    maskr3bar_2 <= mask3_1;
+    maskr4bar_2 <= mask4_1;
+    maskr5bar_2 <= mask5_1;
+    maskr6bar_2 <= mask6_1;
+    maskr7bar_2 <= mask7_1;
+    maskr8bar_2 <= mask8_1;
+    maskr9bar_2 <= mask9_1;
+    maskr10bar_2 <= mask10_1;
+    maskr11bar_2 <= mask11_1;
+    maskr12bar_2 <= mask12_1;
+    maskr13bar_2 <= mask13_1;
+    maskr14bar_2 <= mask14_1;
+    maskr15bar_2 <= mask15_1;
+    maskr16bar_2 <= mask16_1;
+    maskr17bar_2 <= mask17_1;
+    maskr18bar_2 <= mask18_1;
+    maskr19bar_2 <= mask19_1;
+    maskr20bar_2 <= mask20_1;
+    maskr21bar_2 <= mask21_1;
+    maskr22bar_2 <= mask22_1;
+    maskr23bar_2 <= mask23_1;
+    maskr24bar_2 <= mask24_1;
+    maskr25bar_2 <= mask25_1;
+    maskr26bar_2 <= mask26_1;
+    maskr27bar_2 <= mask27_1;
+    maskr28bar_2 <= mask28_1;
+    maskr29bar_2 <= mask29_1;
+    maskr30bar_2 <= mask30_1;
+    maskr31bar_2 <= mask31_1;
+    masked_activationr0bar_2 <= masked_activation0_2;
+    masked_activationr1bar_2 <= masked_activation1_2;
+    masked_activationr2bar_2 <= masked_activation2_2;
+    masked_activationr3bar_2 <= masked_activation3_2;
+    masked_activationr4bar_2 <= masked_activation4_2;
+    masked_activationr5bar_2 <= masked_activation5_2;
+    masked_activationr6bar_2 <= masked_activation6_2;
+    masked_activationr7bar_2 <= masked_activation7_2;
+    masked_activationr8bar_2 <= masked_activation8_2;
+    masked_activationr9bar_2 <= masked_activation9_2;
+    masked_activationr10bar_2 <= masked_activation10_2;
+    masked_activationr11bar_2 <= masked_activation11_2;
+    masked_activationr12bar_2 <= masked_activation12_2;
+    masked_activationr13bar_2 <= masked_activation13_2;
+    masked_activationr14bar_2 <= masked_activation14_2;
+    masked_activationr15bar_2 <= masked_activation15_2;
+    masked_activationr16bar_2 <= masked_activation16_2;
+    masked_activationr17bar_2 <= masked_activation17_2;
+    masked_activationr18bar_2 <= masked_activation18_2;
+    masked_activationr19bar_2 <= masked_activation19_2;
+    masked_activationr20bar_2 <= masked_activation20_2;
+    masked_activationr21bar_2 <= masked_activation21_2;
+    masked_activationr22bar_2 <= masked_activation22_2;
+    masked_activationr23bar_2 <= masked_activation23_2;
+    masked_activationr24bar_2 <= masked_activation24_2;
+    masked_activationr25bar_2 <= masked_activation25_2;
+    masked_activationr26bar_2 <= masked_activation26_2;
+    masked_activationr27bar_2 <= masked_activation27_2;
+    masked_activationr28bar_2 <= masked_activation28_2;
+    masked_activationr29bar_2 <= masked_activation29_2;
+    masked_activationr30bar_2 <= masked_activation30_2;
+    masked_activationr31bar_2 <= masked_activation31_2;
+  end
+
   //--------------------------------------------------------------------------
   // Layer-3 randomness taps
   //--------------------------------------------------------------------------
@@ -30876,7 +31572,24 @@ module connector(
     #1;
   end
 
+ reg a0_reg ;
+ reg a1_reg ;
+ reg a2_reg ;
+ reg a3_reg ;
+ reg a4_reg ;
+ reg a5_reg ;
+ reg a6_reg ;
+ reg a7_reg ;
+ reg a0_bar_reg ;
+ reg a1_bar_reg ;
+ reg a2_bar_reg ;
+ reg a3_bar_reg ;
+ reg a4_bar_reg ;
+ reg a5_bar_reg ;
+ reg a6_bar_reg ;
+ reg a7_bar_reg ;
   output_layer_max layer3 (
+    .clk(clk),
     .inputs0_3(masked_activation0_2),
     .inputs1_3(masked_activation1_2),
     .inputs2_3(masked_activation2_2),
@@ -31022,6 +31735,25 @@ module connector(
     .a6(a6), .a6_bar(a6_bar),
     .a7(a7), .a7_bar(a7_bar)
   );
+
+  always @(posedge clk) begin
+    a0_reg <= a0;
+    a1_reg <= a1;
+    a2_reg <= a2;
+    a3_reg <= a3;
+    a4_reg <= a4;
+    a5_reg <= a5;
+    a6_reg <= a6;
+    a7_reg <= a7;
+    a0_bar_reg <= a0_bar;
+    a1_bar_reg <= a1_bar;
+    a2_bar_reg <= a2_bar;
+    a3_bar_reg <= a3_bar;
+    a4_bar_reg <= a4_bar;
+    a5_bar_reg <= a5_bar;
+    a6_bar_reg <= a6_bar;
+    a7_bar_reg <= a7_bar;
+  end
 
 endmodule
 `default_nettype wire
