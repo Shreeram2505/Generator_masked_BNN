@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-`include "T1.V"
+`include "t5.v"
 
 module connector_tb;
+  reg         clk;
 reg [7:0] inputs0_1;
 reg [7:0] inputs1_1;
 reg [7:0] inputs2_1;
@@ -126,6 +127,7 @@ wire a3, a3_bar;
   // Instantiate DUT
   connector uut (
     // Inputs (0 to 15)
+    .clk(clk),
     .inputs0_1(inputs0_1),
     .inputs1_1(inputs1_1),
     .inputs2_1(inputs2_1),
@@ -239,6 +241,18 @@ wire a3, a3_bar;
     .a3(a3), .a3_bar(a3_bar)
   );
 
+    // clock
+  initial begin
+    clk = 1'b0;
+    forever #5 clk = ~clk;
+  end
+
+  // helper
+  task automatic wait_cycles(input integer n);
+    integer i;
+    begin for (i = 0; i < n; i = i + 1) @(posedge clk); end
+  endtask
+
   initial begin
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
@@ -346,11 +360,11 @@ inputs63_1 = 3'd3;
  b17_1, b18_1, b19_1, b20_1, b21_1, b22_1, b23_1, b24_1, 
  b25_1, b26_1, b27_1, b28_1, b29_1, b30_1, b31_1, b32_1} = {32{13'd0}};
 
-{b1_2, b2_2, b3_2, b4_2} = {4{7'd1}};
+{b1_2, b2_2, b3_2, b4_2} = {7'd1,7'd2,7'd1,7'd1};
 
 
-
-    #1;
+    // let pipeline settle
+    wait_cycles(40);
 $display("TV1 -> a0=%b a1=%b a0_bar=%b a1_bar=%b  a2=%b a3=%b a2_bar=%b a3_bar=%b ",
          a0, a1, a0_bar, a1_bar, a2, a3, a2_bar, a3_bar);
 
