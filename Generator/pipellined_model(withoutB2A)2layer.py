@@ -1,7 +1,7 @@
 import math
 
 # Python script to print the weighted_inputs_1 module
-def main(input_bitsize =3):
+def main(input_bitsize =8):
     verilog = f"""module weighted_inputs_1(
 
     input [{input_bitsize-1}:0] inputs,
@@ -293,6 +293,8 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width,layer_no :i
 
     module_lines.append("")
     module_lines.append(f"module {module_name} (")
+    
+    module_lines.append("    input  wire   clk, ")
     for i in range(num_inputs):
         module_lines.append(f"    input  wire [{input_bit_width - 1}:0] in{i},")
     out_width = input_bit_width + int(math.log2(num_inputs))
@@ -312,8 +314,8 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width,layer_no :i
             width = max(wa, wb)
             adder_width = width
             next_width = adder_width + 1
-            low_name = f"stage{stage}_{i//2}_lo"
-            reg_name = f"stage{stage}_{i//2}"
+            low_name = f"stage{stage}_{i//2}_lo_{layer_no}"
+            reg_name = f"stage{stage}_{i//2}_{layer_no}"
             wires.append((low_name, next_width - 1))
             regs.append((reg_name, next_width, low_name))
             adder_mod = f"add{adder_width}bit_{layer_no}"
@@ -324,7 +326,7 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width,layer_no :i
         current_nodes = next_nodes
         stage += 1
 
-    logic.append(f"\n    assign sum = {{1'b0, {final_wire}}};\n")
+    logic.append(f"\n    assign sum =  {final_wire};\n")
 
     for w, width in wires:
         module_lines.append(f"    wire [{width}:0] {w};")
@@ -334,9 +336,9 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width,layer_no :i
 
     module_lines.extend(logic)
 
-    module_lines.append("    always @(*) begin")
+    module_lines.append("    always @(posedge clk) begin")
     for r, _, src in regs:
-        module_lines.append(f"        {r} = {{1'b0, {src}}};")
+        module_lines.append(f"        {r} <=  {src};")
     module_lines.append("    end\nendmodule")
 
     return "\n".join(module_lines)
@@ -352,6 +354,7 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width,layer_n
 
     module_lines.append("")
     module_lines.append(f"module {module_name} (")
+    module_lines.append("    input  wire   clk, ")
     for i in range(num_inputs):
         module_lines.append(f"    input  wire [{input_bit_width - 1}:0] in{i},")
     out_width = input_bit_width + int(math.log2(num_inputs))
@@ -371,8 +374,8 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width,layer_n
             width = max(wa, wb)
             adder_width = width
             next_width = adder_width + 1
-            low_name = f"stage{stage}_{i//2}_lo_bar"
-            reg_name = f"stage{stage}_{i//2}_bar"
+            low_name = f"stage{stage}_{i//2}_lo_bar_{layer_no}"
+            reg_name = f"stage{stage}_{i//2}_bar_{layer_no}"
             wires.append((low_name, next_width - 1))
             regs.append((reg_name, next_width, low_name))
             adder_mod = f"add{adder_width}bitbar_{layer_no}"
@@ -383,7 +386,7 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width,layer_n
         current_nodes = next_nodes
         stage += 1
 
-    logic.append(f"\n    assign sum = {{1'b0, {final_wire}}};\n")
+    logic.append(f"\n    assign sum =  {final_wire};\n")
 
     for w, width in wires:
         module_lines.append(f"    wire [{width}:0] {w};")
@@ -393,9 +396,9 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width,layer_n
 
     module_lines.extend(logic)
 
-    module_lines.append("    always @(*) begin")
+    module_lines.append("    always @(posedge clk) begin")
     for r, _, src in regs:
-        module_lines.append(f"        {r} = {{1'b0, {src}}};")
+        module_lines.append(f"        {r} <=  {src};")
     module_lines.append("    end\nendmodule")
 
     return "\n".join(module_lines)
@@ -411,6 +414,7 @@ def generate_bnn_layer_verilog1(module_name: str, num_inputs: int, num_nodes: in
     verilog = f"""\
 
 module {module_name}(
+    input clk,
     input [{m-1}:0] {" , ".join([f"inputs{i}_{layer_no}" for i in range(num_inputs)])},
     input [{num_inputs-1}:0] {", ".join([f"w{i+1}_0_{layer_no}, w{i+1}_1_{layer_no}" for i in range(num_nodes)])},
     input [{sum_width-1}:0] {", ".join([f"b{i+1}_{layer_no}" for i in range(num_nodes)])},
@@ -449,24 +453,28 @@ module {module_name}(
     for node in range(num_nodes):
         # Phase 0 tree
         verilog += f"    adder_tree_{layer_no} add{node}(\n"
+        verilog += f"        .clk(clk), \n    "
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_0),\n"
         verilog += f"        .sum(sum1[{node}])\n    );\n"
 
         # Phase 1 tree
         verilog += f"    adder_tree_{layer_no} add{node+num_nodes}(\n"
+        verilog += f"        .clk(clk), \n    "
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_1),\n"
         verilog += f"        .sum(sum2[{node}])\n    );\n"
 
         # Bar phase 0 tree
         verilog += f"    adder_tree_bar_{layer_no} addb{node}(\n"
+        verilog += f"        .clk(clk), \n    "
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_0),\n"
         verilog += f"        .sum(sum1bar[{node}])\n    );\n"
 
         # Bar phase 1 tree
         verilog += f"    adder_tree_bar_{layer_no} addb{node+num_nodes}(\n"
+        verilog += f"        .clk(clk), \n    "
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_1),\n"
         verilog += f"        .sum(sum2bar[{node}])\n    );\n"
@@ -490,7 +498,7 @@ module {module_name}(
         )
 
    # Display block
-    verilog += "    always @(*) begin\n"
+    verilog += "    always @(posedge clk) begin\n"
     verilog += f'        $display("----- BNN LAYER {layer_no} OUTPUTS -----");\n'
 
     # Inputs
@@ -526,6 +534,7 @@ def generate_bnn_layer_verilog2(module_name: str, num_inputs: int, num_nodes: in
     verilog = f"""\
 
 module {module_name}(
+    input clk,
     input [{m-1}:0] {" , ".join([f"inputs{i}_{layer_no}" for i in range(num_inputs)])},
     input [{num_inputs-1}:0] {", ".join([f"w{i+1}_0_{layer_no}, w{i+1}_1_{layer_no}" for i in range(num_nodes)])},
     input [{sum_width-1}:0] {", ".join([f"b{i+1}_{layer_no}" for i in range(num_nodes)])},
@@ -564,24 +573,28 @@ module {module_name}(
     for node in range(num_nodes):
         # Phase 0 tree
         verilog += f"    adder_tree_{layer_no} add{node}(\n"
+        verilog += f"    .clk(clk), \n"
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_0),\n"
         verilog += f"        .sum(sum1[{node}])\n    );\n"
 
         # Phase 1 tree
         verilog += f"    adder_tree_{layer_no} add{node+num_nodes}(\n"
+        verilog += f"    .clk(clk), \n"
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_1),\n"
         verilog += f"        .sum(sum2[{node}])\n    );\n"
 
         # Bar phase 0 tree
         verilog += f"    adder_tree_bar_{layer_no} addb{node}(\n"
+        verilog += f"    .clk(clk), \n"
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_0),\n"
         verilog += f"        .sum(sum1bar[{node}])\n    );\n"
 
         # Bar phase 1 tree
         verilog += f"    adder_tree_bar_{layer_no} addb{node+num_nodes}(\n"
+        verilog += f"    .clk(clk), \n"
         for i in range(num_inputs):
             verilog += f"        .in{i}(weighted_inputs{node+1}_{i}_1),\n"
         verilog += f"        .sum(sum2bar[{node}])\n    );\n"
@@ -605,7 +618,7 @@ module {module_name}(
         )
 
    # Display block
-    verilog += "    always @(*) begin\n"
+    verilog += "    always @(posedge clk) begin\n"
     verilog += f'        $display("----- BNN LAYER {layer_no} OUTPUTS -----");\n'
 
     # Inputs
@@ -725,6 +738,10 @@ def generate_activation_and_conversion_module(num_inputs: int, input_bitwidth: i
     mask_bits = input_bitwidth-1
     act_bits = mask_bits + 1
 
+
+    def clk_decl():
+        return f"input  wire clk, "
+        
     def inputs_decl():
         return "\n  ".join([f"input  wire [{input_bitwidth-1}:0] inputs{i}_{layer_no}," for i in range(num_inputs)])
 
@@ -754,6 +771,7 @@ def generate_activation_and_conversion_module(num_inputs: int, input_bitwidth: i
 
     def layer1_inst():
         lines = [f"  layer{layer_no} l1 ("]
+        lines += [f"    .clk(clk),"]
         lines += [f"    .inputs{i}_{layer_no}(inputs{i}_{layer_no})," for i in range(num_inputs)]
         lines += [f"    .w{j}_0_{layer_no}(w{j}_0_{layer_no}), .w{j}_1_{layer_no}(w{j}_1_{layer_no})," for j in range(1, num_nodes+1)]
         lines += [f"    .b{j}_{layer_no}(b{j}_{layer_no})," for j in range(1, num_nodes+1)]
@@ -780,7 +798,7 @@ def generate_activation_and_conversion_module(num_inputs: int, input_bitwidth: i
             sigs = ', '.join(signals)
             return f'    $display("{label} : {fmt}", {sigs});'
         lines = [
-            "  always @(*) begin",
+            "  always @(posedge clk) begin",
             f'    $display("----- LAYER {layer_no}   boolean activations -----");',
             disp_row("masked_activation", [f"masked_activation{j}_{layer_no}" for j in range(num_nodes)]),
             disp_row("masked_activationbar", [f"masked_activation{j}bar_{layer_no}" for j in range(num_nodes)]),
@@ -794,6 +812,7 @@ def generate_activation_and_conversion_module(num_inputs: int, input_bitwidth: i
 
 
 module activation_and_conversion_{layer_no}(
+  {clk_decl()}
   {inputs_decl()}
   {weights_decl()}
   {biases_decl()}
@@ -929,6 +948,7 @@ def generate_output_layer_max_module(num_inputs: int,
     # -- Module header and port list --
     lines.append(f"module output_layer_max (")
     # raw inputs to layer1:
+    lines.append(f"  input  clk, ")
     for i in range(num_inputs):
         lines.append(f"  input  wire [{input_bitwidth-1}:0] inputs{i}_{layer_no},")
     # weights for layer1:
@@ -964,6 +984,7 @@ def generate_output_layer_max_module(num_inputs: int,
     def layer1_inst():
         stmt = [f"    layer{layer_no} l1 ("]
         # inputs
+        stmt.append(f"        .clk(clk),")
         for i in range(num_inputs):
             stmt.append(f"        .inputs{i}_{layer_no}(inputs{i}_{layer_no}),")
         # weights
@@ -1115,7 +1136,7 @@ def generate_last_module_design(num_inputs: int,
 def generate_connector(
     num_inputs,      
     input_bitwidth1,
-    input_bitwidth2, 
+    input_bitwidth2,
     num_nodes1,      
     num_nodes2,      
     layer_no1,       
@@ -1133,11 +1154,13 @@ def generate_connector(
     bias2_w = sum2_w 
 
 
+
     lines = []
     lines.append("module connector(")
 
     # --- Layer-1 ports ---
     lines.append("    // Layer-1 inputs")
+    lines.append(f"    input  wire clk ,")
     for i in range(num_inputs):
         lines.append(f"    input  wire [{m1-1}:0] inputs{i}_{layer_no1},")
     lines.append("    // Layer-1 weights & biases")
@@ -1147,12 +1170,12 @@ def generate_connector(
                  ", ".join(f"b{n1}_{layer_no1}" for n1 in range(1, num_nodes1+1)) + ",")
 
 
-    # --- Layer-3 (output) ports ---
+    # --- Layer-2 (output) ports ---
     lines.append("\n    // Layer-2 weights & biases (output layer)")
-    for n2 in range(1, num_nodes2+1):
-        lines.append(f"    input  wire [{k2-1}:0] w{n2}_0_{layer_no2}, w{n2}_1_{layer_no2},")
-    for n2 in range(1, num_nodes2+1):
-        lines.append(f"    input  wire [{bias2_w-1}:0] b{n2}_{layer_no2},")
+    for n3 in range(1, num_nodes2+1):
+        lines.append(f"    input  wire [{k2-1}:0] w{n3}_0_{layer_no2}, w{n3}_1_{layer_no2},")
+    for n3 in range(1, num_nodes2+1):
+        lines.append(f"    input  wire [{bias2_w-1}:0] b{n3}_{layer_no2},")
 
     # --- Final outputs ---
     lines.append("\n    // Final outputs")
@@ -1185,11 +1208,17 @@ def generate_connector(
         
     for j in range(num_nodes1):
         lines.append(f" wire mask{j}_{layer_no1}, mask{j}bar_{layer_no1};")
+    for j in range(num_nodes1):
+        lines.append(f" reg masked_activationr{j}_{layer_no1}, masked_activationr{j}bar_{layer_no1};")  
+        
+    for j in range(num_nodes1):
+        lines.append(f" reg maskr{j}_{layer_no1}, maskr{j}bar_{layer_no1};")
         
 
 # instantiate layer-1
     lines.append(f"  activation_and_conversion_{layer_no1} layer{layer_no1}_inst (")
 # inputs
+    lines.append(f"    .clk(clk),")
     for i in range(num_inputs):
         lines.append(f"    .inputs{i}_{layer_no1}(inputs{i}_{layer_no1}),")
 # weights & biases
@@ -1212,28 +1241,46 @@ def generate_connector(
     lines[-1] = lines[-1].rstrip(',')
     # close instance
     lines.append(f"  );\n")
-
     
+    lines.append("  always @(posedge clk) begin")
+    for n1 in range(num_nodes1):
+        lines.append(f"    maskr{n1}_{layer_no1} <= mask{n1}_{layer_no1};")
+    for n1 in range(num_nodes1):
+        lines.append(f"    masked_activationr{n1}_{layer_no1} <= masked_activation{n1}_{layer_no1};")
+    for n1 in range(num_nodes1):
+        lines.append(f"    maskr{n1}bar_{layer_no1} <= mask{n1}_{layer_no1};")
+    for n1 in range(num_nodes1):
+        lines.append(f"    masked_activationr{n1}bar_{layer_no1} <= masked_activation{n1}_{layer_no1};")
+    lines.append("  end\n")
+
+   
     # --- Layer-3 (output) randomness taps and instantiation ---
     lines.append("  //--------------------------------------------------------------------------")
     lines.append("  // Layer-2 randomness taps")
     lines.append("  //--------------------------------------------------------------------------")
-    taps5 = bias2_w+2
+    taps3 = bias2_w+2
     for cid in range(num_nodes2 - 1):
-        for r in range(taps5):
+        for r in range(taps3):
             lines.append(f"    reg r{r}_{cid};")
             lines.append(f"    reg r{r}_{cid}bar;")    
     lines.append("  initial begin")
     for cid in range(num_nodes2 - 1):
-        for r in range(taps5):
+        for r in range(taps3):
             lines.append(f"    r{r}_{cid} = $random;")
             lines.append(f"    r{r}_{cid}bar = $random;")
     lines.append("    #1;")
     lines.append("  end\n")
 
-
+    for t in range(num_nodes2):
+        lines.append(f" reg a{t}_reg ;")  
+        
+    for t in range(num_nodes2):
+        lines.append(f" reg a{t}_bar_reg ;")
+        
     lines.append(f"  output_layer_max layer{layer_no2} (")
-    # inputs: act outputs from layer2
+    # inputs: act outputs from layer1
+    
+    lines.append(f"    .clk(clk),")
     for i in range(num_nodes1):
         lines.append(f"    .inputs{i}_{layer_no2}(masked_activation{i}_{layer_no1}),")
     for i in range(num_nodes1):
@@ -1248,7 +1295,7 @@ def generate_connector(
     # randomness taps
     # randomness for each of (num_nodes−1) comparators
     for cid in range(num_nodes2 - 1):
-        for r in range(taps5):
+        for r in range(taps3):
             lines.append(f"    .r{r}_{cid}(r{r}_{cid}), .r{r}_{cid}bar(r{r}_{cid}bar),")
     # final output
     for t in range(num_nodes2):
@@ -1256,6 +1303,13 @@ def generate_connector(
     # strip the trailing comma on the last port
     lines[-1] = lines[-1].rstrip(',')
     lines.append("  );\n")
+    
+    lines.append("  always @(posedge clk) begin")
+    for t in range(num_nodes2):
+        lines.append(f"    a{t}_reg <= a{t};")
+    for t in range(num_nodes2):
+        lines.append(f"    a{t}_bar_reg <= a{t}_bar;")
+    lines.append("  end\n")
 
     lines.append("endmodule")
     lines.append("`default_nettype wire")
@@ -1263,6 +1317,7 @@ def generate_connector(
 
 
 
+                               
                                     
     # ——— Example usage ——————————————————————————————————————————————
 
@@ -1271,7 +1326,7 @@ if __name__ == "__main__":
     layer_specs = [
         { "layer_no":      1,
           "num_inputs":    64,
-          "input_bitwidth": 3,
+          "input_bitwidth": 8,
           "num_nodes":     32 }
 
         # …
@@ -1289,8 +1344,6 @@ if __name__ == "__main__":
         print(code)
         print("\n\n")
         
-
-
 if __name__ == "__main__":
     # specify your layer parameters here:
     num_inputs    = 64
@@ -1311,13 +1364,12 @@ if __name__ == "__main__":
 
 if __name__ == "__main__":
     num_inputs      = 64
-    input_bitwidth1  = 3
+    input_bitwidth1  = 8
     input_bitwidth2  = 1
     num_nodes1      = 32
     num_nodes2      = 4
     layer_no1       = 1
     layer_no2       = 2
-
 
     verilog = generate_connector(
         num_inputs, input_bitwidth1,input_bitwidth2,
