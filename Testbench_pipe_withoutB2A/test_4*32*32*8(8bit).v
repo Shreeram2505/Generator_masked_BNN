@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
 `default_nettype none
 
-`include "a3_py.v"
+`include "t4.v"
 
 module connector_tb;
+  reg         clk;
   reg [7:0] inputs0_1;
   reg [7:0] inputs1_1;
   reg [7:0] inputs2_1;
@@ -109,7 +110,7 @@ wire a7, a7_bar;
 
   // Instantiate DUT
   connector uut (
-    // Inputs (0 to 15)
+    .clk(clk),
     .inputs0_1(inputs0_1),  .inputs1_1(inputs1_1),  .inputs2_1(inputs2_1),  .inputs3_1(inputs3_1),
 
 // Weights & Biases (for nodes 1–8, all sets)
@@ -201,6 +202,19 @@ wire a7, a7_bar;
     .a7(a7), .a7_bar(a7_bar)
   );
 
+
+  // clock
+  initial begin
+    clk = 1'b0;
+    forever #5 clk = ~clk;
+  end
+
+  // helper
+  task automatic wait_cycles(input integer n);
+    integer i;
+    begin for (i = 0; i < n; i = i + 1) @(posedge clk); end
+  endtask
+
   initial begin
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
@@ -246,10 +260,11 @@ inputs0_1 = 7'd2;  inputs1_1 = 7'd2;  inputs2_1 = 7'd3;  inputs3_1 = 7'd3;
  b17_2, b18_2, b19_2, b20_2, b21_2, b22_2, b23_2, b24_2, 
  b25_2, b26_2, b27_2, b28_2, b29_2, b30_2, b31_2, b32_2} = {32{7'd1}};
 
-    {b1_3,b2_3,b3_3,b4_3,b5_3,b6_3,b7_3,b8_3}         = {8{7'd0}};
+    {b1_3,b2_3,b3_3,b4_3,b5_3,b6_3,b7_3,b8_3}         = {7'd0,7'd0,7'd0,7'd0,7'd0,7'd0,7'd1,7'd0};
 
 
-    #1;
+    // let pipeline settle
+    wait_cycles(40);
 $display("TV1 -> a0=%b a1=%b a0_bar=%b a1_bar=%b  a2=%b a3=%b a2_bar=%b a3_bar=%b  a4=%b a5=%b a4_bar=%b a5_bar=%b  a6=%b a7=%b a6_bar=%b a7_bar=%b",
          a0, a1, a0_bar, a1_bar, a2, a3, a2_bar, a3_bar, a4, a5, a4_bar, a5_bar, a6, a7, a6_bar, a7_bar);
 
