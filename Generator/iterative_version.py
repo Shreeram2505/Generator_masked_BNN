@@ -1,7 +1,7 @@
 import math
 
 # Python script to print the weighted_inputs_1 module
-def main(input_bitsize =3):
+def main(input_bitsize =8):
     verilog = f"""
     `timescale 1ns/1ps
     `default_nettype none
@@ -270,6 +270,7 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width ):
 
     module_lines.append("")
     module_lines.append(f"module {module_name} (")
+    module_lines.append("    input  wire   clk, ")
     for i in range(num_inputs):
         module_lines.append(f"    input  wire [{input_bit_width - 1}:0] in{i},")
     out_width = input_bit_width + int(math.log2(num_inputs))
@@ -301,7 +302,7 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width ):
         current_nodes = next_nodes
         stage += 1
 
-    logic.append(f"\n    assign sum = {{1'b0, {final_wire}}};\n")
+    logic.append(f"\n    assign sum =  {final_wire};\n")
 
     for w, width in wires:
         module_lines.append(f"    wire [{width}:0] {w};")
@@ -311,9 +312,9 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width ):
 
     module_lines.extend(logic)
 
-    module_lines.append("    always @(*) begin")
+    module_lines.append("    always @(posedge clk) begin")
     for r, _, src in regs:
-        module_lines.append(f"        {r} = {{1'b0, {src}}};")
+        module_lines.append(f"        {r} <=  {src};")
     module_lines.append("    end\nendmodule")
 
     return "\n".join(module_lines)
@@ -329,6 +330,7 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
 
     module_lines.append("")
     module_lines.append(f"module {module_name} (")
+    module_lines.append("    input  wire   clk, ")
     for i in range(num_inputs):
         module_lines.append(f"    input  wire [{input_bit_width - 1}:0] in{i},")
     out_width = input_bit_width + int(math.log2(num_inputs))
@@ -360,7 +362,7 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
         current_nodes = next_nodes
         stage += 1
 
-    logic.append(f"\n    assign sum = {{1'b0, {final_wire}}};\n")
+    logic.append(f"\n    assign sum =  {final_wire};\n")
 
     for w, width in wires:
         module_lines.append(f"    wire [{width}:0] {w};")
@@ -370,15 +372,15 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
 
     module_lines.extend(logic)
 
-    module_lines.append("    always @(*) begin")
+    module_lines.append("    always @(posedge clk) begin")
     for r, _, src in regs:
-        module_lines.append(f"        {r} = {{1'b0, {src}}};")
+        module_lines.append(f"        {r} <=  {src};")
     module_lines.append("    end\nendmodule")
 
     return "\n".join(module_lines)
 import math
 
-def main(input_bitsize =3 ):
+def main(input_bitsize =8 ):
     verilog = f"""module mux_1 (
 
     input  wire a, b, s,
@@ -694,11 +696,13 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
                 f".y(new_weighted_inputs{node+1}_{i}_0));"
             )
         lines.append(f"  adder_tree add{node} (")
+        lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
             lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_0),")
         lines.append(f"    .sum(sum1[{node}])")
         lines.append("  );")
         lines.append(f"  adder_tree_bar addb{node} (")
+        lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
             lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_0),")
         lines.append(f"    .sum(sum1bar[{node}])")
@@ -715,11 +719,13 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
                 f".y(new_weighted_inputs{node+1}_{i}_1));"
             )
         lines.append(f"  adder_tree add{num_nodes+node} (")
+        lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
             lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_1),")
         lines.append(f"    .sum(sum2[{node}])")
         lines.append("  );")
         lines.append(f"  adder_tree_bar addb{num_nodes+node} (")
+        lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
             lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_1),")
         lines.append(f"    .sum(sum2bar[{node}])")
@@ -757,7 +763,7 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
     lines.append("")
     
     # Debug display block
-    lines.append("  always @(*) begin")
+    lines.append("  always @(posedge clk) begin")
     lines.append('    $display("----- BNN LAYER  OUTPUTS -----");')
     for arr in ["sum1", "sum2", "sum1bar", "sum2bar"]:
         fmt = " ".join(["%b"] * num_nodes)
@@ -853,9 +859,9 @@ def generate_layer_module(num_inputs: int,
 
 if __name__ == "__main__":
     # Parameters — adjust as needed
-    num_inputs    = 16   # number of inputs per node
-    input_bitsize = 3   # bit-width of each input/activation
-    num_nodes     = 8   # number of parallel adder-tree nodes
+    num_inputs    = 8   # number of inputs per node
+    input_bitsize = 8   # bit-width of each input/activation
+    num_nodes     = 4   # number of parallel adder-tree nodes
 
     verilog_code = generate_layer_module(num_inputs, input_bitsize, num_nodes)
     print(verilog_code)
@@ -1245,9 +1251,9 @@ def generate_last_module_design(num_inputs: int,
     return "\n\n".join(parts)
 if __name__ == "__main__":
     # specify your layer parameters here:
-    num_inputs    = 16
-    num_nodes     = 4
-    input_bitwidth = 3
+    num_inputs    = 8
+    num_nodes     = 2
+    input_bitwidth = 8
     
 
     verilog_code = generate_last_module_design(
@@ -1567,10 +1573,10 @@ def gen_output_layer_inst(num_outputs: int, inst_name: str = "dut") -> str:
 
 if __name__ == "__main__":
     # set your parameters here
-    NUM_INPUTS = 16
-    INPUT_BITS = 3
-    NUM_NODES  = 8
-    OUT_NODES = 4
+    NUM_INPUTS = 8
+    INPUT_BITS = 8
+    NUM_NODES  = 4
+    OUT_NODES = 2
 
     # 1) Module header / ports (your function prints directly)
     gen_iterative_controller(NUM_INPUTS, INPUT_BITS, NUM_NODES)
@@ -1595,16 +1601,3 @@ if __name__ == "__main__":
 
     # 5) output_layer instantiation (set how many outputs you want)
     print(gen_output_layer_inst(num_outputs=OUT_NODES, inst_name="dut"))
-
-
-
-
-
-
-
-
-
-
-
-
-
