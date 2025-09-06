@@ -28401,11 +28401,11 @@ module output_layer_max (
         .comparator(comp0_bar)
     );
     reg [7:0] stage1_0_0, stage1_0_1, stage1_0_0bar, stage1_0_1bar;
-    always @(*) begin
-        if (comp0)      begin stage1_0_0 = biased_sum0_0;    stage1_0_1 = biased_sum0_1;    end
-        else                    begin stage1_0_0 = biased_sum1_0;    stage1_0_1 = biased_sum1_1;    end
-        if (comp0_bar)  begin stage1_0_0bar = biased_sum0_0bar; stage1_0_1bar = biased_sum0_1bar; end
-        else                    begin stage1_0_0bar = biased_sum1_0bar; stage1_0_1bar = biased_sum1_1bar; end
+    always @(posedge clk) begin
+        if (comp0)      begin stage1_0_0 <= biased_sum0_0;    stage1_0_1 <= biased_sum0_1;    end
+        else                    begin stage1_0_0 <= biased_sum1_0;    stage1_0_1 <= biased_sum1_1;    end
+        if (comp0_bar)  begin stage1_0_0bar <= biased_sum0_0bar; stage1_0_1bar <= biased_sum0_1bar; end
+        else                    begin stage1_0_0bar <= biased_sum1_0bar; stage1_0_1bar <= biased_sum1_1bar; end
     end
 
     wire [8:0] temp1_0, temp1_1, temp1_0bar, temp1_1bar;
@@ -28425,11 +28425,11 @@ module output_layer_max (
         .comparator(comp1_bar)
     );
     reg [7:0] stage1_1_0, stage1_1_1, stage1_1_0bar, stage1_1_1bar;
-    always @(*) begin
-        if (comp1)      begin stage1_1_0 = biased_sum2_0;    stage1_1_1 = biased_sum2_1;    end
-        else                    begin stage1_1_0 = biased_sum3_0;    stage1_1_1 = biased_sum3_1;    end
-        if (comp1_bar)  begin stage1_1_0bar = biased_sum2_0bar; stage1_1_1bar = biased_sum2_1bar; end
-        else                    begin stage1_1_0bar = biased_sum3_0bar; stage1_1_1bar = biased_sum3_1bar; end
+    always @(posedge clk) begin
+        if (comp1)      begin stage1_1_0 <= biased_sum2_0;    stage1_1_1 <= biased_sum2_1;    end
+        else                    begin stage1_1_0 <= biased_sum3_0;    stage1_1_1 <= biased_sum3_1;    end
+        if (comp1_bar)  begin stage1_1_0bar <= biased_sum2_0bar; stage1_1_1bar <= biased_sum2_1bar; end
+        else                    begin stage1_1_0bar <= biased_sum3_0bar; stage1_1_1bar <= biased_sum3_1bar; end
     end
 
     wire [8:0] temp2_0, temp2_1, temp2_0bar, temp2_1bar;
@@ -28449,11 +28449,11 @@ module output_layer_max (
         .comparator(comp2_bar)
     );
     reg [7:0] stage1_2_0, stage1_2_1, stage1_2_0bar, stage1_2_1bar;
-    always @(*) begin
-        if (comp2)      begin stage1_2_0 = biased_sum4_0;    stage1_2_1 = biased_sum4_1;    end
-        else                    begin stage1_2_0 = biased_sum5_0;    stage1_2_1 = biased_sum5_1;    end
-        if (comp2_bar)  begin stage1_2_0bar = biased_sum4_0bar; stage1_2_1bar = biased_sum4_1bar; end
-        else                    begin stage1_2_0bar = biased_sum5_0bar; stage1_2_1bar = biased_sum5_1bar; end
+    always @(posedge clk) begin
+        if (comp2)      begin stage1_2_0 <= biased_sum4_0;    stage1_2_1 <= biased_sum4_1;    end
+        else                    begin stage1_2_0 <= biased_sum5_0;    stage1_2_1 <= biased_sum5_1;    end
+        if (comp2_bar)  begin stage1_2_0bar <= biased_sum4_0bar; stage1_2_1bar <= biased_sum4_1bar; end
+        else                    begin stage1_2_0bar <= biased_sum5_0bar; stage1_2_1bar <= biased_sum5_1bar; end
     end
 
     wire [8:0] temp3_0, temp3_1, temp3_0bar, temp3_1bar;
@@ -28473,11 +28473,11 @@ module output_layer_max (
         .comparator(comp3_bar)
     );
     reg [7:0] stage1_3_0, stage1_3_1, stage1_3_0bar, stage1_3_1bar;
-    always @(*) begin
-        if (comp3)      begin stage1_3_0 = biased_sum6_0;    stage1_3_1 = biased_sum6_1;    end
-        else                    begin stage1_3_0 = biased_sum7_0;    stage1_3_1 = biased_sum7_1;    end
-        if (comp3_bar)  begin stage1_3_0bar = biased_sum6_0bar; stage1_3_1bar = biased_sum6_1bar; end
-        else                    begin stage1_3_0bar = biased_sum7_0bar; stage1_3_1bar = biased_sum7_1bar; end
+    always @(posedge clk) begin
+        if (comp3)      begin stage1_3_0 <= biased_sum6_0;    stage1_3_1 <= biased_sum6_1;    end
+        else                    begin stage1_3_0 <= biased_sum7_0;    stage1_3_1 <= biased_sum7_1;    end
+        if (comp3_bar)  begin stage1_3_0bar <= biased_sum6_0bar; stage1_3_1bar <= biased_sum6_1bar; end
+        else                    begin stage1_3_0bar <= biased_sum7_0bar; stage1_3_1bar <= biased_sum7_1bar; end
     end
 
     wire [8:0] temp4_0, temp4_1, temp4_0bar, temp4_1bar;
@@ -28497,11 +28497,11 @@ module output_layer_max (
         .comparator(comp4_bar)
     );
     reg [7:0] stage2_0_0, stage2_0_1, stage2_0_0bar, stage2_0_1bar;
-    always @(*) begin
-        if (comp4)      begin stage2_0_0 = stage1_0_0;    stage2_0_1 = stage1_0_1;    end
-        else                    begin stage2_0_0 = stage1_1_0;    stage2_0_1 = stage1_1_1;    end
-        if (comp4_bar)  begin stage2_0_0bar = stage1_0_0bar; stage2_0_1bar = stage1_0_1bar; end
-        else                    begin stage2_0_0bar = stage1_1_0bar; stage2_0_1bar = stage1_1_1bar; end
+    always @(posedge clk) begin
+        if (comp4)      begin stage2_0_0 <= stage1_0_0;    stage2_0_1 <= stage1_0_1;    end
+        else                    begin stage2_0_0 <= stage1_1_0;    stage2_0_1 <= stage1_1_1;    end
+        if (comp4_bar)  begin stage2_0_0bar <= stage1_0_0bar; stage2_0_1bar <= stage1_0_1bar; end
+        else                    begin stage2_0_0bar <= stage1_1_0bar; stage2_0_1bar <= stage1_1_1bar; end
     end
 
     wire [8:0] temp5_0, temp5_1, temp5_0bar, temp5_1bar;
@@ -28521,11 +28521,11 @@ module output_layer_max (
         .comparator(comp5_bar)
     );
     reg [7:0] stage2_1_0, stage2_1_1, stage2_1_0bar, stage2_1_1bar;
-    always @(*) begin
-        if (comp5)      begin stage2_1_0 = stage1_2_0;    stage2_1_1 = stage1_2_1;    end
-        else                    begin stage2_1_0 = stage1_3_0;    stage2_1_1 = stage1_3_1;    end
-        if (comp5_bar)  begin stage2_1_0bar = stage1_2_0bar; stage2_1_1bar = stage1_2_1bar; end
-        else                    begin stage2_1_0bar = stage1_3_0bar; stage2_1_1bar = stage1_3_1bar; end
+    always @(posedge clk) begin
+        if (comp5)      begin stage2_1_0 <= stage1_2_0;    stage2_1_1 <= stage1_2_1;    end
+        else                    begin stage2_1_0 <= stage1_3_0;    stage2_1_1 <= stage1_3_1;    end
+        if (comp5_bar)  begin stage2_1_0bar <= stage1_2_0bar; stage2_1_1bar <= stage1_2_1bar; end
+        else                    begin stage2_1_0bar <= stage1_3_0bar; stage2_1_1bar <= stage1_3_1bar; end
     end
 
     wire [8:0] temp6_0, temp6_1, temp6_0bar, temp6_1bar;
@@ -28545,40 +28545,40 @@ module output_layer_max (
         .comparator(comp6_bar)
     );
     reg [7:0] stage3_0_0, stage3_0_1, stage3_0_0bar, stage3_0_1bar;
-    always @(*) begin
-        if (comp6)      begin stage3_0_0 = stage2_0_0;    stage3_0_1 = stage2_0_1;    end
-        else                    begin stage3_0_0 = stage2_1_0;    stage3_0_1 = stage2_1_1;    end
-        if (comp6_bar)  begin stage3_0_0bar = stage2_0_0bar; stage3_0_1bar = stage2_0_1bar; end
-        else                    begin stage3_0_0bar = stage2_1_0bar; stage3_0_1bar = stage2_1_1bar; end
+    always @(posedge clk) begin
+        if (comp6)      begin stage3_0_0 <= stage2_0_0;    stage3_0_1 <= stage2_0_1;    end
+        else                    begin stage3_0_0 <= stage2_1_0;    stage3_0_1 <= stage2_1_1;    end
+        if (comp6_bar)  begin stage3_0_0bar <= stage2_0_0bar; stage3_0_1bar <= stage2_0_1bar; end
+        else                    begin stage3_0_0bar <= stage2_1_0bar; stage3_0_1bar <= stage2_1_1bar; end
     end
 
-    always @(*) begin
-        a0 = 0; a0_bar = 0;
-        a1 = 0; a1_bar = 0;
-        a2 = 0; a2_bar = 0;
-        a3 = 0; a3_bar = 0;
-        a4 = 0; a4_bar = 0;
-        a5 = 0; a5_bar = 0;
-        a6 = 0; a6_bar = 0;
-        a7 = 0; a7_bar = 0;
+    always @(posedge clk) begin
+        a0 <= 0; a0_bar <= 0;
+        a1 <= 0; a1_bar <= 0;
+        a2 <= 0; a2_bar <= 0;
+        a3 <= 0; a3_bar <= 0;
+        a4 <= 0; a4_bar <= 0;
+        a5 <= 0; a5_bar <= 0;
+        a6 <= 0; a6_bar <= 0;
+        a7 <= 0; a7_bar <= 0;
 
-        if (comp0 == 1 && comp4 == 1 && comp6 == 1) a0     = 1;
-        else if (comp0 == 0 && comp4 == 1 && comp6 == 1) a1     = 1;
-        else if (comp1 == 1 && comp4 == 0 && comp6 == 1) a2     = 1;
-        else if (comp1 == 0 && comp4 == 0 && comp6 == 1) a3     = 1;
-        else if (comp2 == 1 && comp5 == 1 && comp6 == 0) a4     = 1;
-        else if (comp2 == 0 && comp5 == 1 && comp6 == 0) a5     = 1;
-        else if (comp3 == 1 && comp5 == 0 && comp6 == 0) a6     = 1;
-        else             a7     = 1;
+        if (comp0 == 1 && comp4 == 1 && comp6 == 1) a0     <= 1;
+        else if (comp0 == 0 && comp4 == 1 && comp6 == 1) a1     <= 1;
+        else if (comp1 == 1 && comp4 == 0 && comp6 == 1) a2     <= 1;
+        else if (comp1 == 0 && comp4 == 0 && comp6 == 1) a3     <= 1;
+        else if (comp2 == 1 && comp5 == 1 && comp6 == 0) a4     <= 1;
+        else if (comp2 == 0 && comp5 == 1 && comp6 == 0) a5     <= 1;
+        else if (comp3 == 1 && comp5 == 0 && comp6 == 0) a6     <= 1;
+        else             a7     <= 1;
 
-        if (comp0_bar == 1 && comp4_bar == 1 && comp6_bar == 1) a0_bar     = 1;
-        else if (comp0_bar == 0 && comp4_bar == 1 && comp6_bar == 1) a1_bar     = 1;
-        else if (comp1_bar == 1 && comp4_bar == 0 && comp6_bar == 1) a2_bar     = 1;
-        else if (comp1_bar == 0 && comp4_bar == 0 && comp6_bar == 1) a3_bar     = 1;
-        else if (comp2_bar == 1 && comp5_bar == 1 && comp6_bar == 0) a4_bar     = 1;
-        else if (comp2_bar == 0 && comp5_bar == 1 && comp6_bar == 0) a5_bar     = 1;
-        else if (comp3_bar == 1 && comp5_bar == 0 && comp6_bar == 0) a6_bar     = 1;
-        else             a7_bar     = 1;
+        if (comp0_bar == 1 && comp4_bar == 1 && comp6_bar == 1) a0_bar     <= 1;
+        else if (comp0_bar == 0 && comp4_bar == 1 && comp6_bar == 1) a1_bar     <= 1;
+        else if (comp1_bar == 1 && comp4_bar == 0 && comp6_bar == 1) a2_bar     <= 1;
+        else if (comp1_bar == 0 && comp4_bar == 0 && comp6_bar == 1) a3_bar     <= 1;
+        else if (comp2_bar == 1 && comp5_bar == 1 && comp6_bar == 0) a4_bar     <= 1;
+        else if (comp2_bar == 0 && comp5_bar == 1 && comp6_bar == 0) a5_bar     <= 1;
+        else if (comp3_bar == 1 && comp5_bar == 0 && comp6_bar == 0) a6_bar     <= 1;
+        else             a7_bar     <= 1;
     end
 endmodule
 module connector(
