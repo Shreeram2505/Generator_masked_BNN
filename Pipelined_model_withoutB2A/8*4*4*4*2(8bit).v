@@ -4091,22 +4091,22 @@ module output_layer_max (
         .comparator(comp0_bar)
     );
     reg [4:0] stage1_0_0, stage1_0_1, stage1_0_0bar, stage1_0_1bar;
-    always @(*) begin
-        if (comp0)      begin stage1_0_0 = biased_sum0_0;    stage1_0_1 = biased_sum0_1;    end
-        else                    begin stage1_0_0 = biased_sum1_0;    stage1_0_1 = biased_sum1_1;    end
-        if (comp0_bar)  begin stage1_0_0bar = biased_sum0_0bar; stage1_0_1bar = biased_sum0_1bar; end
-        else                    begin stage1_0_0bar = biased_sum1_0bar; stage1_0_1bar = biased_sum1_1bar; end
+    always @(posedge clk) begin
+        if (comp0)      begin stage1_0_0 <= biased_sum0_0;    stage1_0_1 <= biased_sum0_1;    end
+        else                    begin stage1_0_0 <= biased_sum1_0;    stage1_0_1 <= biased_sum1_1;    end
+        if (comp0_bar)  begin stage1_0_0bar <= biased_sum0_0bar; stage1_0_1bar <= biased_sum0_1bar; end
+        else                    begin stage1_0_0bar <= biased_sum1_0bar; stage1_0_1bar <= biased_sum1_1bar; end
     end
 
-    always @(*) begin
-        a0 = 0; a0_bar = 0;
-        a1 = 0; a1_bar = 0;
+    always @(posedge clk) begin
+        a0 <= 0; a0_bar <= 0;
+        a1 <= 0; a1_bar <= 0;
 
-        if (comp0 == 1) a0     = 1;
-        else             a1     = 1;
+        if (comp0 == 1) a0     <= 1;
+        else             a1     <= 1;
 
-        if (comp0_bar == 1) a0_bar     = 1;
-        else             a1_bar     = 1;
+        if (comp0_bar == 1) a0_bar     <= 1;
+        else             a1_bar     <= 1;
     end
 endmodule
 module connector(
@@ -4687,4 +4687,3 @@ module connector(
 
 endmodule
 `default_nettype wire
-
