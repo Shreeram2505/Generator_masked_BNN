@@ -1105,6 +1105,7 @@ def generate_output_layer_max_module(num_inputs: int,
     lines = []
     # -- Module header and port list --
     lines.append(f"module output_layer (")
+    lines.append(f"  input  wire clk,")
     # raw inputs to layer1:
     for i in range(num_nodes):
         lines.append(f"  input  wire [{sum_w}:0] biased_sum{i}_0,")
@@ -1177,11 +1178,11 @@ def generate_output_layer_max_module(num_inputs: int,
             mux0b = mux0 + "bar"
             mux1b = mux1 + "bar"
             lines.append(f"    reg [{sum_w}:0] {mux0}, {mux1}, {mux0b}, {mux1b};")
-            lines.append("    always @(*) begin")
-            lines.append(f"        if (comp{comp_id})      begin {mux0} = {A0};    {mux1} = {A1};    end")
-            lines.append(f"        else                    begin {mux0} = {B0};    {mux1} = {B1};    end")
-            lines.append(f"        if (comp{comp_id}_bar)  begin {mux0b} = {A0b}; {mux1b} = {A1b}; end")
-            lines.append(f"        else                    begin {mux0b} = {B0b}; {mux1b} = {B1b}; end")
+            lines.append("    always @(posedge clk) begin")
+            lines.append(f"        if (comp{comp_id})      begin {mux0} <= {A0};    {mux1} <= {A1};    end")
+            lines.append(f"        else                    begin {mux0} <= {B0};    {mux1} <= {B1};    end")
+            lines.append(f"        if (comp{comp_id}_bar)  begin {mux0b} <= {A0b}; {mux1b} <= {A1b}; end")
+            lines.append(f"        else                    begin {mux0b} <= {B0b}; {mux1b} <= {B1b}; end")
             lines.append("    end\n")
 
             tree.append((comp_id, lid, rid))
@@ -1205,9 +1206,9 @@ def generate_output_layer_max_module(num_inputs: int,
         return p
 
    # final one-hot logic
-    lines.append("    always @(*) begin")
+    lines.append("    always @(posedge clk) begin")
     for i in range(num_nodes):
-        lines.append(f"        a{i} = 0; a{i}_bar = 0;")
+        lines.append(f"        a{i} <= 0; a{i}_bar <= 0;")
     lines.append("")
 
     for i in range(num_nodes):
@@ -1217,11 +1218,11 @@ def generate_output_layer_max_module(num_inputs: int,
         cond_n = " && ".join(f"comp{cid} == {val}" for cid, val in path)
 
         if i == 0:
-            lines.append(f"        if ({cond_n}) a0     = 1;")
+            lines.append(f"        if ({cond_n}) a0     <= 1;")
         elif i < num_nodes - 1:
-            lines.append(f"        else if ({cond_n}) a{i}     = 1;")
+            lines.append(f"        else if ({cond_n}) a{i}     <= 1;")
         else:
-            lines.append("        else             a{0}     = 1;".format(i))
+            lines.append("        else             a{0}     <= 1;".format(i))
     lines.append("")
     for i in range(num_nodes):
         path = trace_path(i)
@@ -1229,11 +1230,11 @@ def generate_output_layer_max_module(num_inputs: int,
             continue
         cond_b = " && ".join(f"comp{cid}_bar == {val}" for cid, val in path)
         if i == 0:
-            lines.append(f"        if ({cond_b}) a0_bar     = 1;")
+            lines.append(f"        if ({cond_b}) a0_bar     <= 1;")
         elif i < num_nodes - 1:
-            lines.append(f"        else if ({cond_b}) a{i}_bar     = 1;")
+            lines.append(f"        else if ({cond_b}) a{i}_bar     <= 1;")
         else:
-            lines.append("        else             a{0}_bar     = 1;".format(i))
+            lines.append("        else             a{0}_bar     <= 1;".format(i))
             
     lines.append("    end")
     lines.append("endmodule")
@@ -1542,7 +1543,8 @@ def gen_output_layer_inst(num_outputs: int, inst_name: str = "dut") -> str:
     col = 16  # align the names nicely
     ind = "  "
     lines = [f"{ind}output_layer {inst_name} ("]
-
+    
+    lines.append(f"    .clk                    (clk),")
     # Non-bar sums: biased_sum{i}_0, biased_sum{i}_1
     for i in range(num_outputs):
         for ch in (0, 1):
