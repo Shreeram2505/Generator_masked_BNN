@@ -1,3 +1,7 @@
+
+
+
+
 `timescale 1ns/1ps
 `default_nettype none
 
@@ -257,85 +261,85 @@ wire a3, a3_bar;
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
 
-inputs0_1  = 3'd2;
-inputs1_1  = 3'd2;
-inputs2_1  = 3'd3;
-inputs3_1  = 3'd3;
+inputs0_1  = 8'd2;
+inputs1_1  = 8'd2;
+inputs2_1  = 8'd3;
+inputs3_1  = 8'd3;
 
-inputs4_1  = 3'd2;
-inputs5_1  = 3'd2;
-inputs6_1  = 3'd3;
-inputs7_1  = 3'd3;
+inputs4_1  = 8'd2;
+inputs5_1  = 8'd2;
+inputs6_1  = 8'd3;
+inputs7_1  = 8'd3;
 
-inputs8_1  = 3'd2;
-inputs9_1  = 3'd2;
-inputs10_1 = 3'd3;
-inputs11_1 = 3'd3;
+inputs8_1  = 8'd2;
+inputs9_1  = 8'd2;
+inputs10_1 = 8'd3;
+inputs11_1 = 8'd3;
 
-inputs12_1 = 3'd2;
-inputs13_1 = 3'd2;
-inputs14_1 = 3'd3;
-inputs15_1 = 3'd3;
+inputs12_1 = 8'd2;
+inputs13_1 = 8'd2;
+inputs14_1 = 8'd3;
+inputs15_1 = 8'd3;
 
-inputs16_1 = 3'd2;
-inputs17_1 = 3'd2;
-inputs18_1 = 3'd3;
-inputs19_1 = 3'd3;
+inputs16_1 = 8'd2;
+inputs17_1 = 8'd2;
+inputs18_1 = 8'd3;
+inputs19_1 = 8'd3;
 
-inputs20_1 = 3'd2;
-inputs21_1 = 3'd2;
-inputs22_1 = 3'd3;
-inputs23_1 = 3'd3;
+inputs20_1 = 8'd2;
+inputs21_1 = 8'd2;
+inputs22_1 = 8'd3;
+inputs23_1 = 8'd3;
 
-inputs24_1 = 3'd2;
-inputs25_1 = 3'd2;
-inputs26_1 = 3'd3;
-inputs27_1 = 3'd3;
+inputs24_1 = 8'd2;
+inputs25_1 = 8'd2;
+inputs26_1 = 8'd3;
+inputs27_1 = 8'd3;
 
-inputs28_1 = 3'd2;
-inputs29_1 = 3'd2;
-inputs30_1 = 3'd3;
-inputs31_1 = 3'd3;
+inputs28_1 = 8'd2;
+inputs29_1 = 8'd2;
+inputs30_1 = 8'd3;
+inputs31_1 = 8'd3;
 
-inputs32_1 = 3'd2;
-inputs33_1 = 3'd2;
-inputs34_1 = 3'd3;
-inputs35_1 = 3'd3;
+inputs32_1 = 8'd2;
+inputs33_1 = 8'd2;
+inputs34_1 = 8'd3;
+inputs35_1 = 8'd3;
 
-inputs36_1 = 3'd2;
-inputs37_1 = 3'd2;
-inputs38_1 = 3'd3;
-inputs39_1 = 3'd3;
+inputs36_1 = 8'd2;
+inputs37_1 = 8'd2;
+inputs38_1 = 8'd3;
+inputs39_1 = 8'd3;
 
-inputs40_1 = 3'd2;
-inputs41_1 = 3'd2;
-inputs42_1 = 3'd3;
-inputs43_1 = 3'd3;
+inputs40_1 = 8'd2;
+inputs41_1 = 8'd2;
+inputs42_1 = 8'd3;
+inputs43_1 = 8'd3;
 
-inputs44_1 = 3'd2;
-inputs45_1 = 3'd2;
-inputs46_1 = 3'd3;
-inputs47_1 = 3'd3;
+inputs44_1 = 8'd2;
+inputs45_1 = 8'd2;
+inputs46_1 = 8'd3;
+inputs47_1 = 8'd3;
 
-inputs48_1 = 3'd2;
-inputs49_1 = 3'd2;
-inputs50_1 = 3'd3;
-inputs51_1 = 3'd3;
+inputs48_1 = 8'd2;
+inputs49_1 = 8'd2;
+inputs50_1 = 8'd3;
+inputs51_1 = 8'd3;
 
-inputs52_1 = 3'd2;
-inputs53_1 = 3'd2;
-inputs54_1 = 3'd3;
-inputs55_1 = 3'd3;
+inputs52_1 = 8'd2;
+inputs53_1 = 8'd2;
+inputs54_1 = 8'd3;
+inputs55_1 = 8'd3;
 
-inputs56_1 = 3'd2;
-inputs57_1 = 3'd2;
-inputs58_1 = 3'd3;
-inputs59_1 = 3'd3;
+inputs56_1 = 8'd2;
+inputs57_1 = 8'd2;
+inputs58_1 = 8'd3;
+inputs59_1 = 8'd3;
 
-inputs60_1 = 3'd2;
-inputs61_1 = 3'd2;
-inputs62_1 = 3'd3;
-inputs63_1 = 3'd3;
+inputs60_1 = 8'd2;
+inputs61_1 = 8'd2;
+inputs62_1 = 8'd3;
+inputs63_1 = 8'd3;
 
 
 // Weights example pattern for 8 nodes (0th and 1st sets)
