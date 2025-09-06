@@ -1,7 +1,7 @@
 import math
 
 # Python script to print the weighted_inputs_1 module
-def main(input_bitsize =8):
+def main(input_bitsize =3):
     verilog = f"""
     `timescale 1ns/1ps
     `default_nettype none
@@ -380,7 +380,7 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
     return "\n".join(module_lines)
 import math
 
-def main(input_bitsize =8 ):
+def main(input_bitsize =3 ):
     verilog = f"""module mux_1 (
 
     input  wire a, b, s,
@@ -860,7 +860,7 @@ def generate_layer_module(num_inputs: int,
 if __name__ == "__main__":
     # Parameters — adjust as needed
     num_inputs    = 8   # number of inputs per node
-    input_bitsize = 8   # bit-width of each input/activation
+    input_bitsize = 3   # bit-width of each input/activation
     num_nodes     = 4   # number of parallel adder-tree nodes
 
     verilog_code = generate_layer_module(num_inputs, input_bitsize, num_nodes)
@@ -1253,7 +1253,7 @@ if __name__ == "__main__":
     # specify your layer parameters here:
     num_inputs    = 8
     num_nodes     = 2
-    input_bitwidth = 8
+    input_bitwidth = 3
     
 
     verilog_code = generate_last_module_design(
@@ -1574,7 +1574,7 @@ def gen_output_layer_inst(num_outputs: int, inst_name: str = "dut") -> str:
 if __name__ == "__main__":
     # set your parameters here
     NUM_INPUTS = 8
-    INPUT_BITS = 8
+    INPUT_BITS = 3
     NUM_NODES  = 4
     OUT_NODES = 2
 
