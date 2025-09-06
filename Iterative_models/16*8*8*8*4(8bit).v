@@ -7785,6 +7785,7 @@ endmodule
 
 
 module output_layer (
+  input  wire clk,
   input  wire [12:0] biased_sum0_0,
   input  wire [12:0] biased_sum0_1,
   input  wire [12:0] biased_sum0_0bar,
@@ -7997,11 +7998,11 @@ module output_layer (
         .comparator(comp0_bar)
     );
     reg [12:0] stage1_0_0, stage1_0_1, stage1_0_0bar, stage1_0_1bar;
-    always @(*) begin
-        if (comp0)      begin stage1_0_0 = biased_sum0_0;    stage1_0_1 = biased_sum0_1;    end
-        else                    begin stage1_0_0 = biased_sum1_0;    stage1_0_1 = biased_sum1_1;    end
-        if (comp0_bar)  begin stage1_0_0bar = biased_sum0_0bar; stage1_0_1bar = biased_sum0_1bar; end
-        else                    begin stage1_0_0bar = biased_sum1_0bar; stage1_0_1bar = biased_sum1_1bar; end
+    always @(posedge clk) begin
+        if (comp0)      begin stage1_0_0 <= biased_sum0_0;    stage1_0_1 <= biased_sum0_1;    end
+        else                    begin stage1_0_0 <= biased_sum1_0;    stage1_0_1 <= biased_sum1_1;    end
+        if (comp0_bar)  begin stage1_0_0bar <= biased_sum0_0bar; stage1_0_1bar <= biased_sum0_1bar; end
+        else                    begin stage1_0_0bar <= biased_sum1_0bar; stage1_0_1bar <= biased_sum1_1bar; end
     end
 
     wire [13:0] temp1_0, temp1_1, temp1_0bar, temp1_1bar;
@@ -8021,11 +8022,11 @@ module output_layer (
         .comparator(comp1_bar)
     );
     reg [12:0] stage1_1_0, stage1_1_1, stage1_1_0bar, stage1_1_1bar;
-    always @(*) begin
-        if (comp1)      begin stage1_1_0 = biased_sum2_0;    stage1_1_1 = biased_sum2_1;    end
-        else                    begin stage1_1_0 = biased_sum3_0;    stage1_1_1 = biased_sum3_1;    end
-        if (comp1_bar)  begin stage1_1_0bar = biased_sum2_0bar; stage1_1_1bar = biased_sum2_1bar; end
-        else                    begin stage1_1_0bar = biased_sum3_0bar; stage1_1_1bar = biased_sum3_1bar; end
+    always @(posedge clk) begin
+        if (comp1)      begin stage1_1_0 <= biased_sum2_0;    stage1_1_1 <= biased_sum2_1;    end
+        else                    begin stage1_1_0 <= biased_sum3_0;    stage1_1_1 <= biased_sum3_1;    end
+        if (comp1_bar)  begin stage1_1_0bar <= biased_sum2_0bar; stage1_1_1bar <= biased_sum2_1bar; end
+        else                    begin stage1_1_0bar <= biased_sum3_0bar; stage1_1_1bar <= biased_sum3_1bar; end
     end
 
     wire [13:0] temp2_0, temp2_1, temp2_0bar, temp2_1bar;
@@ -8045,28 +8046,28 @@ module output_layer (
         .comparator(comp2_bar)
     );
     reg [12:0] stage2_0_0, stage2_0_1, stage2_0_0bar, stage2_0_1bar;
-    always @(*) begin
-        if (comp2)      begin stage2_0_0 = stage1_0_0;    stage2_0_1 = stage1_0_1;    end
-        else                    begin stage2_0_0 = stage1_1_0;    stage2_0_1 = stage1_1_1;    end
-        if (comp2_bar)  begin stage2_0_0bar = stage1_0_0bar; stage2_0_1bar = stage1_0_1bar; end
-        else                    begin stage2_0_0bar = stage1_1_0bar; stage2_0_1bar = stage1_1_1bar; end
+    always @(posedge clk) begin
+        if (comp2)      begin stage2_0_0 <= stage1_0_0;    stage2_0_1 <= stage1_0_1;    end
+        else                    begin stage2_0_0 <= stage1_1_0;    stage2_0_1 <= stage1_1_1;    end
+        if (comp2_bar)  begin stage2_0_0bar <= stage1_0_0bar; stage2_0_1bar <= stage1_0_1bar; end
+        else                    begin stage2_0_0bar <= stage1_1_0bar; stage2_0_1bar <= stage1_1_1bar; end
     end
 
-    always @(*) begin
-        a0 = 0; a0_bar = 0;
-        a1 = 0; a1_bar = 0;
-        a2 = 0; a2_bar = 0;
-        a3 = 0; a3_bar = 0;
+    always @(posedge clk) begin
+        a0 <= 0; a0_bar <= 0;
+        a1 <= 0; a1_bar <= 0;
+        a2 <= 0; a2_bar <= 0;
+        a3 <= 0; a3_bar <= 0;
 
-        if (comp0 == 1 && comp2 == 1) a0     = 1;
-        else if (comp0 == 0 && comp2 == 1) a1     = 1;
-        else if (comp1 == 1 && comp2 == 0) a2     = 1;
-        else             a3     = 1;
+        if (comp0 == 1 && comp2 == 1) a0     <= 1;
+        else if (comp0 == 0 && comp2 == 1) a1     <= 1;
+        else if (comp1 == 1 && comp2 == 0) a2     <= 1;
+        else             a3     <= 1;
 
-        if (comp0_bar == 1 && comp2_bar == 1) a0_bar     = 1;
-        else if (comp0_bar == 0 && comp2_bar == 1) a1_bar     = 1;
-        else if (comp1_bar == 1 && comp2_bar == 0) a2_bar     = 1;
-        else             a3_bar     = 1;
+        if (comp0_bar == 1 && comp2_bar == 1) a0_bar     <= 1;
+        else if (comp0_bar == 0 && comp2_bar == 1) a1_bar     <= 1;
+        else if (comp1_bar == 1 && comp2_bar == 0) a2_bar     <= 1;
+        else             a3_bar     <= 1;
     end
 endmodule
 module iterative_controller (
@@ -9959,6 +9960,7 @@ end
   );
 
   output_layer dut (
+    .clk                    (clk),
     .biased_sum0_0    (biased_sum0_0),
     .biased_sum0_1    (biased_sum0_1),
     .biased_sum1_0    (biased_sum1_0),
@@ -9986,5 +9988,3 @@ end
   );
 
 endmodule
-
-=== Code Execution Successful ===
