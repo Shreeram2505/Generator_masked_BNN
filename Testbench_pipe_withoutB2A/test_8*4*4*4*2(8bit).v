@@ -65,8 +65,8 @@ module connector_tb;
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
 
-    inputs0_1 = 7'd2; inputs1_1 = 7'd2; inputs2_1 = 7'd3; inputs3_1 = 7'd3;
-    inputs4_1 = 7'd5; inputs5_1 = 7'd6; inputs6_1 = 7'd7; inputs7_1 = 7'd6;
+    inputs0_1 = 8'd2; inputs1_1 = 8'd2; inputs2_1 = 8'd3; inputs3_1 = 8'd3;
+    inputs4_1 = 8'd253; inputs5_1 = 8'd254; inputs6_1 = 8'd255; inputs7_1 = 8'd254;
     {w1_0_1,w2_0_1,w3_0_1,w4_0_1} = {4{8'h0F}};
     {w1_0_2,w2_0_2,w3_0_2,w4_0_2} = {4{8'hF0}};
     {w1_0_3,w2_0_3,w3_0_3,w4_0_3} = {4{8'hFF}};
