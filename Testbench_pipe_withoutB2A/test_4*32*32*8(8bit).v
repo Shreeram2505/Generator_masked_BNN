@@ -219,7 +219,7 @@ wire a7, a7_bar;
     $dumpfile("connector_tb.vcd");
     $dumpvars(0, connector_tb);
 
-inputs0_1 = 7'd2;  inputs1_1 = 7'd2;  inputs2_1 = 7'd3;  inputs3_1 = 7'd3;
+inputs0_1 = 8'd2;  inputs1_1 = 8'd2;  inputs2_1 = 8'd3;  inputs3_1 = 8'd3;
 
 // Weights example pattern for 8 nodes (0th and 1st sets)
 {w1_0_1, w2_0_1, w3_0_1, w4_0_1, w5_0_1, w6_0_1, w7_0_1, w8_0_1,
