@@ -107,4 +107,5 @@ module connector_tb;
 
     $finish;
   end
+
 endmodule
