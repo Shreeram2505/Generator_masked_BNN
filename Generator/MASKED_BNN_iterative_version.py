@@ -1,34 +1,104 @@
 import math
 
 # Python script to print the weighted_inputs_1 module
-def main(input_bitsize =3):
+def weighted_func1(input_bitsize=9):
     verilog = f"""
-    `timescale 1ns/1ps
-    `default_nettype none
-    
-module weighted_inputs_1(
+module weighted_inputs_1
+#(parameter input_bitsize = {input_bitsize})
+(
+    input  [{input_bitsize-1}:0] inputs,
+    input  w,
+    input  [{input_bitsize-1}:0] w_mask_1,
 
-    input [{input_bitsize-1}:0] inputs,
-
-    input w,
-
-    output reg [{input_bitsize-1}:0] wi
+    output reg [{input_bitsize}:0] wi,
+    output reg [{input_bitsize}:0] w_i_mask
 );
 
-    always @(*) begin
-        if (w == 1'b0) begin
-            wi = ~inputs + 1;
-        end else begin
-            wi = inputs;
-        end
-    end
+wire [{input_bitsize-1}:0] neg_input;
+wire [{input_bitsize-1}:0] neg_w_mask;
+
+wire [{input_bitsize}:0] wi_1, wi_2 , w_m;
+
+assign neg_input = (~inputs + 1);
+assign neg_w_mask = (~w_mask_1 + 1);
+
+add{input_bitsize}bit w1 (.a(neg_input), .b(neg_w_mask), .cin(1'b0), .y(wi_1), .cout(), .cout_bar());
+add{input_bitsize}bit w2 (.a(inputs), .b(neg_w_mask), .cin(1'b0), .y(wi_2), .cout(), .cout_bar());
+
+assign w_m = {{1'b0, neg_w_mask}};
+
+always @(*) begin
+    if (w == 1'b0)
+        wi = wi_1;
+    else
+        wi = wi_2;
+end
+
+always @(*) begin
+    if (w_mask_1[{input_bitsize-1}] == 1'b0)
+        w_i_mask = {{1'b0, w_mask_1}};
+    else
+        w_i_mask = (~w_m + 1);
+end
 
 endmodule
 """
-    print(verilog)
+    return verilog
 
-if __name__ == "__main__":
-    main()
+
+def weighted_func2(input_bitsize=9):
+    verilog = f"""module weighted_inputs_2(
+
+    input  inputs,
+
+    input w,
+
+    input  [{input_bitsize-1}:0] w_mask_2,
+
+    output  [{input_bitsize}:0] wi,
+    output  reg  [{input_bitsize}:0] w_i_mask
+
+);
+
+wire  weighted_input;
+
+wire [{input_bitsize-1}:0] neg_w_mask;
+
+reg signed [{input_bitsize-1}:0] wi_1;
+
+wire [{input_bitsize}:0] wi_2 , w_m;
+
+assign weighted_input = ~(inputs ^ w);
+
+assign neg_w_mask = (~w_mask_2 + 1);
+
+
+    always @(*) begin
+        if (weighted_input == 1'b0) begin
+            wi_1 = -{input_bitsize}'sd1;
+        end else begin
+            wi_1 = {input_bitsize}'sd1;
+        end
+    end
+
+add{input_bitsize}bit w1 (.a(wi_1), .b(neg_w_mask), .cin(1'b0), .y(wi_2), .cout(), .cout_bar());
+
+assign wi = wi_2;
+
+assign w_m = {{1'b0, neg_w_mask}};
+
+always @(*) begin
+    if (w_mask_2[{input_bitsize-1}] == 1'b0)
+        w_i_mask = {{1'b0, w_mask_2}};
+    else
+        w_i_mask = (~w_m + 1);
+end
+
+endmodule
+"""
+    return verilog
+
+
 
 # Python script to print the two LUT modules
 def main():
@@ -164,8 +234,8 @@ def generate_addXbit(x):
 
 
 def generate_all_adders(m, n ):
-    from_bits = m
-    to_bits = m + int(math.log2(n)) 
+    from_bits = m-1
+    to_bits = m + int(math.log2(n))+1
 
     output = [generate_full_adder_modules1()]
     for bits in range(from_bits, to_bits + 1):
@@ -251,8 +321,8 @@ def generate_addXbitbar(x):
 
 
 def generate_all_adders_bar(m, n):
-    from_bits = m
-    to_bits = m + int(math.log2(n)) 
+    from_bits = m-1
+    to_bits = m + int(math.log2(n))+1
 
     output = [generate_full_adder_modules2()]
     for bits in range(from_bits, to_bits + 1):
@@ -261,24 +331,25 @@ def generate_all_adders_bar(m, n):
 
 
 
-def generate_adder_tree(module_name: str,num_inputs, input_bit_width ):
+def generate_adder_tree(module_name: str,num_inputs, input_bit_width,layer_no :int ):
     assert (num_inputs & (num_inputs - 1)) == 0, "num_inputs must be a power of 2"
     module_lines = []
 
-    #module_name = f"adder_tree "
-    max_stage = int(math.log2(num_inputs)) + input_bit_width
+    #module_name = f"adder_tree_{num_inputs}"
+    max_stage = int(math.log2(num_inputs)) + input_bit_width+1
 
     module_lines.append("")
     module_lines.append(f"module {module_name} (")
+    
     module_lines.append("    input  wire   clk, ")
     for i in range(num_inputs):
-        module_lines.append(f"    input  wire [{input_bit_width - 1}:0] in{i},")
-    out_width = input_bit_width + int(math.log2(num_inputs))
+        module_lines.append(f"    input  wire [{input_bit_width}:0] in{i},")
+    out_width = input_bit_width + int(math.log2(num_inputs))+1
     module_lines.append(f"    output wire [{out_width - 1}:0] sum\n);")
     module_lines.append("")
 
     stage = 0
-    current_nodes = [(f"in{i}", input_bit_width) for i in range(num_inputs)]
+    current_nodes = [(f"in{i}", input_bit_width+1) for i in range(num_inputs)]
     wires, regs, logic = [], [], []
     final_wire = ""
 
@@ -290,15 +361,15 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width ):
             width = max(wa, wb)
             adder_width = width
             next_width = adder_width + 1
-            low_name = f"stage{stage}_{i//2}_lo"
-            reg_name = f"stage{stage}_{i//2}"
+            low_name = f"stage{stage}_{i//2}_lo_{layer_no}"
+            reg_name = f"stage{stage}_{i//2}_{layer_no}"
             wires.append((low_name, next_width - 1))
             regs.append((reg_name, next_width, low_name))
             adder_mod = f"add{adder_width}bit"
             logic.append(f"    {adder_mod} u{stage}_{i//2} (.a({a}), .b({b}), .cin(1'b0), .y({low_name}), .cout(), .cout_bar());")
             next_nodes.append((reg_name, next_width))
             if len(current_nodes) == 2:
-                final_wire = low_name  # Capture the final output wire name before register
+                final_wire = reg_name  # Capture the final output wire name before register
         current_nodes = next_nodes
         stage += 1
 
@@ -321,24 +392,24 @@ def generate_adder_tree(module_name: str,num_inputs, input_bit_width ):
 
 
 
-def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
+def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width,layer_no : int):
     assert (num_inputs & (num_inputs - 1)) == 0, "num_inputs must be a power of 2"
     module_lines = []
-    
-    #module_name = f"adder_tree_bar"
-    max_stage = int(math.log2(num_inputs)) + input_bit_width
+
+    #module_name = f"adder_tree_{num_inputs}bar"
+    max_stage = int(math.log2(num_inputs)) + input_bit_width+1
 
     module_lines.append("")
     module_lines.append(f"module {module_name} (")
     module_lines.append("    input  wire   clk, ")
     for i in range(num_inputs):
-        module_lines.append(f"    input  wire [{input_bit_width - 1}:0] in{i},")
-    out_width = input_bit_width + int(math.log2(num_inputs))
+        module_lines.append(f"    input  wire [{input_bit_width}:0] in{i},")
+    out_width = input_bit_width + int(math.log2(num_inputs))+1
     module_lines.append(f"    output wire [{out_width - 1}:0] sum\n);")
     module_lines.append("")
 
     stage = 0
-    current_nodes = [(f"in{i}", input_bit_width) for i in range(num_inputs)]
+    current_nodes = [(f"in{i}", input_bit_width+1) for i in range(num_inputs)]
     wires, regs, logic = [], [], []
     final_wire = ""
 
@@ -350,15 +421,15 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
             width = max(wa, wb)
             adder_width = width
             next_width = adder_width + 1
-            low_name = f"stage{stage}_{i//2}_lo_bar"
-            reg_name = f"stage{stage}_{i//2}_bar"
+            low_name = f"stage{stage}_{i//2}_lo_bar_{layer_no}"
+            reg_name = f"stage{stage}_{i//2}_bar_{layer_no}"
             wires.append((low_name, next_width - 1))
             regs.append((reg_name, next_width, low_name))
             adder_mod = f"add{adder_width}bitbar"
             logic.append(f"    {adder_mod} u{stage}_{i//2}_bar (.a({a}), .b({b}), .cin(1'b0), .y({low_name}), .cout(), .cout_bar());")
             next_nodes.append((reg_name, next_width))
             if len(current_nodes) == 2:
-                final_wire = low_name  # Capture the final output wire name before register
+                final_wire = reg_name  # Capture the final output wire name before register
         current_nodes = next_nodes
         stage += 1
 
@@ -380,7 +451,7 @@ def generate_adder_tree_bar(module_name: str,num_inputs, input_bit_width):
     return "\n".join(module_lines)
 import math
 
-def main(input_bitsize =3 ):
+def main(input_bitsize = 9):
     verilog = f"""module mux_1 (
 
     input  wire a, b, s,
@@ -397,7 +468,6 @@ module mux_2(
     input  [{input_bitsize-1}:0] a,
     input  [{input_bitsize-1}:0] b,
     input  [{input_bitsize-1}:0] c,
-    input  [{input_bitsize-1}:0] d,
     input        s0,
     input        s1,
     output [{input_bitsize-1}:0] y
@@ -405,37 +475,33 @@ module mux_2(
     assign y = (s1 == 0 && s0 == 0) ? a :
                (s1 == 0 && s0 == 1) ? b :
                (s1 == 1 && s0 == 0) ? c :
-               /* s1 == 1 && s0 == 1 */ d;
+               {input_bitsize-1}'b0; // Default value for (s1 == 1 && s0 == 1)
 endmodule
 
 
 module mux_3(
     input   a,
     input   b,
-    input   c,
     input        s0,
     input        s1,
     output  y
 );
     assign y = (s1 == 0 && s0 == 0) ? a :
                (s1 == 0 && s0 == 1) ? b :
-               (s1 == 1 && s0 == 0) ? c :
-               1'b0; // Default value for (s1 == 1 && s0 == 1)
+               1'b0; // Default value for (s1 == 1 && s0 == 0)
 endmodule
 
 
 module mux_4(
     input  [{input_bitsize-1}:0] a,
     input  [{input_bitsize-1}:0] b,
-    input  [{input_bitsize-1}:0] c,
     input        s0,
     input        s1,
     output [{input_bitsize-1}:0] y
 );
     assign y = (s1 == 0 && s0 == 0) ? a :
                (s1 == 0 && s0 == 1) ? b :
-               (s1 == 1 && s0 == 0) ? c :
-               3'b000; // Default value for (s1 == 1 && s0 == 1)
+               {input_bitsize-1}'b0; // Default value for (s1 == 1 && s0 == 0)
 endmodule
 
 """
@@ -453,7 +519,6 @@ def gen_mux_5(num_inputs: int, input_bitsize: int) -> str:
     lines.append(f"    input  [{sum_width-1}:0] a,")
     lines.append(f"    input  [{sum_width-1}:0] b,")
     lines.append(f"    input  [{sum_width-1}:0] c,")
-    lines.append(f"    input  [{sum_width-1}:0] d,")
     lines.append(f"    input        s0,")
     lines.append(f"    input        s1,")
     lines.append(f"    output [{sum_width-1}:0] y")
@@ -461,20 +526,18 @@ def gen_mux_5(num_inputs: int, input_bitsize: int) -> str:
     lines.append("    assign y = (!s1 && !s0) ? a :")
     lines.append("               (!s1 &&  s0) ? b :")
     lines.append("               ( s1 && !s0) ? c :")
-    lines.append("                              d;")
+    lines.append(f"              {sum_width-1}'b0; // Default value for (s1 == 1 && s0 == 1)")
     lines.append("endmodule")
     
     
     return '\n'.join(lines)
 
-
-    
-def generate_activation_module(num_inputs : int , input_bitwidth : int):
+def generate_activation_module(num_inputs : int , input_bitwidth : int,layer_no : int):
     assert input_bitwidth >= 1, "Bit size must be at least 1"
-    n = math.ceil(math.log2(num_inputs)) +input_bitwidth +1
+    n = math.ceil(math.log2(num_inputs)) +input_bitwidth +2
 
     lines = []
-    lines.append(f"module activation (")
+    lines.append(f"module activation_{layer_no} (")
     lines.append("")
     lines.append(f"    input [{n-1}:0] inputs0_0,")
     lines.append(f"    input [{n-1}:0] inputs0_1,")
@@ -484,8 +547,7 @@ def generate_activation_module(num_inputs : int , input_bitwidth : int):
     rand_inputs = ', '.join([f"r{i}_0" for i in range(n)])
     lines.append(f"    input {rand_inputs},")
     lines.append("")
-    lines.append("    output masked_activation,")
-    lines.append("    output mask")
+    lines.append("    output  masked_activation ")
     lines.append(");")
     lines.append("")
 
@@ -503,21 +565,18 @@ def generate_activation_module(num_inputs : int , input_bitwidth : int):
     lines.append("")
 
     lines.append(f"    wire carry = r{n} ^ masked_c{n-1}_0;")
-    lines.append(f"    wire activation = (carry ^ inputs0_0[{n-1}] ^ inputs0_1[{n-1}]) ? 1'b0 : 1'b1;")
+    lines.append(f"    assign masked_activation = (carry ^ inputs0_0[{n-1}] ^ inputs0_1[{n-1}]) ? 1'b0 : 1'b1;")
     lines.append("")
 
-    lines.append("    assign masked_activation = activation ^ r{0};".format(n))
-    lines.append("    assign mask = r{0};".format(n))
-    lines.append("")
     lines.append("endmodule")
 
     return '\n'.join(lines)
 
 def generate_activation_array_verilog(module_name: str, num_inputs:int,
-                                    num_nodes:int , input_bitwidth : int) -> str:
+                                    num_nodes:int , input_bitwidth : int,layer_no :int) -> str:
     lines = []
     num_activations=num_nodes
-    n=n = math.ceil(math.log2(num_inputs)) +input_bitwidth +1
+    n=n = math.ceil(math.log2(num_inputs)) +input_bitwidth +2
 
     # Module declaration
     lines.append(f"module {module_name} (")
@@ -532,21 +591,18 @@ def generate_activation_array_verilog(module_name: str, num_inputs:int,
         lines.append(f"    input  {r_bits},")
 
     # Outputs
-    for i in range(num_activations):
-        lines.append(f"    output wire masked_activation{i},")
     for i in range(num_activations - 1):
-        lines.append(f"    output wire mask{i},")
-    lines.append(f"    output wire mask{num_activations - 1}\n);")
+        lines.append(f"    output wire masked_activation{i},")
+    lines.append(f"    output wire  masked_activation{num_activations - 1}\n);")
     lines.append("")
 
     # Instantiations of activation modules
     for i in range(num_activations):
-        lines.append(f"    activation a{i} (")
+        lines.append(f"    activation_{layer_no} a{i} (")
         lines.append(f"        .inputs0_0(inputs{i}_0), .inputs0_1(inputs{i}_1),")
         for j in range(n):
             lines.append(f"        .r{j}_0(r{j}_{i}),")
-        lines.append(f"        .masked_activation(masked_activation{i}),")
-        lines.append(f"        .mask(mask{i})")
+        lines.append(f"        .masked_activation(masked_activation{i})")
         lines.append("    );\n")
 
     lines.append("endmodule")
@@ -554,53 +610,66 @@ def generate_activation_array_verilog(module_name: str, num_inputs:int,
     return "\n".join(lines)
 
 
-def generate_boolean_to_arithmetic_verilog(input_bitwidth: int ) -> str:
-    verilog = []
-    verilog.append("`timescale 1ns/1ps\n")
-    verilog.append(f"module mux (\n")
-    verilog.append("    input  wire a, b, s,\n")
-    verilog.append("    output wire y\n);\n")
-    verilog.append("assign y = (~s & a)|(s & b);\nendmodule\n\n")
 
-    verilog.append(f"module boolean_arithmetic_coversion_1 (\n")
-    verilog.append("    input  wire x0,\n")
-    verilog.append("    input  wire x1,\n")
-    verilog.append(f"    input  wire [{input_bitwidth-2}:0] r_mask,\n")
-    verilog.append(f"    output wire [{input_bitwidth-1}:0] arith_share0,\n")
-    verilog.append(f"    output wire [{input_bitwidth-1}:0] arith_share1\n);\n")
+def generate_boolean_to_arithmetic_verilog(input_bitwidth: int) -> str:
+    v = []
 
-    verilog.append(f"    wire [{input_bitwidth-1}:0] y0;\n")
-    verilog.append(f"    wire [{input_bitwidth-1}:0] y1;\n\n")
+    v.append("module boolean_arithmetic_conversion_1 (\n")
+    v.append("    input  wire x0,\n")
+    v.append("    input  wire x1,\n")
+    v.append(f"    input  wire [{input_bitwidth-1}:0] r_mask,\n")
+    v.append(f"    output wire [{input_bitwidth}:0] arith_share0,\n")
+    v.append(f"    output reg  [{input_bitwidth}:0] arith_share1\n")
+    v.append(");\n\n")
 
-    verilog.append(f"    assign y0 = {{ r_mask, x0 }};\n")
-    verilog.append(f"    assign y1 = {{ r_mask, x1 }};\n\n")
+    # internal signals
+    v.append(f"wire [{input_bitwidth-1}:0] neg_r_mask;\n")
+    v.append(f"reg signed [{input_bitwidth-1}:0] ri_1;\n")
+    v.append(f"wire [{input_bitwidth}:0] ri_2;\n")
+    v.append(f"wire [{input_bitwidth}:0] r_m;\n")
 
-    verilog.append("    // stage1 for LSB\n")
-    verilog.append("    assign arith_share0[0] = y0[0];\n\n")
+    # two's complement mask
+    v.append("assign neg_r_mask = (~r_mask + 1'b1);\n\n")
 
-    for i in range(1, input_bitwidth):
-        if i == 1:
-            a = f"y0[{i}]"
-            b = f"y1[{i-1}] ^ y0[{i}]"
-        else:
-            a = f"y0[{i-1}] ^ y0[{i}]"
-            b = f"y0[{i}] ^ y1[{i-1}]"
-        verilog.append(f"    mux m{i}(.a({a}), .b({b}), .s(arith_share0[{i-1}]), .y(arith_share0[{i}]));\n")
+    # weighted input mapping
+    v.append("always @(*) begin\n")
+    v.append("    if (x0 == 1'b0)\n")
+    v.append(f"        ri_1 = -{input_bitwidth}'sd1;\n")
+    v.append("    else\n")
+    v.append(f"        ri_1 = {input_bitwidth}'sd1;\n")
+    v.append("end\n\n")
 
-    verilog.append(f"\n    assign arith_share1 = y1;\n")
-    verilog.append("endmodule\n")
+    # adder block (single line)
+    v.append(f"add{input_bitwidth}bit w1 (.a(ri_1), .b(neg_r_mask), .cin(1'b0), .y(ri_2), .cout(), .cout_bar());\n\n")
 
-    return "\n".join(verilog)
+    # output assignment
+    v.append("assign arith_share0 = ri_2;\n\n")
 
+    # sign extension
+    v.append("assign r_m = {1'b0, neg_r_mask};\n\n")
 
-def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
+    # arithmetic share1 logic
+    v.append("always @(*) begin\n")
+    v.append(f"    if (r_mask[{input_bitwidth-1}] == 1'b0)\n")
+    v.append("        arith_share1 = {1'b0, r_mask};\n")
+    v.append("    else\n")
+    v.append("        arith_share1 = (~r_m + 1'b1);\n")
+    v.append("end\n\n")
+
+    v.append("endmodule\n")
+
+    return "".join(v)
     
-    sum_width = input_bitsize + math.ceil(math.log2(num_inputs))
+    
+def generate_bnn_layer_verilog1(num_inputs, input_bitsize, num_nodes ,layer_no :int):
+    
+    sum_width = input_bitsize + math.ceil(math.log2(num_inputs))+1
     biased_sum_width = sum_width + 1
+    k= math.ceil(math.log2(num_inputs))
 
     lines = []
     # Module header and port list
-    lines.append("module layer (")
+    lines.append(f"module layer_{layer_no} (")
     ports = []
     # control signals
     ports += [
@@ -611,20 +680,15 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
     # static inputs: inputsX_1
     inp_names = [f"inputs{i}_1" for i in range(num_inputs)]
     ports.append((f"input wire", f"[{input_bitsize-1}:0]", ", ".join(inp_names)))
-    # act signals: act<node>_<branch>_<i>
-    for node in range(num_nodes):
-        for branch in [0,1]:
-            act_names = [f"act{node}_{branch}_{i}" for i in range(num_inputs)]
-            ports.append(("input wire", f"[{input_bitsize-1}:0]", ", ".join(act_names)))
     # weight buses (fixed 4 layers)
     for layer in range(num_nodes):
-        ports.append((f"input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_0_1, w{layer+1}_1_1"))
+        ports.append((f"input wire", f"[{input_bitsize-1}:0]", f"w_mask{layer+1}_1"))
+    for layer in range(num_nodes):
+        ports.append((f"input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_1"))
     # bias buses
     for i in range(1, num_nodes+1):
-        names = [f"b{i}_{j}" for j in range(1, 5)]
+        names = [f"b{i}_{j}_1" for j in range(0, 2)]
         ports.append(("input wire", f"[{sum_width-1}:0]", ", ".join(names)))
-    # selector
-    ports.append(("input wire", "[1:0]", "s"))
     # handshake output
     ports.append(("output reg", "", "done"))
     # registered outputs
@@ -636,8 +700,6 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
         ports.append(("output reg", f"[{biased_sum_width-1}:0]", ", ".join(names)))
     for node in range(num_nodes):
         ports.append(("output reg", "", f"masked_activation{node}_1_r, masked_activation{node}bar_1_r"))
-    for node in range(num_nodes):
-        ports.append(("output reg", "", f"mask{node}_1_r, mask{node}bar_1_r"))
 
     # emit ports
     for i, (direction, width, namestr) in enumerate(ports):
@@ -654,80 +716,53 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
     for node in range(num_nodes):
         lines.append(f"  wire [{biased_sum_width-1}:0] biased_sum{node}_0, biased_sum{node}_1, biased_sum{node}_0bar, biased_sum{node}_1bar;")
         lines.append(f"  wire masked_activation{node}_1, masked_activation{node}bar_1;")
-        lines.append(f"  wire mask{node}_1, mask{node}bar_1;")
     lines.append("  \n")
     for layer in range(num_nodes):
         for i in range(num_inputs):
-            lines.append(f"  wire [{input_bitsize-1}:0] weighted_inputs{layer+1}_{i}_0, weighted_inputs{layer+1}_{i}_1;")
-            lines.append(f"  wire [{input_bitsize-1}:0] new_weighted_inputs{layer+1}_{i}_0, new_weighted_inputs{layer+1}_{i}_1;")
+            lines.append(f"  wire [{input_bitsize}:0] weighted_inputs{layer+1}_{i}_0, weighted_inputs{layer+1}_{i}_1;")
+            
     lines.append("  \n")
     lines.append(f"  wire [{sum_width-1}:0] sum1 [{num_nodes-1}:0], sum2 [{num_nodes-1}:0], sum1bar [{num_nodes-1}:0], sum2bar [{num_nodes-1} :0];")
     lines.append(f"  wire [{biased_sum_width-1}:0] biased_sum1 [{num_nodes-1}:0], biased_sum2 [{num_nodes-1}:0], biased_sum1bar [{num_nodes-1}:0], biased_sum2bar [{num_nodes-1}:0];")
     lines.append("  \n")
-    for layer in range(num_nodes):
-        for bit in range(num_inputs):
-            for part in (1,2,3):
-                lines.append(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_0_{part};")
-                lines.append(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_1_{part};")
-    lines.append("  \n")
-    for layer in range(num_nodes):
-        for bit in range(num_inputs):
-            for part in (1,2,3):
-                lines.append(f"  assign act{layer}_{bit}_0_{part}= act{layer}_0_{bit};")
-                lines.append(f"  assign act{layer}_{bit}_1_{part}= act{layer}_1_{bit};")   
-    lines.append(" ")
+
 
     # Weighted_inputs instantiation
     lines.append("  // weighted_inputs modules")
     for layer in range(num_nodes):
         for i in range(num_inputs):
-            lines.append(f"  weighted_inputs_1 w{layer+1}_{i}    (.inputs(inputs{i}_1), .w(w{layer+1}_0_1[{i}]), .wi(weighted_inputs{layer+1}_{i}_0));")
-            lines.append(f"  weighted_inputs_1 w{layer+1}_{i}_bar(.inputs(inputs{i}_1), .w(w{layer+1}_1_1[{i}]), .wi(weighted_inputs{layer+1}_{i}_1));")
+            lines.append(f"  weighted_inputs_1 w{layer+1}_1_{i}    (.inputs(inputs{i}_1), .w(w{layer+1}_1[{num_inputs-i-1}]), .w_mask_1(w_mask{layer+1}_1), .wi(weighted_inputs{layer+1}_{i}_0), .w_i_mask(weighted_inputs{layer+1}_{i}_1));")
+
     lines.append(" ")
 
     # Adder trees for sum1 and sum1bar
     lines.append("  // adder trees for sum1 and sum1bar")
     for node in range(num_nodes):
-        for i in range(num_inputs):
-            idx = node * num_inputs + i + 1
-            lines.append(
-                f"  mux_2 m{idx} (.a(weighted_inputs{node+1}_{i}_0), .b(act{node}_{i}_0_1), "
-                f".c(act{node}_{i}_0_2), .d(act{node}_{i}_0_3), .s0(s[0]), .s1(s[1]), "
-                f".y(new_weighted_inputs{node+1}_{i}_0));"
-            )
-        lines.append(f"  adder_tree add{node} (")
+        lines.append(f"  adder_tree_{layer_no} add{node} (")
         lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
-            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_0),")
+            lines.append(f"    .in{i}(weighted_inputs{node+1}_{i}_0),")
         lines.append(f"    .sum(sum1[{node}])")
         lines.append("  );")
-        lines.append(f"  adder_tree_bar addb{node} (")
+        lines.append(f"  adder_tree_bar_{layer_no} addb{node} (")
         lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
-            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_0),")
+            lines.append(f"    .in{i}(weighted_inputs{node+1}_{i}_0),")
         lines.append(f"    .sum(sum1bar[{node}])")
         lines.append("  );\n")
     # Adder trees for sum2 and sum2bar
     lines.append("  // adder trees for sum2 and sum2bar")
     for node in range(num_nodes):
-        base = num_nodes * num_inputs
-        for i in range(num_inputs):
-            idx = base + node * num_inputs + i + 1
-            lines.append(
-                f"  mux_2 m{idx} (.a(weighted_inputs{node+1}_{i}_1), .b(act{node}_{i}_1_1), "
-                f".c(act{node}_{i}_1_2), .d(act{node}_{i}_1_3), .s0(s[0]), .s1(s[1]), "
-                f".y(new_weighted_inputs{node+1}_{i}_1));"
-            )
-        lines.append(f"  adder_tree add{num_nodes+node} (")
+        lines.append(f"  adder_tree_{layer_no} add{num_nodes+node} (")
         lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
-            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_1),")
+            lines.append(f"    .in{i}(weighted_inputs{node+1}_{i}_1),")
         lines.append(f"    .sum(sum2[{node}])")
         lines.append("  );")
-        lines.append(f"  adder_tree_bar addb{num_nodes+node} (")
+        lines.append(f"  adder_tree_bar_{layer_no} addb{num_nodes+node} (")
         lines.append(f"    .clk(clk),")
         for i in range(num_inputs):
-            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_1),")
+            lines.append(f"    .in{i}(weighted_inputs{node+1}_{i}_1),")
         lines.append(f"    .sum(sum2bar[{node}])")
         lines.append("  );\n")
 
@@ -736,19 +771,15 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
         lines.append(f"  wire [{sum_width-1}:0] b{i+1};")
     lines.append("")
         
-    # Mux for bias
-    for i in range(num_nodes):
-        lines.append(f"  mux_5 mux{i}  (.a(b{i+1}_1), .b(b{i+1}_2), .c(b{i+1}_3), .d(b{i+1}_4), .s0(s[0]), .s1(s[1]), .y(b{i+1}));")
-    lines.append("")
 
     
     # Bias addition
     lines.append("  // bias addition")
     for node in range(num_nodes):
-        lines.append(f"  add{sum_width}bit     u{node}  (.a(sum1[{node}]),     .b(b{node+1}), .cin(1'b0), .y(biased_sum1[{node}]));")
-        lines.append(f"  add{sum_width}bitbar ub{node} (.a(sum1bar[{node}]), .b(b{node+1}), .cin(1'b0), .y(biased_sum1bar[{node}]));")
-        lines.append(f"  add{sum_width}bit     u{node+num_nodes}  (.a(sum2[{node}]),     .b(b{node+1}), .cin(1'b0), .y(biased_sum2[{node}]));")
-        lines.append(f"  add{sum_width}bitbar ub{node+num_nodes} (.a(sum2bar[{node}]), .b(b{node+1}), .cin(1'b0), .y(biased_sum2bar[{node}]));")
+        lines.append(f"  add{sum_width}bit     u{node}  (.a(sum1[{node}]),     .b(b{node+1}_0_1), .cin(1'b0), .y(biased_sum1[{node}]));")
+        lines.append(f"  add{sum_width}bitbar ub{node} (.a(sum1bar[{node}]), .b(b{node+1}_0_1), .cin(1'b0), .y(biased_sum1bar[{node}]));")
+        lines.append(f"  add{sum_width}bit     u{node+num_nodes}  (.a(sum2[{node}]),     .b(b{node+1}_1_1), .cin(1'b0), .y(biased_sum2[{node}]));")
+        lines.append(f"  add{sum_width}bitbar ub{node+num_nodes} (.a(sum2bar[{node}]), .b(b{node+1}_1_1), .cin(1'b0), .y(biased_sum2bar[{node}]));")
     lines.append("")
 
 
@@ -764,7 +795,7 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
     
     # Debug display block
     lines.append("  always @(posedge clk) begin")
-    lines.append('    $display("----- BNN LAYER  OUTPUTS -----");')
+    lines.append('    $display("----- BNN LAYER 1  OUTPUTS -----");')
     for arr in ["sum1", "sum2", "sum1bar", "sum2bar"]:
         fmt = " ".join(["%b"] * num_nodes)
         args = ", ".join(f"{arr}[{i}]" for i in range(num_nodes))
@@ -781,42 +812,69 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
     # r registers and initial block
     for node in range(num_nodes):
         for r in range(biased_sum_width):
-            lines.append(f"  reg r{r}_{node};")
+            lines.append(f"  reg r{r}_{node}_1;")
     lines.append("\n  initial begin")
     for node in range(num_nodes):
         for r in range(biased_sum_width):
-            lines.append(f"    r{r}_{node} = $random;")
+            lines.append(f"    r{r}_{node}_1 = $random;")
     lines.append("    #1;")
     lines.append("  end\n")
 
     # activation arrays
-    lines.append("  activation_array_1 act1 (")
+    lines.append(f"  activation_array_{layer_no} act1 (")
     for i in range(num_nodes):
         lines.append(f"    .inputs{i}_0(biased_sum{i}_0),")
         lines.append(f"    .inputs{i}_1(biased_sum{i}_1),")
     for node in range(num_nodes):
         for r in range(biased_sum_width):
-            lines.append(f"    .r{r}_{node}(r{r}_{node}),")
-    for i in range(num_nodes):
-        lines.append(f"    .masked_activation{i}(masked_activation{i}_1),")
+            lines.append(f"    .r{r}_{node}(r{r}_{node}_1),")
     for i in range(num_nodes):
         comma = "," if i < num_nodes-1 else ""
-        lines.append(f"    .mask{i}(mask{i}_1){comma}")
+        lines.append(f"    .masked_activation{i}(masked_activation{i}_1){comma}")
     lines.append("  );\n")
 
-    lines.append("  activation_array_1 act2 (")
+    lines.append(f"  activation_array_{layer_no} act2 (")
     for i in range(num_nodes):
         lines.append(f"    .inputs{i}_0(biased_sum{i}_0bar),")
         lines.append(f"    .inputs{i}_1(biased_sum{i}_1bar),")
     for node in range(num_nodes):
         for r in range(biased_sum_width):
-            lines.append(f"    .r{r}_{node}(r{r}_{node}),")
-    for i in range(num_nodes):
-        lines.append(f"    .masked_activation{i}(masked_activation{i}bar_1),")
+            lines.append(f"    .r{r}_{node}(r{r}_{node}_1),")
     for i in range(num_nodes):
         comma = "," if i < num_nodes-1 else ""
-        lines.append(f"    .mask{i}(mask{i}bar_1){comma}")
+        lines.append(f"    .masked_activation{i}(masked_activation{i}bar_1){comma}")
     lines.append("  );\n")
+    
+    
+    lines.append("// --------------------------------------------------")
+    lines.append("// START PULSE (CRITICAL)")
+    lines.append("// --------------------------------------------------")
+    lines.append("reg start_d, start_pulse;")
+    lines.append("")
+    lines.append("always @(posedge clk or negedge rst_n) begin")
+    lines.append("    if (!rst_n) begin")
+    lines.append("        start_d <= 0;")
+    lines.append("        start_pulse <= 0;")
+    lines.append("    end else begin")
+    lines.append("        start_d <= start;")
+    lines.append("        start_pulse <= start & ~start_d;")
+    lines.append("    end")
+    lines.append("end")
+    lines.append("")
+    
+    lines.append("// --------------------------------------------------")
+    lines.append(f"// VALID SHIFT REGISTER (latency = {k})")
+    lines.append("// --------------------------------------------------")
+    lines.append(f"reg [{k-1}:0] valid;")
+    lines.append("")
+    lines.append("always @(posedge clk or negedge rst_n) begin")
+    lines.append("    if (!rst_n)")
+    lines.append(f"        valid <= {k}'b0;")
+    lines.append("    else")
+    lines.append(f"        valid <= {{valid[{k-2}:0], start_pulse}};")
+    lines.append("end")
+    lines.append("")
+
 
     # Output registers and handshake logic
     lines.append("  always @(posedge clk or negedge rst_n) begin")
@@ -826,14 +884,294 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
         lines.append(f"      biased_sum{node}_0_r    <= {biased_sum_width}'d0;  biased_sum{node}_1_r    <= {biased_sum_width}'d0;")
         lines.append(f"      biased_sum{node}_0bar_r <= {biased_sum_width}'d0;  biased_sum{node}_1bar_r <= {biased_sum_width}'d0;")
         lines.append(f"      masked_activation{node}_1_r <= 1'b0; masked_activation{node}bar_1_r <= 1'b0;")
-        lines.append(f"      mask{node}_1_r             <= 1'b0;             mask{node}bar_1_r             <= 1'b0;")
-    lines.append("    end else if (start) begin")
+    lines.append(f"    end else if (valid[{k-1}]) begin")
     lines.append("      done <= 1'b1;")
     for node in range(num_nodes):
         lines.append(f"      biased_sum{node}_0_r    <= biased_sum{node}_0;  biased_sum{node}_1_r    <= biased_sum{node}_1;")
         lines.append(f"      biased_sum{node}_0bar_r <= biased_sum{node}_0bar;  biased_sum{node}_1bar_r <= biased_sum{node}_1bar;")
         lines.append(f"      masked_activation{node}_1_r <= masked_activation{node}_1; masked_activation{node}bar_1_r <= masked_activation{node}bar_1;")
-        lines.append(f"      mask{node}_1_r             <= mask{node}_1;             mask{node}bar_1_r             <= mask{node}bar_1;")
+    lines.append("    end else begin")
+    lines.append("      done <= 1'b0;")
+    lines.append("    end")
+    lines.append("  end\n")
+    lines.append("endmodule")
+    return "\n".join(lines)
+    
+def generate_bnn_layer_verilog2(num_inputs, input_bitsize, num_nodes ,layer_no :int):
+    
+    sum_width = input_bitsize + math.ceil(math.log2(num_inputs))
+    biased_sum_width = sum_width + 1
+    k = math.ceil(math.log2(num_inputs))
+
+    lines = []
+    # Module header and port list
+    lines.append(f"module layer_{layer_no} (")
+    ports = []
+    # control signals
+    ports += [
+        ("input wire", "", "clk"),
+        ("input wire", "", "rst_n"),
+        ("input wire", "", "start")
+    ]
+    # static inputs: inputsX_1
+    inp_names = [f"inputs{i}_1" for i in range(num_inputs)]
+    ports.append((f"input wire", f"  ", ", ".join(inp_names)))
+    # act signals: act<node>_<branch>_<i>
+    for node in range(num_nodes):
+        for branch in [0,1]:
+            act_names = [f"act{node}_{branch}_{i}" for i in range(num_inputs)]
+            ports.append(("input wire", f"[{input_bitsize-1}:0]", ", ".join(act_names)))
+    # weight buses (fixed 4 layers)
+    for layer in range(num_nodes):
+        ports.append((f"input wire", f"[{input_bitsize-2}:0]", f"w_mask{layer+1}_2"))
+    for layer in range(num_nodes):
+        ports.append((f"input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_2"))
+    # bias buses
+    for i in range(1, num_nodes+1):
+        names = [f"b{i}_0_{j}" for j in range(2, 5)]
+        ports.append(("input wire", f"[{sum_width-1}:0]", ", ".join(names)))
+    for i in range(1, num_nodes+1):
+        names = [f"b{i}_1_{j}" for j in range(2, 5)]
+        ports.append(("input wire", f"[{sum_width-1}:0]", ", ".join(names)))
+    # selector
+    ports.append(("input wire", "[1:0]", "s"))
+    # handshake output
+    ports.append(("output reg", "", "done"))
+    # registered outputs
+    for node in range(num_nodes):
+        names = [
+            f"biased_sum{node}_0_r", f"biased_sum{node}_1_r",
+            f"biased_sum{node}_0bar_r", f"biased_sum{node}_1bar_r"
+        ]
+        ports.append(("output reg", f"[{biased_sum_width-1}:0]", ", ".join(names)))
+    for node in range(num_nodes):
+        ports.append(("output reg", "", f"masked_activation{node}_2_r, masked_activation{node}bar_2_r"))
+
+    # emit ports
+    for i, (direction, width, namestr) in enumerate(ports):
+        comma = "," if i < len(ports)-1 else ""
+        if namestr:
+            lines.append(f"  {direction} {width} {namestr}{comma}")
+        else:
+            lines.append(f"  {direction}{comma}")
+    lines.append(");")
+    lines.append("")
+
+    # Internal wires
+    lines.append("  // internal wires")
+    for node in range(num_nodes):
+        lines.append(f"  wire [{biased_sum_width-1}:0] biased_sum{node}_0, biased_sum{node}_1, biased_sum{node}_0bar, biased_sum{node}_1bar;")
+        lines.append(f"  wire masked_activation{node}_2, masked_activation{node}bar_2;")
+    lines.append("  \n")
+    for layer in range(num_nodes):
+        for i in range(num_inputs):
+            lines.append(f"  wire [{input_bitsize-1}:0] weighted_inputs{layer+1}_{i}_0, weighted_inputs{layer+1}_{i}_1;")
+            lines.append(f"  wire [{input_bitsize-1}:0] new_weighted_inputs{layer+1}_{i}_0, new_weighted_inputs{layer+1}_{i}_1;")
+    lines.append("  \n")
+    lines.append(f"  wire [{sum_width-1}:0] sum1 [{num_nodes-1}:0], sum2 [{num_nodes-1}:0], sum1bar [{num_nodes-1}:0], sum2bar [{num_nodes-1} :0];")
+    lines.append(f"  wire [{biased_sum_width-1}:0] biased_sum1 [{num_nodes-1}:0], biased_sum2 [{num_nodes-1}:0], biased_sum1bar [{num_nodes-1}:0], biased_sum2bar [{num_nodes-1}:0];")
+    lines.append("  \n")
+    for layer in range(num_nodes):
+        for bit in range(num_inputs):
+            for part in (2,3):
+                lines.append(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_0_{part};")
+                lines.append(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_1_{part};")
+    lines.append("  \n")
+    for layer in range(num_nodes):
+        for bit in range(num_inputs):
+            for part in (2,3):
+                lines.append(f"  assign act{layer}_{bit}_0_{part}= act{layer}_0_{bit};")
+                lines.append(f"  assign act{layer}_{bit}_1_{part}= act{layer}_1_{bit};")   
+    lines.append(" ")
+
+    # Weighted_inputs instantiation
+    lines.append("  // weighted_inputs modules")
+    for layer in range(num_nodes):
+        for i in range(num_inputs):
+            lines.append(f"  weighted_inputs_2 w{layer+1}_2_{i}    (.inputs(inputs{i}_1), .w(w{layer+1}_2[{num_inputs-i-1}]),.w_mask_2(w_mask{layer+1}_2), .wi(weighted_inputs{layer+1}_{i}_0) ,.w_i_mask(weighted_inputs{layer+1}_{i}_1));")
+
+    lines.append(" ")
+
+    # Adder trees for sum1 and sum1bar
+    lines.append("  // adder trees for sum1 and sum1bar")
+    for node in range(num_nodes):
+        for i in range(num_inputs):
+            idx = node * num_inputs + i + 1
+            lines.append(
+                f"  mux_2 m{idx} (.a(weighted_inputs{node+1}_{i}_0), .b(act{node}_{i}_0_2), "
+                f".c(act{node}_{i}_0_3),  .s0(s[0]), .s1(s[1]), "
+                f".y(new_weighted_inputs{node+1}_{i}_0));"
+            )
+        lines.append(f"  adder_tree_{layer_no} add{node} (")
+        lines.append(f"    .clk(clk),")
+        for i in range(num_inputs):
+            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_0),")
+        lines.append(f"    .sum(sum1[{node}])")
+        lines.append("  );")
+        lines.append(f"  adder_tree_bar_{layer_no} addb{node} (")
+        lines.append(f"    .clk(clk),")
+        for i in range(num_inputs):
+            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_0),")
+        lines.append(f"    .sum(sum1bar[{node}])")
+        lines.append("  );\n")
+    # Adder trees for sum2 and sum2bar
+    lines.append("  // adder trees for sum2 and sum2bar")
+    for node in range(num_nodes):
+        base = num_nodes * num_inputs
+        for i in range(num_inputs):
+            idx = base + node * num_inputs + i + 1
+            lines.append(
+                f"  mux_2 m{idx} (.a(weighted_inputs{node+1}_{i}_1), .b(act{node}_{i}_1_2), "
+                f".c(act{node}_{i}_1_3), .s0(s[0]), .s1(s[1]), "
+                f".y(new_weighted_inputs{node+1}_{i}_1));"
+            )
+        lines.append(f"  adder_tree_{layer_no} add{num_nodes+node} (")
+        lines.append(f"    .clk(clk),")
+        for i in range(num_inputs):
+            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_1),")
+        lines.append(f"    .sum(sum2[{node}])")
+        lines.append("  );")
+        lines.append(f"  adder_tree_bar_{layer_no} addb{num_nodes+node} (")
+        lines.append(f"    .clk(clk),")
+        for i in range(num_inputs):
+            lines.append(f"    .in{i}(new_weighted_inputs{node+1}_{i}_1),")
+        lines.append(f"    .sum(sum2bar[{node}])")
+        lines.append("  );\n")
+
+    #  bias
+    for i in range(num_nodes):
+        lines.append(f"  wire [{sum_width-1}:0] b{i+1}_0;")
+        lines.append(f"  wire [{sum_width-1}:0] b{i+1}_1;")
+    lines.append("")
+        
+    # Mux for bias
+    for i in range(num_nodes):
+        lines.append(f"  mux_5 mux{i}  (.a(b{i+1}_0_2), .b(b{i+1}_0_3), .c(b{i+1}_0_4), .s0(s[0]), .s1(s[1]), .y(b{i+1}_0));")
+    lines.append("")
+    for i in range(num_nodes):
+        lines.append(f"  mux_5 mux{num_nodes + i}  (.a(b{i+1}_1_2), .b(b{i+1}_1_3), .c(b{i+1}_1_4), .s0(s[0]), .s1(s[1]), .y(b{i+1}_1));")
+    lines.append("")
+
+    
+    # Bias addition
+    lines.append("  // bias addition")
+    for node in range(num_nodes):
+        lines.append(f"  add{sum_width}bit     u{node}  (.a(sum1[{node}]),     .b(b{node+1}_0), .cin(1'b0), .y(biased_sum1[{node}]));")
+        lines.append(f"  add{sum_width}bitbar ub{node} (.a(sum1bar[{node}]), .b(b{node+1}_0), .cin(1'b0), .y(biased_sum1bar[{node}]));")
+        lines.append(f"  add{sum_width}bit     u{node+num_nodes}  (.a(sum2[{node}]),     .b(b{node+1}_1), .cin(1'b0), .y(biased_sum2[{node}]));")
+        lines.append(f"  add{sum_width}bitbar ub{node+num_nodes} (.a(sum2bar[{node}]), .b(b{node+1}_1), .cin(1'b0), .y(biased_sum2bar[{node}]));")
+    lines.append("")
+
+
+    # Output assignment
+    for node in range(num_nodes):
+        lines.append  (
+            f"    assign biased_sum{node}_0 = biased_sum1[{node}];\n"
+            f"    assign biased_sum{node}_1 = biased_sum2[{node}];\n"
+            f"    assign biased_sum{node}_0bar = biased_sum1bar[{node}];\n"
+            f"    assign biased_sum{node}_1bar = biased_sum2bar[{node}];\n"
+        )
+    lines.append("")
+    
+    # Debug display block
+    lines.append("  always @(posedge clk) begin")
+    lines.append('    $display("----- BNN LAYER 2 OUTPUTS -----");')
+    for arr in ["sum1", "sum2", "sum1bar", "sum2bar"]:
+        fmt = " ".join(["%b"] * num_nodes)
+        args = ", ".join(f"{arr}[{i}]" for i in range(num_nodes))
+        lines.append(f'    $display("{arr}: {fmt}", {args});')
+    fmt = " ".join(["%b"] * num_nodes)
+    args = ", ".join(f"b{i+1}_0" for i in range(num_nodes))
+    lines.append(f'    $display("bias values: {fmt}", {args});')
+    for arr in ["biased_sum1", "biased_sum2", "biased_sum1bar", "biased_sum2bar"]:
+        fmt = " ".join(["%b"] * num_nodes)
+        args = ", ".join(f"{arr}[{i}]" for i in range(num_nodes))
+        lines.append(f'    $display("{arr}: {fmt}", {args});')
+    lines.append("  end\n")
+
+    # r registers and initial block
+    for node in range(num_nodes):
+        for r in range(biased_sum_width):
+            lines.append(f"  reg r{r}_{node}_2;")
+    lines.append("\n  initial begin")
+    for node in range(num_nodes):
+        for r in range(biased_sum_width):
+            lines.append(f"    r{r}_{node}_2 = $random;")
+    lines.append("    #1;")
+    lines.append("  end\n")
+
+    # activation arrays
+    lines.append(f"  activation_array_{layer_no} act1 (")
+    for i in range(num_nodes):
+        lines.append(f"    .inputs{i}_0(biased_sum{i}_0),")
+        lines.append(f"    .inputs{i}_1(biased_sum{i}_1),")
+    for node in range(num_nodes):
+        for r in range(biased_sum_width):
+            lines.append(f"    .r{r}_{node}(r{r}_{node}_2),")
+    for i in range(num_nodes):
+        comma = "," if i < num_nodes-1 else ""
+        lines.append(f"    .masked_activation{i}(masked_activation{i}_2){comma}")
+    lines.append("  );\n")
+
+    lines.append(f"  activation_array_{layer_no} act2 (")
+    for i in range(num_nodes):
+        lines.append(f"    .inputs{i}_0(biased_sum{i}_0bar),")
+        lines.append(f"    .inputs{i}_1(biased_sum{i}_1bar),")
+    for node in range(num_nodes):
+        for r in range(biased_sum_width):
+            lines.append(f"    .r{r}_{node}(r{r}_{node}_2),")
+    for i in range(num_nodes):
+        comma = "," if i < num_nodes-1 else ""
+        lines.append(f"    .masked_activation{i}(masked_activation{i}bar_2){comma}")
+    lines.append("  );\n")
+
+
+
+
+
+    lines.append("// --------------------------------------------------")
+    lines.append("// START PULSE (CRITICAL)")
+    lines.append("// --------------------------------------------------")
+    lines.append("reg start_d, start_pulse;")
+    lines.append("")
+    lines.append("always @(posedge clk or negedge rst_n) begin")
+    lines.append("    if (!rst_n) begin")
+    lines.append("        start_d <= 0;")
+    lines.append("        start_pulse <= 0;")
+    lines.append("    end else begin")
+    lines.append("        start_d <= start;")
+    lines.append("        start_pulse <= start & ~start_d;")
+    lines.append("    end")
+    lines.append("end")
+    lines.append("")
+    
+    lines.append("// --------------------------------------------------")
+    lines.append(f"// VALID SHIFT REGISTER (latency = {k})")
+    lines.append("// --------------------------------------------------")
+    lines.append(f"reg [{k-1}:0] valid;")
+    lines.append("")
+    lines.append("always @(posedge clk or negedge rst_n) begin")
+    lines.append("    if (!rst_n)")
+    lines.append(f"        valid <= {k}'b0;")
+    lines.append("    else")
+    lines.append(f"        valid <= {{valid[{k-2}:0], start_pulse}};")
+    lines.append("end")
+    lines.append("")
+
+    # Output registers and handshake logic
+    lines.append("  always @(posedge clk or negedge rst_n) begin")
+    lines.append("    if (!rst_n) begin")
+    lines.append("      done <= 1'b0;")
+    for node in range(num_nodes):
+        lines.append(f"      biased_sum{node}_0_r    <= {biased_sum_width}'d0;  biased_sum{node}_1_r    <= {biased_sum_width}'d0;")
+        lines.append(f"      biased_sum{node}_0bar_r <= {biased_sum_width}'d0;  biased_sum{node}_1bar_r <= {biased_sum_width}'d0;")
+        lines.append(f"      masked_activation{node}_2_r <= 1'b0; masked_activation{node}bar_2_r <= 1'b0;")
+    lines.append(f"    end else if (valid[{k-1}]) begin")
+    lines.append("      done <= 1'b1;")
+    for node in range(num_nodes):
+        lines.append(f"      biased_sum{node}_0_r    <= biased_sum{node}_0;  biased_sum{node}_1_r    <= biased_sum{node}_1;")
+        lines.append(f"      biased_sum{node}_0bar_r <= biased_sum{node}_0bar;  biased_sum{node}_1bar_r <= biased_sum{node}_1bar;")
+        lines.append(f"      masked_activation{node}_2_r <= masked_activation{node}_2; masked_activation{node}bar_2_r <= masked_activation{node}bar_2;")
     lines.append("    end else begin")
     lines.append("      done <= 1'b0;")
     lines.append("    end")
@@ -841,37 +1179,58 @@ def generate_bnn_layer_verilog(num_inputs, input_bitsize, num_nodes):
     lines.append("endmodule")
     return "\n".join(lines)
 
-def generate_layer_module(num_inputs: int,
+
+def generate_layer1_module(num_inputs: int,
                          input_bitwidth: int,
-                         num_nodes: int ) -> str:
+                         num_nodes: int ,layer_no : int ) -> str:
     parts = [
         generate_all_adders(input_bitwidth, num_inputs),
         generate_all_adders_bar(input_bitwidth, num_inputs),
-        generate_adder_tree(f"adder_tree",num_inputs, input_bitwidth),
-        generate_adder_tree_bar(f"adder_tree_bar",num_inputs, input_bitwidth),
+        generate_adder_tree(f"adder_tree_{layer_no}",num_inputs, input_bitwidth,layer_no),
+        generate_adder_tree_bar(f"adder_tree_bar_{layer_no}",num_inputs, input_bitwidth,layer_no),
+        weighted_func1(input_bitwidth),
+        generate_activation_module(num_inputs, input_bitwidth,layer_no),
+        generate_activation_array_verilog(f"activation_array_{layer_no}",num_inputs, num_nodes, input_bitwidth,layer_no),
+        generate_bnn_layer_verilog1(num_inputs , input_bitwidth, num_nodes,layer_no ),        
+    ]
+    return "\n\n".join(parts)
+    
+def generate_layer2_module(num_inputs: int,
+                         input_bitwidth: int,
+                         num_nodes: int ,layer_no : int ) -> str:
+    parts = [
+        generate_adder_tree(f"adder_tree_{layer_no}",num_inputs, input_bitwidth-1,layer_no),
+        generate_adder_tree_bar(f"adder_tree_bar_{layer_no}",num_inputs, input_bitwidth-1,layer_no),
+        weighted_func2(input_bitwidth-1),
+        generate_activation_module(num_inputs, input_bitwidth-1,layer_no),
+        generate_activation_array_verilog(f"activation_array_{layer_no}",num_inputs, num_nodes, input_bitwidth-1,layer_no),
         gen_mux_5(num_inputs, input_bitsize),
-        generate_activation_module(num_inputs, input_bitwidth),
-        generate_activation_array_verilog(f"activation_array_1",num_inputs, num_nodes, input_bitwidth),
-        generate_bnn_layer_verilog(num_inputs , input_bitwidth, num_nodes ),        
-        generate_boolean_to_arithmetic_verilog(input_bitwidth)
+        generate_bnn_layer_verilog2(num_inputs , input_bitwidth, num_nodes,layer_no ),        
+        generate_boolean_to_arithmetic_verilog(input_bitwidth-1)
     ]
     return "\n\n".join(parts)
 
 if __name__ == "__main__":
     # Parameters — adjust as needed
-    num_inputs    = 8   # number of inputs per node
-    input_bitsize = 3   # bit-width of each input/activation
-    num_nodes     = 4   # number of parallel adder-tree nodes
+    num_inputs1    = 64   # number of inputs per node
+    num_inputs2    = 8
+    layer_no1     =  1
+    layer_no2     =  2
+    input_bitsize = 9   # bit-width of each input/activation
+    num_nodes     = 8   # number of parallel adder-tree nodes
 
-    verilog_code = generate_layer_module(num_inputs, input_bitsize, num_nodes)
-    print(verilog_code)
+    verilog_code1 = generate_layer1_module(num_inputs1, input_bitsize, num_nodes,layer_no1)
+    print(verilog_code1)
+    
+    verilog_code2 = generate_layer2_module(num_inputs2, input_bitsize, num_nodes,layer_no2)
+    print(verilog_code2)
 
-    sum_width = input_bitsize + math.ceil(math.log2(num_inputs))
+    sum_width = input_bitsize + math.ceil(math.log2(num_inputs2))
     biased_sum_width = sum_width + 1
     
 # ─── CONFIGURE THESE ─────────────────────────────────────────────────────────
 L1 = num_nodes              # number of masked_activation/mask pairs (0…L1–1)
-ROUNDS = [2,3,4]    # the three sub-round indices
+ROUNDS = [3,4]    # the three sub-round indices
 WID = biased_sum_width-1             # bit-width of each weight vector
 SHS = 2             # # of arithmetic-shares per node (always 2 here)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -889,28 +1248,25 @@ def main():
     print()
     print("    // Masked-activation & mask inputs")
     for i in range(L1):
-        print(f"    input  wire        masked_activation{i}_1,")
-    for i in range(L1):
-        print(f"    input  wire        mask{i}_1,")
+        print(f"    input  wire        masked_activation{i}_2,")
     print()
     print("    // Weight vectors for the three sub-rounds")
     for ri,r in enumerate(ROUNDS):
         groups = []
         for g in range(1,L1+1):
-            for sh in (0,1):
-                groups.append(f"w{g}_{sh}_{r}")
-        print(f"    input  wire [{2*(L1)-1}:0]  {', '.join(groups)},")
+            groups.append(f"w{g}_{r}")
+        print(f"    input  wire [{(L1)-1}:0]  {', '.join(groups)},")
     print()
     print("    // Selection bits")
     print("    input  wire [1:0]  s,")
     print()
     print("    // Registered arithmetic-shares outputs (_r suffix)")
     regs = []
-    total = L1 * SHS * (2 * L1)
+    total = L1 * SHS * (L1)
     k = 0
     for layer in range(L1):
         for sh in range(SHS):
-            for bit in range(2*L1):
+            for bit in range(L1):
                 k += 1
                 comma = "," if k < total else ""
                 print(f"    output reg  [{input_bitsize-1}:0]act{layer}_{sh}_{bit}_r{comma}")
@@ -932,8 +1288,8 @@ def main():
     # --- Arithmetic-share wires
     print("  // Arithmetic shares driven by each converter (32 converters × 2 shares)")
     for layer in range(L1):
-            for bit in range(2*L1):
-                for part in (1,2,3):
+            for bit in range(L1):
+                for part in (2,3):
                     print(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_0_{part};")
                     print(f"  wire [{input_bitsize-1}:0] act{layer}_{bit}_1_{part};")
     print()
@@ -941,66 +1297,62 @@ def main():
     # --- Layer 1 intermediate wires
     for layer in range(L1):
         print(f"  // Layer 1, act{layer}")
-        for bit in range(2*L1):
+        for bit in range(L1):
                 print(f"  wire [{input_bitsize-1}:0] act{layer}_0_{bit};")
                 print(f"  wire [{input_bitsize-1}:0] act{layer}_1_{bit};")
         print()
     # --- Weights declaration
     for i in range(L1):
-        print(f"  wire [{(2*L1)-1}:0] w{i+1}_0;")
-        print(f"  wire [{(2*L1)-1}:0] w{i+1}_1;")
+        print(f"  wire [{(L1)-1}:0] w{i+1};")
     print()
 
     # --- Muxes for w*_0
     for g in range(1,L1+1):
-        print(f"  // Muxes for w{g}_0")
-        for b in range(2*L1):
-            a,bx,c = (f"w{g}_0_{ROUNDS[i]}[{b}]" for i in range(3))
-            print(f"  mux_3 m{g-1}0_{b} (.a({a}), .b({bx}), .c({c}), .s0(s[0]), .s1(s[1]), .y(w{g}_0[{b}]));")
+        print(f"  // Muxes for w{g}")
+        for b in range(L1):
+            a,bx = (f"w{g}_{ROUNDS[i]}[{b}]" for i in range(2))
+            print(f"  mux_3 m{g-1}_{b} (.a({a}), .b({bx}), .s0(s[0]), .s1(s[1]), .y(w{g}[{b}]));")
         print()
 
-    # --- new_masked_activation / new_mask
+    # --- new_masked_activation 
     print("  // Layer with weight vector _2")
+
     for layer in range(L1):
-        MA = f"masked_activation{layer}_1"
-        MK = f"mask{layer}_1"
-        print(f"  wire [{num_inputs-1}:0] new_masked_activation{layer}_0 = {{")
-        print(",\n".join(f"      (~^( {MA} ^ w{layer+1}_0[{2*L1-b-1}] ))" for b in range(2*L1)))
-        print("  };")
-        print(f"  wire [{num_inputs-1}:0] new_mask{layer}_0 = {{")
-        print(",\n".join(f"      ~( {MK} ^ w{layer+1}_1[{2*L1-b-1}] )" for b in range(2*L1)))
+        print(f"  wire [{num_inputs2-1}:0] new_masked_activation{layer} = {{")
+
+        lines = []
+        for b in range(L1):
+            lines.append(
+                f"      (~( masked_activation{b}_2 ^ w{layer+1}[{L1-b-1}] ))"
+            )
+
+        print(",\n".join(lines))
         print("  };")
         print()
 
-    # --- Muxes for w*_1
-    for g in range(1,L1+1):
-        print(f"  // Muxes for w{g}_1")
-        for b in range(2*L1):
-            a,bx,c = (f"w{g}_1_{ROUNDS[i]}[{b}]" for i in range(3))
-            print(f"  mux_3 m{g-1}1_{b} (.a({a}), .b({bx}), .c({c}), .s0(s[0]), .s1(s[1]), .y(w{g}_1[{b}]));")
-        print()
+
 
     # --- node mux_4s
     for node in range(L1):
         print(f"  // node {node+1}")
         # first share0 group
         base = node*2*WID
-        for i in range(2*L1):
-            print(f"  mux_4 mux{node}_0_{i} (.a(act{node}_{i}_0_1), .b(act{node}_{i}_0_2), .c(act{node}_{i}_0_3), .s0(s[0]), .s1(s[1]), .y(act{node}_0_{i}));")
+        for i in range(L1):
+            print(f"  mux_4 mux{node}_0_{i} (.a(act{node}_{i}_0_2), .b(act{node}_{i}_0_3), .s0(s[0]), .s1(s[1]), .y(act{node}_0_{i}));")
         # then share1 group
-        for i in range(2*L1):
+        for i in range(L1):
             idx = node*16 + WID + i
-            print(f"  mux_4 mux{node}_1_{i} (.a(act{node}_{i}_1_1), .b(act{node}_{i}_1_2), .c(act{node}_{i}_1_3), .s0(s[0]), .s1(s[1]), .y(act{node}_1_{i}));")
+            print(f"  mux_4 mux{node}_1_{i} (.a(act{node}_{i}_1_2), .b(act{node}_{i}_1_3), .s0(s[0]), .s1(s[1]), .y(act{node}_1_{i}));")
         print()
 
     # --- Boolean→Arithmetic converters
     print("  // Boolean→Arithmetic converters")
     conv = 0
     for layer in range(L1):
-        for bit in range(2*L1):
-            print(f"  boolean_arithmetic_coversion_1 conv{conv:02d} ("
-                  f".x0(new_masked_activation{layer}_0[{bit}]),"
-                  f" .x1(new_mask{layer}_0[{bit}]),"
+        for bit in range(L1):
+            print(f"  boolean_arithmetic_conversion_1 conv{conv:02d} ("
+                  f".x0(new_masked_activation{layer}[{bit}]),"
+                  f".x1(w{layer+1}[{bit}]),"
                   f" .r_mask(ar{layer}),"
                   f" .arith_share0(act{layer}_0_{bit}),"
                   f" .arith_share1(act{layer}_1_{bit}));")
@@ -1008,19 +1360,37 @@ def main():
         print()
 
     # --- always block
+    
+    print("  reg start_d, start_pulse;")
+    print("  reg valid;")
+    print("")
+    print("  always @(posedge clk or negedge rst_n) begin")
+    print("    if (!rst_n) begin")
+    print("      start_d <= 0;")
+    print("      start_pulse <= 0;")
+    print("      valid <= 0;")
+    print("    end else begin")
+    print("      start_d <= start;")
+    print("      start_pulse <= start & ~start_d;")
+    print("      valid <= start_pulse;   // 1-cycle latency")
+    print("    end")
+    print("  end")
+    
+    
+    
     print("  // snapshot into registers")
     print("  always @(posedge clk or negedge rst_n) begin")
     print("    if (!rst_n) begin")
     print("      done <= 1'b0;")
     for layer in range(L1):
         for sh in range(SHS):
-            for bit in range(2*L1):
+            for bit in range(L1):
                 print(f"        act{layer}_{sh}_{bit}_r <= {input_bitsize}'d0 ;")
     print("    end else begin")
-    print("      if (start) begin")
+    print("      if (valid) begin")
     for layer in range(L1):
         for sh in range(SHS):
-            for bit in range(2*L1):
+            for bit in range(L1):
                 print(f"        act{layer}_{sh}_{bit}_r <= act{layer}_{sh}_{bit} ;")
                 
     print("        done <= 1'b1;")
@@ -1253,8 +1623,8 @@ def generate_last_module_design(num_inputs: int,
 if __name__ == "__main__":
     # specify your layer parameters here:
     num_inputs    = 8
-    num_nodes     = 2
-    input_bitwidth = 3
+    num_nodes     = 4
+    input_bitwidth = 9
     
 
     verilog_code = generate_last_module_design(
@@ -1262,14 +1632,14 @@ if __name__ == "__main__":
         input_bitwidth,
         num_nodes
     )
-
+    
     print(verilog_code)
 
-import math
-
-def gen_iterative_controller(num_inputs, input_bitsize, num_nodes):
+def gen_iterative_controller(num_inputs,num_inputs2, input_bitsize, num_nodes):
     sum_width = input_bitsize + math.ceil(math.log2(num_inputs))
     biased_sum_width = sum_width + 1
+    sum_width2 = input_bitsize + math.ceil(math.log2(num_inputs2))
+    biased_sum_width2 = sum_width2 + 1
     lines = []
     # Module header and port list
     print("module iterative_controller (")
@@ -1286,85 +1656,157 @@ def gen_iterative_controller(num_inputs, input_bitsize, num_nodes):
     
     # weight buses (fixed 4 layers)
     for layer in range(num_nodes):
-        print(f"    input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_0_1, w{layer+1}_1_1,")
-        print(f"    input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_0_2, w{layer+1}_1_2,")
-        print(f"    input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_0_3, w{layer+1}_1_3,")
-        print(f"    input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_0_4, w{layer+1}_1_4,")
+        print(f"    input wire", f"[{num_inputs-1}:0]", f"w{layer+1}_1,")
+        print(f"    input wire", f"[{num_inputs2-1}:0]", f"w{layer+1}_2,")
+        print(f"    input wire", f"[{num_inputs2-1}:0]", f"w{layer+1}_3,")
+        print(f"    input wire", f"[{num_inputs2-1}:0]", f"w{layer+1}_4,")
     # bias buses
     for i in range(1, num_nodes+1):
-        for j in range(1, num_nodes+1):
-            print("    input wire", f"[{sum_width-1}:0] b{i}_{j},")
-    total = num_nodes * 2 * (2 * num_nodes)
+        print("    input wire", f"[{sum_width}:0] b{i}_0_1, b{i}_1_1,")
+        
+    for i in range(1, num_nodes+1):
+        for j in range(2, 5):
+            print("    input wire", f"[{sum_width2-1}:0] b{i}_0_{j}, b{i}_1_{j},")
+
+    total = num_nodes * 2 * ( num_nodes)
     k = 0
     for layer in range(num_nodes):
         for sh in range(2):
-            for bit in range(2*num_nodes):
+            for bit in range(num_nodes):
                 k += 1
                 comma = "," if k < total else ""
                 print(f"    output wire  [{input_bitsize-1}:0]act{layer}_{sh}_{bit}_r{comma}")
     print(");\n")
     print(f"  reg  [1:0]  s_count;")
     for layer in range(num_nodes):
-        for bit in range(2*num_nodes):
+        for bit in range(num_nodes):
             print(f"  reg [{input_bitsize-1}:0] act{layer}_0_{bit}_layer;")
             print(f"  reg [{input_bitsize-1}:0] act{layer}_1_{bit}_layer;")
     print()
         # Internal wires
     print("  // internal wires")
     for node in range(num_nodes):
-        print(f"  wire [{biased_sum_width-1}:0] biased_sum{node}_0, biased_sum{node}_1, biased_sum{node}_0bar, biased_sum{node}_1bar;")
+        print(f"  wire [{biased_sum_width}:0] biased_sum{node}_0, biased_sum{node}_1, biased_sum{node}_0bar, biased_sum{node}_1bar;")
+        print(f"  wire [{biased_sum_width2-1}:0] biased_sum{node}_0_2, biased_sum{node}_1_2, biased_sum{node}_0bar_2, biased_sum{node}_1bar_2;")
         print(f"  wire masked_activation{node}_1, masked_activation{node}bar_1;")
-        print(f"  wire mask{node}_1, mask{node}bar_1;")
+        print(f"  wire masked_activation{node}_2, masked_activation{node}bar_2;")
         print(f"  wire  a{node}, a{node}_bar;")
+        print(f"  reg  masked_activation{node}_1_reg;")
+        
+        
+        
     print("  \n")
+    
+    for node in range(num_nodes):
+        print(f"  reg signed [{input_bitsize-1}:0] w_mask{node+1}_1;")
+    print("  initial begin")
+    for node in range(num_nodes):
+        print(f"    w_mask{num_nodes+1}_1 = ($urandom % {2**(input_bitsize-1) - 1}) - {2**(input_bitsize-1) - 1 - 1 + 1};")
+    print("    #1;")
+    print("  end\n")
+    
+    for node in range(num_nodes):
+        print(f"  reg signed [{input_bitsize-2}:0] w_mask{node+1}_1;")
+    print("  initial begin")
+    for node in range(num_nodes):
+        print(f"    w_mask{num_nodes+1}_1 = ($urandom % {2**(input_bitsize-2) - 1}) - {2**(input_bitsize-2) - 1 - 1 + 1};")
+    print("    #1;")
+    print("  end\n")
     # state_block.py
 
 def print_state_block():
     print("""  // state encoding
-  localparam IDLE         = 3'd0,
-             START_LAYER  = 3'd1,
-             WAIT_LAYER   = 3'd2,
-             START_SHARE  = 3'd3,
-             WAIT_SHARE   = 3'd4,
-             DONE_STATE   = 3'd5;
+    
+  // state encoding
+ localparam IDLE          = 4'd0,
+           START_LAYER1  = 4'd1,
+           WAIT_LAYER1   = 4'd2,
+           BUFFER        = 4'd3,
+           START_LAYER2  = 4'd4,
+           WAIT_LAYER2   = 4'd5,
+           START_SHARE   = 4'd6,
+           WAIT_SHARE    = 4'd7,
+           DONE_STATE    = 4'd8;
 
-  reg [2:0]  state, next_state;
-  wire       done_layer, done_share;
-  wire       start_layer = (state == START_LAYER);
+  reg [3:0]  state, next_state;
+  wire       done_layer1,done_layer2, done_share;
+  wire       start_layer1 = (state == START_LAYER1);
+  reg start_layer2_reg, start_layer2_d;
+
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        start_layer2_reg <= 0;
+        start_layer2_d   <= 0;
+    end else begin
+        start_layer2_d   <= (state == START_LAYER2);
+        start_layer2_reg <= (state == START_LAYER2) & ~start_layer2_d;
+    end
+end
   wire       start_share = (state == START_SHARE);
 
-  // state register and s_count logic
-  always @(posedge clk ) begin
-    if (!rst_n) begin
-      state    <= IDLE;
-      s_count  <= 2'b00;
+always @(posedge clk or negedge rst_n) begin
+    if (!rst_n ) begin
+        state   <= IDLE;
+        s_count <= 2'b0;
     end else begin
-      state <= next_state;
-      if (state == WAIT_SHARE && done_share && s_count != 2'b11)
-        s_count <= s_count + 1;
-      if (state == DONE_STATE)
-        s_count <= 2'b00;
-    end
-  end
+        state <= next_state;
 
-  always @(*) begin
+        if (state == WAIT_SHARE && done_share && s_count != 2'b10)
+            s_count <= s_count + 1;
+
+        if (state == DONE_STATE)
+            s_count <= 2'b0;
+    end
+end
+
+always @(*) begin
     next_state = state;
     done       = 1'b0;
+
     case (state)
-      IDLE:         if (start)       next_state = START_LAYER;
-      START_LAYER:                   next_state = WAIT_LAYER;
-      WAIT_LAYER:   if (done_layer)  next_state = START_SHARE;
-      START_SHARE:                  next_state = WAIT_SHARE;
-      WAIT_SHARE:  if (done_share) begin
-                        if (s_count == 2'b11) next_state = DONE_STATE;
-                        else                  next_state = START_LAYER;
-                   end
-      DONE_STATE: begin
-                      done       = 1'b1;
-                      next_state = IDLE;
-                   end
+
+        IDLE:
+            if (start)
+                next_state = START_LAYER1;
+
+        START_LAYER1:
+            next_state = WAIT_LAYER1;
+
+        WAIT_LAYER1:
+            next_state = (done_layer1) ? BUFFER : WAIT_LAYER1;
+
+        BUFFER :
+            next_state = START_LAYER2;
+
+        START_LAYER2:
+            next_state = WAIT_LAYER2;
+
+        WAIT_LAYER2:
+            next_state = (done_layer2) ? START_SHARE : WAIT_LAYER2;
+
+        START_SHARE:
+            next_state = WAIT_SHARE;
+
+        WAIT_SHARE:
+            if (done_share) begin
+                if (s_count == 2'b10)
+                    next_state = DONE_STATE;
+                else
+                    next_state = START_LAYER2;
+            end
+            else begin
+              next_state = WAIT_SHARE;
+            end
+
+
+        DONE_STATE: begin
+                        done =1'b1;
+                        next_state = IDLE;
+                    end
+
     endcase
-  end""")
+
+end""")
 
 def gen_feedback_block(num_nodes : int, bits_per_node : int, bitwidth :int , shares=2):
 
@@ -1435,45 +1877,59 @@ def _close_block(lines):
             lines[i] = lines[i].rstrip(",")
             break
 
-def gen_instances(num_inputs: int, bitwidth: int, num_nodes: int) -> str:
+
+def generate_buffer_block(num_nodes: int):
+    lines = []   
+
+    lines.append("always @(posedge clk or negedge rst_n) begin")
+    lines.append("    if (!rst_n) begin")
+
+    # Reset block
+    for i in range(num_nodes):
+        lines.append(f"        masked_activation{i}_1_reg <= 0;")
+
+    lines.append("    end else if (state == BUFFER) begin")
+
+    # Assignment block
+    for i in range(num_nodes):
+        lines.append(f"        masked_activation{i}_1_reg <= masked_activation{i}_1;")
+
+    lines.append("    end")
+    lines.append("end")
+
+    return "\n".join(lines)  
+
+
+def gen_instances1(num_inputs: int, bitwidth: int, num_nodes: int) -> str:
     out = []
     # ========= m1 (layer) =========
     out.append("  //— Instantiate Layer (m1) ")
-    out.append("  layer m1 (")
+    out.append("  layer_1 m1 (")
     m1_ports = []
     _add_port(m1_ports, "clk",   "clk")
     _add_port(m1_ports, "rst_n", "rst_n")
-    _add_port(m1_ports, "start", "start_layer")
-    _add_port(m1_ports, "done",  "done_layer")
+    _add_port(m1_ports, "start", "start_layer1")
+    _add_port(m1_ports, "done",  "done_layer1")
     m1_ports.append("")  # spacer
 
     # inputs0_1 .. inputs{N-1}_1
     for i in range(num_inputs):
         _add_port(m1_ports, f"inputs{i}_1", f"inputs{i}_1")
     m1_ports.append("")
-    m1_ports.append("// Updated port connections – every signal previously ending in _r is now suffixed _layer")
-
-    # act<n>_<s>_<b> (…_layer)
-    for n in range(num_nodes):
-        for s in range(2):  # shares 0,1
-            for b in range(num_inputs):
-                _add_port(m1_ports, f"act{n}_{s}_{b}", f"act{n}_{s}_{b}_layer")
-
+    
+    for k in range(1, num_nodes + 1):
+        _add_port(m1_ports, f"w_mask{k}_1", f"w_mask{k}_1")
     m1_ports.append("")
 
     # weights: w{k}_0_1 and w{k}_1_1 for k=1..num_nodes
     for k in range(1, num_nodes + 1):
-        _add_port(m1_ports, f"w{k}_0_1", f"w{k}_0_1")
-        _add_port(m1_ports, f"w{k}_1_1", f"w{k}_1_1")
+        _add_port(m1_ports, f"w{k}_1", f"w{k}_1")
     m1_ports.append("")
 
     # biases: order matches example (b1_1..b{N}_1, then b1_2.., then b1_3.., then b1_4..)
-    for t in range(1, 5):
-        for k in range(1, num_nodes + 1):
-            _add_port(m1_ports, f"b{k}_{t}", f"b{k}_{t}")
-    m1_ports.append("")
-    _add_port(m1_ports, "s", "s_count")
-    m1_ports.append("")
+    for k in range(1, num_nodes + 1):
+           _add_port(m1_ports, f"b{k}_0_1", f"b{k}_0_1")
+           _add_port(m1_ports, f"b{k}_1_1", f"b{k}_1_1")
 
     # biased sums: per node, for channels 0 and 1, and their bar variants
     for n in range(num_nodes):
@@ -1489,11 +1945,70 @@ def gen_instances(num_inputs: int, bitwidth: int, num_nodes: int) -> str:
         _add_port(m1_ports, f"masked_activation{n}bar_1_r",   f"masked_activation{n}bar_1")
     m1_ports.append("")
 
-    # maskX_1_r and bar versions
+    _close_block(m1_ports)
+    out.extend(m1_ports)
+    out.append("  );")
+    out.append("")
+
+    return "\n".join(out)
+    
+def gen_instances2(num_inputs: int, bitwidth: int, num_nodes: int) -> str:
+    out = []
+    # ========= m1 (layer) =========
+    out.append("  //— Instantiate Layer (m1) ")
+    out.append("  layer_2 m2 (")
+    m1_ports = []
+    _add_port(m1_ports, "clk",   "clk")
+    _add_port(m1_ports, "rst_n", "rst_n")
+    _add_port(m1_ports, "start", "start_layer2_reg")
+    _add_port(m1_ports, "done",  "done_layer2")
+    m1_ports.append("")  # spacer
+
+    # inputs0_1 .. inputs{N-1}_1
+    for i in range(num_inputs):
+        _add_port(m1_ports, f"inputs{i}_1", f"masked_activation{i}_1")
+    m1_ports.append("")
+
+    # act<n>_<s>_<b> (…_layer)
     for n in range(num_nodes):
-        _add_port(m1_ports, f"mask{n}_1_r",      f"mask{n}_1")
+        for s in range(2):  # shares 0,1
+            for b in range(num_inputs):
+                _add_port(m1_ports, f"act{n}_{s}_{b}", f"act{n}_{s}_{b}_layer")
+
+    m1_ports.append("")
+    
+    for k in range(1, num_nodes + 1):
+        _add_port(m1_ports, f"w_mask{k}_2", f"w_mask{k}_2")
+    m1_ports.append("")
+
+    # weights: w{k}_0_1 and w{k}_1_1 for k=1..num_nodes
+    for k in range(1, num_nodes + 1):
+        _add_port(m1_ports, f"w{k}_2", f"w{k}_2")
+    m1_ports.append("")
+
+    # biases: order matches example (b1_1..b{N}_1, then b1_2.., then b1_3.., then b1_4..)
+    for t in range(2, 5):
+        for k in range(1, num_nodes + 1):
+            _add_port(m1_ports, f"b{k}_0_{t}", f"b{k}_0_{t}")
+            _add_port(m1_ports, f"b{k}_1_{t}", f"b{k}_1_{t}")
+    m1_ports.append("")
+    _add_port(m1_ports, "s", "s_count")
+    m1_ports.append("")
+
+    # biased sums: per node, for channels 0 and 1, and their bar variants
     for n in range(num_nodes):
-        _add_port(m1_ports, f"mask{n}bar_1_r",   f"mask{n}bar_1")
+        for ch in (0, 1):
+            _add_port(m1_ports, f"biased_sum{n}_{ch}_r",    f"biased_sum{n}_{ch}_2")
+            _add_port(m1_ports, f"biased_sum{n}_{ch}bar_r", f"biased_sum{n}_{ch}bar_2")
+    m1_ports.append("")
+
+    # masked_activationX_1_r and bar versions (X = 0..num_nodes-1)
+    for n in range(num_nodes):
+        _add_port(m1_ports, f"masked_activation{n}_2_r",      f"masked_activation{n}_2")
+    for n in range(num_nodes):
+        _add_port(m1_ports, f"masked_activation{n}bar_2_r",   f"masked_activation{n}bar_2")
+    m1_ports.append("")
+
 
     _close_block(m1_ports)
     out.extend(m1_ports)
@@ -1502,7 +2017,7 @@ def gen_instances(num_inputs: int, bitwidth: int, num_nodes: int) -> str:
 
     # ========= m2 (share_boolean_arithmetic) =========
     out.append("  //— Instantiate Share (m2) —")
-    out.append("  share_boolean_arithmetic m2 (")
+    out.append("  share_boolean_arithmetic m3 (")
     m2_ports = []
     _add_port(m2_ports, "clk",   "clk")
     _add_port(m2_ports, "rst_n", "rst_n")
@@ -1512,16 +2027,12 @@ def gen_instances(num_inputs: int, bitwidth: int, num_nodes: int) -> str:
 
     # masked_activations/masks in
     for n in range(num_nodes):
-        _add_port(m2_ports, f"masked_activation{n}_1",    f"masked_activation{n}_1")
-    for n in range(num_nodes):
-        _add_port(m2_ports, f"mask{n}_1",                 f"mask{n}_1")
+        _add_port(m2_ports, f"masked_activation{n}_2",    f"masked_activation{n}_2")
     m2_ports.append("")
 
-    # weights for shares 2,3,4 (matches example)
-    for share_idx in (2, 3, 4):
+    for share_idx in ( 3, 4):
         for k in range(1, num_nodes + 1):
-            _add_port(m2_ports, f"w{k}_0_{share_idx}", f"w{k}_0_{share_idx}")
-            _add_port(m2_ports, f"w{k}_1_{share_idx}", f"w{k}_1_{share_idx}")
+            _add_port(m2_ports, f"w{k}_{share_idx}", f"w{k}_{share_idx}")
     m2_ports.append("")
     _add_port(m2_ports, "s", "s_count")
     m2_ports.append("")
@@ -1549,13 +2060,15 @@ def gen_output_layer_inst(num_outputs: int, inst_name: str = "dut") -> str:
     for i in range(num_outputs):
         for ch in (0, 1):
             n = f"biased_sum{i}_{ch}"
-            lines.append(f"{ind}  .{n:<{col}} ({n}),")
+            m = f"biased_sum{i}_{ch}_2"
+            lines.append(f"{ind}  .{n:<{col}} ({m}),")
 
     # Bar sums: biased_sum{i}_{ch}bar
     for i in range(num_outputs):
         for ch in (0, 1):
             n = f"biased_sum{i}_{ch}bar"
-            lines.append(f"{ind}  .{n:<{col}} ({n}),")
+            m = f"biased_sum{i}_{ch}bar_2"
+            lines.append(f"{ind}  .{n:<{col}} ({m}),")
 
     # Outputs: a{i}
     for i in range(num_outputs):
@@ -1575,13 +2088,14 @@ def gen_output_layer_inst(num_outputs: int, inst_name: str = "dut") -> str:
 
 if __name__ == "__main__":
     # set your parameters here
-    NUM_INPUTS = 8
-    INPUT_BITS = 3
-    NUM_NODES  = 4
-    OUT_NODES = 2
+    NUM_INPUTS = 64
+    NUM_INPUTS2 = 8
+    INPUT_BITS = 9
+    NUM_NODES  = 8
+    OUT_NODES = 4
 
     # 1) Module header / ports (your function prints directly)
-    gen_iterative_controller(NUM_INPUTS, INPUT_BITS, NUM_NODES)
+    gen_iterative_controller(NUM_INPUTS,NUM_INPUTS2, INPUT_BITS, NUM_NODES)
     print()
 
     # 2) FSM / state block
@@ -1591,15 +2105,24 @@ if __name__ == "__main__":
     # 3) Feedback always block
     print(gen_feedback_block(
         num_nodes=NUM_NODES,
-        bits_per_node=2*NUM_NODES,
+        bits_per_node=NUM_NODES,
         bitwidth=INPUT_BITS,
         shares=2
     ))
     print()
-
-    # 4) m1 and m2 instantiations
-    print(gen_instances(NUM_INPUTS, INPUT_BITS, NUM_NODES))
+    
+    # 4) masked-activation
+    print(generate_buffer_block(NUM_NODES))
+    print()
+    
+    
+    # 5) m1 and m2 instantiations
+    print(gen_instances1(NUM_INPUTS, INPUT_BITS, NUM_NODES))
+    print()
+    
+    # 6) m1 and m2 instantiations
+    print(gen_instances2(NUM_INPUTS2, INPUT_BITS, NUM_NODES))
     print()
 
-    # 5) output_layer instantiation (set how many outputs you want)
+    # 7) output_layer instantiation (set how many outputs you want)
     print(gen_output_layer_inst(num_outputs=OUT_NODES, inst_name="dut"))
