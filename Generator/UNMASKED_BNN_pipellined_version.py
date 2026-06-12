@@ -27,14 +27,14 @@ if __name__ == "__main__":
     main()
 
 
-def main():
-    verilog = """module weighted_inputs_2(
+def main(input_bitsize =3):
+    verilog = f"""module weighted_inputs_2(
 
-    input [0:0] inputs,
+    input [{input_bitsize-1}:0] inputs,
 
     input w,
 
-    output reg [0:0] wi
+    output reg [{input_bitsize-1}:0] wi
 );
 
     always @(*) begin
@@ -51,7 +51,6 @@ endmodule
 
 if __name__ == "__main__":
     main()
-
 
 # Python script to print the two LUT modules
 def main():
@@ -295,7 +294,7 @@ module {module_name}(
         for i in range(num_inputs):
             idx = node * num_inputs + i
             verilog += (
-                f"    weighted_inputs_1 w{idx} (.inputs(inputs{i}_{layer_no}), .w(w{node+1}_{layer_no}[{i}]), .wi(weighted_inputs{node+1}_{i}));\n"
+                f"    weighted_inputs_1 w{idx} (.inputs(inputs{i}_{layer_no}), .w(w{node+1}_{layer_no}[{num_inputs-i-1}]), .wi(weighted_inputs{node+1}_{i}));\n"
             )
 
     # Adder tree instantiations
@@ -384,7 +383,7 @@ module {module_name}(
         for i in range(num_inputs):
             idx = node * num_inputs + i
             verilog += (
-                f"    weighted_inputs_2 w{idx} (.inputs(inputs{i}_{layer_no}), .w(w{node+1}_{layer_no}[{i}]), .wi(weighted_inputs{node+1}_{i}));\n"
+                f"    weighted_inputs_2 w{idx} (.inputs(inputs{i}_{layer_no}), .w(w{node+1}_{layer_no}[{num_inputs-i-1}]), .wi(weighted_inputs{node+1}_{i}));\n"
             )
 
     # Adder tree instantiations
@@ -446,12 +445,12 @@ def generate_activation_module(num_inputs : int , input_bitwidth : int,layer_no 
 
     # Random mask inputs
     lines.append("")
-    lines.append("    output activation")
+    lines.append("    output [2:0] activation")
     lines.append(");")
     lines.append("")
 
 
-    lines.append(f"    wire activation = ( 1'b0 ^ inputs0_0[{n-1}] ) ? 1'b0 : 1'b1;")
+    lines.append(f"    assign activation = inputs0_0[{n-1}] ? 3'b111 : 3'b001;")
     lines.append("")
 
     lines.append("endmodule")
@@ -474,8 +473,8 @@ def generate_activation_array_verilog(module_name: str, num_inputs:int,
 
     # Outputs
     for i in range(num_activations -1):
-        lines.append(f"    output wire activation{i},")
-    lines.append(f"    output wire activation{num_activations - 1}\n);")
+        lines.append(f"    output wire [2:0] activation{i},")
+    lines.append(f"    output wire [2:0] activation{num_activations - 1}\n);")
     lines.append("")
 
     # Instantiations of activation modules
@@ -516,7 +515,7 @@ def generate_activation_and_conversion_module(num_inputs: int, input_bitwidth: i
     def masked_activation_outputs():
         lines = []
         for j in range(num_nodes):
-            line = f"output wire activation{j}_{layer_no}"
+            line = f"output wire [2:0] activation{j}_{layer_no}"
             if j != num_nodes - 1:
                 line += ", \n"
             lines.append(line)
@@ -940,10 +939,10 @@ def generate_connector(
 
 # maskdeclaration
     for j in range(num_nodes1):
-        lines.append(f" wire activation{j}_{layer_no1};")  
+        lines.append(f" wire [2:0] activation{j}_{layer_no1};")  
         
     for j in range(num_nodes1):
-        lines.append(f" reg activationr{j}_{layer_no1};")  
+        lines.append(f" reg [2:0] activationr{j}_{layer_no1};")  
         
 
 # instantiate layer-1
@@ -981,10 +980,10 @@ def generate_connector(
     
 # maskdeclaration
     for j in range(num_nodes2):
-        lines.append(f" wire activation{j}_{layer_no2};")  
+        lines.append(f" wire [2:0] activation{j}_{layer_no2};")  
         
     for j in range(num_nodes2):
-        lines.append(f" reg activationr{j}_{layer_no2};")  
+        lines.append(f" reg [2:0] activationr{j}_{layer_no2};")  
 
     lines.append(f"  activation_and_conversion_{layer_no2} layer{layer_no2}_inst (")
     # inputs: act outputs from layer1
@@ -1023,10 +1022,10 @@ def generate_connector(
     
 # maskdeclaration
     for j in range(num_nodes3):
-        lines.append(f" wire activation{j}_{layer_no3};")  
+        lines.append(f" wire [2:0] activation{j}_{layer_no3};")  
         
     for j in range(num_nodes3):
-        lines.append(f" reg activationr{j}_{layer_no3};")  
+        lines.append(f" reg [2:0] activationr{j}_{layer_no3};")  
         
 
 
@@ -1119,9 +1118,9 @@ if __name__ == "__main__":
     # list out exactly the shape of each layer you want to generate
     layer_specs = [
         { "layer_no":      1,
-          "num_inputs":    16,
+          "num_inputs":    32,
           "input_bitwidth": 8,
-          "num_nodes":     8 }
+          "num_nodes":     16 }
 
         # …
     ]
@@ -1142,13 +1141,13 @@ if __name__ == "__main__":
     # list out exactly the shape of each layer you want to generate
     layer_specs = [
         { "layer_no":      2,
-          "num_inputs":    8,
-          "input_bitwidth": 1,
-          "num_nodes":     8 },
+          "num_inputs":    16,
+          "input_bitwidth": 3, # fixed (do not change this value)
+          "num_nodes":     16 },
         { "layer_no":      3,
-          "num_inputs":    8,
-          "input_bitwidth": 1,
-          "num_nodes":     8 }
+          "num_inputs":    16,
+          "input_bitwidth": 3, # fixed (do not change this value)
+          "num_nodes":     16 }
 
         # …
     ]
@@ -1167,9 +1166,9 @@ if __name__ == "__main__":
 
 if __name__ == "__main__":
     # specify your layer parameters here:
-    num_inputs    = 8
-    num_nodes     = 4
-    input_bitwidth = 1
+    num_inputs    = 16
+    num_nodes     = 8
+    input_bitwidth = 3 # fixed (do not change this value)
     layer_no=4
     
 
@@ -1184,15 +1183,15 @@ if __name__ == "__main__":
 
 
 if __name__ == "__main__":
-    num_inputs      = 16
+    num_inputs      = 32
     input_bitwidth1  = 8
-    input_bitwidth2  = 1
-    input_bitwidth3  = 1
-    input_bitwidth4  = 1
-    num_nodes1      = 8
-    num_nodes2      = 8
-    num_nodes3      = 8
-    num_nodes4      = 4
+    input_bitwidth2  = 3  # fixed (do not change this value)
+    input_bitwidth3  = 3  # fixed (do not change this value)
+    input_bitwidth4  = 3  # fixed (do not change this value)
+    num_nodes1      = 16
+    num_nodes2      = 16
+    num_nodes3      = 16
+    num_nodes4      = 8
     layer_no1       = 1
     layer_no2       = 2
     layer_no3       = 3
